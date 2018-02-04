@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from './Button'
-import { Slider } from 'react-native-elements'
+import { Slider, Header, Avatar} from 'react-native-elements'
 
 export default class App extends React.Component {
   handleSymptomPress = () => {
@@ -10,39 +10,26 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, flexDirection: 'column', alignItems: 'center'}}>
+      <View style={{flex: 1, flexDirection: 'column'}}>
+          <Header backgroundColor='#303030'
+            leftComponent={{ icon: 'menu', color: '#fff' }}
+            centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
+            rightComponent={{ icon: 'home', color: '#fff' }}
+          />
         <View style={{flexDirection: 'row'}}>
-          <Button
-            onPress={this.handleSymptomPress}
-          />
-           <Button
-            onPress={this.handleSymptomPress}
-          />
-          <Button
-            onPress={this.handleSymptomPress}
-          />
+          <Button onPress={this.handleSymptomPress}/>
+          <Button onPress={this.handleSymptomPress}/> 
+          <Button onPress={this.handleSymptomPress}/>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Button
-            onPress={this.handleSymptomPress}
-          />
-           <Button
-            onPress={this.handleSymptomPress}
-          />
-          <Button
-            onPress={this.handleSymptomPress}
-          />
+          <Button onPress={this.handleSymptomPress}/>
+          <Button onPress={this.handleSymptomPress}/> 
+          <Button onPress={this.handleSymptomPress}/> 
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Button
-            onPress={this.handleSymptomPress}
-          />
-           <Button
-            onPress={this.handleSymptomPress}
-          />
-          <Button
-            onPress={this.handleSymptomPress}
-          />
+          <Button onPress={this.handleSymptomPress}/>
+          <Button onPress={this.handleSymptomPress}/> 
+          <Button onPress={this.handleSymptomPress}/>
         </View>
         <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
         <Slider
@@ -57,12 +44,10 @@ export default class App extends React.Component {
         </View>
 
         </View>
-        
-
+  
       
     );
   }
 }
 
-const styles = StyleSheet.create({
-});
+
