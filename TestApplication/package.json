@@ -1,0 +1,39 @@
+{
+  "name": "TestApplication",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-react": "^7.6.1",
+    "jest-expo": "25.0.0",
+    "react-native-scripts": "1.11.1",
+    "react-test-renderer": "16.2.0"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "node node_modules/jest/bin/jest.js"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "expo": "^25.0.0",
+    "moment": "^2.20.1",
+    "nachos-ui": "^0.1.2",
+    "prop-types": "^15.6.0",
+    "react": "16.2.0",
+    "react-native": "0.52.0",
+    "react-native-calendars": "^1.16.1",
+    "react-native-datepicker": "^1.6.0",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-swipeout": "^2.3.3",
+    "react-native-swiper": "^1.5.13",
+    "react-navigation": "^1.0.0-beta.27",
+    "toggle-switch-react-native": "^0.2.0"
+  }
+}
