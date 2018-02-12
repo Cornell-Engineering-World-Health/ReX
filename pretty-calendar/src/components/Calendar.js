@@ -12,6 +12,7 @@ class Calendar extends Component {
     static propTypes = {
       dispatch: PropTypes.func,
       currMonth: PropTypes.object,
+      circles: PropTypes.array,
     };
 
     constructor(props){
@@ -26,26 +27,26 @@ class Calendar extends Component {
             backgroundColor.push(0);
         }
 
+        /**
         let circles = new Array(numberOfDays);
 
         for (var i = 0; i < numberOfDays; i++){
             circles[i] = [generic, generic, generic];
         }
-
+        */
         this.state = {
             backgroundColor: backgroundColor,
             selected: 0,
-            circles: circles,
         }
+
         this._onDatePress = this._onDatePress.bind(this);
     }
 
     _onDatePress = (i) => {
-
         let backgroundColor = [];
         backgroundColor[i] = 1;
 
-        let circles = this.state.circles;
+        let circles = this.props.circles;
         for (var x = 0; x < 3; x++){
             if (circles[i][x] == generic){
                 circles[i][x] = genericGray;
@@ -60,26 +61,27 @@ class Calendar extends Component {
         this.setState({ circles });
 
         this.setState({ backgroundColor });
-        
+
         //this.props.dispatch(prevMonth());
     }
 
     _onTitlePress = () => {
 
+          console.log("test")
         this.props.dispatch(nextMonth());
     }
 
     _onHeadachePress = () => {
-        
-        let circles = this.state.circles;
+
+        let circles = this.props.circles;
         circles[this.state.selected][0] = headache;
 
         this.setState({ circles });
     }
 
     _onBlurredPress = () => {
-        
-        let circles = this.state.circles;
+
+        let circles = this.props.circles;
         circles[this.state.selected][1] = blurred;
 
         this.setState({ circles });
@@ -87,7 +89,7 @@ class Calendar extends Component {
 
     _onPillPress = () => {
 
-        let circles = this.state.circles;
+        let circles = this.props.circles;
         circles[this.state.selected][2] = pill;
 
         this.setState({ circles });
@@ -135,6 +137,8 @@ class Calendar extends Component {
         return dateGrid.map((day, i) => {
             let dateStyle = this.state.backgroundColor[i] ? altItem : item
             let textStyle = this.state.backgroundColor[i] ? altDate : date
+            console.log(this.props.circles)
+            console.log(numberOfDays);
             return(
                 <TouchableOpacity style = {dateStyle} key = {i} onPress={() => this._onDatePress(i)}>
                     <View>
@@ -142,9 +146,9 @@ class Calendar extends Component {
                                 {day}
                             </Text>
                             <View style = {circles}>
-                                <View style = {this.state.circles[i][0]} />
-                                <View style = {this.state.circles[i][1]} />
-                                <View style = {this.state.circles[i][2]} />
+                                <View style = {this.props.circles[i][0]} />
+                                <View style = {this.props.circles[i][1]} />
+                                <View style = {this.props.circles[i][2]} />
                             </View>
                     </View>
                     </TouchableOpacity>
@@ -358,6 +362,7 @@ const { head, header, header2, date, altDate, dateGray, week, month, year, tiles
 const mapStateToProps = (state) => {
   return{
     currMonth: state.calendar.currMonth,
+    circles: state.calendar.circles,
   };
 };
 export default connect(mapStateToProps)(Calendar);
