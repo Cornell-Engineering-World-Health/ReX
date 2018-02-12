@@ -6,7 +6,7 @@ import constants from './constants';
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 5,
+    padding: 10,
     borderRadius: 20
   },
   shadowWrapper: {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     padding: 5,
     alignItems: 'flex-end',
-    flex: 0.7
+    flex: 0.6
   },
   timeStamp: {
     fontSize: 20,
