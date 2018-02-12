@@ -8,13 +8,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   wrapper: {
-    flexDirection: 'column',
     alignItems: 'center',
-
     padding: 15
-  },
-  icon: {
-    width: 100
   },
   text: {
     fontSize: 20,
@@ -28,7 +23,9 @@ class ButtonWithImage extends Component {
     onPress: PropTypes.func,
     imageSource: PropTypes.number,
     backgroundColor: PropTypes.string,
-    color: PropTypes.string
+    color: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number
   };
 
   constructor(props) {
@@ -36,20 +33,36 @@ class ButtonWithImage extends Component {
   }
 
   render() {
-    const thisStyle = [styles.container];
+    const containerStyle = [styles.container];
     const textStyle = [styles.text];
-    thisStyle.push({ backgroundColor: this.props.backgroundColor });
+    const imageStyle = [
+      {
+        resizeMode: 'cover'
+      }
+    ];
+    containerStyle.push({
+      backgroundColor: this.props.backgroundColor
+    });
     textStyle.push({ color: this.props.color });
+
+    if (this.props.width) {
+      imageStyle.push({ width: this.props.width });
+    } else {
+      imageStyle.push({ width: 100 });
+    }
+    if (this.props.height) {
+      imageStyle.push({ height: this.props.height });
+    } else {
+      imageStyle.push({ height: 100 });
+    }
     return (
-      <TouchableOpacity style={thisStyle} onPress={this.props.onPress}>
-        <View style={styles.wrapper}>
-          <Image
-            resizeMode="contain"
-            style={styles.icon}
-            source={this.props.imageSource}
-          />
-          <Text style={textStyle}>{this.props.text}</Text>
-        </View>
+      <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
+        <Image
+          resizeMode="stretch"
+          style={imageStyle}
+          source={this.props.imageSource}
+        />
+        <Text style={textStyle}>{this.props.text}</Text>
       </TouchableOpacity>
     );
   }

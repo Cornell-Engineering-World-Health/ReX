@@ -234,6 +234,8 @@ class painForm extends React.Component {
             imageSource={require('../Resources/headPain.png')}
             backgroundColor={'#7c0920'}
             color={'#ffffff'}
+            width={150}
+            height={150}
           />
           <ButtonWithImage
             text={'Heart Pain'}
@@ -241,6 +243,8 @@ class painForm extends React.Component {
             imageSource={require('../Resources/heartPain.png')}
             backgroundColor={'#b43649'}
             color={'#ffffff'}
+            width={150}
+            height={150}
           />
         </View>
         <View style={styles.rowStyle}>
