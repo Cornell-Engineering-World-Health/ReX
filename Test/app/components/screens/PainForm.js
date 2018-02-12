@@ -92,7 +92,7 @@ class painForm extends React.Component {
             title={'Foot pain'}
             timeStamp={'6:00 PM'}
             note1={'High Severity'}
-            note2={'This card was manually inputted'}
+            note2={'manual input'}
             backgroundColor={'#FF33FC'}
             buttonActive={true}
             onPress={this._handleCardPress}
@@ -103,6 +103,54 @@ class painForm extends React.Component {
             timeStamp={'10:00 PM'}
             note1={'Medium Severity'}
             note2={'Duration: 27 min'}
+            swiperActive={true}
+            buttonsRight={buttonsR}
+            buttonsLeft={buttonsL}
+            backgroundColor={'#18F150'}
+            onCloseSwipeout={this._handleClose}
+            onOpenSwipeout={this._handleOpen}
+          />
+          <Card
+            iconName={'leg-pain'}
+            title={'Leg Pain'}
+            timeStamp={'6:00 AM'}
+            note1={'auto-generation'}
+            note2={'based on name'}
+            buttonActive={true}
+            swiperActive={true}
+            buttonsRight={buttonsR}
+            buttonsLeft={buttonsL}
+          />
+          <Card
+            iconName={'knee-pain'}
+            title={'Knee Pain'}
+            timeStamp={'8:00 PM'}
+            note1={'NOTE 1'}
+            note2={'NOTE 2'}
+          />
+          <Card
+            iconName={'neck-pain'}
+            title={'Neck Pain'}
+            timeStamp={'8:00 PM'}
+            note1={'NOTE 1'}
+            note2={'NOTE 2'}
+          />
+          <Card
+            image={require('../Resources/footPain.png')}
+            title={'Foot pain'}
+            timeStamp={'6:00 PM'}
+            note1={'High Severity'}
+            note2={'manual input'}
+            backgroundColor={'#FF33FC'}
+            buttonActive={true}
+            onPress={this._handleCardPress}
+          />
+          <Card
+            image={require('../Resources/glasses.png')}
+            title={'Oliver likes'}
+            timeStamp={'allday'}
+            note1={'his women'}
+            note2={'sporty'}
             swiperActive={true}
             buttonsRight={buttonsR}
             buttonsLeft={buttonsL}

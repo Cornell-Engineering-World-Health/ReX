@@ -6,8 +6,14 @@ import constants from './constants';
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 10,
+    padding: 5,
     borderRadius: 20
+  },
+  shadowWrapper: {
+    borderRadius: 20,
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: '#808080',
+    shadowOpacity: 0.5
   },
   container: {
     flexDirection: 'row',
@@ -20,31 +26,35 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: 100,
     width: 100,
-    resizeMode: 'cover',
-    justifyContent: 'center'
+    resizeMode: 'cover'
   },
   descriptionContainer: {
-    justifyContent: 'flex-end',
-    padding: 10
-  },
-  header: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
+    padding: 8,
+    flex: 1,
+    alignItems: 'center'
   },
   titleText: {
     fontSize: 23,
     fontFamily: 'GillSans-SemiBold',
     color: '#000000'
   },
+  timeContainer: {
+    padding: 5,
+    alignItems: 'flex-end',
+    flex: 0.7
+  },
   timeStamp: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: 'GillSans-SemiBold',
     color: '#C4C4C3'
   },
   note: {
     color: '#000000',
     fontSize: 20,
-    fontFamily: 'GillSans-Light'
+    fontFamily: 'GillSans-Light',
+    flex: 3
   },
   swipe: {
     borderRadius: 20
@@ -108,39 +118,40 @@ class Card extends Component {
 
     return (
       <View style={styles.wrapper}>
-        <Swipeout
-          backgroundColor={'#E7EDE9'}
-          right={this.props.buttonsRight}
-          left={this.props.buttonsLeft}
-          autoClose={true}
-          style={styles.swipe}
-          disabled={!this.props.swiperActive}
-          onClose={this.props.onCloseSwipeout}
-          onOpen={this.props.onOpenSwipeout}
-        >
-          <TouchableOpacity
-            disabled={!this.props.buttonActive}
-            onPress={this.props.onPress}
+        <View style={styles.shadowWrapper}>
+          <Swipeout
+            backgroundColor={'#E7EDE9'}
+            right={this.props.buttonsRight}
+            left={this.props.buttonsLeft}
+            autoClose={true}
+            style={styles.swipe}
+            disabled={!this.props.swiperActive}
+            onClose={this.props.onCloseSwipeout}
+            onOpen={this.props.onOpenSwipeout}
           >
-            <View style={styles.container}>
-              <View style={imageContainerStyle}>
-                <Image style={styles.imageStyle} source={image} />
-              </View>
+            <TouchableOpacity
+              disabled={!this.props.buttonActive}
+              onPress={this.props.onPress}
+            >
+              <View style={styles.container}>
+                <View style={imageContainerStyle}>
+                  <Image style={styles.imageStyle} source={image} />
+                </View>
 
-              <View style={styles.descriptionContainer}>
-                <View style={styles.header}>
-                  <Text style={styles.titleText}>{this.props.title}</Text>
+                <View style={styles.descriptionContainer}>
+                  <View>
+                    <Text style={styles.titleText}>{this.props.title}</Text>
+                    <Text style={styles.note}> {this.props.note1} </Text>
+                    <Text style={styles.note}> {this.props.note2} </Text>
+                  </View>
+                </View>
+                <View style={styles.timeContainer}>
                   <Text style={styles.timeStamp}>{this.props.timeStamp}</Text>
                 </View>
-
-                <View>
-                  <Text style={styles.note}> {this.props.note1} </Text>
-                  <Text style={styles.note}> {this.props.note2} </Text>
-                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </Swipeout>
+            </TouchableOpacity>
+          </Swipeout>
+        </View>
       </View>
     );
   }
