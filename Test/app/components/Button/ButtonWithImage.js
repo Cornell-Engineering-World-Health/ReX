@@ -3,13 +3,21 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  shadowWrapper: {
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: '#808080',
+    shadowOpacity: 0.5,
+    borderRadius: 20
+  },
   container: {
     alignItems: 'center',
-    flex: 1
+    flex: 1,
+    padding: 10,
+    borderRadius: 20
   },
   wrapper: {
     alignItems: 'center',
-    padding: 15
+    padding: 5
   },
   text: {
     fontSize: 20,
@@ -56,14 +64,18 @@ class ButtonWithImage extends Component {
       imageStyle.push({ height: 100 });
     }
     return (
-      <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
-        <Image
-          resizeMode="stretch"
-          style={imageStyle}
-          source={this.props.imageSource}
-        />
-        <Text style={textStyle}>{this.props.text}</Text>
-      </TouchableOpacity>
+      <View style={styles.wrapper}>
+        <View style={styles.shadowWrapper}>
+          <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
+            <Image
+              resizeMode="stretch"
+              style={imageStyle}
+              source={this.props.imageSource}
+            />
+            <Text style={textStyle}>{this.props.text}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 }

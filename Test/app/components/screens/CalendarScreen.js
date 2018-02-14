@@ -52,6 +52,8 @@ class main extends React.Component {
           <ButtonWithImage
             onPress={this._handlePress}
             imageSource={require('../Resources/back.png')}
+            width={25}
+            height={25}
           />
         </View>
         <CalendarList

@@ -86,6 +86,12 @@ class Card extends Component {
   };
 
   render() {
+    const swipeoutSettings = {
+      autoClose: true,
+      onClose: this.props.onCloseSwipeout,
+      onOpen: this.props.onOpenSwipeout
+    };
+
     const imageContainerStyle = [styles.imageContainer];
     var image = constants.DEFAULT_IMAGE;
     var backgroundColorTemp = constants.DEFAULT_BACKGROUND_COLOR;
@@ -115,6 +121,10 @@ class Card extends Component {
     imageContainerStyle.push({
       backgroundColor: backgroundColorTemp
     });
+
+    const swipeSettings = {
+      autoClose: true
+    };
 
     return (
       <View style={styles.wrapper}>

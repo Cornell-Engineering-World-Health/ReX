@@ -6,13 +6,15 @@ import {
   Text,
   ScrollView,
   StatusBar,
-  Image
+  Image,
+  FlatList
 } from 'react-native';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import CalendarScreen from '../screens/CalendarScreen';
 import Moment from 'moment';
 import Swipeout from 'react-native-swipeout';
 import Card from '../Card/Card';
+import testData from '../Resources/CardTestData';
 
 class painForm extends React.Component {
   static propTypes = {
@@ -135,69 +137,6 @@ class painForm extends React.Component {
             note1={'NOTE 1'}
             note2={'NOTE 2'}
           />
-          <Card
-            image={require('../Resources/footPain.png')}
-            title={'Foot pain'}
-            timeStamp={'6:00 PM'}
-            note1={'High Severity'}
-            note2={'manual input'}
-            backgroundColor={'#FF33FC'}
-            buttonActive={true}
-            onPress={this._handleCardPress}
-          />
-          <Card
-            image={require('../Resources/glasses.png')}
-            title={'Oliver likes'}
-            timeStamp={'allday'}
-            note1={'his women'}
-            note2={'sporty'}
-            swiperActive={true}
-            buttonsRight={buttonsR}
-            buttonsLeft={buttonsL}
-            backgroundColor={'#18F150'}
-            onCloseSwipeout={this._handleClose}
-            onOpenSwipeout={this._handleOpen}
-          />
-          <Card
-            iconName={'leg-pain'}
-            title={'Leg Pain'}
-            timeStamp={'6:00 AM'}
-            note1={'auto-generation'}
-            note2={'based on name'}
-            buttonActive={true}
-            swiperActive={true}
-            buttonsRight={buttonsR}
-            buttonsLeft={buttonsL}
-          />
-          <Card
-            iconName={'knee-pain'}
-            title={'Knee Pain'}
-            timeStamp={'8:00 PM'}
-            note1={'NOTE 1'}
-            note2={'NOTE 2'}
-          />
-          <Card
-            iconName={'neck-pain'}
-            title={'Neck Pain'}
-            timeStamp={'8:00 PM'}
-            note1={'NOTE 1'}
-            note2={'NOTE 2'}
-          />
-        </View>
-        <View style={styles.row}>
-          <Swipeout
-            backgroundColor={'#E106A5'}
-            autoClose={true}
-            left={buttonsL}
-            right={buttonsR}
-          >
-            <View style={styles.swiperStyle}>
-              <Text style={styles.swiperText}>
-                {' '}
-                You are starting a new log hi{' '}
-              </Text>
-            </View>
-          </Swipeout>
         </View>
         <StatusBar barStyle="dark-content" />
         <View style={styles.header}>
@@ -229,42 +168,6 @@ class painForm extends React.Component {
         </View>
         <View style={styles.rowStyle}>
           <ButtonWithImage
-            text={'Head pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/headPain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-            width={150}
-            height={150}
-          />
-          <ButtonWithImage
-            text={'Heart Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/heartPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-            width={150}
-            height={150}
-          />
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
-            text={'Leg Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/legPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Knee Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/kneePain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
             text={'Back Pain'}
             onPress={this._handlePress}
             imageSource={require('../Resources/backPain.png')}
@@ -275,6 +178,59 @@ class painForm extends React.Component {
             text={'Foot Pain'}
             onPress={this._handlePress}
             imageSource={require('../Resources/footPain.png')}
+            backgroundColor={'#b43649'}
+            color={'#ffffff'}
+          />
+          <ButtonWithImage
+            text={'Head Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/headPain.png')}
+            backgroundColor={'#7c0920'}
+            color={'#ffffff'}
+          />
+        </View>
+        <View style={styles.rowStyle}>
+          <ButtonWithImage
+            text={'Heart Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/heartPain.png')}
+            backgroundColor={'#b43649'}
+            color={'#ffffff'}
+          />
+          <ButtonWithImage
+            text={'Knee Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/kneePain.png')}
+            backgroundColor={'#7c0920'}
+            color={'#ffffff'}
+          />
+          <ButtonWithImage
+            text={'Leg Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/legPain.png')}
+            backgroundColor={'#7c0920'}
+            color={'#ffffff'}
+          />
+        </View>
+        <View style={styles.rowStyle}>
+          <ButtonWithImage
+            text={'Neck Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/neckPain.png')}
+            backgroundColor={'#7c0920'}
+            color={'#ffffff'}
+          />
+          <ButtonWithImage
+            text={'Belly Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/stomachPain.png')}
+            backgroundColor={'#b43649'}
+            color={'#ffffff'}
+          />
+          <ButtonWithImage
+            text={'Elbow Pain'}
+            onPress={this._handlePress}
+            imageSource={require('../Resources/elbowPain.png')}
             backgroundColor={'#b43649'}
             color={'#ffffff'}
           />
