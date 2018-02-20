@@ -95,27 +95,35 @@ class Card extends Component {
     const imageContainerStyle = [styles.imageContainer];
     var image = constants.DEFAULT_IMAGE;
     var backgroundColorTemp = constants.DEFAULT_BACKGROUND_COLOR;
-    if (this.props.iconName) {
-      if (this.props.iconName == 'headache') {
+
+    switch (this.props.iconName) {
+      case 'headache':
         image = constants.HEADACHE_IMAGE;
         backgroundColorTemp = constants.HEADACHE_BACKGROUND_COLOR;
-      } else if (this.props.iconName == 'neck-pain') {
+        break;
+
+      case 'neck-pain':
         image = constants.NECKPAIN_IMAGE;
         backgroundColorTemp = constants.NECKPAIN_BACKGROUND_COLOR;
-      } else if (this.props.iconName == 'leg-pain') {
+        break;
+
+      case 'leg-pain':
         image = constants.LEGPAIN_IMAGE;
         backgroundColorTemp = constants.LEGPAIN_BACKGROUND_COLOR;
-      } else if (this.props.iconName == 'knee-pain') {
+        break;
+
+      case 'knee-pain':
         image = constants.KNEEPAIN_IMAGE;
         backgroundColorTemp = constants.KNEEPAIN_BACKGROUND_COLOR;
-      }
-    } else {
-      if (this.props.backgroundColor) {
-        backgroundColorTemp = this.props.backgroundColor;
-      }
-      if (this.props.image) {
-        image = this.props.image;
-      }
+        break;
+
+      default:
+        if (this.props.backgroundColor) {
+          backgroundColorTemp = this.props.backgroundColor;
+        }
+        if (this.props.image) {
+          image = this.props.image;
+        }
     }
 
     imageContainerStyle.push({
