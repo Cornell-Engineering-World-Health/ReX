@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Header, Calendar, Agenda } from './src/components';
+import { Header, Calendar, Agenda, CalendarCarousel } from './src/components';
 import { Provider } from 'react-redux';
 import store from './src/config/store';
 
@@ -11,7 +11,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <View>
           <Header />
-          <Calendar />
+            <CalendarCarousel />
         </View>
       </Provider>
     );

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import { prevMonth, nextMonth } from '../actions/calendar';
 import {connect} from 'react-redux';
-import { Swiper } from 'react-native-swiper';
+
 
 const { width } = Dimensions.get("window");
 
@@ -137,8 +137,6 @@ class Calendar extends Component {
         return dateGrid.map((day, i) => {
             let dateStyle = this.state.backgroundColor[i] ? altItem : item
             let textStyle = this.state.backgroundColor[i] ? altDate : date
-            console.log(this.props.circles)
-            console.log(numberOfDays);
             return(
                 <TouchableOpacity style = {dateStyle} key = {i} onPress={() => this._onDatePress(i)}>
                     <View>
@@ -203,7 +201,16 @@ class Calendar extends Component {
       }
     }
 
+    _renderItem ({item, index}) {
+      return (
+          <View style={styles.slide}>
+              <Text style={styles.title}>{ item.title }</Text>
+          </View>
+      );
+    }
+
     render() {
+
         return (
             <View>
             <View style= {head}>
@@ -218,13 +225,13 @@ class Calendar extends Component {
                     { this.renderWeek() }
                 </View>
             </View>
-            <View>
+
                 <View style = {tiles}>
                     { this.renderPreviousDates() }
                     { this.renderDates() }
                     { this.renderNextDates() }
                 </View>
-            </View>
+
             <View style = {buttons}>
                 <Button title = "Headache" onPress = {() => this._onHeadachePress()} backgroundColor = "#ab87b8" />
                 <Button title = "Blurred Vision" onPress = {() => this._onBlurredPress()} backgroundColor = "#6dd3bf" />
