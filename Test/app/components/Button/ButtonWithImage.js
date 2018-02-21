@@ -33,7 +33,8 @@ class ButtonWithImage extends Component {
     backgroundColor: PropTypes.string,
     color: PropTypes.string,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    onLongPress: PropTypes.func
   };
 
   constructor(props) {
@@ -66,7 +67,11 @@ class ButtonWithImage extends Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.shadowWrapper}>
-          <TouchableOpacity style={containerStyle} onPress={this.props.onPress}>
+          <TouchableOpacity
+            style={containerStyle}
+            onPress={this.props.onPress}
+            onLongPress={this.props.onLongPress}
+          >
             <Image
               resizeMode="stretch"
               style={imageStyle}
