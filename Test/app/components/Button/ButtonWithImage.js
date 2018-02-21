@@ -5,15 +5,12 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   shadowWrapper: {
     shadowOffset: { width: 5, height: 5 },
-    shadowColor: '#808080',
-    shadowOpacity: 0.5,
-    borderRadius: 20
+    shadowColor: '#808080'
   },
   container: {
     alignItems: 'center',
     flex: 1,
-    padding: 10,
-    borderRadius: 20
+    padding: 10
   },
   wrapper: {
     alignItems: 'center',
@@ -34,7 +31,9 @@ class ButtonWithImage extends Component {
     color: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-    onLongPress: PropTypes.func
+    onLongPress: PropTypes.func,
+    rounded: PropTypes.bool,
+    shadowOpacity: PropTypes.number
   };
 
   constructor(props) {
@@ -44,14 +43,26 @@ class ButtonWithImage extends Component {
   render() {
     const containerStyle = [styles.container];
     const textStyle = [styles.text];
-    const imageStyle = [
-      {
-        resizeMode: 'cover'
-      }
-    ];
+    const imageStyle = [{ resizeMode: 'cover' }];
+    const shadowStyle = [styles.shadowWrapper];
+
     containerStyle.push({
       backgroundColor: this.props.backgroundColor
     });
+    if (this.props.rounded) {
+      containerStyle.push({
+        borderRadius: 50
+      });
+      shadowStyle.push({
+        borderRadius: 50
+      });
+    }
+    if (this.props.shadowOpacity) {
+      shadowStyle.push({
+        shadowOpacity: this.props.shadowOpacity
+      });
+    }
+
     textStyle.push({ color: this.props.color });
 
     if (this.props.width) {
@@ -64,9 +75,10 @@ class ButtonWithImage extends Component {
     } else {
       imageStyle.push({ height: 100 });
     }
+
     return (
       <View style={styles.wrapper}>
-        <View style={styles.shadowWrapper}>
+        <View style={shadowStyle}>
           <TouchableOpacity
             style={containerStyle}
             onPress={this.props.onPress}

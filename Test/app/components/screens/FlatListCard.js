@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     height: 75,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#3333cc'
+    backgroundColor: '#ffffff'
   },
   bottomModal: {
     justifyContent: 'flex-end'
@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
     height: 75,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  verticalSeparator: {
+    width: StyleSheet.hairlineWidth,
+    backgroundColor: '#000000',
+    flex: 1
   }
 });
 const idCounter = 0;
@@ -191,6 +196,7 @@ class FlatListCard extends React.Component {
               onPress={() => this._addNewItem('Medicine', 'Medicine')}
               height={50}
               width={50}
+              rounded={true}
             />
             <ButtonWithImage
               imageSource={require('../Resources/intensePain.png')}
@@ -198,6 +204,7 @@ class FlatListCard extends React.Component {
               onPress={() => this._addNewItem('Pain', 'Pain')}
               height={50}
               width={50}
+              rounded={true}
             />
             <ButtonWithImage
               imageSource={require('../Resources/scale.png')}
@@ -205,6 +212,7 @@ class FlatListCard extends React.Component {
               onPress={() => this._addNewItem('Weight', 'Weight')}
               height={50}
               width={50}
+              rounded={true}
             />
           </View>
         </Modal>
@@ -221,6 +229,7 @@ class FlatListCard extends React.Component {
                 imageSource={require('../Resources/headPain.png')}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
+                rounded={true}
               />
               <ButtonWithImage
                 text={'Neck Pain'}
@@ -228,6 +237,7 @@ class FlatListCard extends React.Component {
                 imageSource={require('../Resources/neckPain.png')}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
+                rounded={true}
               />
               <ButtonWithImage
                 text={'Leg Pain'}
@@ -239,6 +249,7 @@ class FlatListCard extends React.Component {
                 imageSource={require('../Resources/legPain.png')}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
+                rounded={true}
               />
               <ButtonWithImage
                 text={'Random User'}
@@ -246,6 +257,7 @@ class FlatListCard extends React.Component {
                 imageSource={require('../Resources/profilePic.png')}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
+                rounded={true}
               />
             </ScrollView>
           </View>
@@ -256,22 +268,23 @@ class FlatListCard extends React.Component {
             imageSource={require('../Resources/homeIcon.png')}
             width={50}
             height={50}
-            backgroundColor={'#ccffff'}
+            backgroundColor={'#ffffff'}
           />
+
           <ButtonWithImage
             imageSource={require('../Resources/calendar.png')}
             width={50}
             height={50}
-            backgroundColor={'#ccccff'}
+            backgroundColor={'#ffffff'}
           />
           <GestureRecognizer
             onSwipeUp={() => this.setState({ buttonsVisible: true })}
           >
             <ButtonWithImage
+              rounded={true}
               imageSource={require('../Resources/plusSign.png')}
               width={50}
               height={50}
-              backgroundColor={'#cc66ff'}
               onPress={() => {
                 this.setState({
                   menuVisible: true
@@ -288,13 +301,13 @@ class FlatListCard extends React.Component {
             imageSource={require('../Resources/pillBottle.png')}
             width={50}
             height={50}
-            backgroundColor={'#ff9999'}
+            backgroundColor={'#ffffff'}
           />
           <ButtonWithImage
             imageSource={require('../Resources/settings.png')}
             width={50}
             height={50}
-            backgroundColor={'#cccccc'}
+            backgroundColor={'#ffffff'}
           />
         </View>
       </View>

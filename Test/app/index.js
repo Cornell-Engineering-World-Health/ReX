@@ -6,6 +6,14 @@ import { StackNavigator } from 'react-navigation';
 import { NavigatorIOS, StatusBar } from 'react-native';
 
 class main extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedTab: 'flatlist'
+    };
+  }
+
   render() {
     return <FlatListCard />;
   }
