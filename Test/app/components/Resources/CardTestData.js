@@ -7,8 +7,7 @@ export default [
     note1: 'High Severity',
     note2: 'manual input',
     backgroundColor: '#FF33FC',
-    swiperActive: true,
-    buttonActive: true
+    swiperActive: true
   },
   {
     id: 2,
@@ -18,8 +17,7 @@ export default [
     note1: 'Medium Severity',
     note2: 'Duration: 27 min',
     swiperActive: true,
-    backgroundColor: '#18F150',
-    buttonActive: true
+    backgroundColor: '#18F150'
   },
   {
     id: 3,
