@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
-import { prevMonth, nextMonth } from '../actions/calendar';
-import {connect} from 'react-redux';
-
 
 const { width } = Dimensions.get("window");
 
 class Calendar extends Component {
     static propTypes = {
-      dispatch: PropTypes.func,
       currMonth: PropTypes.object,
-      circles: PropTypes.array,
     };
 
     constructor(props){
@@ -27,16 +22,25 @@ class Calendar extends Component {
             backgroundColor.push(0);
         }
 
-        /**
-        let circles = new Array(numberOfDays);
+
+
+        var purple = [];
+        var green = [];
+        var red = [];
+
 
         for (var i = 0; i < numberOfDays; i++){
-            circles[i] = [generic, generic, generic];
+            purple[i] = generic;
+            green[i] = generic;
+            red[i] = generic;
         }
-        */
+
         this.state = {
             backgroundColor: backgroundColor,
             selected: 0,
+            purple: purple,
+            green: green,
+            red: red,
         }
 
         this._onDatePress = this._onDatePress.bind(this);
@@ -46,53 +50,70 @@ class Calendar extends Component {
         let backgroundColor = [];
         backgroundColor[i] = 1;
 
-        let circles = this.props.circles;
-        for (var x = 0; x < 3; x++){
-            if (circles[i][x] == generic){
-                circles[i][x] = genericGray;
-            }
-            if (circles[this.state.selected][x] == genericGray){
-                circles[this.state.selected][x] = generic;
-            }
-        }
-
         this.setState({ selected: i });
-
-        this.setState({ circles });
-
         this.setState({ backgroundColor });
 
-        //this.props.dispatch(prevMonth());
+        let purple = this.state.purple;
+        let green = this.state.green;
+        let red = this.state.red;
+
+        var today = this.props.currMonth;
+        var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+
+        for (var j = 0; j < numberOfDays; j++){
+          if (purple[j] == genericGray){
+            purple[j] = generic
+          }
+          if (green[j] == genericGray){
+            green[j] = generic
+          }
+          if (red[j] == genericGray){
+            red[j] = generic
+          }
+        }
+
+        if (purple[i] == generic){
+          purple[i] = genericGray
+        }
+        if (green[i] == generic){
+          green[i] = genericGray
+        }
+        if (red[i] == generic){
+          red[i] = genericGray
+        }
+
+
+
+        this.setState({ purple })
+        this.setState({ green })
+        this.setState({ red })
+
     }
 
     _onTitlePress = () => {
 
-          console.log("test")
-        this.props.dispatch(nextMonth());
+
     }
 
     _onHeadachePress = () => {
+      let circles = this.state.purple;
+      circles[this.state.selected] = headache;
 
-        let circles = this.props.circles;
-        circles[this.state.selected][0] = headache;
-
-        this.setState({ circles });
+      this.setState({ purple: circles });
     }
 
     _onBlurredPress = () => {
+      let circles = this.state.green;
+      circles[this.state.selected] = blurred;
 
-        let circles = this.props.circles;
-        circles[this.state.selected][1] = blurred;
-
-        this.setState({ circles });
+      this.setState({ green: circles });
     }
 
     _onPillPress = () => {
+      let circles = this.state.red;
+      circles[this.state.selected] = pill;
 
-        let circles = this.props.circles;
-        circles[this.state.selected][2] = pill;
-
-        this.setState({ circles });
+      this.setState({ red: circles });
     }
 
     dateStyle = function(i) {
@@ -144,9 +165,9 @@ class Calendar extends Component {
                                 {day}
                             </Text>
                             <View style = {circles}>
-                                <View style = {this.props.circles[i][0]} />
-                                <View style = {this.props.circles[i][1]} />
-                                <View style = {this.props.circles[i][2]} />
+                                <View style = {this.state.purple[i]} />
+                                <View style = {this.state.green[i]} />
+                                <View style = {this.state.red[i]} />
                             </View>
                     </View>
                     </TouchableOpacity>
@@ -366,10 +387,5 @@ const styles = StyleSheet.create({
 
 const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
 
-const mapStateToProps = (state) => {
-  return{
-    currMonth: state.calendar.currMonth,
-    circles: state.calendar.circles,
-  };
-};
-export default connect(mapStateToProps)(Calendar);
+
+export default Calendar;

@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { ParallaxImage } from 'react-native-snap-carousel';
 import styles from '../styles/SliderEntry.style';
-import NewCalendar from './NewCalendar.js';
+import Calendar from './Calendar.js';
 
 export default class SliderEntry extends Component {
 
@@ -36,16 +36,8 @@ export default class SliderEntry extends Component {
     }
 
     render () {
-        const { data: { title, subtitle }, even } = this.props;
+        const { data } = this.props;
 
-        const uppercaseTitle = title ? (
-            <Text
-              style={[styles.title, even ? styles.titleEven : {}]}
-              numberOfLines={2}
-            >
-                { title.toUpperCase() }
-            </Text>
-        ) : false;
 
         return (
             <View
@@ -53,10 +45,8 @@ export default class SliderEntry extends Component {
               >
                 <View style={styles.shadow} />
                 <View style={[styles.imageContainer]}>
-
-
-                    <NewCalendar
-                      currMonth = {new Date()}
+                    <Calendar
+                      currMonth={ data }
                     />
                     <View style={[styles.radiusMask]} />
                 </View>
