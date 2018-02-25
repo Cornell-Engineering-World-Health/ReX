@@ -14,14 +14,16 @@ import CalendarScreen from '../screens/CalendarScreen';
 import Moment from 'moment';
 import Swipeout from 'react-native-swipeout';
 import Card from '../Card/Card';
+import HeadacheForm from '../screens/HeadacheForm';
+import BackPainForm from '../screens/BackPainForm';
 import testData from '../Resources/CardTestData';
+
+const MAIN_FORM = 'mainform';
+const HEADACHE_FORM = 'headform';
+const BACKPAIN_FORM = 'backform';
 
 class painForm extends React.Component {
   static propTypes = {
-    route: PropTypes.shape({
-      title: PropTypes.string
-    }),
-    navigator: PropTypes.object,
     currentDate: PropTypes.object
   };
 
@@ -30,17 +32,13 @@ class painForm extends React.Component {
     const dt = Date.now();
     this.state = {
       date: Moment(dt).format('MMM Do, h:mm:ss a'),
-      dt_format: Moment(dt).format('DD-MM-YYYY')
+      dt_format: Moment(dt).format('DD-MM-YYYY'),
+      pageID: MAIN_FORM
     };
     this.props.currentDate = Moment(dt).format('DD-MM-YYYY');
   }
 
-  _handlePress = a => {
-    this.props.navigator.push({
-      component: CalendarScreen,
-      title: 'Calendar'
-    });
-  };
+  _handlePress = a => {};
 
   _handleDatePress = () => {
     var dt = Date.now();
@@ -59,8 +57,7 @@ class painForm extends React.Component {
   _handleSwipePress = () => {
     console.log('swipeout component button pressed. ');
   };
-  render() {
-    // Buttons
+  _renderScreen() {
     var buttonsR = [
       {
         text: 'New',
@@ -85,178 +82,170 @@ class painForm extends React.Component {
         onPress: this._handleSwipePress
       }
     ];
+    switch (this.state.pageID) {
+      case BACKPAIN_FORM:
+        return (
+          <BackPainForm
+            onPress={() =>
+              this.setState({
+                pageID: MAIN_FORM
+              })
+            }
+          />
+        );
+        break;
+      case MAIN_FORM:
+        return (
+          <ScrollView>
+            <StatusBar barStyle="dark-content" />
+            <View style={styles.header}>
+              <Text style={styles.headerText}> When did this pain start? </Text>
+            </View>
+            <View style={styles.startedQuestionView}>
+              <View style={styles.rowStyle}>
+                <ButtonWithImage
+                  text={'Started now \n' + this.state.date + ''}
+                  onPress={this._handleDatePress}
+                  imageSource={require('../Resources/nowClock.png')}
+                  backgroundColor={'#8129c7'}
+                  color={'#ffffff'}
+                />
+                <ButtonWithImage
+                  text={'Started Before\n'}
+                  onPress={this._handlePress}
+                  imageSource={require('../Resources/beforeClock.png')}
+                  backgroundColor={'#9966a1'}
+                  color={'#ffffff'}
+                />
+              </View>
+            </View>
+            <View style={styles.datePicker}>
+              <Image source={require('../Resources/calendarIcon.png')} />
+            </View>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Where does it hurt?</Text>
+            </View>
+            <View style={styles.rowStyle}>
+              <ButtonWithImage
+                text={'Back Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/backPain.png')}
+                backgroundColor={'#7c0920'}
+                color={'#ffffff'}
+                onPress={() =>
+                  this.setState({
+                    pageID: BACKPAIN_FORM
+                  })
+                }
+              />
+              <ButtonWithImage
+                text={'Foot Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/footPain.png')}
+                backgroundColor={'#b43649'}
+                color={'#ffffff'}
+              />
+              <ButtonWithImage
+                text={'Head Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/headPain.png')}
+                backgroundColor={'#7c0920'}
+                color={'#ffffff'}
+                onPress={() =>
+                  this.setState({
+                    pageID: HEADACHE_FORM
+                  })
+                }
+              />
+            </View>
+            <View style={styles.rowStyle}>
+              <ButtonWithImage
+                text={'Heart Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/heartPain.png')}
+                backgroundColor={'#b43649'}
+                color={'#ffffff'}
+              />
+              <ButtonWithImage
+                text={'Knee Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/kneePain.png')}
+                backgroundColor={'#7c0920'}
+                color={'#ffffff'}
+              />
+              <ButtonWithImage
+                text={'Leg Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/legPain.png')}
+                backgroundColor={'#7c0920'}
+                color={'#ffffff'}
+              />
+            </View>
+            <View style={styles.rowStyle}>
+              <ButtonWithImage
+                text={'Neck Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/neckPain.png')}
+                backgroundColor={'#7c0920'}
+                color={'#ffffff'}
+              />
+              <ButtonWithImage
+                text={'Belly Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/stomachPain.png')}
+                backgroundColor={'#b43649'}
+                color={'#ffffff'}
+              />
+              <ButtonWithImage
+                text={'Elbow Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/elbowPain.png')}
+                backgroundColor={'#b43649'}
+                color={'#ffffff'}
+              />
+            </View>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>How intense is your pain?</Text>
+            </View>
+            <View style={styles.rowStyle}>
+              <ButtonWithImage
+                text={'Intense Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/intensePain.png')}
+                backgroundColor={'#7ce9ba'}
+                color={'#000000'}
+              />
 
-    return (
-      <ScrollView>
-        <View style={{ backgroundColor: '#E7EDE9' }}>
-          <Card
-            image={require('../Resources/footPain.png')}
-            title={'Foot pain'}
-            timeStamp={'6:00 PM'}
-            note1={'High Severity'}
-            note2={'manual input'}
-            backgroundColor={'#FF33FC'}
-            buttonActive={true}
-            onPress={this._handleCardPress}
-          />
-          <Card
-            image={require('../Resources/glasses.png')}
-            title={'Blurred Vision'}
-            timeStamp={'10:00 PM'}
-            note1={'Medium Severity'}
-            note2={'Duration: 27 min'}
-            swiperActive={true}
-            buttonsRight={buttonsR}
-            buttonsLeft={buttonsL}
-            backgroundColor={'#18F150'}
-            onCloseSwipeout={this._handleClose}
-            onOpenSwipeout={this._handleOpen}
-          />
-          <Card
-            iconName={'leg-pain'}
-            title={'Leg Pain'}
-            timeStamp={'6:00 AM'}
-            note1={'auto-generation'}
-            note2={'based on name'}
-            buttonActive={true}
-            swiperActive={true}
-            buttonsRight={buttonsR}
-            buttonsLeft={buttonsL}
-          />
-          <Card
-            iconName={'knee-pain'}
-            title={'Knee Pain'}
-            timeStamp={'8:00 PM'}
-            note1={'NOTE 1'}
-            note2={'NOTE 2'}
-          />
-          <Card
-            iconName={'neck-pain'}
-            title={'Neck Pain'}
-            timeStamp={'8:00 PM'}
-            note1={'NOTE 1'}
-            note2={'NOTE 2'}
-          />
-        </View>
-        <StatusBar barStyle="dark-content" />
-        <View style={styles.header}>
-          <Text style={styles.headerText}> When did this pain start? </Text>
-        </View>
-        <View style={styles.startedQuestionView}>
-          <View style={styles.rowStyle}>
-            <ButtonWithImage
-              text={'Started now \n' + this.state.date + ''}
-              onPress={this._handleDatePress}
-              imageSource={require('../Resources/nowClock.png')}
-              backgroundColor={'#8129c7'}
-              color={'#ffffff'}
-            />
-            <ButtonWithImage
-              text={'Started Before\n'}
-              onPress={this._handlePress}
-              imageSource={require('../Resources/beforeClock.png')}
-              backgroundColor={'#9966a1'}
-              color={'#ffffff'}
-            />
-          </View>
-        </View>
-        <View style={styles.datePicker}>
-          <Image source={require('../Resources/calendarIcon.png')} />
-        </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Where does it hurt?</Text>
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
-            text={'Back Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/backPain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Foot Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/footPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Head Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/headPain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
-            text={'Heart Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/heartPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Knee Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/kneePain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Leg Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/legPain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
-            text={'Neck Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/neckPain.png')}
-            backgroundColor={'#7c0920'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Belly Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/stomachPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-          />
-          <ButtonWithImage
-            text={'Elbow Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/elbowPain.png')}
-            backgroundColor={'#b43649'}
-            color={'#ffffff'}
-          />
-        </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>How intense is your pain?</Text>
-        </View>
-        <View style={styles.rowStyle}>
-          <ButtonWithImage
-            text={'Intense Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/intensePain.png')}
-            backgroundColor={'#7ce9ba'}
-            color={'#000000'}
-          />
+              <ButtonWithImage
+                text={'Cornell Pain'}
+                onPress={this._handlePress}
+                imageSource={require('../Resources/happy.png')}
+                backgroundColor={'#fcdc4d'}
+                color={'#000000'}
+              />
+            </View>
+          </ScrollView>
+        );
+        break;
 
-          <ButtonWithImage
-            text={'Cornell Pain'}
-            onPress={this._handlePress}
-            imageSource={require('../Resources/happy.png')}
-            backgroundColor={'#fcdc4d'}
-            color={'#000000'}
+      case HEADACHE_FORM:
+        return (
+          <HeadacheForm
+            onPress={() =>
+              this.setState({
+                pageID: MAIN_FORM
+              })
+            }
           />
-        </View>
-      </ScrollView>
-    );
+        );
+        break;
+    }
+  }
+
+  render() {
+    let page = this._renderScreen();
+
+    return <View style={{ flex: 1 }}>{page}</View>;
   }
 }
 
