@@ -43,7 +43,6 @@ export default class SliderEntry extends Component {
             <View
               style={styles.slideInnerContainer}
               >
-                <View style={styles.shadow} />
                 <View style={[styles.imageContainer]}>
                     <Calendar
                       currMonth={ data }

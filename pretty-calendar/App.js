@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Header, Calendar, Agenda, CalendarCarousel } from './src/components';
+import { Header, Calendar, Agenda, InfiniteCalendar } from './src/components';
 
 
 export default class App extends React.Component {
   render() {
-    console.log("HI");
     return (
       <View>
         <Header />
-        <CalendarCarousel />
+        <InfiniteCalendar />
+        <Agenda />
       </View>
     );
   }

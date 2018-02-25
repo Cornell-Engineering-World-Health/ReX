@@ -1,28 +1,52 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
-import { Card } from 'react-native-elements';
+import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity } from 'react-native';
+import  Card  from './Card.js';
 
 class Agenda extends Component {
     
     constructor(props){
         super(props)
     }
+
+    _renderItem = ({item}) => (
+        <View>
+            <Card
+                title = " Blurred Vision"
+                timeStamp = "6:00 PM"
+                note1 = "Don'ta toucha"
+                note2 = "My spaghetti!"
+                backgroundColor = "#ab87b8"
+                iconName = "blurred-vision"
+                />
+            <Card
+                title = " Headache"
+                timeStamp = "8:00 PM"
+                note1 = "Mamma Mia"
+                note2 = "My head is in pain!"
+                backgroundColor = "#6dd3bf"
+                iconName = "headache"
+                />
+            <Card
+                title = " Pill"
+                timeStamp = "10:00 PM"
+                note1 = "Lots of Drugs"
+                note2 = "Good for the soul"
+                backgroundColor = "#c3496b"
+                iconName = "pill"
+                />
+        </View>
+    );
     
     render() {
         return (
-            <View>
-                <View style = {summaryHead}>
-                    <Text style = {summary}>
-                        Summary
-                    </Text>
-                </View>
-                <Card containerStyle = {eventCard}>
-                    <View style = {cardElements}>
-                        <View style = {eventSquare} />
-                        <Text>Headache</Text>
-                    </View>
-                </Card>
+            <View style = {{flex: 1}}>
+            <FlatList
+            data = {[{key: 'a'}]}
+            renderItem = {this._renderItem}
+
+            />
             </View>
+            
         );
     }
 }
