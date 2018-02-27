@@ -34,18 +34,17 @@ class Agenda extends Component {
                 backgroundColor = "#c3496b"
                 iconName = "pill"
                 />
+
         </View>
     );
     
     render() {
         return (
-            <View style = {{flex: 1}}>
             <FlatList
-            data = {[{key: 'a'}]}
+            data = {[{key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}]}
             renderItem = {this._renderItem}
 
             />
-            </View>
             
         );
     }

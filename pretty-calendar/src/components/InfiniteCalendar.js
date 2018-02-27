@@ -50,7 +50,6 @@ class InfiniteCalendar extends Component {
       decelerationRate = {0}
       snapToInterval = {409}
       snapToAlignment = "center"
-      //pagingEnabled = {true}
       showsHorizontalScrollIndicator = {false}
     />
       );
