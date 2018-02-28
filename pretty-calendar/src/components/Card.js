@@ -7,10 +7,10 @@ import constants from './constants';
 const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
-    borderRadius: 20
+    borderRadius: 5
   },
   shadowWrapper: {
-    borderRadius: 20,
+    borderRadius: 5,
     shadowOffset: { width: 5, height: 5 },
     shadowColor: '#808080',
     shadowOpacity: 0.5
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   imageContainer: {
-    borderRadius: 20,
+    borderRadius: 5,
     backgroundColor: '#18F150'
   },
   imageRightBuffer: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   swipe: {
-    borderRadius: 20
+    borderRadius: 5
   }
 });
 class Card extends Component {

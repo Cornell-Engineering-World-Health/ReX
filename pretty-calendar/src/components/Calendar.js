@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 
 const { width } = Dimensions.get("window");
 
-class Calendar extends Component {
+class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
     };
@@ -130,11 +130,18 @@ class Calendar extends Component {
     renderWeek() {
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return days.map((day) => {
-            return(
-                <Text key={day} style= {week}>{day}</Text>
+                if (day == 'SUN'){
+                    return <Text key={day} style= {weekAlt}>{day}</Text>
+                }
+                else if (day == 'SAT'){
+                    return <Text key={day} style= {weekAlt2}>{day}</Text>
+                }
+                else{
+                    return <Text key={day} style= {week}>{day}</Text>
+                }
+            }
             );
-        });
-    }
+        };
 
     renderMonth() {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -275,14 +282,14 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         marginTop: 15,
-        marginLeft: 17,
+        marginLeft: 10,
 
     },
     header2: {
         display: "flex",
         flexDirection: "row",
         marginTop: 10,
-
+        marginLeft: 14,
     },
     date: {
         fontWeight: '500',
@@ -297,12 +304,24 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 20,
         color: '#b8b8b8',
+        marginBottom: 7,
     },
     week: {
         fontWeight: "bold",
         fontSize: 15,
         color: '#b8b8b8',
-        marginLeft: 23,
+        marginLeft: 24,
+    },
+    weekAlt: {
+        fontWeight: "bold",
+        fontSize: 15,
+        color: '#b8b8b8',
+    },
+    weekAlt2: {
+        fontWeight: "bold",
+        fontSize: 15,
+        color: '#b8b8b8',
+        marginLeft: 26,
     },
     month: {
         fontWeight: "bold",
@@ -318,20 +337,19 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 2,
-        marginLeft: 10,
+        paddingTop: 10
      },
     item: {
 
        margin: 2,
-       width: Dimensions.get('window').width / 7 -9,
+       width: Dimensions.get('window').width / 7 -7,
        justifyContent: 'center',
        alignItems: 'center',
        height: 43,
      },
      altItem: {
         margin: 2,
-        width: Dimensions.get('window').width / 7 -9,
+        width: Dimensions.get('window').width / 7 -7,
         justifyContent: 'center',
         alignItems: 'center',
         height: 43,
@@ -385,7 +403,7 @@ const styles = StyleSheet.create({
      }
 });
 
-const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
+const { head, header, header2, date, altDate, dateGray, week, weekAlt, weekAlt2, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
 
 
 export default Calendar;

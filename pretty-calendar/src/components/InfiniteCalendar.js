@@ -10,15 +10,19 @@ class InfiniteCalendar extends Component {
     super(props);
 
     data = []
-    for (i = 1; i < 100; i++){
+    for (i = -500; i < 500; i++){
       data.push({key: i})
     }
     this.state = {
-      last: 99,
+      last: 499,
       data: data
     }
   }
 
+  getItemLayout = (data, index) => (
+    {length: Dimensions.get('window').width - 5, offset: (Dimensions.get('window').width - 5) * index, index}
+
+  )
 
   _renderItem = ({item}) => (
     /*<Text> {item.key} </Text>*/
@@ -31,9 +35,11 @@ class InfiniteCalendar extends Component {
     for (i = 1; i < 20; i++){
       newData.push({key: i + current})
     }
-    this.setState( { data: [...this.state.data, ...newData], last: current + 50} )
+    this.setState( { data: [...this.state.data, ...newData], last: current + 19} )
   };
-  
+
+
+
 
   render() {
 
@@ -44,13 +50,15 @@ class InfiniteCalendar extends Component {
       data = {this.state.data}
       renderItem={this._renderItem}
       onEndReached = {this._loadMore}
-      onEndReachedThreshold = {500}
+      onEndReachedThreshold = {50}
       horizontal = {true}
       removeClippedSubviews = {true}
+      getItemLayout = {this.getItemLayout}
       decelerationRate = {0}
       snapToInterval = {409}
       snapToAlignment = "center"
       showsHorizontalScrollIndicator = {false}
+      initialScrollIndex = {501}
     />
       );
 
