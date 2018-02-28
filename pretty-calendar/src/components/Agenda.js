@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity } from '
 import  Card  from './Card.js';
 
 class Agenda extends Component {
-    
+
     constructor(props){
         super(props)
     }
@@ -37,15 +37,15 @@ class Agenda extends Component {
 
         </View>
     );
-    
+
     render() {
         return (
             <FlatList
-            data = {[{key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}, {key: 'a'}]}
+            data = {[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'd'}, {key: 'e'}, {key: 'f'}, {key: 'g'}, {key: 'h'}, {key: 'i'}]}
             renderItem = {this._renderItem}
 
             />
-            
+
         );
     }
 }

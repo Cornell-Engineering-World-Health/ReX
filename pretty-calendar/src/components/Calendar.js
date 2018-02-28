@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
+import dateStyles from './styles';
 
 const { width } = Dimensions.get("window");
+
+//TEMP VAR
+const intensities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0];
+const symptom =     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0];
+const color = 'rgba(116, 56, 138, .4)';
 
 class Calendar extends Component {
     static propTypes = {
@@ -30,7 +36,11 @@ class Calendar extends Component {
 
 
         for (var i = 0; i < numberOfDays; i++){
+          if(symptom[i] == 1){
+            purple[i] = headache;
+          } else{
             purple[i] = generic;
+          }
             green[i] = generic;
             red[i] = generic;
         }
@@ -96,7 +106,7 @@ class Calendar extends Component {
     }
 
     _onHeadachePress = () => {
-      let circles = this.state.purple;
+      let circles  = this.state.purple;
       circles[this.state.selected] = headache;
 
       this.setState({ purple: circles });
@@ -155,23 +165,36 @@ class Calendar extends Component {
 
         var dateGrid = days.slice(0, numberOfDays);
 
+
+
         return dateGrid.map((day, i) => {
             let dateStyle = this.state.backgroundColor[i] ? altItem : item
             let textStyle = this.state.backgroundColor[i] ? altDate : date
+            var barHolder = [];
+            for(let j = 0; j < intensities[i]; j++){
+              barHolder.push(
+                <View key={j} style={[{backgroundColor: color}, dateStyles.bar]} />
+              );
+            }
+
+
+
             return(
                 <TouchableOpacity style = {dateStyle} key = {i} onPress={() => this._onDatePress(i)}>
-                    <View>
-                            <Text style={textStyle}>
-                                {day}
-                            </Text>
-                            <View style = {circles}>
-                                <View style = {this.state.purple[i]} />
-                                <View style = {this.state.green[i]} />
-                                <View style = {this.state.red[i]} />
-                            </View>
-                    </View>
-                    </TouchableOpacity>
-
+                  <View style={dateStyles.textBox}>
+                    <Text style={textStyle}>
+                        {day}
+                    </Text>
+                  </View>
+                  <View style={dateStyles.dayBox}>
+                      {barHolder}
+                      <View style = {dateStyles.circles}>
+                          <View style = {this.state.purple[i]} />
+                          <View style = {this.state.green[i]} />
+                          <View style = {this.state.red[i]} />
+                      </View>
+                  </View>
+              </TouchableOpacity>
             );
         });
 
@@ -216,6 +239,11 @@ class Calendar extends Component {
                         <Text style={dateGray}>
                                 {day}
                         </Text>
+                        <View style = {dateStyles.circles}>
+                            <View style = {this.state.purple[i]} />
+                            <View style = {this.state.green[i]} />
+                            <View style = {this.state.red[i]} />
+                        </View>
                     </View>
                 )
             })
@@ -253,11 +281,11 @@ class Calendar extends Component {
                     { this.renderNextDates() }
                 </View>
 
-            {/*<View style = {buttons}>
+            <View style = {buttons}>
                 <Button title = "Headache" onPress = {() => this._onHeadachePress()} backgroundColor = "#ab87b8" />
                 <Button title = "Blurred Vision" onPress = {() => this._onBlurredPress()} backgroundColor = "#6dd3bf" />
                 <Button title = "Took a Pill" onPress = {() => this._onPillPress()} backgroundColor = "#c3496b" />
-            </View>*/}
+            </View>
             </View>
         );
     }
@@ -285,10 +313,12 @@ const styles = StyleSheet.create({
 
     },
     date: {
+        textAlign: 'center',
         fontWeight: '500',
         fontSize: 20,
     },
     altDate: {
+        textAlign: 'center',
         fontWeight: '500',
         fontSize: 20,
         color: '#ffffff',
@@ -322,7 +352,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
      },
     item: {
-
        margin: 2,
        width: Dimensions.get('window').width / 7 -9,
        justifyContent: 'center',
@@ -336,12 +365,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 43,
         backgroundColor: '#727272',
-     },
-     circles: {
-        display: "flex",
-        flexDirection: "row",
-        marginTop: 4,
-        marginLeft: 1,
      },
      generic: {
         width: 4,
@@ -385,7 +408,7 @@ const styles = StyleSheet.create({
      }
 });
 
-const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
+const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, generic, genericGray, headache, blurred, pill, buttons } = styles;
 
 
 export default Calendar;
