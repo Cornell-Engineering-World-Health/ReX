@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   menuButtons: {
-    height: 75,
+    height: 150,
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#ffffff'
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   menuStyle: {
     justifyContent: 'space-around',
-    height: 75,
+    height: 100,
     flexDirection: 'row'
   }
 });
@@ -159,6 +159,8 @@ class MenuBar extends React.Component {
         {page}
         <View style={styles.addButton}>
           <Modal
+            onSwipe={() => this.setState({ menuVisible: false })}
+            swipeDirection="down"
             onBackdropPress={() => this.setState({ menuVisible: false })}
             style={styles.bottomModal}
             isVisible={this.state.menuVisible}
@@ -168,24 +170,16 @@ class MenuBar extends React.Component {
                 imageSource={require('../Resources/medicine.png')}
                 backgroundColor={QUICK_LOG_COLOR}
                 onPress={() => this._addNewItem('Medicine', 'Medicine')}
-                height={50}
-                width={50}
+                height={75}
+                width={75}
                 rounded={true}
               />
               <ButtonWithImage
                 imageSource={require('../Resources/intensePain.png')}
                 backgroundColor={QUICK_LOG_COLOR}
                 onPress={() => this._addNewItem('Pain', 'Pain')}
-                height={50}
-                width={50}
-                rounded={true}
-              />
-              <ButtonWithImage
-                imageSource={require('../Resources/scale.png')}
-                backgroundColor={QUICK_LOG_COLOR}
-                onPress={() => this._addNewItem('Weight', 'Weight')}
-                height={50}
-                width={50}
+                height={75}
+                width={75}
                 rounded={true}
               />
             </View>

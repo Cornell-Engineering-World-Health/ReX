@@ -14,8 +14,9 @@ import Modal from 'react-native-modal';
 const USERNAME = 'Navin';
 
 const styles = StyleSheet.create({
-  swiperStyle: {
-    flex: 1
+  pageContainer: {
+    flex: 1,
+    justifyContent: 'space-between'
   },
   header: {
     padding: 20,
@@ -29,27 +30,22 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    flex: 1
+  },
+  pillImage: {
+    height: 75,
+    width: 75,
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
-  medicineSlide: {
-    height: 125,
-    width: Dimensions.get('window').width,
-    backgroundColor: 'gray',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    flex: 1,
-    borderRadius: 20
-  },
   medicineWrapper: {
-    height: 125,
-    width: Dimensions.get('window').width,
-    backgroundColor: 'gray',
-    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-around',
-    borderRadius: 20
+    alignItems: 'center'
+  },
+  modalWrapper: {
+    height: Dimensions.get('window').height / 2,
+    backgroundColor: 'white'
   }
 });
 
@@ -57,6 +53,7 @@ const medicineList = [
   {
     title: 'Tylenol',
     quantity: '2 pills',
+    dosage: '400 mg',
     time: '6:00 PM',
     pillDesign: 'index1',
     note: 'Take after eating meal.'
@@ -67,6 +64,27 @@ const medicineList = [
     time: '8:00 AM',
     note: 'Take on empty stomach.',
     pillDesign: 'index1'
+  },
+  {
+    title: 'Advil',
+    quantity: '1 Tablet',
+    time: '12:00 PM',
+    note: 'Take after eating meal.',
+    pillDesign: 'index2'
+  },
+  {
+    title: 'Sharpies',
+    quantity: '2 pens',
+    time: '8:00 AM',
+    note: 'Take on empty stomach.',
+    pillDesign: 'index1'
+  },
+  {
+    title: 'Advil',
+    quantity: '1 Tablet',
+    time: '12:00 PM',
+    note: 'Take after eating meal.',
+    pillDesign: 'index2'
   },
   {
     title: 'Advil',
@@ -85,67 +103,16 @@ class Home extends React.Component {
     };
   }
 
-  _renderMedicine() {
-    let list = [];
-    let result = [];
-    var keyIncrement = 0;
-    for (var y = 0; y < medicineList.length; y++) {
-      let x = 'index' + keyIncrement;
-      list.push(
-        <View style={{ alignItems: 'center' }} key={x}>
-          <PillDesign
-            onPress={() => this.setState({ modalVisible: x })}
-            type={medicineList[y].pillDesign}
-          />
-          <Text style={{ color: 'white' }}>{medicineList[y].title}</Text>
-          <Text style={{ color: 'white' }}>{medicineList[y].time}</Text>
-          <Modal
-            style={{
-              flex: 1,
-              justifyContent: 'space-around',
-              backgroundColor: 'black'
-            }}
-            isVisible={this.state.modalVisible == x}
-            onBackdropPress={() => this.setState({ modalVisible: null })}
-          >
-            <View>
-              <Text style={styles.welcomeText}>{medicineList[y].title}</Text>
-              <Text style={styles.welcomeText}>{medicineList[y].quantity}</Text>
-              <Text style={styles.welcomeText}>{medicineList[y].time}</Text>
-              <Text style={styles.welcomeText}>{medicineList[y].note}</Text>
-            </View>
-          </Modal>
-        </View>
-      );
-      keyIncrement += 1;
-    }
-    for (var x = 0; x < 10; x++) {
-      let keyItem = 'day' + x;
-      result.push(
-        <View key={keyItem} style={styles.medicineWrapper}>
-          <View style={styles.medicineSlide}>{list}</View>
-          <Text>{Moment(Date.now()).format('DD-MM-YYYY')}</Text>
-        </View>
-      );
-    }
-    return result;
-  }
-
   render() {
-    let medicinePage = this._renderMedicine();
-
     return (
       <ImageBackground
         style={{ flex: 1 }}
         source={require('../Resources/purpleGradient.jpg')}
       >
-        <View style={{ flex: 1 }}>
+        <View style={styles.pageContainer}>
           <View style={styles.header}>
             <Text style={styles.welcomeText}>Welcome back {USERNAME} </Text>
           </View>
-          <ScrollView horizontal={true} pagingEnabled={true}>
-            {medicinePage}
-          </ScrollView>
         </View>
       </ImageBackground>
     );

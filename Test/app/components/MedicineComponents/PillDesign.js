@@ -5,7 +5,9 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 class PillDesign extends React.Component {
   static propTypes = {
     type: PropTypes.string,
-    onPress: PropTypes.func
+    onPress: PropTypes.func,
+    completed: PropTypes.bool,
+    disabled: PropTypes.bool
   };
 
   _renderItem() {
@@ -26,8 +28,8 @@ class PillDesign extends React.Component {
         return (
           <View
             style={{
-              width: 75,
-              height: 50,
+              width: 50,
+              height: 25,
               borderRadius: 50,
               backgroundColor: 'white'
             }}
@@ -38,8 +40,20 @@ class PillDesign extends React.Component {
   render() {
     let page = this._renderItem();
     return (
-      <View>
-        <TouchableOpacity onPress={this.props.onPress}>{page}</TouchableOpacity>
+      <View
+        style={{
+          height: 50,
+          width: 75,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <TouchableOpacity
+          disabled={this.props.disabled}
+          onPress={this.props.onPress}
+        >
+          {page}
+        </TouchableOpacity>
       </View>
     );
   }
