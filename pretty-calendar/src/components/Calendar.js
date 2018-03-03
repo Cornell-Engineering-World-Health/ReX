@@ -140,7 +140,7 @@ class Calendar extends Component {
           return "#FFFFFF00";
       }
     }
-
+/**
     updateVisualization = (type) => {
       let monthData = this.pullFromDataBase();
       for(var i = 0; i < monthData.length; i++){
@@ -162,8 +162,8 @@ class Calendar extends Component {
       }
     }
 
-
-    /** DOWN THEN UP
+*/
+    // DOWN THEN UP
     updateVisualization = (type) => {
       let monthData = this.pullFromDataBase();
       for(var i = 0; i < monthData.length; i++){
@@ -177,7 +177,7 @@ class Calendar extends Component {
 
           for(var j=0; j<this.graphRefs.length; j++){
             if(j == last){
-              this.graphRefs[j].slideOutDown(500).then(
+              this.graphRefs[j].slideOutDown(200).then(
                 () => {
                   console.log('fall done')
                   this.setState({
@@ -187,7 +187,7 @@ class Calendar extends Component {
                     console.log('state done')
                     this.graphRefs.forEach(function(g) {
                       if(g){
-                        g.slideInUp(500);
+                        g.transitionTo({bottom: 0}, 400, 'ease');
                       }
                     });
                   });
@@ -195,7 +195,7 @@ class Calendar extends Component {
               );
             }
             else if(this.graphRefs[j]){
-              this.graphRefs[j].slideOutDown(500);
+              this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
 
             }
           }
@@ -203,7 +203,7 @@ class Calendar extends Component {
         }
       }
     }
-    */
+
 
     _onDatePress = (i) => {
         let backgroundColor = [];
@@ -343,7 +343,7 @@ class Calendar extends Component {
                   <View style={dateStyles.dayBox}>
                       <Animatable.View
                         ref={(b) => {this.graphRefs[i] = b;}}
-                        duration={500}
+                        duration={400}
                         animation="slideInUp"
                         style={[{backgroundColor: this.state.graphColor, height: h}, dateStyles.bar]}
                       />

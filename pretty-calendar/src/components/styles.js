@@ -28,7 +28,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     width: Dimensions.get('window').width / 7 -9,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'hidden'
   },
   circles: {
     display: "flex",
