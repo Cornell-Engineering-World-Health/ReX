@@ -175,27 +175,23 @@ class Calendar extends PureComponent {
           }
 
           for(var j=0; j<this.graphRefs.length; j++){
-            if(j == last){
-              this.graphRefs[j].slideOutDown(200).then(
-                () => {
-                  console.log('fall done')
+
+            if(this.graphRefs[j]){
+              this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
+              if(j == last){
+                setTimeout(()=> {
                   this.setState({
                     graphColor: color,
                     intensities: monthData[i].intensities,
                   }, function(){
-                    console.log('state done')
                     this.graphRefs.forEach(function(g) {
                       if(g){
                         g.transitionTo({bottom: 0}, 400, 'ease');
                       }
                     });
                   });
-                }
-              );
-            }
-            else if(this.graphRefs[j]){
-              this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
-
+                }, 200)
+              }
             }
           }
           return;
