@@ -18,9 +18,8 @@ class InfiniteCalendar extends Component {
       data: data
     }
   }
-
   getItemLayout = (data, index) => (
-    {length: Dimensions.get('window').width - 5, offset: (Dimensions.get('window').width - 5) * index, index}
+    {length: itemWidth, offset: itemWidth * index, index}
 
   )
 
@@ -55,10 +54,10 @@ class InfiniteCalendar extends Component {
       removeClippedSubviews = {true}
       getItemLayout = {this.getItemLayout}
       decelerationRate = {0}
-      snapToInterval = {409}
+      snapToInterval = {itemWidth}
       snapToAlignment = "center"
       showsHorizontalScrollIndicator = {false}
-      initialScrollIndex = {501}
+      initialScrollIndex = {500}
     />
       );
 

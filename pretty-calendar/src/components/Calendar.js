@@ -133,9 +133,6 @@ class Calendar extends PureComponent {
                 if (day == 'SUN'){
                     return <Text key={day} style= {weekAlt}>{day}</Text>
                 }
-                else if (day == 'SAT'){
-                    return <Text key={day} style= {weekAlt2}>{day}</Text>
-                }
                 else{
                     return <Text key={day} style= {week}>{day}</Text>
                 }
@@ -240,7 +237,7 @@ class Calendar extends PureComponent {
     render() {
 
         return (
-            <View>
+            <View style = {{flex: 1}}>
             <View style= {head}>
             <TouchableOpacity onPress = {() => this._onTitlePress()}>
                 <View style= {header}>
@@ -283,7 +280,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginTop: 15,
         marginLeft: 10,
-
     },
     header2: {
         display: "flex",
@@ -310,7 +306,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 15,
         color: '#b8b8b8',
-        marginLeft: 24,
+        paddingLeft: Dimensions.get('window').width / 17.2,
     },
     weekAlt: {
         fontWeight: "bold",
@@ -337,10 +333,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingTop: 10
+        paddingTop: Dimensions.get('window').length * 0.05
      },
     item: {
-
        margin: 2,
        width: Dimensions.get('window').width / 7 -7,
        justifyContent: 'center',

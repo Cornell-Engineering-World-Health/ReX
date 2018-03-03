@@ -33,7 +33,7 @@ class Agenda extends Component {
                         this._onDelete();
                     }),
                     text: 'Delete',
-                    title: 'delete'
+                    type: 'delete'
                 }
                 ]}
                 />
