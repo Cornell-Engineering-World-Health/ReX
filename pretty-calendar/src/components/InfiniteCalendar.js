@@ -10,11 +10,7 @@ class InfiniteCalendar extends Component {
     super(props);
 
     data = []
-<<<<<<< HEAD
-    for (i = 1; i < 5; i++){
-=======
     for (i = -500; i < 500; i++){
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
       data.push({key: i})
     }
     this.state = {
@@ -41,11 +37,6 @@ class InfiniteCalendar extends Component {
     this.setState( { data: [...this.state.data, ...newData], last: current + 19} )
   };
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
 
   render() {
 

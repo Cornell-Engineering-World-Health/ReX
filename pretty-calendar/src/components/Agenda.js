@@ -20,50 +20,30 @@ class Agenda extends Component {
     _renderItem = ({item}) => (
         <View>
             <Card
-<<<<<<< HEAD
                 title = " Blurred Vision"
                 timeStamp = "6:00 PM"
-                note1 = "aaaaaaaaaaaaaaaaaaaa"
-                note2 = "aaaaaaaaaaaaaaaaaaaa"
+                note1 = "aaaaaaaaa"
+                note2 = "aaaaaaaaa"
                 backgroundColor = "#ab87b8"
                 iconName = "blurred-vision"
                 />
             <Card
                 title = " Headache"
                 timeStamp = "8:00 PM"
-                note1 = "aaaaaaaaaaaaaaaaaaaa"
-                note2 = "aaaaaaaaaaaaaaaaaaaa"
+                note1 = "aaaaaaaaa"
+                note2 = "aaaaaaaaa"
                 backgroundColor = "#6dd3bf"
                 iconName = "headache"
                 />
             <Card
                 title = " Pill"
                 timeStamp = "10:00 PM"
-                note2 = "aaaaaaaaaaaaaaaaaaaa"
-                note1 = "aaaaaaaaaaaaaaaaaaaa"
+                note2 = "aaaaaaaaa"
+                note1 = "aaaaaaaaa"
                 backgroundColor = "#c3496b"
                 iconName = "pill"
                 />
 
-=======
-                title = {item.title}
-                timeStamp = {item.timeStamp}
-                note1 = {item.note1}
-                note2 = {item.note2}
-                backgroundColor = {item.backgroundColor}
-                iconName = {item.iconName}
-                swiperActive = {true}
-                buttonsRight = {[
-                    {
-                    onPress: (item.onPress = () => {
-                        this._onDelete();
-                    }),
-                    text: 'Delete',
-                    type: 'delete'
-                }
-                ]}
-                />
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
         </View>
     );
 
@@ -75,9 +55,6 @@ class Agenda extends Component {
             </View>
             <View style = {{height: 300}}>
             <FlatList
-<<<<<<< HEAD
-            data = {[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'd'}, {key: 'e'}, {key: 'f'}, {key: 'g'}, {key: 'h'}, {key: 'i'}]}
-=======
             data = {[
                 {
                     "title": " Headache",
@@ -87,7 +64,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -96,7 +73,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -105,7 +82,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -114,7 +91,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -123,7 +100,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -132,7 +109,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -141,7 +118,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -150,7 +127,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -159,7 +136,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -168,7 +145,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -177,7 +154,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -186,7 +163,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -195,7 +172,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -204,7 +181,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -213,7 +190,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -222,7 +199,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -231,7 +208,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -240,7 +217,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -249,7 +226,7 @@ class Agenda extends Component {
                     "backgroundColor": "#6dd3bf",
                     "iconName": "headache",
                 },
-                
+
                 {
                     "title": " Headache",
                     "timeStamp": "8:00 PM",
@@ -259,16 +236,12 @@ class Agenda extends Component {
                     "iconName": "headache",
                 },
             ]}
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
             renderItem = {this._renderItem}
             getItemLayout = {this._getItemLayout}
             />
-<<<<<<< HEAD
 
-=======
             </View>
             </View>
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
         );
     }
 }

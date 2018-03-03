@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   baseBarSelected: {
     width: (Dimensions.get('window').width / 7 -9) * 0.65,
-    backgroundColor: '#727272',
+    backgroundColor: '#A0A0A0',
     height: 12,
     alignItems: 'center'
   },

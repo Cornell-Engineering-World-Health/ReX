@@ -6,8 +6,7 @@ import dateStyles from './styles';
 import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get("window");
-var today;
-var numberOfDays;
+
 
 class Calendar extends PureComponent {
     static propTypes = {
@@ -19,10 +18,10 @@ class Calendar extends PureComponent {
 
         let backgroundColor = [];
 
-        today = this.props.currMonth;
-        numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+        this.today = this.props.currMonth;
+        this.numberOfDays = new Date(this.today.getFullYear(), this.today.getMonth()+1, 0).getDate();
 
-        for (var i = 0; i < numberOfDays; i++){
+        for (var i = 0; i < this.numberOfDays; i++){
             backgroundColor.push(0);
         }
 
@@ -31,7 +30,7 @@ class Calendar extends PureComponent {
         var dot3 = [];
         var baseBars = [];
 
-        for (var i = 0; i < numberOfDays; i++){
+        for (var i = 0; i < this.numberOfDays; i++){
             dot1[i] = generic;
             dot2[i] = generic;
             dot3[i] = generic;
@@ -63,8 +62,8 @@ class Calendar extends PureComponent {
     pullFromDataBase = () => {
       return [{
         name: 'blurred',
-        symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        intensities: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
+        intensities: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 5, 0, 5, 0],
       },
       {
         name: 'pill',
@@ -131,11 +130,11 @@ class Calendar extends PureComponent {
     getGraphColor = (type) => {
       switch(type){
         case 'headache':
-          return "#6dd3bf50";
+          return "#6dd3bf80";
         case 'blurred':
-          return "#ab87b850";
+          return "#ab87b880";
         case 'pill':
-          return "#c3496b50";
+          return "#c3496b80";
         default:
           return "#FFFFFF00";
       }
@@ -217,7 +216,7 @@ class Calendar extends PureComponent {
         let dot3 = this.state.dot3;
         let baseBars = this.state.baseBars;
 
-        for (var j = 0; j < numberOfDays; j++){
+        for (var j = 0; j < this.numberOfDays; j++){
           if (dot1[j] == genericGray){
             dot1[j] = generic
           }
@@ -311,20 +310,18 @@ class Calendar extends PureComponent {
 
     renderMonth() {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var today = this.props.currMonth;
-        return months[today.getMonth()];
+        return months[this.today.getMonth()];
     }
 
     renderYear() {
-        var today = this.props.currMonth;
-        return today.getFullYear();
+        return this.today.getFullYear();
     }
 
     renderDates() {
         const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-        var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
+        var last = new Date(this.today.getFullYear(), this.today.getMonth(), this.numberOfDays);
 
-        var dateGrid = days.slice(0, numberOfDays);
+        var dateGrid = days.slice(0, this.numberOfDays);
 
 
 
@@ -367,9 +364,8 @@ class Calendar extends PureComponent {
 
     renderPreviousDates() {
         const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-        var today = this.props.currMonth;
-        var first = new Date(today.getFullYear(), today.getMonth(), 1);
-        var firstDays = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        var first = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
+        var firstDays = new Date(this.today.getFullYear(), this.today.getMonth(), 0).getDate();
 
 
         if (first.getDay() != 0){
@@ -379,10 +375,16 @@ class Calendar extends PureComponent {
             return previousGrid.map((day, i) => {
                 return(
                     <View style = {item}  key={i}>
+                      <View style={dateStyles.textBox}>
                         <Text style={dateGray}>
-                                {day}
+                            {day}
                         </Text>
+                      </View>
+                      <View style={dateStyles.dayBox}>
+                          <View style={this.state.baseBars[i]} />
+                      </View>
                     </View>
+
                 )
             })
         }
@@ -390,7 +392,7 @@ class Calendar extends PureComponent {
 
     renderNextDates() {
         const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-        var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
+        var last = new Date(this.today.getFullYear(), this.today.getMonth(), this.numberOfDays);
 
         if (last.getDay() != 6){
             var nextGrid = days.slice(0, 6 - last.getDay());
@@ -399,14 +401,14 @@ class Calendar extends PureComponent {
             return nextGrid.map((day, i) => {
                 return(
                     <View style = {item} key={i}>
+                      <View style={dateStyles.textBox}>
                         <Text style={dateGray}>
-                                {day}
+                            {day}
                         </Text>
-                        <View style = {dateStyles.circles}>
-                            <View style = {this.state.dot1[i]} />
-                            <View style = {this.state.dot2[i]} />
-                            <View style = {this.state.dot3[i]} />
-                        </View>
+                      </View>
+                      <View style={dateStyles.dayBox}>
+                          <View style={this.state.baseBars[i]} />
+                      </View>
                     </View>
                 )
             })
@@ -444,11 +446,6 @@ class Calendar extends PureComponent {
                     { this.renderNextDates() }
                 </View>
 
-            <View style = {buttons}>
-                <Button title = "Headache" onPress = {() => this._onHeadachePress()} backgroundColor = "#ab87b8" />
-                <Button title = "Blurred Vision" onPress = {() => this._onBlurredPress()} backgroundColor = "#6dd3bf" />
-                <Button title = "Took a Pill" onPress = {() => this._onPillPress()} backgroundColor = "#c3496b" />
-            </View>
             </View>
         );
     }
@@ -489,7 +486,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 20,
         color: '#b8b8b8',
-        marginBottom: 7,
     },
     week: {
         fontWeight: "bold",
@@ -537,7 +533,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 43,
-        backgroundColor: '#727272',
+        backgroundColor: '#A0A0A0',
      },
      generic: {
         width: 4,
@@ -551,7 +547,7 @@ const styles = StyleSheet.create({
         height: 4,
         borderRadius: 2,
         marginLeft: 2,
-        backgroundColor: "#727272",
+        backgroundColor: "#A0A0A0",
      },
      headache: {
          width: 4,
@@ -581,11 +577,7 @@ const styles = StyleSheet.create({
      }
 });
 
-<<<<<<< HEAD
-const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, generic, genericGray, headache, blurred, pill, buttons } = styles;
-=======
 const { head, header, header2, date, altDate, dateGray, week, weekAlt, weekAlt2, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
->>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
 
 
 export default Calendar;
