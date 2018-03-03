@@ -48,7 +48,7 @@ class FlatListCard extends React.Component {
         <FlatList
           data={this.props.data}
           keyExtractor={item => item.id}
-          extraData={this.props.extraData}
+          extraData={this.props}
           renderItem={({ item, index }) => {
             return (
               <Card

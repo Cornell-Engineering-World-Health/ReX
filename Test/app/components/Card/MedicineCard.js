@@ -4,6 +4,9 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import constants from './constants';
 
+const CHECKED_COLOR = '#e6ffe6';
+const UNCHECKED_COLOR = '#ffcccc';
+
 const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
@@ -21,7 +24,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 5,
-    backgroundColor: '#18F150'
+    backgroundColor: '#18F150',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   imageRightBuffer: {
     position: 'absolute',
@@ -63,12 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flex: 0.6
   },
-  timeStamp: {
-    fontSize: 18,
-    color: '#a9a9a9',
-    fontWeight: '600',
-    letterSpacing: 0.6
-  },
   note: {
     color: '#808080',
     fontSize: 16,
@@ -78,12 +77,16 @@ const styles = StyleSheet.create({
   },
   swipe: {
     borderRadius: 10
+  },
+  checkMark: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover'
   }
 });
-class Card extends Component {
+class MedicineCard extends Component {
   static propTypes = {
     title: PropTypes.string,
-    timeStamp: PropTypes.string,
     note1: PropTypes.string,
     note2: PropTypes.string,
     image: PropTypes.number,
@@ -92,10 +95,10 @@ class Card extends Component {
     swiperActive: PropTypes.bool,
     buttonsRight: PropTypes.array,
     buttonsLeft: PropTypes.array,
-    iconName: PropTypes.string,
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
-    onOpenSwipeout: PropTypes.func
+    onOpenSwipeout: PropTypes.func,
+    checked: PropTypes.bool
   };
   constructor(props) {
     super(props);
@@ -111,50 +114,26 @@ class Card extends Component {
       onClose: this.props.onCloseSwipeout,
       onOpen: this.props.onOpenSwipeout
     };
-
     const imageContainerStyle = [styles.imageContainer];
+    const descriptionContainerStyle = [styles.descriptionContainer];
+
     var image = constants.DEFAULT_IMAGE;
     var backgroundColorTemp = constants.DEFAULT_BACKGROUND_COLOR;
+    var descriptionBackground = null;
 
-    switch (this.props.iconName) {
-      case 'headache':
-        image = constants.HEADACHE_IMAGE;
-        backgroundColorTemp = constants.HEADACHE_BACKGROUND_COLOR;
-        break;
-
-      case 'neck-pain':
-        image = constants.NECKPAIN_IMAGE;
-        backgroundColorTemp = constants.NECKPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'leg-pain':
-        image = constants.LEGPAIN_IMAGE;
-        backgroundColorTemp = constants.LEGPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'knee-pain':
-        image = constants.KNEEPAIN_IMAGE;
-        backgroundColorTemp = constants.KNEEPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'blurred-vision':
-        image = constants.VISION_IMAGE;
-        backgroundColorTemp = constants.VISION_IMAGE_BACKGROUND_COLOR;
-        break;
-
-      case 'pill':
-        image = constants.PILL_IMAGE;
-        backgroundColorTemp = constants.PILL_IMAGE_BACKGROUND_COLOR;
-        break;
-
-      default:
-        if (this.props.backgroundColor) {
-          backgroundColorTemp = this.props.backgroundColor;
-        }
-        if (this.props.image) {
-          image = this.props.image;
-        }
+    if (this.props.backgroundColor) {
+      backgroundColorTemp = this.props.backgroundColor;
     }
+
+    if (this.props.checked) {
+      descriptionBackground = CHECKED_COLOR;
+    } else {
+      descriptionBackground = UNCHECKED_COLOR;
+    }
+
+    descriptionContainerStyle.push({
+      backgroundColor: descriptionBackground
+    });
 
     imageContainerStyle.push({
       backgroundColor: backgroundColorTemp
@@ -163,6 +142,16 @@ class Card extends Component {
     const swipeSettings = {
       autoClose: true
     };
+    let image1 = null;
+    if (this.props.checked) {
+      image1 = require('../Resources/checkmark.png');
+    } else {
+      if (!this.props.image) {
+        image1 = require('../Resources/purpleCircle.png');
+      } else {
+        image1 = this.props.image;
+      }
+    }
 
     return (
       <View style={styles.wrapper}>
@@ -183,8 +172,7 @@ class Card extends Component {
             >
               <View style={styles.container}>
                 <View style={imageContainerStyle}>
-                  <View style={styles.imageStyle} />
-                  <Image style={styles.imageStyle2} source={image} />
+                  <Image style={styles.checkMark} source={image1} />
                 </View>
                 <View
                   style={{
@@ -196,15 +184,12 @@ class Card extends Component {
                   }}
                 />
 
-                <View style={styles.descriptionContainer}>
+                <View style={descriptionContainerStyle}>
                   <View>
                     <Text style={styles.titleText}>{this.props.title}</Text>
                     <Text style={styles.note}> {this.props.note1} </Text>
                     <Text style={styles.note}> {this.props.note2} </Text>
                   </View>
-                </View>
-                <View style={styles.timeContainer}>
-                  <Text style={styles.timeStamp}>{this.props.timeStamp}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -215,4 +200,4 @@ class Card extends Component {
   }
 }
 
-export default Card;
+export default MedicineCard;

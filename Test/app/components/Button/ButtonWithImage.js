@@ -33,7 +33,8 @@ class ButtonWithImage extends Component {
     height: PropTypes.number,
     onLongPress: PropTypes.func,
     rounded: PropTypes.bool,
-    shadowOpacity: PropTypes.number
+    shadowOpacity: PropTypes.number,
+    horizontal: PropTypes.bool
   };
 
   constructor(props) {
@@ -49,6 +50,11 @@ class ButtonWithImage extends Component {
     containerStyle.push({
       backgroundColor: this.props.backgroundColor
     });
+    if (this.props.horizontal) {
+      containerStyle.push({
+        flexDirection: 'row'
+      });
+    }
     if (this.props.rounded) {
       containerStyle.push({
         borderRadius: 50
