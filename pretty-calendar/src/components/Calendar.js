@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -9,7 +9,7 @@ const { width } = Dimensions.get("window");
 var today;
 var numberOfDays;
 
-class Calendar extends Component {
+class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
     };
@@ -299,11 +299,15 @@ class Calendar extends Component {
     renderWeek() {
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return days.map((day) => {
-            return(
-                <Text key={day} style= {week}>{day}</Text>
+                if (day == 'SUN'){
+                    return <Text key={day} style= {weekAlt}>{day}</Text>
+                }
+                else{
+                    return <Text key={day} style= {week}>{day}</Text>
+                }
+            }
             );
-        });
-    }
+        };
 
     renderMonth() {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -420,7 +424,7 @@ class Calendar extends Component {
     render() {
 
         return (
-            <View>
+            <View style = {{flex: 1}}>
             <View style= {head}>
             <TouchableOpacity onPress = {() => this._onTitlePress()}>
                 <View style= {header}>
@@ -462,14 +466,13 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         marginTop: 15,
-        marginLeft: 17,
-
+        marginLeft: 10,
     },
     header2: {
         display: "flex",
         flexDirection: "row",
         marginTop: 10,
-
+        marginLeft: 14,
     },
     date: {
         textAlign: 'center',
@@ -486,12 +489,24 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 20,
         color: '#b8b8b8',
+        marginBottom: 7,
     },
     week: {
         fontWeight: "bold",
         fontSize: 15,
         color: '#b8b8b8',
-        marginLeft: 23,
+        paddingLeft: Dimensions.get('window').width / 17.2,
+    },
+    weekAlt: {
+        fontWeight: "bold",
+        fontSize: 15,
+        color: '#b8b8b8',
+    },
+    weekAlt2: {
+        fontWeight: "bold",
+        fontSize: 15,
+        color: '#b8b8b8',
+        marginLeft: 26,
     },
     month: {
         fontWeight: "bold",
@@ -507,19 +522,18 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 2,
-        marginLeft: 10,
+        paddingTop: Dimensions.get('window').length * 0.05
      },
     item: {
        margin: 2,
-       width: Dimensions.get('window').width / 7 -9,
+       width: Dimensions.get('window').width / 7 -7,
        justifyContent: 'center',
        alignItems: 'center',
        height: 43,
      },
      altItem: {
         margin: 2,
-        width: Dimensions.get('window').width / 7 -9,
+        width: Dimensions.get('window').width / 7 -7,
         justifyContent: 'center',
         alignItems: 'center',
         height: 43,
@@ -567,7 +581,11 @@ const styles = StyleSheet.create({
      }
 });
 
+<<<<<<< HEAD
 const { head, header, header2, date, altDate, dateGray, week, month, year, tiles, item, altItem, generic, genericGray, headache, blurred, pill, buttons } = styles;
+=======
+const { head, header, header2, date, altDate, dateGray, week, weekAlt, weekAlt2, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
+>>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
 
 
 export default Calendar;

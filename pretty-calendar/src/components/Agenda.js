@@ -8,9 +8,19 @@ class Agenda extends Component {
         super(props)
     }
 
+    getItemLayout = (data, index) => (
+        {length: 200, offset: 200 * index, index}
+    )
+
+    _onDelete = () => {
+        console.log("hi")
+    }
+
+
     _renderItem = ({item}) => (
         <View>
             <Card
+<<<<<<< HEAD
                 title = " Blurred Vision"
                 timeStamp = "6:00 PM"
                 note1 = "aaaaaaaaaaaaaaaaaaaa"
@@ -35,17 +45,230 @@ class Agenda extends Component {
                 iconName = "pill"
                 />
 
+=======
+                title = {item.title}
+                timeStamp = {item.timeStamp}
+                note1 = {item.note1}
+                note2 = {item.note2}
+                backgroundColor = {item.backgroundColor}
+                iconName = {item.iconName}
+                swiperActive = {true}
+                buttonsRight = {[
+                    {
+                    onPress: (item.onPress = () => {
+                        this._onDelete();
+                    }),
+                    text: 'Delete',
+                    type: 'delete'
+                }
+                ]}
+                />
+>>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
         </View>
     );
 
     render() {
         return (
+            <View style = {{marginLeft: 10}}>
+            <View>
+                <Text style = {summaryText}>Summary</Text>
+            </View>
+            <View style = {{height: 300}}>
             <FlatList
+<<<<<<< HEAD
             data = {[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'd'}, {key: 'e'}, {key: 'f'}, {key: 'g'}, {key: 'h'}, {key: 'i'}]}
+=======
+            data = {[
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+                
+                {
+                    "title": " Headache",
+                    "timeStamp": "8:00 PM",
+                    "note1": "Ben is amazing",
+                    "note2": "Can i get an A? <3",
+                    "backgroundColor": "#6dd3bf",
+                    "iconName": "headache",
+                },
+            ]}
+>>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
             renderItem = {this._renderItem}
-
+            getItemLayout = {this._getItemLayout}
             />
+<<<<<<< HEAD
 
+=======
+            </View>
+            </View>
+>>>>>>> 2d8ae3e3979b3c26ce255c9e3f5d99db5bcf2936
         );
     }
 }
@@ -89,9 +312,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#7FDECB',
         backgroundColor: '#7FDECB',
+    },
+    summaryText: {
+        fontSize: 25,
+        fontWeight: "400",
+        letterSpacing: 1.0,
+        color: '#b8b8b8',
+        marginLeft: 10,
+
     }
 });
 
-const { summaryHead, summary, eventCard, cardElements, eventSquare } = styles;
+const { summaryText, summaryHead, summary, eventCard, cardElements, eventSquare } = styles;
 
 export default Agenda;
