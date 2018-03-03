@@ -9,10 +9,10 @@ import testData from '../Resources/CardTestData';
 import Moment from 'moment';
 
 import Home from '../screens/HomePage';
-import Calendar from '../screens/Calendar';
 import MedicineView from '../screens/MedicineView';
 import Settings from '../screens/Settings';
 import FlatListCard from '../screens/FlatListCard';
+import CalendarView from '../InfiniteCalendar';
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -137,7 +137,7 @@ class MenuBar extends React.Component {
         return <Home />;
         break;
       case CALENDAR_PAGE:
-        return <Calendar />;
+        return <CalendarView />;
         break;
       case MEDICINE_PAGE:
         return <MedicineView />;

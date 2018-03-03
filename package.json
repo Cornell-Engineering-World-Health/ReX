@@ -22,15 +22,16 @@
     "expo": "^25.0.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
-    "react": "16.2.0",
-    "react-native": "0.52.0",
+    "react": "^16.2.0",
+    "react-native": "^0.52.0",
     "react-native-animatable": "^1.2.4",
+    "react-native-checkbox": "^2.0.0",
     "react-native-elements": "^0.19.0",
     "react-native-extended-stylesheet": "^0.8.1",
-    "react-native-swipeout": "^2.3.3",
-    "react-native-checkbox": "^2.0.0",
     "react-native-modal": "^5.0.1",
+    "react-native-settings-list": "^1.8.0",
     "react-native-swipe-gestures": "^1.0.2",
+    "react-native-swipeout": "^2.3.3",
     "react-navigation": "^1.0.0-beta.30"
   }
 }

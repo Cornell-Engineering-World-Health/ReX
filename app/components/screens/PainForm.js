@@ -10,7 +10,6 @@ import {
   FlatList
 } from 'react-native';
 import ButtonWithImage from '../Button/ButtonWithImage';
-import CalendarScreen from '../screens/CalendarScreen';
 import Moment from 'moment';
 import Swipeout from 'react-native-swipeout';
 import Card from '../Card/Card';
