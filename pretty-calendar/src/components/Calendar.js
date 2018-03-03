@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import dateStyles from './styles';
+import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get("window");
-
-//TEMP VAR
-const intensities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0];
-const symptom =     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0];
-const color = 'rgba(116, 56, 138, .4)';
+var today;
+var numberOfDays;
 
 class Calendar extends Component {
     static propTypes = {
@@ -21,40 +19,191 @@ class Calendar extends Component {
 
         let backgroundColor = [];
 
-        var today = this.props.currMonth;
-        var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+        today = this.props.currMonth;
+        numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
 
         for (var i = 0; i < numberOfDays; i++){
             backgroundColor.push(0);
         }
 
-
-
-        var purple = [];
-        var green = [];
-        var red = [];
-
+        var dot1 = [];
+        var dot2 = [];
+        var dot3 = [];
+        var baseBars = [];
 
         for (var i = 0; i < numberOfDays; i++){
-          if(symptom[i] == 1){
-            purple[i] = headache;
-          } else{
-            purple[i] = generic;
-          }
-            green[i] = generic;
-            red[i] = generic;
+            dot1[i] = generic;
+            dot2[i] = generic;
+            dot3[i] = generic;
+            baseBars[i] = dateStyles.baseBar;
         }
+
+
 
         this.state = {
             backgroundColor: backgroundColor,
             selected: 0,
-            purple: purple,
-            green: green,
-            red: red,
+            dot1: dot1,
+            dot2: dot2,
+            dot3: dot3,
+            graphColor: 'rgba( 0, 0, 0, 0)',
+            intensities: [0,0],
+            baseBars: baseBars,
         }
+
+        this.graphRefs = [];
 
         this._onDatePress = this._onDatePress.bind(this);
     }
+
+    componentDidMount() {
+      this.initVisualization();
+    }
+
+    pullFromDataBase = () => {
+      return [{
+        name: 'blurred',
+        symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        intensities: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: 'pill',
+        symptom: [0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
+        intensities: [0, 1, 2, 3, 4, 0, 6, 0, 0, 9, 10, 9, 10, 1, 10, 0, 0, 0, 0, 0, 1, 0, 2, 2, 0, 9, 0, 0, 0, 0, 0],
+      },
+      {
+        name: 'headache',
+        symptom:      [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
+        intensities:  [2, 0, 0, 0, 4, 3, 6, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
+      }
+    ];
+    }
+
+    //TODO PULL FROM DB, DATA FORMAT:[{graphColor, symptom, intensities},{},{}]
+    initVisualization = () => {
+      let monthData = this.pullFromDataBase();
+
+
+      let dot1 = this.state.dot1;
+      let dot2 = this.state.dot2;
+      let dot3 = this.state.dot3;
+
+      for(var i = 0; i < monthData.length; i++){
+        monthData[i].symptom.map((val, j) => {
+          let tempStyle;
+          switch(monthData[i].name){
+            case 'blurred':
+              tempStyle = blurred;
+              break;
+            case 'pill':
+              tempStyle = pill;
+              break;
+            case 'headache':
+              tempStyle = headache;
+              break;
+            default:
+              tempStyle = generic;
+          }
+
+          if(val == 1){
+            if(this.state.dot1[j] == generic){
+              dot1[j] = tempStyle;
+            } else if(this.state.dot2[j] == generic){
+              dot2[j] = tempStyle;
+            } else if(this.state.dot3[j] == generic){
+              dot3[j] = tempStyle;
+            }
+          }
+        });
+      }
+
+      var color = this.getGraphColor(monthData[0].name);
+      this.setState({
+        dot1: dot1,
+        dot2: dot2,
+        dot3: dot3,
+        graphColor: color,
+        intensities: monthData[0].intensities,
+      });
+    }
+
+    //TODO: pull from global stylesheet
+    getGraphColor = (type) => {
+      switch(type){
+        case 'headache':
+          return "#6dd3bf50";
+        case 'blurred':
+          return "#ab87b850";
+        case 'pill':
+          return "#c3496b50";
+        default:
+          return "#FFFFFF00";
+      }
+    }
+
+    updateVisualization = (type) => {
+      let monthData = this.pullFromDataBase();
+      for(var i = 0; i < monthData.length; i++){
+        if(monthData[i].name == type){
+          let color = this.getGraphColor(type);
+
+          this.setState({
+            graphColor: color,
+            intensities: monthData[i].intensities,
+          }, function(){
+            this.graphRefs.forEach(function(g) {
+              if(g){
+                g.slideInUp(500);
+              }
+            });
+          });
+          return;
+        }
+      }
+    }
+
+
+    /** DOWN THEN UP
+    updateVisualization = (type) => {
+      let monthData = this.pullFromDataBase();
+      for(var i = 0; i < monthData.length; i++){
+        if(monthData[i].name == type){
+          let color = this.getGraphColor(type);
+
+          let last = this.graphRefs.length-1;
+          while(last > -1  && this.graphRefs[last] == undefined){
+            last--;
+          }
+
+          for(var j=0; j<this.graphRefs.length; j++){
+            if(j == last){
+              this.graphRefs[j].slideOutDown(500).then(
+                () => {
+                  console.log('fall done')
+                  this.setState({
+                    graphColor: color,
+                    intensities: monthData[i].intensities,
+                  }, function(){
+                    console.log('state done')
+                    this.graphRefs.forEach(function(g) {
+                      if(g){
+                        g.slideInUp(500);
+                      }
+                    });
+                  });
+                }
+              );
+            }
+            else if(this.graphRefs[j]){
+              this.graphRefs[j].slideOutDown(500);
+
+            }
+          }
+          return;
+        }
+      }
+    }
+    */
 
     _onDatePress = (i) => {
         let backgroundColor = [];
@@ -63,67 +212,77 @@ class Calendar extends Component {
         this.setState({ selected: i });
         this.setState({ backgroundColor });
 
-        let purple = this.state.purple;
-        let green = this.state.green;
-        let red = this.state.red;
-
-        var today = this.props.currMonth;
-        var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+        let dot1 = this.state.dot1;
+        let dot2 = this.state.dot2;
+        let dot3 = this.state.dot3;
+        let baseBars = this.state.baseBars;
 
         for (var j = 0; j < numberOfDays; j++){
-          if (purple[j] == genericGray){
-            purple[j] = generic
+          if (dot1[j] == genericGray){
+            dot1[j] = generic
           }
-          if (green[j] == genericGray){
-            green[j] = generic
+          if (dot2[j] == genericGray){
+            dot2[j] = generic
           }
-          if (red[j] == genericGray){
-            red[j] = generic
+          if (dot3[j] == genericGray){
+            dot3[j] = generic
+          }
+          if(baseBars[j] == dateStyles.baseBarSelected){
+            baseBars[j] = dateStyles.baseBar
           }
         }
 
-        if (purple[i] == generic){
-          purple[i] = genericGray
+        if (dot1[i] == generic){
+          dot1[i] = genericGray
         }
-        if (green[i] == generic){
-          green[i] = genericGray
+        if (dot2[i] == generic){
+          dot2[i] = genericGray
         }
-        if (red[i] == generic){
-          red[i] = genericGray
+        if (dot3[i] == generic){
+          dot3[i] = genericGray
+        }
+        if(baseBars[i] == dateStyles.baseBar){
+          baseBars[i] = dateStyles.baseBarSelected
         }
 
-
-
-        this.setState({ purple })
-        this.setState({ green })
-        this.setState({ red })
+        this.setState({ dot1 })
+        this.setState({ dot2 })
+        this.setState({ dot3 })
+        this.setState({ baseBars })
 
     }
 
     _onTitlePress = () => {
-
+      var r = Math.floor(Math.random() * 3);
+      if(r == 1){
+        this.updateVisualization('headache');
+      } else if (r == 2){
+        this.updateVisualization('pill');
+      } else {
+        this.updateVisualization('blurred');
+      }
 
     }
 
     _onHeadachePress = () => {
-      let circles  = this.state.purple;
+      let circles  = this.state.dot1;
       circles[this.state.selected] = headache;
 
-      this.setState({ purple: circles });
+      this.setState({ dot1: circles });
     }
 
     _onBlurredPress = () => {
-      let circles = this.state.green;
+      let circles = this.state.dot2;
       circles[this.state.selected] = blurred;
 
-      this.setState({ green: circles });
+      this.setState({ dot2: circles });
     }
 
     _onPillPress = () => {
-      let circles = this.state.red;
+      let circles = this.state.dot3;
       circles[this.state.selected] = pill;
 
-      this.setState({ red: circles });
+      this.setState({ dot3: circles });
     }
 
     dateStyle = function(i) {
@@ -159,8 +318,6 @@ class Calendar extends Component {
 
     renderDates() {
         const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-        var today = this.props.currMonth;
-        var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
         var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
 
         var dateGrid = days.slice(0, numberOfDays);
@@ -171,13 +328,10 @@ class Calendar extends Component {
             let dateStyle = this.state.backgroundColor[i] ? altItem : item
             let textStyle = this.state.backgroundColor[i] ? altDate : date
             var barHolder = [];
-            for(let j = 0; j < intensities[i]; j++){
-              barHolder.push(
-                <View key={j} style={[{backgroundColor: color}, dateStyles.bar]} />
-              );
+            let h = 0;
+            if(this.state.intensities){
+              h = 3.13*this.state.intensities[i];
             }
-
-
 
             return(
                 <TouchableOpacity style = {dateStyle} key = {i} onPress={() => this._onDatePress(i)}>
@@ -187,11 +341,18 @@ class Calendar extends Component {
                     </Text>
                   </View>
                   <View style={dateStyles.dayBox}>
-                      {barHolder}
-                      <View style = {dateStyles.circles}>
-                          <View style = {this.state.purple[i]} />
-                          <View style = {this.state.green[i]} />
-                          <View style = {this.state.red[i]} />
+                      <Animatable.View
+                        ref={(b) => {this.graphRefs[i] = b;}}
+                        duration={500}
+                        animation="slideInUp"
+                        style={[{backgroundColor: this.state.graphColor, height: h}, dateStyles.bar]}
+                      />
+                      <View style={this.state.baseBars[i]} >
+                        <View style = {dateStyles.circles}>
+                            <View style = {this.state.dot1[i]} />
+                            <View style = {this.state.dot2[i]} />
+                            <View style = {this.state.dot3[i]} />
+                        </View>
                       </View>
                   </View>
               </TouchableOpacity>
@@ -225,8 +386,6 @@ class Calendar extends Component {
 
     renderNextDates() {
         const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-        var today = this.props.currMonth;
-        var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
         var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
 
         if (last.getDay() != 6){
@@ -240,9 +399,9 @@ class Calendar extends Component {
                                 {day}
                         </Text>
                         <View style = {dateStyles.circles}>
-                            <View style = {this.state.purple[i]} />
-                            <View style = {this.state.green[i]} />
-                            <View style = {this.state.red[i]} />
+                            <View style = {this.state.dot1[i]} />
+                            <View style = {this.state.dot2[i]} />
+                            <View style = {this.state.dot3[i]} />
                         </View>
                     </View>
                 )
@@ -385,14 +544,14 @@ const styles = StyleSheet.create({
          height: 4,
          borderRadius: 2,
          marginLeft: 2,
-         backgroundColor: "#ab87b8",
+         backgroundColor: "#6dd3bf",
      },
      blurred: {
         width: 4,
         height: 4,
         borderRadius: 2,
         marginLeft: 2,
-        backgroundColor: "#6dd3bf",
+        backgroundColor: "#ab87b8",
      },
      pill: {
         width: 4,

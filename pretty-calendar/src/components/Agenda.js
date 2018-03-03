@@ -13,24 +13,24 @@ class Agenda extends Component {
             <Card
                 title = " Blurred Vision"
                 timeStamp = "6:00 PM"
-                note1 = "Don'ta toucha"
-                note2 = "My spaghetti!"
+                note1 = "aaaaaaaaaaaaaaaaaaaa"
+                note2 = "aaaaaaaaaaaaaaaaaaaa"
                 backgroundColor = "#ab87b8"
                 iconName = "blurred-vision"
                 />
             <Card
                 title = " Headache"
                 timeStamp = "8:00 PM"
-                note1 = "Mamma Mia"
-                note2 = "My head is in pain!"
+                note1 = "aaaaaaaaaaaaaaaaaaaa"
+                note2 = "aaaaaaaaaaaaaaaaaaaa"
                 backgroundColor = "#6dd3bf"
                 iconName = "headache"
                 />
             <Card
                 title = " Pill"
                 timeStamp = "10:00 PM"
-                note1 = "Lots of Drugs"
-                note2 = "Good for the soul"
+                note2 = "aaaaaaaaaaaaaaaaaaaa"
+                note1 = "aaaaaaaaaaaaaaaaaaaa"
                 backgroundColor = "#c3496b"
                 iconName = "pill"
                 />

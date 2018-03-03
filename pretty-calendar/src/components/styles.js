@@ -10,7 +10,18 @@ export default StyleSheet.create({
   },
   bar: {
     width: (Dimensions.get('window').width / 7 -9) * 0.65,
-    height: 3.48,
+  },
+  baseBar: {
+    width: (Dimensions.get('window').width / 7 -9) * 0.65,
+    backgroundColor: '#FFFFFF',
+    height: 12,
+    alignItems: 'center'
+  },
+  baseBarSelected: {
+    width: (Dimensions.get('window').width / 7 -9) * 0.65,
+    backgroundColor: '#727272',
+    height: 12,
+    alignItems: 'center'
   },
   dayBox: {
     flex: 1,
@@ -23,5 +34,6 @@ export default StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     marginTop: 4,
+    marginBottom: 4
   },
 });

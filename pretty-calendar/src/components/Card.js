@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: 100,
     width: 100,
-    resizeMode: 'cover'
+    //resizeMode: 'cover'
   },
   imageStyle2: {
     position: 'absolute',
