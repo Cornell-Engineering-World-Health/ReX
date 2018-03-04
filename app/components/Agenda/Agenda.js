@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity } from 'react-native';
-import  Card  from './Card.js';
+import  Card  from '../Card/Card.js';
 
 class Agenda extends Component {
 

@@ -12,7 +12,7 @@ import Home from '../screens/HomePage';
 import MedicineView from '../screens/MedicineView';
 import Settings from '../screens/Settings';
 import FlatListCard from '../screens/FlatListCard';
-import CalendarView from '../InfiniteCalendar';
+import Calendar from '../screens/Calendar';
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -137,7 +137,7 @@ class MenuBar extends React.Component {
         return <Home />;
         break;
       case CALENDAR_PAGE:
-        return <CalendarView />;
+        return <Calendar />;
         break;
       case MEDICINE_PAGE:
         return <MedicineView />;

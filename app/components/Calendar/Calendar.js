@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
-import dateStyles from './styles';
+import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get("window");
@@ -31,10 +31,10 @@ class Calendar extends PureComponent {
         var baseBars = [];
 
         for (var i = 0; i < this.numberOfDays; i++){
-            dot1[i] = generic;
-            dot2[i] = generic;
-            dot3[i] = generic;
-            baseBars[i] = dateStyles.baseBar;
+            dot1[i] = styles.generic;
+            dot2[i] = styles.generic;
+            dot3[i] = styles.generic;
+            baseBars[i] = styles.baseBar;
         }
 
 
@@ -92,24 +92,24 @@ class Calendar extends PureComponent {
           let tempStyle;
           switch(monthData[i].name){
             case 'blurred':
-              tempStyle = blurred;
+              tempStyle = styles.blurred;
               break;
             case 'pill':
-              tempStyle = pill;
+              tempStyle = styles.pill;
               break;
             case 'headache':
-              tempStyle = headache;
+              tempStyle = styles.headache;
               break;
             default:
-              tempStyle = generic;
+              tempStyle = styles.generic;
           }
 
           if(val == 1){
-            if(this.state.dot1[j] == generic){
+            if(this.state.dot1[j] == styles.generic){
               dot1[j] = tempStyle;
-            } else if(this.state.dot2[j] == generic){
+            } else if(this.state.dot2[j] == styles.generic){
               dot2[j] = tempStyle;
-            } else if(this.state.dot3[j] == generic){
+            } else if(this.state.dot3[j] == styles.generic){
               dot3[j] = tempStyle;
             }
           }
@@ -213,31 +213,31 @@ class Calendar extends PureComponent {
         let baseBars = this.state.baseBars;
 
         for (var j = 0; j < this.numberOfDays; j++){
-          if (dot1[j] == genericGray){
-            dot1[j] = generic
+          if (dot1[j] == styles.genericGray){
+            dot1[j] = styles.generic
           }
-          if (dot2[j] == genericGray){
-            dot2[j] = generic
+          if (dot2[j] == styles.genericGray){
+            dot2[j] = styles.generic
           }
-          if (dot3[j] == genericGray){
-            dot3[j] = generic
+          if (dot3[j] == styles.genericGray){
+            dot3[j] = styles.generic
           }
-          if(baseBars[j] == dateStyles.baseBarSelected){
-            baseBars[j] = dateStyles.baseBar
+          if(baseBars[j] == styles.baseBarSelected){
+            baseBars[j] = styles.baseBar
           }
         }
 
-        if (dot1[i] == generic){
-          dot1[i] = genericGray
+        if (dot1[i] == styles.generic){
+          dot1[i] = styles.genericGray
         }
-        if (dot2[i] == generic){
-          dot2[i] = genericGray
+        if (dot2[i] == styles.generic){
+          dot2[i] = styles.genericGray
         }
-        if (dot3[i] == generic){
-          dot3[i] = genericGray
+        if (dot3[i] == styles.generic){
+          dot3[i] = styles.genericGray
         }
-        if(baseBars[i] == dateStyles.baseBar){
-          baseBars[i] = dateStyles.baseBarSelected
+        if(baseBars[i] == styles.baseBar){
+          baseBars[i] = styles.baseBarSelected
         }
 
         this.setState({ dot1 })
@@ -261,21 +261,21 @@ class Calendar extends PureComponent {
 
     _onHeadachePress = () => {
       let circles  = this.state.dot1;
-      circles[this.state.selected] = headache;
+      circles[this.state.selected] = styles.headache;
 
       this.setState({ dot1: circles });
     }
 
     _onBlurredPress = () => {
       let circles = this.state.dot2;
-      circles[this.state.selected] = blurred;
+      circles[this.state.selected] = styles.blurred;
 
       this.setState({ dot2: circles });
     }
 
     _onPillPress = () => {
       let circles = this.state.dot3;
-      circles[this.state.selected] = pill;
+      circles[this.state.selected] = styles.pill;
 
       this.setState({ dot3: circles });
     }
@@ -295,10 +295,10 @@ class Calendar extends PureComponent {
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return days.map((day) => {
                 if (day == 'SUN'){
-                    return <Text key={day} style= {weekAlt}>{day}</Text>
+                    return <Text key={day} style= {styles.weekAlt}>{day}</Text>
                 }
                 else{
-                    return <Text key={day} style= {week}>{day}</Text>
+                    return <Text key={day} style= {styles.week}>{day}</Text>
                 }
             }
             );
@@ -322,8 +322,8 @@ class Calendar extends PureComponent {
 
 
         return dateGrid.map((day, i) => {
-            let dateStyle = this.state.backgroundColor[i] ? altItem : item
-            let textStyle = this.state.backgroundColor[i] ? altDate : date
+            let dateStyle = this.state.backgroundColor[i] ? styles.altItem : styles.item
+            let textStyle = this.state.backgroundColor[i] ? styles.altDate : styles.date
             var barHolder = [];
             let h = 0;
             if(this.state.intensities){
@@ -332,20 +332,20 @@ class Calendar extends PureComponent {
 
             return(
                 <TouchableOpacity style = {dateStyle} key = {i} onPress={() => this._onDatePress(i)}>
-                  <View style={dateStyles.textBox}>
+                  <View style={styles.textBox}>
                     <Text style={textStyle}>
                         {day}
                     </Text>
                   </View>
-                  <View style={dateStyles.dayBox}>
+                  <View style={styles.dayBox}>
                       <Animatable.View
                         ref={(b) => {this.graphRefs[i] = b;}}
                         duration={400}
                         animation="slideInUp"
-                        style={[{backgroundColor: this.state.graphColor, height: h}, dateStyles.bar]}
+                        style={[{backgroundColor: this.state.graphColor, height: h}, styles.bar]}
                       />
                       <View style={this.state.baseBars[i]} >
-                        <View style = {dateStyles.circles}>
+                        <View style = {styles.circles}>
                             <View style = {this.state.dot1[i]} />
                             <View style = {this.state.dot2[i]} />
                             <View style = {this.state.dot3[i]} />
@@ -370,14 +370,14 @@ class Calendar extends PureComponent {
         if(previousGrid){
             return previousGrid.map((day, i) => {
                 return(
-                    <View style = {item}  key={i}>
-                      <View style={dateStyles.textBox}>
-                        <Text style={dateGray}>
+                    <View style = {styles.item}  key={i}>
+                      <View style={styles.textBox}>
+                        <Text style={styles.dateGray}>
                             {day}
                         </Text>
                       </View>
-                      <View style={dateStyles.dayBox}>
-                          <View style={this.state.baseBars[i]} />
+                      <View style={styles.dayBox}>
+                          <View style={this.state.baseBar} />
                       </View>
                     </View>
 
@@ -396,14 +396,14 @@ class Calendar extends PureComponent {
         if(nextGrid){
             return nextGrid.map((day, i) => {
                 return(
-                    <View style = {item} key={i}>
-                      <View style={dateStyles.textBox}>
-                        <Text style={dateGray}>
+                    <View style = {styles.item} key={i}>
+                      <View style={styles.textBox}>
+                        <Text style={styles.dateGray}>
                             {day}
                         </Text>
                       </View>
-                      <View style={dateStyles.dayBox}>
-                          <View style={this.state.baseBars[i]} />
+                      <View style={styles.dayBox}>
+                          <View style={this.state.baseBar} />
                       </View>
                     </View>
                 )
@@ -423,20 +423,20 @@ class Calendar extends PureComponent {
 
         return (
             <View style = {{flex: 1}}>
-            <View style= {head}>
+            <View style= {styles.head}>
             <TouchableOpacity onPress = {() => this._onTitlePress()}>
-                <View style= {header}>
-                    <Text style= {month}> { this.renderMonth() }</Text>
-                    <Text style= {year}> {this.renderYear() }</Text>
+                <View style= {styles.header}>
+                    <Text style= {styles.month}> { this.renderMonth() }</Text>
+                    <Text style= {styles.year}> {this.renderYear() }</Text>
                 </View>
             </TouchableOpacity>
 
-                <View style= {header2}>
+                <View style= {styles.header2}>
                     { this.renderWeek() }
                 </View>
             </View>
 
-                <View style = {tiles}>
+                <View style = {styles.tiles}>
                     { this.renderPreviousDates() }
                     { this.renderDates() }
                     { this.renderNextDates() }
@@ -447,133 +447,6 @@ class Calendar extends PureComponent {
     }
 }
 
-
-
-const styles = StyleSheet.create({
-    head: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-    },
-    header: {
-        display: "flex",
-        flexDirection: "row",
-        marginTop: 15,
-        marginLeft: 10,
-    },
-    header2: {
-        display: "flex",
-        flexDirection: "row",
-        marginTop: 10,
-        marginLeft: 14,
-    },
-    date: {
-        textAlign: 'center',
-        fontWeight: '500',
-        fontSize: 20,
-    },
-    altDate: {
-        textAlign: 'center',
-        fontWeight: '500',
-        fontSize: 20,
-        color: '#ffffff',
-    },
-    dateGray: {
-        fontWeight: '500',
-        fontSize: 20,
-        color: '#b8b8b8',
-    },
-    week: {
-        fontWeight: "bold",
-        fontSize: 15,
-        color: '#b8b8b8',
-        paddingLeft: Dimensions.get('window').width / 17.2,
-    },
-    weekAlt: {
-        fontWeight: "bold",
-        fontSize: 15,
-        color: '#b8b8b8',
-    },
-    weekAlt2: {
-        fontWeight: "bold",
-        fontSize: 15,
-        color: '#b8b8b8',
-        marginLeft: 26,
-    },
-    month: {
-        fontWeight: "bold",
-        fontSize: 25,
-        color: '#373737',
-    },
-    year: {
-        fontSize: 25,
-        color: '#b0b0b0',
-        fontWeight: '300',
-    },
-    tiles: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingTop: Dimensions.get('window').length * 0.05
-     },
-    item: {
-       margin: 2,
-       width: Dimensions.get('window').width / 7 -7,
-       justifyContent: 'center',
-       alignItems: 'center',
-       height: 43,
-     },
-     altItem: {
-        margin: 2,
-        width: Dimensions.get('window').width / 7 -7,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 43,
-        backgroundColor: '#A0A0A0',
-     },
-     generic: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        marginLeft: 2,
-        backgroundColor: "#ffffff",
-     },
-     genericGray: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        marginLeft: 2,
-        backgroundColor: "#A0A0A0",
-     },
-     headache: {
-         width: 4,
-         height: 4,
-         borderRadius: 2,
-         marginLeft: 2,
-         backgroundColor: "#6dd3bf",
-     },
-     blurred: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        marginLeft: 2,
-        backgroundColor: "#ab87b8",
-     },
-     pill: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        marginLeft: 2,
-        backgroundColor: "#c3496b",
-     },
-     buttons: {
-         display: "flex",
-         flexDirection: "column",
-         marginTop: 250,
-     }
-});
-
-const { head, header, header2, date, altDate, dateGray, week, weekAlt, weekAlt2, month, year, tiles, item, altItem, circles, generic, genericGray, headache, blurred, pill, buttons } = styles;
 
 
 export default Calendar;
