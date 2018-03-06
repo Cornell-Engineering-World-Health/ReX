@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
   View,
@@ -11,43 +12,51 @@ import Card from '../Card/Card.js';
 
 const flatlistData = [
   {
-    title: ' Headache',
-    timeStamp: '8:00 PM',
-    note1: 'Ben is amazing',
-    note2: 'Can i get an A? <3',
-    iconName: 'knee-pain',
-    id: '1'
-  },
-
-  {
-    title: ' Headache',
+    title: 'Headache',
     timeStamp: '8:00 PM',
     note1: 'Ben is amazing',
     note2: 'Can i get an A? <3',
     iconName: 'headache',
-    id: '2'
+    id: '1',
+    buttonActive: true,
   },
 
   {
-    title: ' Headache',
+    title: 'Headache',
     timeStamp: '8:00 PM',
     note1: 'Ben is amazing',
     note2: 'Can i get an A? <3',
     iconName: 'headache',
-    id: '3'
+    id: '2',
+    buttonActive: true,
   },
 
   {
-    title: ' Headache',
+    title: 'Blurred Vision',
     timeStamp: '8:00 PM',
     note1: 'Ben is amazing',
     note2: 'Can i get an A? <3',
-    iconName: 'headache',
-    id: '4'
+    iconName: 'blurred-vision',
+    id: '3',
+    buttonActive: true,
+  },
+
+  {
+    title: 'Pill',
+    timeStamp: '8:00 PM',
+    note1: 'Ben is amazing',
+    note2: 'Can i get an A? <3',
+    iconName: 'pill',
+    id: '4',
+    buttonActive: true,
   }
 ];
 
 class Agenda extends Component {
+  static propTypes = {
+    onPressAgenda: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
   }
@@ -93,6 +102,7 @@ class Agenda extends Component {
                   ]}
                   buttonsLeft={item.buttonsLeft}
                   onCloseSwipeout={this._onClose}
+                  onPress={this.props.onPressAgenda}
                 />
               );
             }}

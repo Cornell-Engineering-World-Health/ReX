@@ -63,17 +63,17 @@ class Calendar extends PureComponent {
 
     pullFromDataBase = () => {
       return [{
-        name: 'blurred',
+        name: 'Blurred Vision',
         symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
         intensities: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 5, 0, 5, 0],
       },
       {
-        name: 'pill',
+        name: 'Pill',
         symptom: [0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
         intensities: [0, 1, 2, 3, 4, 0, 6, 0, 0, 9, 10, 9, 10, 1, 10, 0, 0, 0, 0, 0, 1, 0, 2, 2, 0, 9, 0, 0, 0, 0, 0],
       },
       {
-        name: 'headache',
+        name: 'Headache',
         symptom:      [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
         intensities:  [2, 0, 0, 0, 4, 3, 6, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
       }
@@ -93,13 +93,13 @@ class Calendar extends PureComponent {
         monthData[i].symptom.map((val, j) => {
           let tempStyle;
           switch(monthData[i].name){
-            case 'blurred':
+            case 'Blurred Vision':
               tempStyle = styles.blurred;
               break;
-            case 'pill':
+            case 'Pill':
               tempStyle = styles.pill;
               break;
-            case 'headache':
+            case 'Headache':
               tempStyle = styles.headache;
               break;
             default:
@@ -131,11 +131,11 @@ class Calendar extends PureComponent {
     //TODO: pull from global stylesheet
     getGraphColor = (type) => {
       switch(type){
-        case 'headache':
+        case 'Headache':
           return "#6dd3bf80";
-        case 'blurred':
+        case 'Blurred Vision':
           return "#ab87b880";
-        case 'pill':
+        case 'Pill':
           return "#c3496b80";
         default:
           return "#FFFFFF00";
@@ -295,14 +295,6 @@ class Calendar extends PureComponent {
     }
 
     _onTitlePress = () => {
-      var r = Math.floor(Math.random() * 3);
-      if(r == 1){
-        this.updateVisualization('headache');
-      } else if (r == 2){
-        this.updateVisualization('pill');
-      } else {
-        this.updateVisualization('blurred');
-      }
     }
 
     _onHeadachePress = () => {

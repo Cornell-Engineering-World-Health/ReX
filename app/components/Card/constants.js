@@ -2,6 +2,12 @@ export default (constants = {
   HEADACHE_IMAGE: require('../Resources/brain.png'),
   HEADACHE_BACKGROUND_COLOR: '#E2AFF9',
 
+  PILL_IMAGE: require('../Resources/medicine.png'),
+  PILL_BACKGROUND_COLOR: '#E2AFF9',
+
+  VISION_IMAGE: require('../Resources/glasses.png'),
+  VISION_BACKGROUND_COLOR: '#E2AFF9',
+
   DEFAULT_IMAGE: require('../Resources/default.png'),
   DEFAULT_BACKGROUND_COLOR: '#ffffff',
 

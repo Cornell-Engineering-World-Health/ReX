@@ -47,6 +47,10 @@ class Calendar extends Component {
     })
   }
 
+  _onPressAgenda = (type) => {
+    this.calendarRef.updateVisualization(type)
+  }
+
   _renderItem = ({item}) => (
     /*<Text> {item.key} </Text>*/
     <SliderEntry
@@ -88,7 +92,9 @@ class Calendar extends Component {
           />
         </View>
         <View style={{ flex: 0.75 }}>
-          <Agenda />
+          <Agenda
+            onPressAgenda={this._onPressAgenda}
+          />
         </View>
       </View>
     );

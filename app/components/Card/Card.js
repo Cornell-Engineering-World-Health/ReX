@@ -139,12 +139,12 @@ class Card extends Component {
 
       case 'blurred-vision':
         image = constants.VISION_IMAGE;
-        backgroundColorTemp = constants.VISION_IMAGE_BACKGROUND_COLOR;
+        backgroundColorTemp = constants.VISION_BACKGROUND_COLOR;
         break;
 
       case 'pill':
         image = constants.PILL_IMAGE;
-        backgroundColorTemp = constants.PILL_IMAGE_BACKGROUND_COLOR;
+        backgroundColorTemp = constants.PILL_BACKGROUND_COLOR;
         break;
 
       default:
@@ -179,7 +179,7 @@ class Card extends Component {
           >
             <TouchableOpacity
               disabled={!this.props.buttonActive}
-              onPress={this.props.onPress}
+              onPress={() => this.props.onPress(this.props.title)}
             >
               <View style={styles.container}>
                 <View style={imageContainerStyle}>
