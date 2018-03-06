@@ -24,7 +24,6 @@ class Agenda extends Component {
                 timeStamp = "6:00 PM"
                 note1 = "aaaaaaaaa"
                 note2 = "aaaaaaaaa"
-                backgroundColor = "#ab87b8"
                 iconName = "blurred-vision"
                 />
             <Card
@@ -32,7 +31,6 @@ class Agenda extends Component {
                 timeStamp = "8:00 PM"
                 note1 = "aaaaaaaaa"
                 note2 = "aaaaaaaaa"
-                backgroundColor = "#6dd3bf"
                 iconName = "headache"
                 />
             <Card
@@ -40,7 +38,6 @@ class Agenda extends Component {
                 timeStamp = "10:00 PM"
                 note2 = "aaaaaaaaa"
                 note1 = "aaaaaaaaa"
-                backgroundColor = "#c3496b"
                 iconName = "pill"
                 />
 

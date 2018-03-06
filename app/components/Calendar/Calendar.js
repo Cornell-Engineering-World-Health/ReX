@@ -11,6 +11,7 @@ const { width } = Dimensions.get("window");
 class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
+      onPressMonth: PropTypes.func
     };
 
     constructor(props){
@@ -40,8 +41,9 @@ class Calendar extends PureComponent {
 
 
         this.state = {
+            currentDate: undefined,
             backgroundColor: backgroundColor,
-            selected: 0,
+            selected: -1,
             dot1: dot1,
             dot2: dot2,
             dot3: dot3,
@@ -204,14 +206,12 @@ class Calendar extends PureComponent {
         let backgroundColor = [];
         backgroundColor[i] = 1;
 
-        this.setState({ selected: i });
-        this.setState({ backgroundColor });
-
         let dot1 = this.state.dot1;
         let dot2 = this.state.dot2;
         let dot3 = this.state.dot3;
         let baseBars = this.state.baseBars;
 
+        /**
         for (var j = 0; j < this.numberOfDays; j++){
           if (dot1[j] == styles.genericGray){
             dot1[j] = styles.generic
@@ -226,6 +226,8 @@ class Calendar extends PureComponent {
             baseBars[j] = styles.baseBar
           }
         }
+        */
+        this._clearSelection();
 
         if (dot1[i] == styles.generic){
           dot1[i] = styles.genericGray
@@ -240,11 +242,56 @@ class Calendar extends PureComponent {
           baseBars[i] = styles.baseBarSelected
         }
 
+        let currentDate = new Date(this.today.getFullYear(), this.today.getMonth(), i+1)
+
+        this.setState({ selected: i });
+        this.setState({ backgroundColor });
         this.setState({ dot1 })
         this.setState({ dot2 })
         this.setState({ dot3 })
         this.setState({ baseBars })
+        this.setState({ currentDate}, function(){
+          this.props.onPressMonth(this)
+        })
 
+    }
+
+    _clearSelection = () => {
+      if(this.state.selected != -1){
+
+        let dot1 = this.state.dot1;
+        let dot2 = this.state.dot2;
+        let dot3 = this.state.dot3;
+        let baseBars = this.state.baseBars;
+        let backgroundColor = this.state.backgroundColor;
+
+        backgroundColor[this.state.selected] = 0;
+
+        if (dot1[this.state.selected] == styles.genericGray){
+          dot1[this.state.selected] = styles.generic
+        }
+        if (dot2[this.state.selected] == styles.genericGray){
+          dot2[this.state.selected] = styles.generic
+        }
+        if (dot3[this.state.selected] == styles.genericGray){
+          dot3[this.state.selected] = styles.generic
+        }
+        if(baseBars[i] == styles.baseBar){
+          baseBars[i] = styles.baseBarSelected
+        }
+
+        baseBars[this.state.selected] = styles.baseBar
+
+
+        this.setState({
+          backgroundColor: backgroundColor,
+          dot1: dot1,
+          dot2: dot2,
+          dot3: dot3,
+          baseBars: baseBars,
+          selected: -1
+        })
+      }
     }
 
     _onTitlePress = () => {
@@ -256,7 +303,6 @@ class Calendar extends PureComponent {
       } else {
         this.updateVisualization('blurred');
       }
-
     }
 
     _onHeadachePress = () => {

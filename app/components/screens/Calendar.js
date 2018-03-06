@@ -3,28 +3,47 @@ import PropTypes from 'prop-types';
 import { View, Text, Dimensions, ActivityIndicator, FlatList, StyleSheet} from 'react-native';
 import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import {SliderEntry} from '../Calendar';
+import Agenda from '../Agenda/Agenda';
+
+const numOfCals = 500;
 
 class Calendar extends Component {
 
   constructor(props) {
     super(props);
     data = []
-    for (i = -500; i < 500; i++){
+    for (i = -numOfCals; i < numOfCals; i++){
       data.push({key: i})
     }
     this.state = {
-      last: 499,
-      data: data
+      last: numOfCals-1,
+      data: data,
+      currentDate: new Date(),
     }
+
+    this.calendarRef;
   }
   getItemLayout = (data, index) => (
     {length: itemWidth, offset: itemWidth * index, index}
 
   )
 
+  _onPressMonth = (ref) => {
+    if(this.calendarRef && this.calendarRef != ref){
+      this.calendarRef._clearSelection('outside')
+    }
+    this.calendarRef = ref
+    this.setState({
+      currentDate: ref.state.currentDate,
+    })
+  }
+
   _renderItem = ({item}) => (
     /*<Text> {item.key} </Text>*/
-    <SliderEntry data = {new Date((new Date()).getFullYear(), (new Date()).getMonth()+ item.key, 0)} />
+    <SliderEntry
+      data = {new Date((new Date()).getFullYear(), (new Date()).getMonth()+ item.key, 0)}
+      onPressMonth = {this._onPressMonth}
+    />
   );
 
   _loadMore = () => {
@@ -39,21 +58,24 @@ class Calendar extends Component {
 
   render() {
     return (
-      <FlatList
-        style = { itemStyle }
-        data = {this.state.data}
-        renderItem={this._renderItem}
-        onEndReached = {this._loadMore}
-        onEndReachedThreshold = {50}
-        horizontal = {true}
-        removeClippedSubviews = {true}
-        getItemLayout = {this.getItemLayout}
-        decelerationRate = {0}
-        snapToInterval = {itemWidth}
-        snapToAlignment = "center"
-        showsHorizontalScrollIndicator = {false}
-        initialScrollIndex = {500}
-      />
+      <View>
+        <FlatList
+          style = { itemStyle }
+          data = {this.state.data}
+          renderItem={this._renderItem}
+          onEndReached = {this._loadMore}
+          onEndReachedThreshold = {50}
+          horizontal = {true}
+          removeClippedSubviews = {true}
+          getItemLayout = {this.getItemLayout}
+          decelerationRate = {0}
+          snapToInterval = {itemWidth}
+          snapToAlignment = "center"
+          showsHorizontalScrollIndicator = {false}
+          initialScrollIndex = {numOfCals+1}
+        />
+        <Agenda />
+      </View>
     );
   };
 }
