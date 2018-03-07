@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Card from '../Card/Card.js';
+import Database from '../../Database';
 
 const flatlistData = [
   {

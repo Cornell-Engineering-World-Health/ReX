@@ -4,9 +4,30 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
+import Database from '../../Database';
+
 
 const { width } = Dimensions.get("window");
 
+databaseFakeData = () => {
+    console.log('faking data')
+    Database.transaction(tx => {
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,{"Intensity": "Medium","Duration": "40"} )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (1, 1,\'2018-03-07 00:00:00\', 5')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,{"Intensity": "Medium","Duration": "50"} )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (2, 1,\'2018-03-07 00:01:00\', 2')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,{"Intensity": "Medium","Duration": "50"} )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (3, 1,\'2018-03-06 00:01:00\', 3')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (4,{"Intensity": "Medium","Duration": "60"} )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (4, 1,\'2018-03-06 18:01:00\', 3')
+    },err=> console.log(err));
+    Database.transaction(tx => {
+        tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
+          console.log(JSON.stringify(rows))
+        ),err=> console.log(err)
+    },err=> console.log(err));
+}
+    
 
 class Calendar extends PureComponent {
     static propTypes = {
@@ -61,7 +82,14 @@ class Calendar extends PureComponent {
       this.initVisualization();
     }
 
+
     pullFromDataBase = () => {
+      databaseFakeData();
+      console.log('pulling from database');
+      Database.transaction(tx => (tx.executeSql('SELECT event_id,timestamp, fields, day as strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
+          INNER JOIN event_details_tbl event_tbl.event_details_id = event_details_tbl.event_details_id \
+          WHERE time != \'1950-01-01 00:00:00\' GROUP BY strftime(\'%Y-%m-%d\',timestamp)', [], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));
+      
       return [{
         name: 'Blurred Vision',
         symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
