@@ -9,25 +9,95 @@ import {
   StyleSheet
 } from 'react-native';
 import { itemWidth } from '../Calendar/styles/SliderEntry.style';
-import {SliderEntry} from '../Calendar';
+import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
+import Moment from 'moment';
+import constants from '../Resources/constants';
 
 const numOfCals = 500;
 
+const flatlistData = [
+  {
+    date: new Date('March 9, 2018'),
+    data: [
+      {
+        id: 1,
+        cardData: constants.HEADACHE,
+        timeStamp: '6:00 PM',
+        note1: 'High Severity',
+        note2: 'manual input'
+      },
+      {
+        id: 2,
+        cardData: constants.BLURRED_VISION,
+        timeStamp: '10:00 PM',
+        note1: 'Medium Severity',
+        note2: 'Duration: 27 min'
+      }
+    ]
+  },
+
+  {
+    date: new Date('March 10, 2018'),
+    data: [
+      {
+        id: 3,
+        cardData: constants.LEGPAIN,
+        timeStamp: '6:00 AM',
+        note1: 'auto-generation',
+        note2: 'based on name'
+      },
+      {
+        id: 4,
+        cardData: constants.KNEEPAIN,
+        timeStamp: '8:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('March 15, 2018'),
+    data: [
+      {
+        id: 5,
+        cardData: constants.NECKPAIN,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  }
+];
+const defaultData = [];
 class Calendar extends Component {
   constructor(props) {
     super(props);
-    data = []
-    for (i = -numOfCals; i < numOfCals; i++){
-      data.push({key: i})
+    data = [];
+    for (i = -numOfCals; i < numOfCals; i++) {
+      data.push({ key: i });
     }
     this.state = {
-      last: numOfCals-1,
+      last: 499,
       data: data,
-      currentDate: new Date(),
-    }
+      currentDate: new Date()
+    };
 
-    this.calendarRef;
+    this._updateAgenda();
+  }
+
+  _updateAgenda() {
+    let tempData = null;
+
+    for (var i = 0; i < flatlistData.length; i++) {
+      if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
+        tempData = flatlistData[i].data;
+        break;
+      }
+    }
+    this.setState({
+      currentAgenda: tempData
+    });
   }
 
   getItemLayout = (data, index) => ({
@@ -36,26 +106,30 @@ class Calendar extends Component {
     index
   });
 
-
-  _onPressMonth = (ref) => {
-    if(this.calendarRef && this.calendarRef != ref){
-      this.calendarRef._clearSelection()
+  _onPressMonth = ref => {
+    if (this.calendarRef && this.calendarRef != ref) {
+      this.calendarRef._clearSelection();
     }
-    this.calendarRef = ref
-    this.setState({
-      currentDate: ref.state.currentDate,
-    })
-  }
+    this.calendarRef = ref;
+    this.setState(
+      {
+        currentDate: ref.state.currentDate
+      },
+      this._updateAgenda
+    );
+  };
 
-  _onPressAgenda = (type) => {
-    this.calendarRef.updateVisualization(type)
-  }
+  _onPressAgenda = type => {
+    this.calendarRef.updateVisualization(type);
+  };
 
-  _renderItem = ({item}) => (
+  _renderItem = ({ item }) => (
     /*<Text> {item.key} </Text>*/
     <SliderEntry
-      data = {new Date((new Date()).getFullYear(), (new Date()).getMonth()+ item.key, 0)}
-      onPressMonth = {this._onPressMonth}
+      data={
+        new Date(new Date().getFullYear(), new Date().getMonth() + item.key, 0)
+      }
+      onPressMonth={this._onPressMonth}
     />
   );
 
@@ -88,12 +162,14 @@ class Calendar extends Component {
             snapToInterval={itemWidth}
             snapToAlignment="center"
             showsHorizontalScrollIndicator={false}
-            initialScrollIndex={numOfCals+1}
+            initialScrollIndex={numOfCals + 1}
           />
         </View>
         <View style={{ flex: 0.75 }}>
           <Agenda
+            agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}
+            date={this.state.currentDate.toLocaleDateString()}
           />
         </View>
       </View>
