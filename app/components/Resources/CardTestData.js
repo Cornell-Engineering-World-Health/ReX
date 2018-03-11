@@ -1,28 +1,25 @@
+import constants from './constants';
+
 export default [
   {
     id: 1,
-    image: require('../Resources/footPain.png'),
-    title: 'Foot pain',
+    cardData: constants.FOOTPAIN,
     timeStamp: '6:00 PM',
     note1: 'High Severity',
     note2: 'manual input',
-    backgroundColor: '#FF33FC',
     swiperActive: true
   },
   {
     id: 2,
-    image: require('../Resources/glasses.png'),
-    title: 'Blurred Vision',
+    cardData: constants.BLURRED_VISION,
     timeStamp: '10:00 PM',
     note1: 'Medium Severity',
     note2: 'Duration: 27 min',
-    swiperActive: true,
-    backgroundColor: '#18F150'
+    swiperActive: true
   },
   {
     id: 3,
-    iconName: 'leg-pain',
-    title: 'Leg Pain',
+    cardData: constants.LEGPAIN,
     timeStamp: '6:00 AM',
     note1: 'auto-generation',
     note2: 'based on name',
@@ -30,8 +27,7 @@ export default [
   },
   {
     id: 4,
-    iconName: 'knee-pain',
-    title: 'Knee Pain',
+    cardData: constants.KNEEPAIN,
     timeStamp: '8:00 AM',
     note1: 'NOTE 1',
     note2: 'NOTE 2',
@@ -39,19 +35,8 @@ export default [
   },
   {
     id: 5,
-    iconName: 'neck-pain',
-    title: 'Neck Pain',
+    cardData: constants.NECKPAIN,
     timeStamp: '2:00 AM',
-    note1: 'NOTE 1',
-    note2: 'NOTE 2',
-    swiperActive: true
-  },
-  {
-    id: 6,
-    image: require('../Resources/footPain.png'),
-    backgroundColor: '#75FF33',
-    title: 'Back Pain',
-    timeStamp: 'N/A',
     note1: 'NOTE 1',
     note2: 'NOTE 2',
     swiperActive: true

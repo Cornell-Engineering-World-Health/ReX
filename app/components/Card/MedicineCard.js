@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants from './constants';
+import constants from '../Resources/constants';
 
 const CHECKED_COLOR = '#e6ffe6';
 const UNCHECKED_COLOR = '#ffcccc';
@@ -117,8 +117,8 @@ class MedicineCard extends Component {
     const imageContainerStyle = [styles.imageContainer];
     const descriptionContainerStyle = [styles.descriptionContainer];
 
-    var image = constants.DEFAULT_IMAGE;
-    var backgroundColorTemp = constants.DEFAULT_BACKGROUND_COLOR;
+    var image = constants.DEFAULT.image;
+    var backgroundColorTemp = constants.DEFAULT.backgroundColor;
     var descriptionBackground = null;
 
     if (this.props.backgroundColor) {
