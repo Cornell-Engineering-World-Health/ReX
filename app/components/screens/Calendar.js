@@ -44,7 +44,10 @@ class Calendar extends Component {
     this.calendarRef = ref
     this.setState({
       currentDate: ref.state.currentDate,
+    }, function(){
+      console.log(this.state.currentDate)
     })
+
   }
 
   _onPressAgenda = (type) => {
