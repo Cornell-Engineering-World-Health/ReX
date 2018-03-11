@@ -67,8 +67,98 @@ const flatlistData = [
         note2: 'NOTE 2'
       }
     ]
-  }
+  },
+
+
+
+  {
+    date: new Date('April 1, 2018'),
+    data: [
+      {
+        id: 6,
+        cardData: constants.PILL,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 2, 2018'),
+    data: [
+      {
+        id: 7,
+        cardData: constants.HEADACHE,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 3, 2018'),
+    data: [
+      {
+        id: 8,
+        cardData: constants.BLURRED_VISION,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 4, 2018'),
+    data: [
+      {
+        id: 9,
+        cardData: constants.NECKPAIN,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 5, 2018'),
+    data: [
+      {
+        id: 10,
+        cardData: constants.KNEEPAIN,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 6, 2018'),
+    data: [
+      {
+        id: 11,
+        cardData: constants.LEGPAIN,
+        timeStamp: '2:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      }
+    ]
+  },
+  {
+    date: new Date('April 7, 2018'),
+    data: [
+      {
+        id: 11,
+        cardData: constants.FOOTPAIN,
+        timeStamp: '2:00 AM',
+        note1: '',
+        note2: ''
+      }
+    ]
+  },
+
 ];
+
+
 const defaultData = [];
 class Calendar extends Component {
   constructor(props) {
@@ -110,16 +200,6 @@ class Calendar extends Component {
     if (this.calendarRef && this.calendarRef != ref) {
       this.calendarRef._clearSelection();
     }
-<<<<<<< HEAD
-    this.calendarRef = ref
-    this.setState({
-      currentDate: ref.state.currentDate,
-    }, function(){
-      console.log(this.state.currentDate)
-    })
-
-  }
-=======
     this.calendarRef = ref;
     this.setState(
       {
@@ -128,7 +208,6 @@ class Calendar extends Component {
       this._updateAgenda
     );
   };
->>>>>>> 20d23c800b06780ce29c1ac47aece4b02430d998
 
   _onPressAgenda = type => {
     this.calendarRef.updateVisualization(type);

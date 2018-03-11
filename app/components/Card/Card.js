@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import constants from '../Resources/constants';
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 });
-class Card extends Component {
+class Card extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     timeStamp: PropTypes.string,
