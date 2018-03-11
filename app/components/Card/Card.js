@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants from './constants';
+import constants from '../Resources/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   imageContainer: {
-    borderRadius: 5,
-    backgroundColor: '#18F150'
+    borderRadius: 5
   },
   imageRightBuffer: {
     position: 'absolute',
@@ -45,26 +44,26 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     paddingTop: 15,
-    paddingLeft: 10,
+    paddingLeft: 8,
     paddingBottom: 15,
     flex: 1,
     alignItems: 'center'
   },
   titleText: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 19,
     letterSpacing: 1.5,
     color: '#373737'
   },
   timeContainer: {
     marginTop: 1.5,
     paddingTop: 15,
-    marginRight: 20,
+    marginRight: 10,
     alignItems: 'flex-end',
     flex: 0.6
   },
   timeStamp: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#a9a9a9',
     fontWeight: '600',
     letterSpacing: 0.6
@@ -92,10 +91,10 @@ class Card extends Component {
     swiperActive: PropTypes.bool,
     buttonsRight: PropTypes.array,
     buttonsLeft: PropTypes.array,
-    iconName: PropTypes.string,
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
-    onOpenSwipeout: PropTypes.func
+    onOpenSwipeout: PropTypes.func,
+    cardData: PropTypes.obj
   };
   constructor(props) {
     super(props);
@@ -106,69 +105,74 @@ class Card extends Component {
   };
 
   render() {
-    const swipeoutSettings = {
-      autoClose: true,
-      onClose: this.props.onCloseSwipeout,
-      onOpen: this.props.onOpenSwipeout
-    };
-
     const imageContainerStyle = [styles.imageContainer];
-    var image = constants.DEFAULT_IMAGE;
-    var backgroundColorTemp = constants.DEFAULT_BACKGROUND_COLOR;
 
-    switch (this.props.iconName) {
-      case 'headache':
-        image = constants.HEADACHE_IMAGE;
-        backgroundColorTemp = constants.HEADACHE_BACKGROUND_COLOR;
-        break;
+    var image = constants.DEFAULT.image;
+    var title = constants.DEFAULT.title;
+    if (this.props.cardData) {
+      imageContainerStyle.push({
+        backgroundColor: this.props.cardData.backgroundColor
+      });
 
-      case 'neck-pain':
-        image = constants.NECKPAIN_IMAGE;
-        backgroundColorTemp = constants.NECKPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'leg-pain':
-        image = constants.LEGPAIN_IMAGE;
-        backgroundColorTemp = constants.LEGPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'knee-pain':
-        image = constants.KNEEPAIN_IMAGE;
-        backgroundColorTemp = constants.KNEEPAIN_BACKGROUND_COLOR;
-        break;
-
-      case 'blurred-vision':
-        image = constants.VISION_IMAGE;
-        backgroundColorTemp = constants.VISION_BACKGROUND_COLOR;
-        break;
-
-      case 'pill':
-        image = constants.PILL_IMAGE;
-        backgroundColorTemp = constants.PILL_BACKGROUND_COLOR;
-        break;
-
-      default:
-        if (this.props.backgroundColor) {
-          backgroundColorTemp = this.props.backgroundColor;
-        }
-        if (this.props.image) {
-          image = this.props.image;
-        }
+      image = this.props.cardData.image;
+      title = this.props.cardData.title;
+    } else {
+      // if (this.props.title) {
+      //   title = this.props.title;
+      // }
+      // if (this.props.image) {
+      //   image = this.props.image;
+      // }
+      // if (this.props.backgroundColor) {
+      //   imageContainerStyle.push({
+      //     backgroundColor: this.props.backgroundColor
+      //   });
+      // }
     }
+    // switch (this.props.title) {
+    //   case constants.HEADACHE.title:
+    //     image = constants.HEADACHE.image;
+    //     backgroundColorTemp = constants.HEADACHE.backgroundColor;
+    //     break;
+    //
+    //   case constants.NECKPAIN.title:
+    //     image = constants.NECKPAIN.image;
+    //     backgroundColorTemp = constants.NECKPAIN.backgroundColor;
+    //     break;
+    //
+    //   case constants.LEGPAIN.title:
+    //     image = constants.LEGPAIN.image;
+    //     backgroundColorTemp = constants.LEGPAIN.backgroundColor;
+    //     break;
+    //
+    //   case constants.KNEEPAIN.title:
+    //     image = constants.KNEEPAIN.image;
+    //     backgroundColorTemp = constants.KNEEPAIN.backgroundColor;
+    //     break;
+    //
+    //   case constants.BLURRED_VISION.title:
+    //     image = constants.BLURRED_VISION.image;
+    //     backgroundColorTemp = constants.BLURRED_VISION.backgroundColor;
+    //     break;
+    //
+    //   case constants.PILL.title:
+    //     image = constants.PILL.image;
+    //     backgroundColorTemp = constants.PILL.backgroundColor;
+    //     break;
 
-    imageContainerStyle.push({
-      backgroundColor: backgroundColorTemp
-    });
-
-    const swipeSettings = {
-      autoClose: true
-    };
+    // default:
+    //   if (this.props.backgroundColor) {
+    //     backgroundColorTemp = this.props.backgroundColor;
+    //   }
+    //   if (this.props.image) {
+    //     image = this.props.image;
+    //   }
+    //}
 
     return (
       <View style={styles.wrapper}>
         <View style={styles.shadowWrapper}>
           <Swipeout
-            backgroundColor={'#E7EDE9'}
             right={this.props.buttonsRight}
             left={this.props.buttonsLeft}
             autoClose={true}
@@ -179,7 +183,7 @@ class Card extends Component {
           >
             <TouchableOpacity
               disabled={!this.props.buttonActive}
-              onPress={() => this.props.onPress(this.props.title)}
+              onPress={() => this.props.onPress(title)}
             >
               <View style={styles.container}>
                 <View style={imageContainerStyle}>
@@ -198,7 +202,7 @@ class Card extends Component {
 
                 <View style={styles.descriptionContainer}>
                   <View>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
+                    <Text style={styles.titleText}>{title}</Text>
                     <Text style={styles.note}> {this.props.note1} </Text>
                     <Text style={styles.note}> {this.props.note2} </Text>
                   </View>
