@@ -68,7 +68,7 @@ class Agenda extends Component {
       return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 50, textAlign: 'center' }}>
-            Woo Hoo! Nothing happend today!
+            Woo Hoo! Nothing happened today!
           </Text>
         </View>
       );
