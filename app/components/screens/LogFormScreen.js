@@ -85,6 +85,7 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   render () {
+    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible']
     return (
       <ScrollView>
         <View style={styles.main_container}>
@@ -96,8 +97,8 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
                   max_val={4}
-                  value={this.state.values[key]}
-                  scale_labels={['None', 'A Little', 'Medium', 'A Lot', 'Horrible']}
+                  value={SCALE_LABELS.indexOf(this.state.values[key])}
+                  scale_labels={SCALE_LABELS}
                   title_text={'Intensity'} />)
             } else if (prop == 'NumericalPickerInputType') {
               return (
@@ -105,10 +106,10 @@ export default class ChooseLogScreen extends React.Component {
                   key={key}
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
-                  value={3}
+                  value={this.state.values[key]}
                   min={0}
-                  max={6}
-                  unit={'hours'}
+                  max={60}
+                  unit={'minutes'}
                   title_text={'Duration of Pain'} />)
             } else if (prop == 'TextInputType') {
               return (
