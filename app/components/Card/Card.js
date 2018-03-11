@@ -116,58 +116,7 @@ class Card extends Component {
 
       image = this.props.cardData.image;
       title = this.props.cardData.title;
-    } else {
-      // if (this.props.title) {
-      //   title = this.props.title;
-      // }
-      // if (this.props.image) {
-      //   image = this.props.image;
-      // }
-      // if (this.props.backgroundColor) {
-      //   imageContainerStyle.push({
-      //     backgroundColor: this.props.backgroundColor
-      //   });
-      // }
     }
-    // switch (this.props.title) {
-    //   case constants.HEADACHE.title:
-    //     image = constants.HEADACHE.image;
-    //     backgroundColorTemp = constants.HEADACHE.backgroundColor;
-    //     break;
-    //
-    //   case constants.NECKPAIN.title:
-    //     image = constants.NECKPAIN.image;
-    //     backgroundColorTemp = constants.NECKPAIN.backgroundColor;
-    //     break;
-    //
-    //   case constants.LEGPAIN.title:
-    //     image = constants.LEGPAIN.image;
-    //     backgroundColorTemp = constants.LEGPAIN.backgroundColor;
-    //     break;
-    //
-    //   case constants.KNEEPAIN.title:
-    //     image = constants.KNEEPAIN.image;
-    //     backgroundColorTemp = constants.KNEEPAIN.backgroundColor;
-    //     break;
-    //
-    //   case constants.BLURRED_VISION.title:
-    //     image = constants.BLURRED_VISION.image;
-    //     backgroundColorTemp = constants.BLURRED_VISION.backgroundColor;
-    //     break;
-    //
-    //   case constants.PILL.title:
-    //     image = constants.PILL.image;
-    //     backgroundColorTemp = constants.PILL.backgroundColor;
-    //     break;
-
-    // default:
-    //   if (this.props.backgroundColor) {
-    //     backgroundColorTemp = this.props.backgroundColor;
-    //   }
-    //   if (this.props.image) {
-    //     image = this.props.image;
-    //   }
-    //}
 
     return (
       <View style={styles.wrapper}>
