@@ -53,12 +53,12 @@ intializeDatabase = function () {
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "Medium","Other": "NONE"}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,\'1950-01-01 00:00:00\', 1)')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,\'1950-01-01 00:00:00\', 2)')
-  }, err => console.log(err))
+  }, err => console.log(err),() => console.log('intitialization complete'))
 
   Database.transaction(tx => {
     tx.executeSql('Select * from event_tbl;', [], (tx, {rows}) => console.log(JSON.stringify(rows)))
   }, err => console.log(err))
-  console.log(Database)
+  //console.log(Database)
 }
 
 export default main
