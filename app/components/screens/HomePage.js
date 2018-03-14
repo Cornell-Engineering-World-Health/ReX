@@ -276,7 +276,7 @@ class Home extends React.Component {
     return (
       <ImageBackground
         style={{ flex: 1 }}
-        source={require('../Resources/purpleGradient.jpg')}
+        source={require('../Resources/purpleGradient2.jpg')}
       >
         <View style={styles.pageContainer}>
           <View>

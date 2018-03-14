@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import constants from '../Resources/constants';
 
-const CHECKED_COLOR = '#e6ffe6';
-const UNCHECKED_COLOR = '#ffcccc';
+const CHECKED_COLOR = constants.COLOR.medicineCardChecked;
+const UNCHECKED_COLOR = constants.COLOR.medicineCardUnchecked;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: '#ffffff'
+    backgroundColor: constants.COLOR.cardContainer
   },
   imageContainer: {
     borderRadius: 5,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     letterSpacing: 1.5,
-    color: '#373737'
+    color: constants.COLOR.cardTitle
   },
   timeContainer: {
     marginTop: 1.5,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 0.6
   },
   note: {
-    color: '#808080',
+    color: constants.COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,

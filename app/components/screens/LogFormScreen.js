@@ -1,91 +1,148 @@
-import React from 'react'
-import {StyleSheet, Text, View, Image, Header, ScrollView, TouchableOpacity, Picker, Button} from 'react-native'
-import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
-import TextInputType from '../LogInputTypes/TextInputType'
-import PickerInputType from '../LogInputTypes/PickerInputType'
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
-import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
-import { StackNavigator } from 'react-navigation'
-import Database from './Database'
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Header,
+  ScrollView,
+  TouchableOpacity,
+  Picker,
+  Button
+} from 'react-native';
+import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
+import TextInputType from '../LogInputTypes/TextInputType';
+import PickerInputType from '../LogInputTypes/PickerInputType';
+import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
+import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
+import { StackNavigator } from 'react-navigation';
+import Database from './Database';
 
 export default class ChooseLogScreen extends React.Component {
-
-  createTables = function () {
-    console.log("hereee")
-    Database.transaction(tx => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` \
-                    INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);')
-      tx.executeSql('CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` \
+  createTables = function() {
+    console.log('hereee');
+    Database.transaction(
+      tx => {
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` \
+                    INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);'
+        );
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` \
                     INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` \
-                    TEXT NOT NULL UNIQUE,`event_type_icon` TEXT NOT NULL);')
-      tx.executeSql('CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` \
+                    TEXT NOT NULL UNIQUE,`event_type_icon` TEXT NOT NULL);'
+        );
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` \
                     INTEGER NOT NULL PRIMARY KEY,`event_type_id` \
                     INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` \
                     INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) \
                     REFERENCES `event_details_tbl`(`event_details_id`), \
-                    FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));')
-      tx.executeSql('CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` \
+                    FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));'
+        );
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` \
                     INTEGER NOT NULL PRIMARY KEY UNIQUE,`field_name` \
-                    TEXT NOT NULL UNIQUE,`view_name` TEXT NOT NULL);')
-    }, err => console.log(err))
-  }
-  intializeDatabase = function () {
-    Database.transaction(tx => {
-      tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (1, \'headache\', \'image.png\')')
-      tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (2, \'Dizziness\', \'image.png\')')
-      tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, \'Intensity\', \'ScaleSlideInputType\')')
-      tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (2, \'Duration\', \'NumericalPickerInputType\')')
-      tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (3, \'Other\', \'TextInputType\')')
-      tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "Medium","Duration": "40"}\' )')
-      tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "Medium","Other": "NONE"}\' )')
-      tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,\'1950-01-01 00:00:00\', 1)')
-      tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,\'1950-01-01 00:00:00\', 2)')
-    }, err => console.log(err))
-  }
+                    TEXT NOT NULL UNIQUE,`view_name` TEXT NOT NULL);'
+        );
+      },
+      err => console.log(err)
+    );
+  };
+  intializeDatabase = function() {
+    Database.transaction(
+      tx => {
+        tx.executeSql(
+          "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (1, 'headache', 'image.png')"
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (2, 'Dizziness', 'image.png')"
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, 'Intensity', 'ScaleSlideInputType')"
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (2, 'Duration', 'NumericalPickerInputType')"
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (3, 'Other', 'TextInputType')"
+        );
+        tx.executeSql(
+          'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "Medium","Duration": "40"}\' )'
+        );
+        tx.executeSql(
+          'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "Medium","Other": "NONE"}\' )'
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,'1950-01-01 00:00:00', 1)"
+        );
+        tx.executeSql(
+          "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,'1950-01-01 00:00:00', 2)"
+        );
+      },
+      err => console.log(err)
+    );
+  };
 
-  constructor (props) {
-    super(props)
-    this.createTables()
-    this.intializeDatabase()
-    let log_type = this.props.navigation.state.params.log_type
-    var keysArray = []
+  constructor(props) {
+    super(props);
+    this.createTables();
+    this.intializeDatabase();
+    let log_type = this.props.navigation.state.params.log_type;
+    var keysArray = [];
 
-    Database.transaction(tx => (tx.executeSql('SELECT fields FROM event_tbl \
+    Database.transaction(
+      tx =>
+        tx.executeSql(
+          "SELECT fields FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp = \'1950-01-01 00:00:00\' \
-          AND event_type_id = ?;', [log_type], (tx, { rows }) => {
-            json_rows = JSON.parse(rows._array[0].fields)
-            keysArray = Object.keys(json_rows)
+          WHERE timestamp = '1950-01-01 00:00:00' \
+          AND event_type_id = ?;",
+          [log_type],
+          (tx, { rows }) => {
+            json_rows = JSON.parse(rows._array[0].fields);
+            keysArray = Object.keys(json_rows);
             //console.log(json_rows)
 
-            var valArray = []
+            var valArray = [];
 
             for (let i = 0; i < keysArray.length; i++) {
-              var input_types = []
+              var input_types = [];
               //console.log(json_rows[keysArray[i]])
-              valArray[i] = json_rows[keysArray[i]]
-              console.log(valArray[0])
+              valArray[i] = json_rows[keysArray[i]];
+              console.log(valArray[0]);
 
-              Database.transaction(tx => (tx.executeSql('SELECT view_name FROM field_to_view_tbl \
-                    WHERE field_name = ?;', [keysArray[i]], (tx, { rows }) => {
-                      input_types[i] = rows._array[0].view_name
+              Database.transaction(
+                tx =>
+                  tx.executeSql(
+                    'SELECT view_name FROM field_to_view_tbl \
+                    WHERE field_name = ?;',
+                    [keysArray[i]],
+                    (tx, { rows }) => {
+                      input_types[i] = rows._array[0].view_name;
                       this.setState({
                         input_type_array: input_types,
                         values: valArray
-                      })
-                    })), err => console.log(err))
+                      });
+                    }
+                  ),
+                err => console.log(err)
+              );
             }
-          })), err => console.log(err))
+          }
+        ),
+      err => console.log(err)
+    );
 
-    var input_types = []
+    var input_types = [];
 
     this.state = {
       input_type_array: input_types
-    }
+    };
   }
 
-  render () {
-    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible']
+  render() {
+    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible'];
     return (
       <ScrollView>
         <View style={styles.main_container}>
@@ -99,7 +156,9 @@ export default class ChooseLogScreen extends React.Component {
                   max_val={4}
                   value={SCALE_LABELS.indexOf(this.state.values[key])}
                   scale_labels={SCALE_LABELS}
-                  title_text={'Intensity'} />)
+                  title_text={'Intensity'}
+                />
+              );
             } else if (prop == 'NumericalPickerInputType') {
               return (
                 <NumericalPickerInputType
@@ -110,18 +169,22 @@ export default class ChooseLogScreen extends React.Component {
                   min={0}
                   max={60}
                   unit={'minutes'}
-                  title_text={'Duration of Pain'} />)
+                  title_text={'Duration of Pain'}
+                />
+              );
             } else if (prop == 'TextInputType') {
               return (
-              <TextInputType
-                key={key}
-                input_style={styles.input_container_green}
-                title_text_style={styles.title_text}
-                placeholder_text={'Type here...'}
-                title_text={'Other Symptoms'} />)
+                <TextInputType
+                  key={key}
+                  input_style={styles.input_container_green}
+                  title_text_style={styles.title_text}
+                  placeholder_text={'Type here...'}
+                  title_text={'Other Symptoms'}
+                />
+              );
             }
           })}
-          {  /*    <ChecklistInputType
+          {/*    <ChecklistInputType
             list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
             input_style={styles.input_container_green}
             title_text_style={styles.title_text}
@@ -166,13 +229,13 @@ export default class ChooseLogScreen extends React.Component {
             title_text={'Duration of Pain'} />
           <TouchableOpacity style={styles.submit_button}>
             <Text style={styles.submit_text}>Submit</Text>
-          </TouchableOpacity> */ }
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.submit_button}>
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -222,4 +285,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25
   }
-})
+});

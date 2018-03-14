@@ -1,72 +1,91 @@
-import React from 'react'
-import {StyleSheet, Text, View, Image, Header, ScrollView, TouchableOpacity, Picker, Button} from 'react-native'
-import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
-import TextInputType from '../LogInputTypes/TextInputType'
-import PickerInputType from '../LogInputTypes/PickerInputType'
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
-import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
-import LogFormScreen from './LogFormScreen'
-import { StackNavigator } from 'react-navigation'
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Header,
+  ScrollView,
+  TouchableOpacity,
+  Picker,
+  Button
+} from 'react-native';
+import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
+import TextInputType from '../LogInputTypes/TextInputType';
+import PickerInputType from '../LogInputTypes/PickerInputType';
+import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
+import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
+import LogFormScreen from './LogFormScreen';
+import { StackNavigator } from 'react-navigation';
 
 export default class ChooseLogScreen extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       navigate: this.props.navigation
-    }
+    };
   }
 
-  onSubmit (value) {
-  }
+  onSubmit(value) {}
 
-  render () {
-    const { navigate } = this.props.navigation
+  render() {
+    const { navigate } = this.props.navigation;
     return (
       <ScrollView>
         <View style={styles.log_container}>
           <TouchableOpacity
             style={styles.log_button}
-            onPress={() => navigate('Form', { log_type: 1 })}>
+            onPress={() => navigate('Form', { log_type: 1 })}
+          >
             <Text style={styles.log_button_text}>Headache</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/headPain.png')} />
+              source={require('../Resources/headPain.png')}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.log_button}
-            onPress={() => navigate('Form', { log_type: 2 })}>
+            onPress={() => navigate('Form', { log_type: 2 })}
+          >
             <Text style={styles.log_button_text}>Knee Pain</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/kneePain.png')} />
+              source={require('../Resources/kneePain.png')}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.log_button}
-            onPress={() => navigate('Form')}>
+            onPress={() => navigate('Form')}
+          >
             <Text style={styles.log_button_text}>Elbow Pain</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/elbowPain.png')} />
+              source={require('../Resources/elbowPain.png')}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.log_button}
-            onPress={() => navigate('Form')}>
+            onPress={() => navigate('Form')}
+          >
             <Text style={styles.log_button_text}>Leg Pain</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/legPain.png')} />
+              source={require('../Resources/legPain.png')}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.log_button}
-            onPress={() => navigate('Form')}>
+            onPress={() => navigate('Form')}
+          >
             <Text style={styles.log_button_text}>Back Pain</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/backPain.png')} />
+              source={require('../Resources/backPain.png')}
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -101,4 +120,4 @@ const styles = StyleSheet.create({
     width: 75,
     tintColor: 'white'
   }
-})
+});

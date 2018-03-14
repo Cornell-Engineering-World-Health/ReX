@@ -9,6 +9,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Card from '../Card/Card.js';
+import constants from '../Resources/constants';
+
 class Agenda extends Component {
   static propTypes = {
     onPressAgenda: PropTypes.func,
@@ -101,63 +103,22 @@ const styles = StyleSheet.create({
     marginLeft: 23,
     display: 'flex'
   },
-  summary: {
-    display: 'flex',
-    fontSize: 23,
-    fontWeight: '400',
-    color: '#b0b0b0'
-  },
-  eventCard: {
-    //marginTop:10,
-    //paddingTop:15,
-    //paddingBottom:15,
-    //marginLeft:30,
-    //marginRight:30,
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 0,
-    //borderColor: '#fff',
-    shadowColor: '#b0b0b0',
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 2,
-    elevation: 1
-  },
-  cardElements: {
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  eventSquare: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#7FDECB',
-    backgroundColor: '#7FDECB'
-  },
   summaryText: {
     fontSize: 25,
     fontWeight: '400',
     letterSpacing: 1.0,
-    color: '#b8b8b8',
+    color: constants.COLOR.summaryGray,
     marginLeft: 10
   },
   dateText: {
     fontSize: 15,
     fontWeight: '400',
     letterSpacing: 1.0,
-    color: '#b8b8b8',
+    color: constants.COLOR.summaryGray,
     marginRight: 10
   }
 });
 
-const {
-  summaryText,
-  summaryHead,
-  summary,
-  eventCard,
-  cardElements,
-  eventSquare
-} = styles;
+const { summaryText, summaryHead, eventCard, cardElements } = styles;
 
 export default Agenda;

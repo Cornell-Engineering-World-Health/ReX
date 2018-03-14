@@ -1,4 +1,36 @@
 export default (constants = {
+  COLOR: {
+    summaryGray: '#b8b8b8',
+    cardContainer: '#ffffff',
+    cardNotes: '#808080',
+    cardTitle: '#373737',
+    cardTimestamp: '#a9a9a9',
+    medicineCardChecked: '#e6ffe6',
+    medicineCardUnchecked: '#ffcccc'
+  },
+  MONTH: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ],
+  DAY: [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ],
   PILL: {
     image: require('../Resources/medicine.png'),
     title: 'Pill',
@@ -18,6 +50,7 @@ export default (constants = {
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
   },
+
   NECKPAIN: {
     image: require('../Resources/neckPain.png'),
     title: 'Neck Pain',

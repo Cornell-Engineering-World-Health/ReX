@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: '#ffffff'
+    backgroundColor: constants.COLOR.cardContainer
   },
   imageContainer: {
     borderRadius: 5
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 19,
     letterSpacing: 1.5,
-    color: '#373737'
+    color: constants.COLOR.cardTitle
   },
   timeContainer: {
     marginTop: 1.5,
@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
   },
   timeStamp: {
     fontSize: 16,
-    color: '#a9a9a9',
+    color: constants.COLOR.cardTimestamp,
     fontWeight: '600',
     letterSpacing: 0.6
   },
   note: {
-    color: '#808080',
+    color: constants.COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,

@@ -100,27 +100,6 @@ class painForm extends React.Component {
             <View style={styles.header}>
               <Text style={styles.headerText}> When did this pain start? </Text>
             </View>
-            <View style={styles.startedQuestionView}>
-              <View style={styles.rowStyle}>
-                <ButtonWithImage
-                  text={'Started now \n' + this.state.date + ''}
-                  onPress={this._handleDatePress}
-                  imageSource={require('../Resources/nowClock.png')}
-                  backgroundColor={'#8129c7'}
-                  color={'#ffffff'}
-                />
-                <ButtonWithImage
-                  text={'Started Before\n'}
-                  onPress={this._handlePress}
-                  imageSource={require('../Resources/beforeClock.png')}
-                  backgroundColor={'#9966a1'}
-                  color={'#ffffff'}
-                />
-              </View>
-            </View>
-            <View style={styles.datePicker}>
-              <Image source={require('../Resources/calendarIcon.png')} />
-            </View>
             <View style={styles.header}>
               <Text style={styles.headerText}>Where does it hurt?</Text>
             </View>
@@ -212,14 +191,6 @@ class painForm extends React.Component {
                 onPress={this._handlePress}
                 imageSource={require('../Resources/intensePain.png')}
                 backgroundColor={'#7ce9ba'}
-                color={'#000000'}
-              />
-
-              <ButtonWithImage
-                text={'Cornell Pain'}
-                onPress={this._handlePress}
-                imageSource={require('../Resources/happy.png')}
-                backgroundColor={'#fcdc4d'}
                 color={'#000000'}
               />
             </View>

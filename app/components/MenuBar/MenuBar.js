@@ -116,6 +116,7 @@ class MenuBar extends React.Component {
 
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         {page}
         <View style={styles.addButton}>
           <Modal
@@ -138,9 +139,16 @@ class MenuBar extends React.Component {
                 imageSource={require('../Resources/intensePain.png')}
                 backgroundColor={QUICK_LOG_COLOR}
                 onPress={() => {
-                  this.setState({
-                    selectedID: SYMPTOM_LOG_CHOOSER
-                  });
+                  this.setState(
+                    {
+                      selectedID: SYMPTOM_LOG_CHOOSER
+                    },
+                    () => {
+                      this.setState({
+                        buttonsVisible: false
+                      });
+                    }
+                  );
                 }}
                 height={75}
                 width={75}
