@@ -148,8 +148,10 @@ class MenuBar extends React.Component {
         return <Settings />
         break
       case SYMPTOMS_LIST:
-        return <FlatListCard data={this.state.data} extraData={this.state} />
+        return <ChooseLogScreen />
         break
+        // return <FlatListCard data={this.state.data} extraData={this.state} />
+        // break
       case SYMPTOM_LOG_CHOOSER:
         return <ChooseLogScreen />
         break
@@ -162,37 +164,13 @@ class MenuBar extends React.Component {
     return (
       <View style={styles.container}>
         {page}
-        <View style={styles.addButton}>
-          <Modal
-            onSwipe={() => this.setState({ menuVisible: false })}
-            swipeDirection='down'
-            onBackdropPress={() => this.setState({ menuVisible: false })}
-            style={styles.bottomModal}
-            isVisible={this.state.menuVisible}
-          >
-            <View style={styles.menuStyle}>
-              <ButtonWithImage
-                imageSource={require('../Resources/medicine.png')}
-                backgroundColor={QUICK_LOG_COLOR}
-                onPress={() => this._addNewItem('Medicine', 'Medicine')}
-                height={75}
-                width={75}
-                rounded
-              />
-              <ButtonWithImage
-                imageSource={require('../Resources/intensePain.png')}
-                backgroundColor={QUICK_LOG_COLOR}
-                onPress={() => {
-                  this.setState({
-                    selectedID: SYMPTOM_LOG_CHOOSER
-                  })
-                }}
-                height={75}
-                width={75}
-                rounded
-              />
-            </View>
-          </Modal>
+        <View style={styles.addButton}
+          onPress={() => {
+            this.setState({
+              selectedID: SYMPTOM_LOG_CHOOSER
+            })
+          }}
+        >
           <Modal
             onBackdropPress={() => this.setState({ buttonsVisible: false })}
             style={styles.bottomModal}
@@ -279,12 +257,7 @@ class MenuBar extends React.Component {
               height={50}
               onPress={() => {
                 this.setState({
-                  menuVisible: true
-                })
-              }}
-              onLongPress={() => {
-                this.setState({
-                  buttonsVisible: true
+                  selectedID: SYMPTOM_LOG_CHOOSER
                 })
               }}
             />
