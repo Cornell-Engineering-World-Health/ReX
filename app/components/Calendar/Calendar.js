@@ -92,10 +92,17 @@ class Calendar extends PureComponent {
       databaseFakeData();
       console.log('pulling from database');
       
-      Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_id, timestamp, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
+      /*Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_id, timestamp, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));
+          WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));*/
       
+      day = '2018-03-07'
+      // Agenda query
+      Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
+          INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+          INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+          WHERE timestamp != \'1950-01-01 00:00:00\' AND \
+          strftime(\'%Y-%m-%d\',timestamp) = ? ORDER BY timestamp', [day], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));
       return [{
         name: 'Blurred Vision',
         symptom: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
