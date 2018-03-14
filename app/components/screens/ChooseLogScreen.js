@@ -11,6 +11,11 @@ import Database from './Database'
 
 export default class ChooseLogScreen extends React.Component {
 
+
+
+
+  
+
   createTables = function () {
     Database.transaction(tx => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` \
