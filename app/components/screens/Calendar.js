@@ -69,8 +69,6 @@ const flatlistData = [
     ]
   },
 
-
-
   {
     date: new Date('April 1, 2018'),
     data: [
@@ -154,10 +152,8 @@ const flatlistData = [
         note2: ''
       }
     ]
-  },
-
+  }
 ];
-
 
 const defaultData = [];
 class Calendar extends Component {

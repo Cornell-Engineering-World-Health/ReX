@@ -80,63 +80,89 @@ export default (constants = {
     title: 'Default',
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80'
+  },
+  PAIN_IMAGES: [
+    {
+      title: 'BackPain',
+      source: require('../Resources/backPain.png')
+    },
+    {
+      title: 'Headache',
+      source: require('../Resources/headPain.png')
+    },
+    {
+      title: 'ElbowPain',
+      source: require('../Resources/elbowPain.png')
+    },
+    {
+      title: 'FootPain',
+      source: require('../Resources/footPain.png')
+    },
+    {
+      title: 'HeartPain',
+      source: require('../Resources/heartPain.png')
+    },
+    {
+      title: 'KneePain',
+      source: require('../Resources/kneePain.png')
+    },
+    {
+      title: 'LegPain',
+      source: require('../Resources/legPain.png')
+    },
+    {
+      title: 'StomachPain',
+      source: require('../Resources/stomachPain.png')
+    }
+  ],
+  IMAGES: {
+    afternoon: require('../Resources/afternoon.png'),
+    back: require('../Resources/back.png'),
+    backPain: require('../Resources/backPain.png'),
+    birthday: require('../Resources/birthday.png'),
+    brain: require('../Resources/brain.png'),
+    calendar: require('../Resources/calendar.png'),
+    checkmark: require('../Resources/checkmark.png'),
+    default: require('../Resources/default.png'),
+    elbowPain: require('../Resources/elbowPain.png'),
+    evening: require('../Resources/evening.png'),
+    footPain: require('../Resources/footPain.png'),
+    glasses: require('../Resources/glasses.png'),
+    headPain: require('../Resources/headPain.png'),
+    heartPain: require('../Resources/heartPain.png'),
+    homeIcon: require('../Resources/homeIcon.png'),
+    intensePain: require('../Resources/intensePain.png'),
+    kneePain: require('../Resources/kneePain.png'),
+    legPain: require('../Resources/legPain.png'),
+    medicine: require('../Resources/medicine.png')
+    //TODO: FINISH ADDING IMAGE CONSTANTS
   }
 });
-
+let types = [
+  constants.BLURRED_VISION,
+  constants.PILL,
+  constants.HEADACHE,
+  constants.NECKPAIN,
+  constants.KNEEPAIN,
+  constants.LEGPAIN,
+  constants.FOOTPAIN
+];
 export function getColor(type) {
-  switch (type) {
-    case constants.BLURRED_VISION.title:
-      return constants.BLURRED_VISION.backgroundColor;
-      break;
-    case constants.PILL.title:
-      return constants.PILL.backgroundColor;
-      break;
-    case constants.HEADACHE.title:
-      return constants.HEADACHE.backgroundColor;
-      break;
-    case constants.NECKPAIN.title:
-      return constants.NECKPAIN.backgroundColor;
-      break;
-    case constants.KNEEPAIN.title:
-      return constants.KNEEPAIN.backgroundColor;
-      break;
-    case constants.LEGPAIN.title:
-      return constants.LEGPAIN.backgroundColor;
-      break;
-    case constants.FOOTPAIN.title:
-      return constants.FOOTPAIN.backgroundColor;
-      break;
-    default:
-      return constants.DEFAULT.backgroundColor;
+  for (var x = 0; x < types.length; x++) {
+    if (type == types[x].title) {
+      return types[x].backgroundColor;
+    }
   }
+  return DEFAULT.backgroundColor;
 }
 
 export function getTranslucentColor(type) {
-  switch (type) {
-    case constants.BLURRED_VISION.title:
-      return constants.BLURRED_VISION.translucentColor;
-      break;
-    case constants.PILL.title:
-      return constants.PILL.translucentColor;
-      break;
-    case constants.HEADACHE.title:
-      return constants.HEADACHE.translucentColor;
-      break;
-    case constants.NECKPAIN.title:
-      return constants.NECKPAIN.translucentColor;
-      break;
-    case constants.KNEEPAIN.title:
-      return constants.KNEEPAIN.translucentColor;
-      break;
-    case constants.LEGPAIN.title:
-      return constants.LEGPAIN.translucentColor;
-      break;
-    case constants.FOOTPAIN.title:
-      return constants.FOOTPAIN.translucentColor;
-      break;
-    default:
-      return constants.DEFAULT.translucentColor;
+  for (var x = 0; x < types.length; x++) {
+    if (type == types[x].title) {
+      return types[x].translucentColor;
+    }
   }
+  return DEFAULT.translucentColor;
 }
 
 //export {constants, getColor, getTranslucentColor};
