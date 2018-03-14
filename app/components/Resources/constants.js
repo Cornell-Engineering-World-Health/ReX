@@ -47,7 +47,14 @@ export default (constants = {
     title: 'Default',
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80',
-  }
+  },
+  mainColor: '#ededed',
+  secondaryColor: '#b8b8b8',
+  blue: '#79ADDC',
+  purple: '#ab87b8',
+  cyan: '#7fdecb',
+  red: '#E85D75',
+
 });
 
 export function getColor(type){

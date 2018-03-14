@@ -16,12 +16,22 @@ import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
+import constants from '../Resources/constants';
 
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 const styles = StyleSheet.create({
+  topInfo: {
+    height: ((Dimensions.get('window').height)*.348),
+    backgroundColor: '#ffffff',
+    marginLeft: 2,
+    marginRight: 2,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
   separator: {
-    backgroundColor: '#f2f2f2',
+    //backgroundColor: '#f2f2f2',
+    backgroundColor: 'black',
     height: StyleSheet.hairlineWidth,
     marginLeft: 40,
     marginRight: 40
@@ -33,11 +43,15 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     padding: 20,
-    alignItems: 'center'
   },
   welcomeText: {
-    color: 'white',
-    fontSize: 60
+    color: constants.secondaryColor,
+    fontSize: 30,
+  },
+  nameText: {
+    color: 'black',
+    fontSize: 28,
+    fontWeight: '800',
   },
   subHeader: {
     marginLeft: 20,
@@ -48,14 +62,18 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   subHeaderText: {
-    color: '#e5e5e5',
-    fontSize: 30
+    color: constants.secondaryColor,
+    fontSize: 18
   },
   medicineViewContainer: {
     flex: 1,
-    justifyContent: 'space-around'
+    justifyContent: 'flex-end',
+    borderWidth: 1,
+    borderRadius: ((Dimensions.get('window').height)*.27),
+    overflow: 'hidden',
   },
   medicineViewRow: {
+    height: ((Dimensions.get('window').height)*.27),
     flexDirection: 'row'
   },
   medicineButton: {
@@ -63,9 +81,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
     //backgroundColor: MEDICINE_BUTTON_BACKGROUND_COLOR,
-    height: 100
+    margin: 0,
   },
   imageStyle: {
     width: 100,
@@ -174,7 +193,7 @@ const medicineNight = [
     time: '8:00 AM',
     note: 'Take on empty stomach.',
     pillDesign: 'index1',
-    completed: true
+    completed: false
   }
 ];
 
@@ -275,30 +294,31 @@ class Home extends React.Component {
     let currentDate = new Date();
     return (
       <ImageBackground
-        style={{ flex: 1 }}
-        source={require('../Resources/purpleGradient.jpg')}
+        style={{ flex: 1,backgroundColor: '#ffffff' }}
       >
         <View style={styles.pageContainer}>
           <View>
-            <View style={styles.header}>
-              <Text style={styles.welcomeText}>Welcome</Text>
-              <Text style={styles.welcomeText}>{USERNAME}</Text>
-            </View>
-            <View style={styles.subHeader}>
-              <Text style={styles.subHeaderText}>
-                {weekdays[currentDate.getDay()]}
-              </Text>
-              <Text style={styles.subHeaderText}>
-                {months[currentDate.getMonth()]} {currentDate.getDate()}
-              </Text>
+            <View style={styles.topInfo}>
+              <View style={styles.header}>
+                <Text style={styles.welcomeText}>Welcome</Text>
+                <Text style={styles.nameText}>{USERNAME}</Text>
+              </View>
+              <View style={styles.subHeader}>
+                <Text style={styles.subHeaderText}>
+                  {weekdays[currentDate.getDay()]}
+                </Text>
+                <Text style={styles.subHeaderText}>
+                  {months[currentDate.getMonth()]} {currentDate.getDate()}
+                </Text>
+              </View>
             </View>
             <View>
-              <View style={styles.separator} />
             </View>
           </View>
           <View style={styles.medicineViewContainer}>
             <View style={styles.medicineViewRow}>
               <TouchableOpacity
+                activeOpacity={.5}
                 style={styles.medicineButton}
                 onPress={() =>
                   this.setState({
@@ -308,12 +328,13 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/morning.png')}
+                  source={require('../Resources/morningColor.png')}
                 >
                   {medicineCompletion[0]}
                 </ImageBackground>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={.5}
                 style={styles.medicineButton}
                 onPress={() =>
                   this.setState({
@@ -323,7 +344,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/afternoon.png')}
+                  source={require('../Resources/afternoonColor.png')}
                 >
                   {medicineCompletion[1]}
                 </ImageBackground>
@@ -331,6 +352,7 @@ class Home extends React.Component {
             </View>
             <View style={styles.medicineViewRow}>
               <TouchableOpacity
+                activeOpacity={.5}
                 style={styles.medicineButton}
                 onPress={() =>
                   this.setState({
@@ -340,12 +362,13 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/evening.png')}
+                  source={require('../Resources/eveningColor.png')}
                 >
                   {medicineCompletion[2]}
                 </ImageBackground>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={.5}
                 style={styles.medicineButton}
                 onPress={() =>
                   this.setState({
@@ -355,7 +378,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/night.png')}
+                  source={require('../Resources/nightColor.png')}
                 >
                   {medicineCompletion[3]}
                 </ImageBackground>
