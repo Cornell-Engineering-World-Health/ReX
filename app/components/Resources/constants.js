@@ -1,36 +1,40 @@
+/*
+***To use an image, import {IMAGES} from the '../Resources/constants' (make sure to 
+include braces) and then call the image with IMAGES._____ (Ex: IMAGES.afternoon)
+*/
 export const IMAGES = {
-  afternoon: require('../Resources/afternoon.png'),
-  back: require('../Resources/back.png'),
-  backPain: require('../Resources/backPain.png'),
-  birthday: require('../Resources/birthday.png'),
-  brain: require('../Resources/brain.png'),
-  calendar: require('../Resources/calendar.png'),
-  checkmark: require('../Resources/checkmark.png'),
-  default: require('../Resources/default.png'),
-  elbowPain: require('../Resources/elbowPain.png'),
-  evening: require('../Resources/evening.png'),
-  footPain: require('../Resources/footPain.png'),
-  glasses: require('../Resources/glasses.png'),
-  headPain: require('../Resources/headPain.png'),
-  heartPain: require('../Resources/heartPain.png'),
-  homeIcon: require('../Resources/homeIcon.png'),
-  intensePain: require('../Resources/intensePain.png'),
-  kneePain: require('../Resources/kneePain.png'),
-  legPain: require('../Resources/legPain.png'),
-  medicine: require('../Resources/medicine.png'),
-  morning: require('../Resources/morning.png'),
-  neckPain: require('../Resources/neckPain.png'),
-  night: require('../Resources/night.png'),
-  pillBottle: require('../Resources/pillBottle.png'),
-  plusSign2: require('../Resources/plusSign2.png'),
-  profile: require('../Resources/profile.png'),
-  profilePic: require('../Resources/profilePic.png'),
-  purpleCircle: require('../Resources/purpleCircle.png'),
-  purpleGradient: require('../Resources/purpleGradient.jpg'),
-  purpleGradient2: require('../Resources/purpleGradient2.jpg'),
-  scale: require('../Resources/scale.png'),
-  settings: require('../Resources/settings.png'),
-  stomachPain: require('../Resources/stomachPain.png')
+  afternoon: require('../Resources/Images/afternoon.png'),
+  back: require('../Resources/Images/back.png'),
+  backPain: require('../Resources/Images/backPain.png'),
+  birthday: require('../Resources/Images/birthday.png'),
+  brain: require('../Resources/Images/brain.png'),
+  calendar: require('../Resources/Images/calendar.png'),
+  checkmark: require('../Resources/Images/checkmark.png'),
+  default: require('../Resources/Images/default.png'),
+  elbowPain: require('../Resources/Images/elbowPain.png'),
+  evening: require('../Resources/Images/evening.png'),
+  footPain: require('../Resources/Images/footPain.png'),
+  glasses: require('../Resources/Images/glasses.png'),
+  headPain: require('../Resources/Images/headPain.png'),
+  heartPain: require('../Resources/Images/heartPain.png'),
+  homeIcon: require('../Resources/Images/homeIcon.png'),
+  intensePain: require('../Resources/Images/intensePain.png'),
+  kneePain: require('../Resources/Images/kneePain.png'),
+  legPain: require('../Resources/Images/legPain.png'),
+  medicine: require('../Resources/Images/medicine.png'),
+  morning: require('../Resources/Images/morning.png'),
+  neckPain: require('../Resources/Images/neckPain.png'),
+  night: require('../Resources/Images/night.png'),
+  pillBottle: require('../Resources/Images/pillBottle.png'),
+  plusSign2: require('../Resources/Images/plusSign2.png'),
+  profile: require('../Resources/Images/profile.png'),
+  profilePic: require('../Resources/Images/profilePic.png'),
+  purpleCircle: require('../Resources/Images/purpleCircle.png'),
+  purpleGradient: require('../Resources/Images/purpleGradient.jpg'),
+  purpleGradient2: require('../Resources/Images/purpleGradient2.jpg'),
+  scale: require('../Resources/Images/scale.png'),
+  settings: require('../Resources/Images/settings.png'),
+  stomachPain: require('../Resources/Images/stomachPain.png')
 };
 export const COLOR = {
   summaryGray: '#b8b8b8',
@@ -155,6 +159,15 @@ let types = [
   constants.HEARTPAIN,
   constants.STOMACHPAIN
 ];
+
+/**
+Pass in a string that represents which pain you are having (Ex: Headache, Back Pain)
+Returns default image if title is not found in stored image list.
+
+Precondition: title is a string
+
+Available titles are found in the constants variable of this file.
+*/
 export function getSource(title) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
@@ -163,6 +176,7 @@ export function getSource(title) {
   }
   return DEFAULT.image;
 }
+
 export function getColor(type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
