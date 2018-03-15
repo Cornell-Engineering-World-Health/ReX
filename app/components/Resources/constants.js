@@ -1,6 +1,6 @@
 /*
-***To use an image, import {IMAGES} from the '../Resources/constants' (make sure to 
-include braces) and then call the image with IMAGES._____ (Ex: IMAGES.afternoon)
+***To use an image, import {IMAGES} from the '../Resources/constants' (make sure to
+include curly braces) and then call the image with IMAGES._____ (Ex: IMAGES.afternoon)
 */
 export const IMAGES = {
   afternoon: require('../Resources/Images/afternoon.png'),
