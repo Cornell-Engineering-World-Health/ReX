@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants from '../Resources/constants';
+import constants, { IMAGES, COLOR } from '../Resources/constants';
 
-const CHECKED_COLOR = constants.COLOR.medicineCardChecked;
-const UNCHECKED_COLOR = constants.COLOR.medicineCardUnchecked;
+const CHECKED_COLOR = COLOR.medicineCardChecked;
+const UNCHECKED_COLOR = COLOR.medicineCardUnchecked;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: constants.COLOR.cardContainer
+    backgroundColor: COLOR.cardContainer
   },
   imageContainer: {
     borderRadius: 5,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     letterSpacing: 1.5,
-    color: constants.COLOR.cardTitle
+    color: COLOR.cardTitle
   },
   timeContainer: {
     marginTop: 1.5,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 0.6
   },
   note: {
-    color: constants.COLOR.cardNotes,
+    color: COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,
@@ -144,10 +144,10 @@ class MedicineCard extends Component {
     };
     let image1 = null;
     if (this.props.checked) {
-      image1 = require('../Resources/checkmark.png');
+      image1 = IMAGES.checkmark;
     } else {
       if (!this.props.image) {
-        image1 = require('../Resources/purpleCircle.png');
+        image1 = IMAGES.purpleCircle;
       } else {
         image1 = this.props.image;
       }

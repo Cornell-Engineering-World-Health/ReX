@@ -1,13 +1,50 @@
+export const IMAGES = {
+  afternoon: require('../Resources/afternoon.png'),
+  back: require('../Resources/back.png'),
+  backPain: require('../Resources/backPain.png'),
+  birthday: require('../Resources/birthday.png'),
+  brain: require('../Resources/brain.png'),
+  calendar: require('../Resources/calendar.png'),
+  checkmark: require('../Resources/checkmark.png'),
+  default: require('../Resources/default.png'),
+  elbowPain: require('../Resources/elbowPain.png'),
+  evening: require('../Resources/evening.png'),
+  footPain: require('../Resources/footPain.png'),
+  glasses: require('../Resources/glasses.png'),
+  headPain: require('../Resources/headPain.png'),
+  heartPain: require('../Resources/heartPain.png'),
+  homeIcon: require('../Resources/homeIcon.png'),
+  intensePain: require('../Resources/intensePain.png'),
+  kneePain: require('../Resources/kneePain.png'),
+  legPain: require('../Resources/legPain.png'),
+  medicine: require('../Resources/medicine.png'),
+  morning: require('../Resources/morning.png'),
+  neckPain: require('../Resources/neckPain.png'),
+  night: require('../Resources/night.png'),
+  pillBottle: require('../Resources/pillBottle.png'),
+  plusSign2: require('../Resources/plusSign2.png'),
+  profile: require('../Resources/profile.png'),
+  profilePic: require('../Resources/profilePic.png'),
+  purpleCircle: require('../Resources/purpleCircle.png'),
+  purpleGradient: require('../Resources/purpleGradient.jpg'),
+  purpleGradient2: require('../Resources/purpleGradient2.jpg'),
+  scale: require('../Resources/scale.png'),
+  settings: require('../Resources/settings.png'),
+  stomachPain: require('../Resources/stomachPain.png')
+};
+export const COLOR = {
+  summaryGray: '#b8b8b8',
+  cardContainer: '#ffffff',
+  cardNotes: '#808080',
+  cardTitle: '#373737',
+  cardTimestamp: '#a9a9a9',
+  medicineCardChecked: '#e6ffe6',
+  medicineCardUnchecked: '#ffcccc'
+};
+//TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
+const defaultColor = '#ffffff';
+
 export default (constants = {
-  COLOR: {
-    summaryGray: '#b8b8b8',
-    cardContainer: '#ffffff',
-    cardNotes: '#808080',
-    cardTitle: '#373737',
-    cardTimestamp: '#a9a9a9',
-    medicineCardChecked: '#e6ffe6',
-    medicineCardUnchecked: '#ffcccc'
-  },
   MONTH: [
     'January',
     'February',
@@ -31,111 +68,78 @@ export default (constants = {
     'Friday',
     'Saturday'
   ],
+
   PILL: {
-    image: require('../Resources/medicine.png'),
+    image: IMAGES.medicine,
     title: 'Pill',
     backgroundColor: '#E85D75',
     translucentColor: '#E85D7580'
   },
   HEADACHE: {
-    image: require('../Resources/brain.png'),
+    image: IMAGES.brain,
     title: 'Headache',
     backgroundColor: '#7fdecb',
     translucentColor: '#7fdecb80'
   },
-
   BLURRED_VISION: {
-    image: require('../Resources/glasses.png'),
+    image: IMAGES.glasses,
     title: 'Blurred Vision',
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
   },
-
   NECKPAIN: {
-    image: require('../Resources/neckPain.png'),
+    image: IMAGES.neckPain,
     title: 'Neck Pain',
     backgroundColor: '#FFEE93',
     translucentColor: '#FFEE9380'
   },
   KNEEPAIN: {
-    image: require('../Resources/kneePain.png'),
+    image: IMAGES.kneePain,
     title: 'Knee Pain',
     backgroundColor: '#79ADDC',
     translucentColor: '#79ADDC80'
   },
   LEGPAIN: {
-    image: require('../Resources/legPain.png'),
+    image: IMAGES.legPain,
     title: 'Leg Pain',
     backgroundColor: '#f0924c',
     translucentColor: '#f0924c80'
   },
   FOOTPAIN: {
-    image: require('../Resources/footPain.png'),
+    image: IMAGES.footPain,
     title: 'Foot Pain',
     backgroundColor: '#F7AEF8',
     translucentColor: '#F7AEF880'
   },
+  BACKPAIN: {
+    title: 'Back Pain',
+    image: IMAGES.backPain,
+    backgroundColor: defaultColor,
+    translucentColor: defaultColor
+  },
+  ELBOWPAIN: {
+    title: 'Elbow Pain',
+    image: IMAGES.elbowPain,
+    backgroundColor: defaultColor,
+    translucentColor: defaultColor
+  },
+  HEARTPAIN: {
+    title: 'Heart Pain',
+    image: IMAGES.heartPain,
+    backgroundColor: defaultColor,
+    translucentColor: defaultColor
+  },
+  STOMACHPAIN: {
+    title: 'Stomach Pain',
+    image: IMAGES.stomachPain,
+    backgroundColor: defaultColor,
+    translucentColor: defaultColor
+  },
   DEFAULT: {
-    image: require('../Resources/default.png'),
+    image: IMAGES.default,
     title: 'Default',
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80'
-  },
-  PAIN_IMAGES: [
-    {
-      title: 'BackPain',
-      source: require('../Resources/backPain.png')
-    },
-    {
-      title: 'Headache',
-      source: require('../Resources/headPain.png')
-    },
-    {
-      title: 'ElbowPain',
-      source: require('../Resources/elbowPain.png')
-    },
-    {
-      title: 'FootPain',
-      source: require('../Resources/footPain.png')
-    },
-    {
-      title: 'HeartPain',
-      source: require('../Resources/heartPain.png')
-    },
-    {
-      title: 'KneePain',
-      source: require('../Resources/kneePain.png')
-    },
-    {
-      title: 'LegPain',
-      source: require('../Resources/legPain.png')
-    },
-    {
-      title: 'StomachPain',
-      source: require('../Resources/stomachPain.png')
-    }
-  ],
-  IMAGES: {
-    afternoon: require('../Resources/afternoon.png'),
-    back: require('../Resources/back.png'),
-    backPain: require('../Resources/backPain.png'),
-    birthday: require('../Resources/birthday.png'),
-    brain: require('../Resources/brain.png'),
-    calendar: require('../Resources/calendar.png'),
-    checkmark: require('../Resources/checkmark.png'),
-    default: require('../Resources/default.png'),
-    elbowPain: require('../Resources/elbowPain.png'),
-    evening: require('../Resources/evening.png'),
-    footPain: require('../Resources/footPain.png'),
-    glasses: require('../Resources/glasses.png'),
-    headPain: require('../Resources/headPain.png'),
-    heartPain: require('../Resources/heartPain.png'),
-    homeIcon: require('../Resources/homeIcon.png'),
-    intensePain: require('../Resources/intensePain.png'),
-    kneePain: require('../Resources/kneePain.png'),
-    legPain: require('../Resources/legPain.png'),
-    medicine: require('../Resources/medicine.png')
-    //TODO: FINISH ADDING IMAGE CONSTANTS
   }
 });
 let types = [
@@ -145,8 +149,20 @@ let types = [
   constants.NECKPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,
-  constants.FOOTPAIN
+  constants.FOOTPAIN,
+  constants.BACKPAIN,
+  constants.ELBOWPAIN,
+  constants.HEARTPAIN,
+  constants.STOMACHPAIN
 ];
+export function getSource(title) {
+  for (var x = 0; x < types.length; x++) {
+    if (type == types[x].title) {
+      return types[x].image;
+    }
+  }
+  return DEFAULT.image;
+}
 export function getColor(type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {

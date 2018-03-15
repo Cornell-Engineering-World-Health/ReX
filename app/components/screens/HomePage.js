@@ -16,6 +16,7 @@ import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
+import { IMAGES } from '../Resources/constants';
 
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
@@ -217,7 +218,7 @@ class Home extends React.Component {
     checkMark = (
       <Image
         style={{ left: 20, bottom: 3, width: 100, height: 100, opacity: 1 }}
-        source={require('../Resources/checkmark.png')}
+        source={IMAGES.checkMark}
       />
     );
     list = [checkMark, checkMark, checkMark, checkMark];
@@ -274,10 +275,7 @@ class Home extends React.Component {
     let medicineCompletion = this._renderButtons();
     let currentDate = new Date();
     return (
-      <ImageBackground
-        style={{ flex: 1 }}
-        source={require('../Resources/purpleGradient2.jpg')}
-      >
+      <ImageBackground style={{ flex: 1 }} source={IMAGES.purpleGradient2}>
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.header}>
@@ -308,7 +306,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/morning.png')}
+                  source={IMAGES.morning}
                 >
                   {medicineCompletion[0]}
                 </ImageBackground>
@@ -323,7 +321,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/afternoon.png')}
+                  source={IMAGES.afternoon}
                 >
                   {medicineCompletion[1]}
                 </ImageBackground>
@@ -340,7 +338,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/evening.png')}
+                  source={IMAGES.evening}
                 >
                   {medicineCompletion[2]}
                 </ImageBackground>
@@ -355,7 +353,7 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/night.png')}
+                  source={IMAGES.night}
                 >
                   {medicineCompletion[3]}
                 </ImageBackground>

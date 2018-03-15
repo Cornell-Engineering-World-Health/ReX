@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants from '../Resources/constants';
+import constants, { COLOR } from '../Resources/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: constants.COLOR.cardContainer
+    backgroundColor: COLOR.cardContainer
   },
   imageContainer: {
     borderRadius: 5
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 19,
     letterSpacing: 1.5,
-    color: constants.COLOR.cardTitle
+    color: COLOR.cardTitle
   },
   timeContainer: {
     marginTop: 1.5,
@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
   },
   timeStamp: {
     fontSize: 16,
-    color: constants.COLOR.cardTimestamp,
+    color: COLOR.cardTimestamp,
     fontWeight: '600',
     letterSpacing: 0.6
   },
   note: {
-    color: constants.COLOR.cardNotes,
+    color: COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,

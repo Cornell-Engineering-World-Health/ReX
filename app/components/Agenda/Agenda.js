@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Card from '../Card/Card.js';
-import constants from '../Resources/constants';
+import COLOR from '../Resources/constants';
 
 class Agenda extends Component {
   static propTypes = {
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '400',
     letterSpacing: 1.0,
-    color: constants.COLOR.summaryGray,
+    color: COLOR.summaryGray,
     marginLeft: 10
   },
   dateText: {
     fontSize: 15,
     fontWeight: '400',
     letterSpacing: 1.0,
-    color: constants.COLOR.summaryGray,
+    color: COLOR.summaryGray,
     marginRight: 10
   }
 });
