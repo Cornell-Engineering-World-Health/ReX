@@ -20,24 +20,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.cardContainer
   },
   imageContainer: {
-    borderRadius: 5
-  },
-  imageRightBuffer: {
-    position: 'absolute',
-    marginLeft: 82,
-    paddingTop: 120,
-    paddingRight: 18
+    borderRadius: 5,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   imageStyle: {
-    height: 100,
-    width: 100
-  },
-  imageStyle2: {
-    position: 'absolute',
-    marginTop: 23,
-    marginLeft: 23,
-    height: 50,
-    width: 50,
+    height: 75,
+    width: 75,
     resizeMode: 'cover'
   },
   descriptionContainer: {
@@ -179,18 +169,8 @@ class Card extends PureComponent {
               >
                 <View style={styles.container}>
                   <View style={imageContainerStyle}>
-                    <View style={styles.imageStyle} />
-                    <Image style={styles.imageStyle2} source={image} />
+                    <Image style={styles.imageStyle} source={image} />
                   </View>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      marginLeft: 82,
-                      paddingTop: 120,
-                      paddingRight: 18,
-                      backgroundColor: this.props.backgroundColor
-                    }}
-                  />
 
                   <View style={styles.descriptionContainer}>
                     <View>

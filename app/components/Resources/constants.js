@@ -44,7 +44,7 @@ export const COLOR = {
   cardTitle: '#373737',
   cardTimestamp: '#a9a9a9',
   medicineCardChecked: '#e6ffe6',
-  medicineCardUnchecked: '#ffcccc'
+  medicineCardUnchecked: '#ffc2b3'
 };
 //TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';

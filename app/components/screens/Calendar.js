@@ -71,7 +71,70 @@ const flatlistData = [
       }
     ]
   },
-
+  {
+    date: new Date('March 17, 2018'),
+    data: [
+      {
+        id: 19,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 20,
+        medicineNote: 'Morning Medicine Missed',
+        timeStamp: '9:00 AM',
+        backgroundColor: COLOR.medicineCardUnchecked
+      },
+      {
+        id: 21,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 22,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 23,
+        medicineNote: 'Morning Medicine Missed',
+        timeStamp: '9:00 AM',
+        backgroundColor: COLOR.medicineCardUnchecked
+      },
+      {
+        id: 24,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 25,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 26,
+        medicineNote: 'Morning Medicine Missed',
+        timeStamp: '9:00 AM',
+        backgroundColor: COLOR.medicineCardUnchecked
+      },
+      {
+        id: 27,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 28,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 29,
+        medicineNote: 'Morning Medicine Missed',
+        timeStamp: '9:00 AM',
+        backgroundColor: COLOR.medicineCardUnchecked
+      }
+    ]
+  },
   {
     date: new Date('March 10, 2018'),
     data: [
