@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, Button } from 'react-native';
-import HeadacheForm from '../screens/HeadacheForm';
-import BackPainForm from '../screens/BackPainForm';
-
 const HEADACHE_FORM = 'headache';
 const BACKPAIN_FORM = 'backpain';
 const MEDICINE_VIEW_HOME = 'homeview';
