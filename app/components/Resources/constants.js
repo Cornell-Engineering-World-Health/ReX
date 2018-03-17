@@ -34,7 +34,8 @@ export const IMAGES = {
   purpleGradient2: require('../Resources/Images/purpleGradient2.jpg'),
   scale: require('../Resources/Images/scale.png'),
   settings: require('../Resources/Images/settings.png'),
-  stomachPain: require('../Resources/Images/stomachPain.png')
+  stomachPain: require('../Resources/Images/stomachPain.png'),
+  expand: require('../Resources/Images/expand.png')
 };
 export const COLOR = {
   summaryGray: '#b8b8b8',

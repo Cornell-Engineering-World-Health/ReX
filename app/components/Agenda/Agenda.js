@@ -6,10 +6,12 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import Card from '../Card/Card.js';
-import { COLOR } from '../Resources/constants';
+import { COLOR, IMAGES } from '../Resources/constants';
+import Modal from 'react-native-modal';
 
 class Agenda extends Component {
   static propTypes = {
@@ -20,6 +22,9 @@ class Agenda extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      expandVisible: false
+    };
   }
 
   _onDelete = () => {
@@ -38,6 +43,7 @@ class Agenda extends Component {
           renderItem={({ item, index }) => {
             return (
               <Card
+                medicineNote={item.medicineNote}
                 image={item.image}
                 title={item.title}
                 cardData={item.cardData}
@@ -48,16 +54,7 @@ class Agenda extends Component {
                 swiperActive={true}
                 buttonActive={true}
                 iconName={item.iconName}
-                buttonsRight={[
-                  {
-                    onPress: (item.onPress = () => {
-                      this._onDelete(item.id);
-                    }),
-
-                    text: 'Delete',
-                    type: 'delete'
-                  }
-                ]}
+                buttonsRight={item.buttonsRight}
                 buttonsLeft={item.buttonsLeft}
                 onCloseSwipeout={this._onClose}
                 onPress={this.props.onPressAgenda}
@@ -69,8 +66,8 @@ class Agenda extends Component {
     } else {
       return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 50, textAlign: 'center' }}>
-            Woo Hoo! Nothing happened today!
+          <Text style={{ fontSize: 20, textAlign: 'center' }}>
+            No Events Logged
           </Text>
         </View>
       );
@@ -79,8 +76,13 @@ class Agenda extends Component {
 
   render() {
     let page = this._renderAgenda();
+    let modalPage = page;
+    if (this.state.expandVisible) {
+      page = null;
+    }
+
     return (
-      <View style={{ marginLeft: 10, flex: 1 }}>
+      <View style={{ marginLeft: 5, flex: 1 }}>
         <View
           style={{
             justifyContent: 'space-between',
@@ -88,20 +90,54 @@ class Agenda extends Component {
             alignItems: 'center'
           }}
         >
-          <Text style={summaryText}>Summary</Text>
-          <Text style={styles.dateText}>{this.props.date}</Text>
+          <Text style={styles.summaryText}>Summary</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.dateText}>{this.props.date}</Text>
+            <TouchableOpacity
+              onPress={() => this.setState({ expandVisible: true })}
+            >
+              <Image source={IMAGES.expand} style={styles.expandStyle} />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ flex: 1 }}>{page}</View>
+        <Modal
+          onBackdropPress={() => this.setState({ expandVisible: false })}
+          isVisible={this.state.expandVisible}
+          style={styles.modalStyle}
+        >
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={styles.summaryText}>Summary</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.dateText}>{this.props.date}</Text>
+              <TouchableOpacity
+                onPress={() => this.setState({ expandVisible: true })}
+              >
+                <Image source={IMAGES.expand} style={styles.expandStyle} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>{modalPage}</View>
+        </Modal>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  summaryHead: {
-    marginTop: 0,
-    marginLeft: 23,
-    display: 'flex'
+  modalStyle: {
+    flex: 1
+  },
+  expandStyle: {
+    width: 25,
+    height: 25,
+    resizeMode: 'cover'
   },
   summaryText: {
     fontSize: 25,
@@ -115,10 +151,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     letterSpacing: 1.0,
     color: COLOR.cardNotes,
-    marginRight: 10
+    marginRight: 3
   }
 });
-
-const { summaryText, summaryHead, eventCard, cardElements } = styles;
 
 export default Agenda;

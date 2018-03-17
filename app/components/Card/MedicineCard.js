@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated
+} from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import constants, { IMAGES, COLOR } from '../Resources/constants';
 
@@ -102,6 +109,13 @@ class MedicineCard extends Component {
   };
   constructor(props) {
     super(props);
+    this.state = {
+      fade: new Animated.Value(0)
+    };
+  }
+
+  componentDidMount() {
+    Animated.timing(this.state.fade, { toValue: 1, duration: 500 }).start();
   }
 
   _handlePress = () => {
@@ -132,7 +146,8 @@ class MedicineCard extends Component {
     }
 
     descriptionContainerStyle.push({
-      backgroundColor: descriptionBackground
+      backgroundColor: descriptionBackground,
+      opacity: this.state.fade
     });
 
     imageContainerStyle.push({
@@ -166,33 +181,32 @@ class MedicineCard extends Component {
             onClose={this.props.onCloseSwipeout}
             onOpen={this.props.onOpenSwipeout}
           >
-            <TouchableOpacity
-              disabled={!this.props.buttonActive}
-              onPress={this.props.onPress}
-            >
-              <View style={styles.container}>
+            <View style={styles.container}>
+              <TouchableOpacity
+                disabled={!this.props.buttonActive}
+                onPress={this.props.onPress}
+              >
                 <View style={imageContainerStyle}>
                   <Image style={styles.checkMark} source={image1} />
                 </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    marginLeft: 82,
-                    paddingTop: 120,
-                    paddingRight: 18,
-                    backgroundColor: this.props.backgroundColor
-                  }}
-                />
-
-                <View style={descriptionContainerStyle}>
-                  <View>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
-                    <Text style={styles.note}> {this.props.note1} </Text>
-                    <Text style={styles.note}> {this.props.note2} </Text>
-                  </View>
+              </TouchableOpacity>
+              <View
+                style={{
+                  position: 'absolute',
+                  marginLeft: 82,
+                  paddingTop: 120,
+                  paddingRight: 18,
+                  backgroundColor: this.props.backgroundColor
+                }}
+              />
+              <Animated.View style={descriptionContainerStyle}>
+                <View>
+                  <Text style={styles.titleText}>{this.props.title}</Text>
+                  <Text style={styles.note}> {this.props.note1} </Text>
+                  <Text style={styles.note}> {this.props.note2} </Text>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </Animated.View>
+            </View>
           </Swipeout>
         </View>
       </View>

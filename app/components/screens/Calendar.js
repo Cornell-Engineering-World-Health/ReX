@@ -12,7 +12,7 @@ import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
-import constants from '../Resources/constants';
+import constants, { COLOR } from '../Resources/constants';
 
 const numOfCals = 500;
 
@@ -21,11 +21,46 @@ const flatlistData = [
     date: new Date('March 9, 2018'),
     data: [
       {
+        id: 16,
+        medicineNote: 'Morning Medicine Complete',
+        timeStamp: '9:00 AM'
+      },
+      {
+        id: 3,
+        cardData: constants.LEGPAIN,
+        timeStamp: '6:00 AM',
+        note1: 'auto-generation',
+        note2: 'based on name'
+      },
+      {
+        id: 17,
+        medicineNote: 'Tylenol Missed',
+        timeStamp: '3:00 PM',
+        backgroundColor: COLOR.medicineCardUnchecked
+      },
+      {
+        id: 4,
+        cardData: constants.KNEEPAIN,
+        timeStamp: '8:00 AM',
+        note1: 'NOTE 1',
+        note2: 'NOTE 2'
+      },
+      {
+        id: 18,
+        medicineNote: 'Evening Medicine Complete',
+        timeStamp: '6:00 PM'
+      },
+      {
         id: 1,
         cardData: constants.HEADACHE,
         timeStamp: '6:00 PM',
         note1: 'High Severity',
         note2: 'manual input'
+      },
+      {
+        id: 13,
+        medicineNote: 'Night Medicine Complete',
+        timeStamp: '11:00 PM'
       },
       {
         id: 2,
@@ -40,6 +75,12 @@ const flatlistData = [
   {
     date: new Date('March 10, 2018'),
     data: [
+      {
+        id: 14,
+        medicineNote: 'Meth Missed',
+        backgroundColor: COLOR.medicineCardUnchecked,
+        timeStamp: '6:00 PM'
+      },
       {
         id: 3,
         cardData: constants.LEGPAIN,
