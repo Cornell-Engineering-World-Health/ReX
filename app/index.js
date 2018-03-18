@@ -4,7 +4,8 @@ import FlatListCard from './components/screens/FlatListCard';
 import MenuBar from './components/MenuBar/MenuBar';
 import { StackNavigator } from 'react-navigation';
 import { View, NavigatorIOS, StatusBar } from 'react-native';
-import Circle from './components/MedicineComponents/Circle'
+import Circle from './components/MedicineComponents/Circle';
+import Settings from './components/screens/Settings';
 
 class main extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class main extends React.Component {
   }
   
   render() {
-    return <Circle />;
+    return <MenuBar />;
   }
 }
 
