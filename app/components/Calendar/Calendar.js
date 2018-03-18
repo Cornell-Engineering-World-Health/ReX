@@ -4,36 +4,14 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
-import Database from '../../Database';
+import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 import {getColor, getTranslucentColor} from '../Resources/constants';
 
 const { width } = Dimensions.get("window");
 
-databaseFakeData = () => {
-    console.log('faking data')
-    Database.transaction(tx => {
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Intensity": "Medium","Duration": "40"}\')')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (3, 1,\'2018-03-07 00:00:00\', 3)')
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (4,\'{"Intensity": "Medium","Duration": "50"}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (4, 1,\'2018-03-07 00:01:00\', 4)')
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,\'{"Intensity": "Medium","Duration": "30"}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (5, 1,\'2018-03-06 00:01:00\', 5)')
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Intensity": "Medium","Duration": "60"}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (6, 1,\'2018-03-06 18:01:00\', 6)')
-    },err=> console.log(err), () => console.log('faking data complete'));
-    /*Database.transaction(tx => {
-        tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));*/
-    /*Database.transaction(tx => {
-        tx.executeSql('Select * from event_details_tbl',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));*/
-}
-    
+
+
 
 class Calendar extends PureComponent {
     static propTypes = {
@@ -80,7 +58,6 @@ class Calendar extends PureComponent {
         }
 
         this.graphRefs = [];
-
         this._onDatePress = this._onDatePress.bind(this);
     }
 
@@ -88,156 +65,88 @@ class Calendar extends PureComponent {
       this.initVisualization();
     }
 
-
-    pullFromDataBase = () => {
-      databaseFakeData();
-      console.log('pulling from database');
-      
-      /*Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_id, timestamp, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
-          INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));*/
-      
-      day = '2018-03-07'
-      // Agenda query
-      Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
-          INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-          WHERE timestamp != \'1950-01-01 00:00:00\' AND \
-          strftime(\'%Y-%m-%d\',timestamp) = ? ORDER BY timestamp', [day], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));
-      return [{
-        name: constants.BLURRED_VISION.title,
-        symptom:      [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
-        intensities:  [0, 0, 5, 0, 0, 0, 0, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 5, 0, 5, 0],
-      },
-      {
-        name: constants.PILL.title,
-        symptom:      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
-        intensities:  [5, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 9, 10, 1, 10, 0, 0, 0, 0, 0, 1, 0, 2, 2, 0, 9, 0, 0, 0, 0, 0],
-      },
-      {
-        name: constants.HEADACHE.title,
-        symptom:      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 5, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.NECKPAIN.title,
-        symptom:      [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.KNEEPAIN.title,
-        symptom:      [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.LEGPAIN.title,
-        symptom:      [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 0, 5, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.FOOTPAIN.title,
-        symptom:      [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      }
-    ];
-    }
-
-    //TODO PULL FROM DB, DATA FORMAT:[{graphColor, symptom, intensities},{},{}]
     initVisualization = () => {
-      let monthData = this.pullFromDataBase();
-
-
-      let dot1 = this.state.dot1;
-      let dot2 = this.state.dot2;
-      let dot3 = this.state.dot3;
-
-      for(var i = 0; i < monthData.length; i++){
-        monthData[i].symptom.map((val, j) => {
-          let tempStyle;
-          let backColor = getColor(monthData[i].name)
-          tempStyle = [{backgroundColor: backColor}, styles.dot]
-
-          if(val == 1){
-            if(this.state.dot1[j] == styles.generic){
-              dot1[j] = tempStyle;
-            } else if(this.state.dot2[j] == styles.generic){
-              dot2[j] = tempStyle;
-            } else if(this.state.dot3[j] == styles.generic){
-              dot3[j] = tempStyle;
-            }
+      pullFromDataBase(this.props.currMonth, null, data => {
+        let dot1 = this.state.dot1;
+        let dot2 = this.state.dot2;
+        let dot3 = this.state.dot3;
+        let firstIntensities;
+        let firstColor;
+        let first = true;
+        Object.keys(data).forEach(function(key) {
+          if(first){
+            first = false;
+            firstColor = getTranslucentColor(key);
+            firstIntensities = data[key].intensities;
           }
-        });
-      }
+          //Set Dots
+          data[key].intensities.map((val, j) => {
+            let tempStyle;
+            let backColor = getColor(key)
+            tempStyle = [{backgroundColor: backColor}, styles.dot]
 
-      var color = getTranslucentColor(monthData[0].name);
-      this.setState({
-        dot1: dot1,
-        dot2: dot2,
-        dot3: dot3,
-        graphColor: color,
-        intensities: monthData[0].intensities,
-      });
-    }
-
-
-/**
-    updateVisualization = (type) => {
-      let monthData = this.pullFromDataBase();
-      for(var i = 0; i < monthData.length; i++){
-        if(monthData[i].name == type){
-          let color = getTranslucentColor(type);
-
-          this.setState({
-            graphColor: color,
-            intensities: monthData[i].intensities,
-          }, function(){
-            this.graphRefs.forEach(function(g) {
-              if(g){
-                g.slideInUp(500);
+            if(val != undefined){
+              if(dot1[j] == styles.generic){
+                dot1[j] = tempStyle;
+              } else if(dot2[j] == styles.generic){
+                dot2[j] = tempStyle;
+              } else if(dot3[j] == styles.generic){
+                dot3[j] = tempStyle;
               }
-            });
+            }
+
           });
-          return;
-        }
-      }
+
+        });
+
+        this.setState({
+          dot1: dot1,
+          dot2: dot2,
+          dot3: dot3,
+          graphColor: firstColor,
+          intensities: firstIntensities,
+        });
+
+      });
+
     }
 
-*/
-    // DOWN THEN UP
     updateVisualization = (type) => {
-      let monthData = this.pullFromDataBase();
-      for(var i = 0; i < monthData.length; i++){
-        if(monthData[i].name == type){
-          let color = getTranslucentColor(type);
+      pullFromDataBase(this.props.currMonth, null, data => {
+        Object.keys(data).forEach(function(key) {
+          if(key == type){
+            let color = getTranslucentColor(type);
 
-          let last = this.graphRefs.length-1;
-          while(last > -1  && this.graphRefs[last] == undefined){
-            last--;
-          }
+            let last = this.graphRefs.length-1;
+            console.log(this.graphRefs)
+            while(last > -1  && this.graphRefs[last] == undefined){
+              last--;
+            }
+            for(var j=0; j<this.graphRefs.length; j++){
 
-          for(var j=0; j<this.graphRefs.length; j++){
-
-            if(this.graphRefs[j]){
-              this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
-              if(j == last){
-                setTimeout(()=> {
-                  this.setState({
-                    graphColor: color,
-                    intensities: monthData[i].intensities,
-                  }, function(){
-                    this.graphRefs.forEach(function(g) {
-                      if(g){
-                        g.transitionTo({bottom: 0}, 400, 'ease');
-                      }
+              if(this.graphRefs[j]){
+                this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
+                if(j == last){
+                  setTimeout(()=> {
+                    this.setState({
+                      graphColor: color,
+                      intensities: data[key].intensities,
+                    }, function(){
+                      this.graphRefs.forEach(function(g) {
+                        if(g){
+                          g.transitionTo({bottom: 0}, 400, 'ease');
+                        }
+                      });
                     });
-                  });
-                }, 200)
+                  }, 200)
+                }
               }
             }
+            return;
+
           }
-          return;
-        }
-      }
+        })
+      });
     }
 
 
@@ -315,8 +224,8 @@ class Calendar extends PureComponent {
         if (dot3[this.state.selected] == styles.genericGray){
           dot3[this.state.selected] = styles.generic
         }
-        if(baseBars[i] == styles.baseBar){
-          baseBars[i] = styles.baseBarSelected
+        if(baseBars[this.state.selected] == styles.baseBar){
+          baseBars[this.state.selected] = styles.baseBarSelected
         }
 
         baseBars[this.state.selected] = styles.baseBar
@@ -404,7 +313,7 @@ class Calendar extends PureComponent {
             var barHolder = [];
             let h = 0;
             if(this.state.intensities){
-              h = 3.13*this.state.intensities[i];
+              h = 3.13*(this.state.intensities[i] || 0);
             }
 
             return(

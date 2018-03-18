@@ -12,9 +12,11 @@ import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
+import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 
 const numOfCals = 500;
+
 
 const flatlistData = [
   {
@@ -168,7 +170,7 @@ class Calendar extends Component {
       data.push({ key: i });
     }
     this.state = {
-      last: 499,
+      last: numOfCals,
       data: data,
       currentDate: new Date()
     };
