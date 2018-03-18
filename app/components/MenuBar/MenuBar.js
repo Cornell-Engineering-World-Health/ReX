@@ -15,6 +15,7 @@ import Settings from '../screens/Settings';
 import FlatListCard from '../screens/FlatListCard';
 import Calendar from '../screens/Calendar';
 import ChooseLogScreen from '../screens/Log';
+import { IMAGES } from '../Resources/constants';
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -116,6 +117,7 @@ class MenuBar extends React.Component {
 
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         {page}
         <View style={styles.addButton}>
           <Modal
@@ -127,7 +129,7 @@ class MenuBar extends React.Component {
           >
             <View style={styles.menuStyle}>
               <ButtonWithImage
-                imageSource={require('../Resources/medicine.png')}
+                imageSource={IMAGES.medicine}
                 backgroundColor={QUICK_LOG_COLOR}
                 onPress={() => this._addNewItem(constants.PILL)}
                 height={75}
@@ -135,12 +137,19 @@ class MenuBar extends React.Component {
                 rounded
               />
               <ButtonWithImage
-                imageSource={require('../Resources/intensePain.png')}
+                imageSource={IMAGES.intensePain}
                 backgroundColor={QUICK_LOG_COLOR}
                 onPress={() => {
-                  this.setState({
-                    selectedID: SYMPTOM_LOG_CHOOSER
-                  });
+                  this.setState(
+                    {
+                      selectedID: SYMPTOM_LOG_CHOOSER
+                    },
+                    () => {
+                      this.setState({
+                        buttonsVisible: false
+                      });
+                    }
+                  );
                 }}
                 height={75}
                 width={75}
@@ -158,7 +167,7 @@ class MenuBar extends React.Component {
                 <ButtonWithImage
                   text={'Headache'}
                   onPress={() => this._addNewItem(constants.HEADACHE)}
-                  imageSource={require('../Resources/headPain.png')}
+                  imageSource={IMAGES.headPain}
                   backgroundColor={'#7c0920'}
                   color={'#ffffff'}
                   rounded
@@ -166,7 +175,7 @@ class MenuBar extends React.Component {
                 <ButtonWithImage
                   text={'Neck Pain'}
                   onPress={() => this._addNewItem(constants.NECKPAIN)}
-                  imageSource={require('../Resources/neckPain.png')}
+                  imageSource={IMAGES.neckPain}
                   backgroundColor={'#b43649'}
                   color={'#ffffff'}
                   rounded
@@ -178,7 +187,7 @@ class MenuBar extends React.Component {
                       this._addNewItem(constants.LEGPAIN);
                     })
                   }
-                  imageSource={require('../Resources/legPain.png')}
+                  imageSource={IMAGES.legPain}
                   backgroundColor={'#7c0920'}
                   color={'white'}
                   rounded
@@ -187,7 +196,7 @@ class MenuBar extends React.Component {
             </View>
           </Modal>
           <ButtonSelector
-            imageSource={require('../Resources/homeIcon.png')}
+            imageSource={IMAGES.homeIcon}
             width={50}
             height={50}
             rounded
@@ -202,7 +211,7 @@ class MenuBar extends React.Component {
           />
 
           <ButtonSelector
-            imageSource={require('../Resources/calendar.png')}
+            imageSource={IMAGES.calendar}
             width={50}
             height={50}
             rounded
@@ -221,7 +230,7 @@ class MenuBar extends React.Component {
             <ButtonWithImage
               shadow
               rounded
-              imageSource={require('../Resources/plusSign2.png')}
+              imageSource={IMAGES.plusSign2}
               width={50}
               height={50}
               onPress={() => {
@@ -237,7 +246,7 @@ class MenuBar extends React.Component {
             />
           </GestureRecognizer>
           <ButtonSelector
-            imageSource={require('../Resources/pillBottle.png')}
+            imageSource={IMAGES.pillBottle}
             width={50}
             height={50}
             rounded
@@ -251,7 +260,7 @@ class MenuBar extends React.Component {
             }}
           />
           <ButtonSelector
-            imageSource={require('../Resources/settings.png')}
+            imageSource={IMAGES.settings}
             width={50}
             height={50}
             rounded
