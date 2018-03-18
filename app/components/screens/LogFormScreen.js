@@ -7,6 +7,10 @@ import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
 import { StackNavigator } from 'react-navigation'
 import Database from './Database'
+import Moment from 'moment'
+
+event_id_count = 100
+event_details_id_count = 100
 
 export default class ChooseLogScreen extends React.Component {
 
@@ -21,22 +25,22 @@ export default class ChooseLogScreen extends React.Component {
           AND event_type_id = ?;', [log_type], (tx, { rows }) => {
             json_rows = JSON.parse(rows._array[0].fields)
             keysArray = Object.keys(json_rows)
-            // console.log(json_rows)
 
             var valArray = []
 
             for (let i = 0; i < keysArray.length; i++) {
               var input_types = []
-              // console.log(json_rows[keysArray[i]])
               valArray[i] = json_rows[keysArray[i]]
-              console.log(valArray[0])
 
               Database.transaction(tx => (tx.executeSql('SELECT view_name FROM field_to_view_tbl \
                     WHERE field_name = ?;', [keysArray[i]], (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name
                       this.setState({
                         input_type_array: input_types,
-                        values: valArray
+                        value_labels: keysArray,
+                        values: valArray,
+                        submit_vals: {},
+                        event_type_id: log_type
                       })
                     })), err => console.log(err))
             }
@@ -47,6 +51,27 @@ export default class ChooseLogScreen extends React.Component {
     this.state = {
       input_type_array: input_types
     }
+  }
+
+  valueChange (label, value) {
+    this.state.submit_vals[label] = value
+  }
+
+  submit () {
+    let event_type_id = this.state.event_type_id
+    let values = JSON.stringify(this.state.submit_vals)
+    let timestamp = Moment().format('YYYY-MM-DD HH:mm:ss')
+
+    Database.transaction(tx => {
+      tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
+      tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)', [event_id_count, event_type_id, timestamp, event_details_id_count])
+    }, err => console.log(err), () => console.log('added'))
+
+    event_id_count++
+    event_details_id_count++
+
+    this.props.navigation.state.params.onLog()
+    this.props.navigation.pop()
   }
 
   render () {
@@ -64,7 +89,9 @@ export default class ChooseLogScreen extends React.Component {
                   max_val={4}
                   value={SCALE_LABELS.indexOf(this.state.values[key])}
                   scale_labels={SCALE_LABELS}
-                  title_text={'Intensity'} />)
+                  title_text={'Intensity'}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'NumericalPickerInputType') {
               return (
                 <NumericalPickerInputType
@@ -75,7 +102,9 @@ export default class ChooseLogScreen extends React.Component {
                   min={0}
                   max={60}
                   unit={'minutes'}
-                  title_text={'Duration of Pain'} />)
+                  title_text={'Duration of Pain'}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'TextInputType') {
               return (
                 <TextInputType
@@ -83,7 +112,9 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_green}
                   title_text_style={styles.title_text}
                   placeholder_text={'Type here...'}
-                  title_text={'Other Symptoms'} />)
+                  title_text={'Other Symptoms'}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
             }
           })}
           {  /*    <ChecklistInputType
@@ -132,7 +163,9 @@ export default class ChooseLogScreen extends React.Component {
           <TouchableOpacity style={styles.submit_button}>
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity> */ }
-          <TouchableOpacity style={styles.submit_button}>
+          <TouchableOpacity
+            style={styles.submit_button}
+            onPress={this.submit.bind(this)}>
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity>
         </View>

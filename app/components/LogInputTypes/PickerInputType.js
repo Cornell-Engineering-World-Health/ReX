@@ -21,7 +21,10 @@ export default class PickerInputType extends React.Component {
           <Picker
             style={styles.picker}
             selectedValue={this.state.value}
-            onValueChange={(val) => this.setState({value: val})}>
+            onValueChange={(val) => {
+              this.setState({value: val})
+              this.props.handleChange(val)
+            }}>
             {this.state.picker_values.map((prop, key) => {
               return (
                 <Picker.Item key={key} label={prop} value={prop} color='white' />

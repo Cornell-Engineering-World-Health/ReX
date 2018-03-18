@@ -20,6 +20,7 @@ export default class ScaleSlideInputType extends React.Component {
         value: parseFloat(value)
       }
     })
+    this.props.valueChange(this.props.val_label, value)
   }
 
   render () {

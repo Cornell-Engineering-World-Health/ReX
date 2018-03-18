@@ -133,6 +133,12 @@ class MenuBar extends React.Component {
       selectedID: SYMPTOMS_LIST
     })
   }
+  onLog () {
+    console.log('return to cla')
+    this.setState({
+      selectedID: CALENDAR_PAGE
+    })
+  }
   _renderScreen () {
     switch (this.state.selectedID) {
       case HOME_PAGE:
@@ -147,13 +153,9 @@ class MenuBar extends React.Component {
       case SETTINGS_PAGE:
         return <Settings />
         break
-      case SYMPTOMS_LIST:
-        return <ChooseLogScreen />
-        break
-        // return <FlatListCard data={this.state.data} extraData={this.state} />
-        // break
       case SYMPTOM_LOG_CHOOSER:
-        return <ChooseLogScreen />
+        return <ChooseLogScreen
+          onLog={this.onLog.bind(this)} />
         break
     }
   }

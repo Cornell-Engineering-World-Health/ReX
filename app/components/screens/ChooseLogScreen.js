@@ -14,7 +14,7 @@ export default class ChooseLogScreen extends React.Component {
 
 
 
-  
+
 
   createTables = function () {
     Database.transaction(tx => {
@@ -58,13 +58,11 @@ export default class ChooseLogScreen extends React.Component {
     images_array = []
 
     Database.transaction(tx => (tx.executeSql('SELECT * FROM event_type_tbl',[], (tx, { rows }) => {
-      console.log("rows")
       json_rows = rows._array
       for (let i = 0; i < json_rows.length; i++) {
         log_types_array[i] = json_rows[i].event_type_name
         event_ids_array[i] = json_rows[i].event_type_id
       }
-      console.log(rows)
 
       this.setState({
         log_types: log_types_array,
@@ -82,6 +80,9 @@ export default class ChooseLogScreen extends React.Component {
   onSubmit (value) {
   }
 
+  returnToCal(){
+  }
+
   render () {
 
     const { navigate } = this.props.navigation
@@ -93,7 +94,7 @@ export default class ChooseLogScreen extends React.Component {
           <TouchableOpacity
             key = {key}
             style={styles.log_button}
-            onPress={() => navigate('Form', { log_type: this.state.event_ids[key] })}>
+            onPress={() => navigate('Form', { onLog: this.returnToCal.bind(this), log_type: this.state.event_ids[key] })}>
             <Text style={styles.log_button_text}>{prop}</Text>
             <Image
               style={styles.log_button_img}

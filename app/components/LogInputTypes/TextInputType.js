@@ -17,7 +17,10 @@ export default class TextInputType extends React.Component {
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
         <TextInput style={styles.text}
-          onChangeText={(text) => this.setState({text})}
+          onChangeText={(text) => {
+            this.setState({text})
+            this.props.valueChange(this.props.val_label, text)
+          }}
           placeholder={this.state.placeholder_text}
         />
       </View>
