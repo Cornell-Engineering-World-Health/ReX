@@ -1,5 +1,5 @@
 import { PieChart } from 'react-native-svg-charts'
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from 'react-native'
 import React, { Component } from 'react'
 import constants from '../Resources/constants';
 import MedicineCard from '../Card/MedicineCard'
@@ -136,43 +136,48 @@ class Circle extends Component {
          <Text > Evening 2 </Text>
          </TouchableOpacity> */}
          <FlatList
-         data = {[0, 0, 0]}
+         data = {[0]}
          renderItem = {({ item, index }) => {
-             
+            return (
+            <View>
+            <MedicineCard
+            title = "My name i"
+            timeStamp = "4:20 AM"
+            note1 = "My name iSS eashan"
+            note2 = "Im very tired"
+            cardData = {constants.HEADACHE}
+            backgroundColor = "#ffff"
+            clicked = {true}
+            onPress = {() => this.updateMeds(0, 1)}
+            buttonActive = {true}
+            />
+           <MedicineCard
+            title = "My name i"
+            timeStamp = "4:20 AM"
+            note1 = "My name iSS eashan"
+            note2 = "Im very tired"
+            cardData = {constants.HEADACHE}
+            backgroundColor = "#ffff"
+            clicked = {true}
+            onPress = {() => this.updateMeds(0, 2)}
+            buttonActive = {true}
+            />
+           <MedicineCard
+            title = "My name i"
+            timeStamp = "4:20 AM"
+            note1 = "My name iSS eashan"
+            note2 = "Im very tired"
+            cardData = {constants.HEADACHE}
+            backgroundColor = "#ffff"
+            clicked = {true}
+            onPress = {() => this.updateMeds(0, 3)}
+            buttonActive = {true}
+            /> 
+            </View>
+            );
          }}
-         <MedicineCard
-         title = "My name i"
-         timeStamp = "4:20 AM"
-         note1 = "My name iSS eashan"
-         note2 = "Im very tired"
-         cardData = {constants.HEADACHE}
-         backgroundColor = "#ffff"
-         clicked = {true}
-         onPress = {() => this.updateMeds(0, 1)}
-         buttonActive = {true}
          />
-        <MedicineCard
-         title = "My name i"
-         timeStamp = "4:20 AM"
-         note1 = "My name iSS eashan"
-         note2 = "Im very tired"
-         cardData = {constants.HEADACHE}
-         backgroundColor = "#ffff"
-         clicked = {true}
-         onPress = {() => this.updateMeds(0, 2)}
-         buttonActive = {true}
-         />
-        <MedicineCard
-         title = "My name i"
-         timeStamp = "4:20 AM"
-         note1 = "My name iSS eashan"
-         note2 = "Im very tired"
-         cardData = {constants.HEADACHE}
-         backgroundColor = "#ffff"
-         clicked = {true}
-         onPress = {() => this.updateMeds(0, 3)}
-         buttonActive = {true}
-         />
+         
          </View>
     )
   }
