@@ -44,6 +44,8 @@ export default class Settings extends Component{
     handle_icon_press = (index) =>
     this.setState({icon : index, isModalVisible_avatar: !this.state.isModalVisible_avatar});
 
+    
+
     toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
     toggleModal_birthday = () =>
@@ -60,12 +62,12 @@ export default class Settings extends Component{
     render(){
         var bgColor = '#DCE3F4';
         var prof_icons = [
+          require('../Resources/icons8-wolf-100.png'),
+          require('../Resources/icons8-zebra-100.png'),
+          require('../Resources/icons8-shark-100.png'),
           require('../Resources/icons8-jellyfish-100.png'),
           require('../Resources/icons8-owl-100.png'),
-          require('../Resources/icons8-shark-100.png'),
           require('../Resources/icons8-hamster-100.png'),
-          require('../Resources/icons8-zebra-100.png'),
-          require('../Resources/icons8-wolf-100.png'),
         ]
     return (
     <View style={styles.container}>
@@ -82,6 +84,59 @@ export default class Settings extends Component{
             titleInfo='Edit'
             onPress = {this.toggleModal}
           />
+         
+          <SettingsList.Item
+            title='Birthday'
+            hasNavArrow = {false}
+            onPress = {this.toggleModal_birthday}
+            switchState={this.state.switchValue}
+            titleInfo = { moment(this.state.birthday).format("MMM D, YYYY")}
+            switchOnValueChange={this.onValueChange}
+            titleInfoStyle={styles.titleInfoStyle}
+          />
+          <SettingsList.Item
+            title='Height'
+            onPress = {this.toggleModal_height}
+            hasNavArrow = {false}
+            titleInfo = {this.state.height}
+            switchState={this.state.switchValue}
+            switchOnValueChange={this.onValueChange}
+            titleInfoStyle={styles.titleInfoStyle}
+          />
+          <SettingsList.Item
+            title='Weight'
+            hasNavArrow = {false}
+            onPress = {this.toggleModal_weight}
+            titleInfo = {this.state.weight}
+            switchState={this.state.switchValue}
+            switchOnValueChange={this.onValueChange}
+            titleInfoStyle={styles.titleInfoStyle}
+          />
+          <SettingsList.Header headerStyle={{marginTop:15}}/>
+          <SettingsList.Item
+            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/quicklog.png')}/>}
+            title='Quick Log'
+            hasSwitch = {true}
+            hasNavArrow = {false}
+            switchState={this.state.switchValue}
+            switchOnValueChange={this.onValueChange}
+            titleInfoStyle={styles.titleInfoStyle}
+          />
+          <SettingsList.Header headerStyle={{marginTop:15}}/>
+          <SettingsList.Item
+            title='Contact'
+            onPress={() => Alert.alert('Option C')}
+            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/address-book.png')}/>}
+          />
+           <SettingsList.Item
+            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/faq.png')}/>}
+            title='Quick Log'
+            title='FAQ'
+            onPress={() => Alert.alert('Short FAQ section?')}
+          />
+        </SettingsList>
+      
+    </View>
           <Modal isVisible={this.state.isModalVisible_birthday} style={styles.modal}>
              <View style={styles.contain}>
              <DatePickerIOS
@@ -158,7 +213,7 @@ export default class Settings extends Component{
             <TextInput
               textAlign = 'center'
               style={{height: 50, fontSize: 20}} 
-              placeholder= "Enter Name"
+              placeholder="Enter Name"
               onChangeText={(name) => this.setState({name})}
             />
             <TouchableOpacity style={styles.button} onPress={this.toggleModal} alignItems='center'>
@@ -166,87 +221,34 @@ export default class Settings extends Component{
             </TouchableOpacity>
             </View>
             <Modal isVisible= {this.state.isModalVisible_avatar} style={styles.modal}>
-              <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center'  }}>
+              <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
                 <View flexDirection='row'> 
-                <TouchableOpacity onPress = { () => this.handle_icon_press(1)}>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(1)}>
                   <Image style= {styles.avatar} source={prof_icons[1]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress = { () => this.handle_icon_press(0)}>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(0)}>
                   <Image style= {styles.avatar} source={prof_icons[0]}/> 
                 </TouchableOpacity>
                 </View>
-                <View flexDirection = 'row'>
-                <TouchableOpacity onPress = { () => this.handle_icon_press(2)}>
+                <View flexDirection='row'> 
+                <TouchableOpacity onPress = {() => this.handle_icon_press(2)}>
                   <Image style= {styles.avatar} source={prof_icons[2]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress = { () => this.handle_icon_press(3)}>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(3)}>
                   <Image style= {styles.avatar} source={prof_icons[3]}/> 
                 </TouchableOpacity>
                 </View>
-                <View flexDirection = 'row'>
-                <TouchableOpacity onPress = { () => this.handle_icon_press(4)}>
+                <View flexDirection='row'> 
+                <TouchableOpacity onPress = {() => this.handle_icon_press(4)}>
                   <Image style= {styles.avatar} source={prof_icons[4]}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress = { () => this.handle_icon_press(5)}>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(5)}>
                   <Image style= {styles.avatar} source={prof_icons[5]}/> 
                 </TouchableOpacity>
                 </View>
               </View>
             </Modal>
           </Modal>
-
-          <SettingsList.Item
-            title='Birthday'
-            hasNavArrow = {false}
-            onPress = {this.toggleModal_birthday}
-            switchState={this.state.switchValue}
-            titleInfo = { moment(this.state.birthday).format("MMM D, YYYY")}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Item
-            title='Height'
-            onPress = {this.toggleModal_height}
-            hasNavArrow = {false}
-            titleInfo = {this.state.height}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Item
-            title='Weight'
-            hasNavArrow = {false}
-            onPress = {this.toggleModal_weight}
-            titleInfo = {this.state.weight}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Header headerStyle={{marginTop:15}}/>
-          <SettingsList.Item
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/health.png')}/>}
-            title='Quick Log'
-            hasSwitch = {true}
-            hasNavArrow = {false}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Header headerStyle={{marginTop:15}}/>
-          <SettingsList.Item
-            title='Contact'
-            onPress={() => Alert.alert('Option C')}
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/address-book.png')}/>}
-          />
-           <SettingsList.Item
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/quicklog.png')}/>}
-            title='Quick Log'
-            title='FAQ'
-            onPress={() => Alert.alert('Short FAQ section?')}
-          />
-        </SettingsList>
-      
-    </View>
     </View>
   );
 }
@@ -263,7 +265,7 @@ const styles = StyleSheet.create({
     avatar:{
       height: 100,
       width: 100,
-      margin:5,
+      margin: 7.
     },
     imageStyle:{
       marginLeft:5,
