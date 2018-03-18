@@ -9,33 +9,53 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  FlatList
+  FlatList,
+  Animated
 } from 'react-native';
 import Moment from 'moment';
 import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
+import { IMAGES } from '../Resources/constants';
 
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 const styles = StyleSheet.create({
+  separator: {
+    backgroundColor: '#f2f2f2',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 40,
+    marginRight: 40
+  },
   pageContainer: {
     flex: 1,
     justifyContent: 'space-between'
   },
   header: {
+    marginTop: 20,
     padding: 20,
-    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   welcomeText: {
     color: 'white',
-    fontSize: 60,
-    textAlign: 'center'
+    fontSize: 60
+  },
+  subHeader: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  subHeaderText: {
+    color: '#e5e5e5',
+    fontSize: 30
   },
   medicineViewContainer: {
-    height: 200
+    flex: 1,
+    justifyContent: 'space-around'
   },
   medicineViewRow: {
     flexDirection: 'row'
@@ -44,8 +64,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: MEDICINE_BUTTON_BACKGROUND_COLOR,
+    justifyContent: 'center',
+    borderRadius: 50,
+    //backgroundColor: MEDICINE_BUTTON_BACKGROUND_COLOR,
     height: 100
   },
   imageStyle: {
@@ -159,6 +180,29 @@ const medicineNight = [
   }
 ];
 
+const weekdays = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+];
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -175,7 +219,7 @@ class Home extends React.Component {
     checkMark = (
       <Image
         style={{ left: 20, bottom: 3, width: 100, height: 100, opacity: 1 }}
-        source={require('../Resources/checkmark.png')}
+        source={IMAGES.checkMark}
       />
     );
     list = [checkMark, checkMark, checkMark, checkMark];
@@ -196,33 +240,33 @@ class Home extends React.Component {
     }
     return list;
   }
-  _handleMorningPress(index) {
+  _handleMorningPress(index, complete) {
     morningArray = this.state.morning;
-    morningArray[index].completed = true;
+    morningArray[index].completed = complete;
 
     this.setState({
       morning: morningArray
     });
   }
-  _handleAfternoonPress(index) {
+  _handleAfternoonPress(index, complete) {
     afternoonArray = this.state.afternoon;
-    afternoonArray[index].completed = true;
+    afternoonArray[index].completed = complete;
 
     this.setState({
       afternoon: afternoonArray
     });
   }
-  _handleEveningPress(index) {
+  _handleEveningPress(index, complete) {
     eveningArray = this.state.evening;
-    eveningArray[index].completed = true;
+    eveningArray[index].completed = complete;
 
     this.setState({
       evening: eveningArray
     });
   }
-  _handleNightPress(index) {
+  _handleNightPress(index, complete) {
     nightArray = this.state.night;
-    nightArray[index].completed = true;
+    nightArray[index].completed = complete;
 
     this.setState({
       night: nightArray
@@ -230,15 +274,26 @@ class Home extends React.Component {
   }
   render() {
     let medicineCompletion = this._renderButtons();
-
+    let currentDate = new Date();
     return (
-      <ImageBackground
-        style={{ flex: 1 }}
-        source={require('../Resources/purpleGradient.jpg')}
-      >
+      <ImageBackground style={{ flex: 1 }} source={IMAGES.purpleGradient}>
         <View style={styles.pageContainer}>
-          <View style={styles.header}>
-            <Text style={styles.welcomeText}>Welcome back {USERNAME} </Text>
+          <View>
+            <View style={styles.header}>
+              <Text style={styles.welcomeText}>Welcome</Text>
+              <Text style={styles.welcomeText}>{USERNAME}</Text>
+            </View>
+            <View style={styles.subHeader}>
+              <Text style={styles.subHeaderText}>
+                {weekdays[currentDate.getDay()]}
+              </Text>
+              <Text style={styles.subHeaderText}>
+                {months[currentDate.getMonth()]} {currentDate.getDate()}
+              </Text>
+            </View>
+            <View>
+              <View style={styles.separator} />
+            </View>
           </View>
           <View style={styles.medicineViewContainer}>
             <View style={styles.medicineViewRow}>
@@ -252,11 +307,10 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/morning.png')}
+                  source={IMAGES.morning}
                 >
                   {medicineCompletion[0]}
                 </ImageBackground>
-                <Text style={{ fontSize: 20 }}>Morning</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.medicineButton}
@@ -268,11 +322,10 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/afternoon.png')}
+                  source={IMAGES.afternoon}
                 >
                   {medicineCompletion[1]}
                 </ImageBackground>
-                <Text style={{ fontSize: 20 }}>Afternoon</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.medicineViewRow}>
@@ -286,11 +339,10 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/evening.png')}
+                  source={IMAGES.evening}
                 >
                   {medicineCompletion[2]}
                 </ImageBackground>
-                <Text style={{ fontSize: 20 }}>Evening</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.medicineButton}
@@ -302,11 +354,10 @@ class Home extends React.Component {
               >
                 <ImageBackground
                   style={styles.imageStyle}
-                  source={require('../Resources/night.png')}
+                  source={IMAGES.night}
                 >
                   {medicineCompletion[3]}
                 </ImageBackground>
-                <Text style={{ fontSize: 20 }}>Night</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -327,12 +378,21 @@ class Home extends React.Component {
                 return (
                   <MedicineCard
                     buttonActive={true}
+                    swiperActive={item.completed}
                     title={item.title}
                     timeStamp={item.time}
                     note1={item.quantity + ' ' + item.dosage}
                     note2={item.note}
                     checked={item.completed}
-                    onPress={() => this._handleAfternoonPress(index)}
+                    onPress={() => this._handleAfternoonPress(index, true)}
+                    buttonsRight={[
+                      {
+                        onPress: () => this._handleAfternoonPress(index, false),
+
+                        text: 'Undo',
+                        type: 'delete'
+                      }
+                    ]}
                   />
                 );
               }}
@@ -355,12 +415,21 @@ class Home extends React.Component {
                 return (
                   <MedicineCard
                     buttonActive={true}
+                    swiperActive={item.completed}
                     title={item.title}
                     timeStamp={item.time}
                     note1={item.quantity + ' ' + item.dosage}
                     note2={item.note}
                     checked={item.completed}
-                    onPress={() => this._handleMorningPress(index)}
+                    onPress={() => this._handleMorningPress(index, true)}
+                    buttonsRight={[
+                      {
+                        onPress: () => this._handleMorningPress(index, false),
+
+                        text: 'Undo',
+                        type: 'delete'
+                      }
+                    ]}
                   />
                 );
               }}
@@ -384,11 +453,20 @@ class Home extends React.Component {
                   <MedicineCard
                     buttonActive={true}
                     title={item.title}
+                    swiperActive={item.completed}
                     timeStamp={item.time}
                     note1={item.quantity + ' ' + item.dosage}
                     note2={item.note}
                     checked={item.completed}
-                    onPress={() => this._handleEveningPress(index)}
+                    onPress={() => this._handleEveningPress(index, true)}
+                    buttonsRight={[
+                      {
+                        onPress: () => this._handleEveningPress(index, false),
+
+                        text: 'Undo',
+                        type: 'delete'
+                      }
+                    ]}
                   />
                 );
               }}
@@ -412,11 +490,20 @@ class Home extends React.Component {
                   <MedicineCard
                     buttonActive={true}
                     title={item.title}
+                    swiperActive={item.completed}
                     timeStamp={item.time}
                     note1={item.quantity + ' ' + item.dosage}
                     note2={item.note}
                     checked={item.completed}
-                    onPress={() => this._handleNightPress(index)}
+                    onPress={() => this._handleNightPress(index, true)}
+                    buttonsRight={[
+                      {
+                        onPress: () => this._handleNightPress(index, false),
+
+                        text: 'Undo',
+                        type: 'delete'
+                      }
+                    ]}
                   />
                 );
               }}

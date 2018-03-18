@@ -65,7 +65,7 @@ export default class ChooseLogScreen extends React.Component {
     Database.transaction(tx => {
       tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
       tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)', [event_id_count, event_type_id, timestamp, event_details_id_count])
-    }, err => console.log(err), () => console.log('added'))
+    }, err => console.log(err))
 
     event_id_count++
     event_details_id_count++

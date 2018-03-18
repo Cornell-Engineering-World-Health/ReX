@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
- 
+
 
 export default StyleSheet.create({
   head: {
@@ -97,26 +97,11 @@ export default StyleSheet.create({
       marginLeft: 2,
       backgroundColor: "#A0A0A0",
    },
-   headache: {
+   dot: {
        width: 4,
        height: 4,
        borderRadius: 2,
        marginLeft: 2,
-       backgroundColor: "#6dd3bf",
-   },
-   blurred: {
-      width: 4,
-      height: 4,
-      borderRadius: 2,
-      marginLeft: 2,
-      backgroundColor: "#ab87b8",
-   },
-   pill: {
-      width: 4,
-      height: 4,
-      borderRadius: 2,
-      marginLeft: 2,
-      backgroundColor: "#c3496b",
    },
    buttons: {
        display: "flex",

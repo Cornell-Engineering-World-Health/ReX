@@ -52,6 +52,7 @@ class FlatListCard extends React.Component {
           renderItem={({ item, index }) => {
             return (
               <Card
+                cardData={item.cardData}
                 image={item.image}
                 title={item.title}
                 timeStamp={item.timeStamp}

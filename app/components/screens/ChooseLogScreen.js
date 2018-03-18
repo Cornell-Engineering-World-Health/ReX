@@ -8,6 +8,7 @@ import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
 import LogFormScreen from './LogFormScreen'
 import { StackNavigator } from 'react-navigation'
 import Database from './Database'
+import { getSource } from '../Resources/constants'
 
 export default class ChooseLogScreen extends React.Component {
 
@@ -77,8 +78,7 @@ export default class ChooseLogScreen extends React.Component {
     }
   }
 
-  onSubmit (value) {
-  }
+  onSubmit(value) {}
 
   returnToCal(){
   }
@@ -98,54 +98,12 @@ export default class ChooseLogScreen extends React.Component {
             <Text style={styles.log_button_text}>{prop}</Text>
             <Image
               style={styles.log_button_img}
-              source={require('../Resources/headPain.png')} />
+              source={getSource(prop)} />
           </TouchableOpacity>)
       })}
-      {/*
-          <TouchableOpacity
-            style={styles.log_button}
-            onPress={() => navigate('Form', { log_type: 1 })}>
-            <Text style={styles.log_button_text}>Headache</Text>
-            <Image
-              style={styles.log_button_img}
-              source={require('../Resources/headPain.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.log_button}
-            onPress={() => navigate('Form', { log_type: 2 })}>
-            <Text style={styles.log_button_text}>Knee Pain</Text>
-            <Image
-              style={styles.log_button_img}
-              source={require('../Resources/kneePain.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.log_button}
-            onPress={() => navigate('Form')}>
-            <Text style={styles.log_button_text}>Elbow Pain</Text>
-            <Image
-              style={styles.log_button_img}
-              source={require('../Resources/elbowPain.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.log_button}
-            onPress={() => navigate('Form')}>
-            <Text style={styles.log_button_text}>Leg Pain</Text>
-            <Image
-              style={styles.log_button_img}
-              source={require('../Resources/legPain.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.log_button}
-            onPress={() => navigate('Form')}>
-            <Text style={styles.log_button_text}>Back Pain</Text>
-            <Image
-              style={styles.log_button_img}
-              source={require('../Resources/backPain.png')} />
-          </TouchableOpacity>
-          **/}
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -180,4 +138,4 @@ const styles = StyleSheet.create({
     width: 75,
     tintColor: 'white'
   }
-})
+});
