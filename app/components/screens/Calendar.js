@@ -259,7 +259,6 @@ const flatlistData = [
   }
 ];
 
-const defaultData = [];
 class Calendar extends Component {
   constructor(props) {
     super(props);
