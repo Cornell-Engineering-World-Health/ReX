@@ -39,7 +39,7 @@ export default class ChooseLogScreen extends React.Component {
                         input_type_array: input_types,
                         value_labels: keysArray,
                         values: valArray,
-                        submit_vals: {},
+                        submit_vals: json_rows,
                         event_type_id: log_type
                       })
                     })), err => console.log(err))
@@ -61,6 +61,8 @@ export default class ChooseLogScreen extends React.Component {
     let event_type_id = this.state.event_type_id
     let values = JSON.stringify(this.state.submit_vals)
     let timestamp = Moment().format('YYYY-MM-DD HH:mm:ss')
+
+    console.log(values)
 
     Database.transaction(tx => {
       tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
