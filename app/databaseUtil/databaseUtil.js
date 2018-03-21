@@ -1,7 +1,9 @@
 import Database from '../Database';
+import Moment from 'moment';
+import constants from '../components/Resources/constants';
 
 export function formatData(data){
-  console.log(data)
+  //console.log(data)
   dataTemp = {};
   data.forEach(function(ev){
     let d = new Date(ev.timestamp.replace(' ','T'));
@@ -70,15 +72,68 @@ export function pullFromDataBase(month, day, callback){
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != \'1950-01-01 00:00:00\' AND strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
       
- 
-      
-  /*
-  day = '2018-03-07'
-  // Agenda query
-  Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) FROM event_tbl \
-      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != \'1950-01-01 00:00:00\' AND \
-      strftime(\'%Y-%m-%d\',timestamp) = ? ORDER BY timestamp', [day], (tx, { rows }) => console.log(rows._array))),err=>console.log(err));
-      */
+}
+
+function sameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+}
+
+function formatAgenda(data){
+    console.log('reached formatAgenda')
+    console.log(data)
+    agendaFlatList = []
+    data.forEach(function(ele){
+        
+        formattedTime = Moment(ele.timestamp, 'YYYY-MM-DD HH:mm:ss').format('h:mm A')
+        j = JSON.parse(ele.fields)
+        note_value1 = ele.card_field_id1 + " " + j[ele.card_field_id1]
+        note_value2 = ele.card_field_id2 + " " + j[ele.card_field_id2]
+        
+        //TODO: should have error checking here incase json is malformatted
+        //TODO: should use event_type_name for cardData
+        elementRecord = {id: ele.event_id, cardData: constants.HEADACHE, timeStamp: formattedTime, note1: note_value1, note2: note_value2}
+        
+        console.log(elementRecord)
+        
+        let d = new Date(ele.day)
+        d.setTime(d.getTime() + d.getTimezoneOffset()*60*1000 )
+        
+        let foundDate = false
+        for (var i = 0; i < agendaFlatList.length; i++) {
+            console.log('inside for loop')
+            if(sameDay(agendaFlatList[i].date,d)){
+                console.log('adding event')
+                agendaFlatList[i].data.push(elementRecord)
+                foundDate = true
+                break
+            }
+        }
+        
+        if(!foundDate){
+            console.log('adding a record to agendaFlatList')
+            agendaFlatList.push({date: d,data: [elementRecord]})
+        }
+        
+    });
+    
+    console.log('*************** LOGGIND AGENDA FLAT LIST ');
+    console.log(agendaFlatList) 
+    
+   
+  
+  return agendaFlatList
+  
+}
+export function pullAgendaFromDatabase(callback){
+    
+    // Agenda query
+    console.log('reached pullAgendaFromDatabase')
+    Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+    INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+    INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+    WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
+    
+    
 }

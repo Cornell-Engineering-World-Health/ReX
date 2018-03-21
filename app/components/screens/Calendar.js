@@ -12,13 +12,13 @@ import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
-import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
+import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 
 const numOfCals = 500;
 
 
-const flatlistData = [
+/*const flatlistData = [
   {
     date: new Date('March 9, 2018'),
     data: [
@@ -159,7 +159,7 @@ const flatlistData = [
   },
 
 ];
-
+*/
 
 const defaultData = [];
 class Calendar extends Component {
@@ -179,17 +179,19 @@ class Calendar extends Component {
   }
 
   _updateAgenda() {
-    let tempData = null;
+    pullAgendaFromDatabase(flatlistData =>{
+        let tempData = null;
 
-    for (var i = 0; i < flatlistData.length; i++) {
-      if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
-        tempData = flatlistData[i].data;
-        break;
-      }
-    }
-    this.setState({
-      currentAgenda: tempData
-    });
+        for (var i = 0; i < flatlistData.length; i++) {
+          if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
+            tempData = flatlistData[i].data;
+            break;
+          }
+        }
+        this.setState({
+          currentAgenda: tempData
+        });
+    })
   }
 
   getItemLayout = (data, index) => ({
