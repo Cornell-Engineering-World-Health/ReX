@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import constants from '../Resources/constants';
+import {COLOR} from '../Resources/constants';
 
 const width = Dimensions.get('window').width;
 const circleWidth = width*.8;
@@ -29,7 +29,7 @@ export default StyleSheet.create({
     padding: 20,
   },
   welcomeText: {
-    color: constants.PrimaryGray,
+    color: COLOR.PrimaryGray,
     fontSize: 30,
   },
   nameText: {
@@ -46,7 +46,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   subHeaderText: {
-    color: constants.PrimaryGray,
+    color: COLOR.PrimaryGray,
     fontSize: 18
   },
   imageStyle: {

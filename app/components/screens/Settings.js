@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
 import Modal from 'react-native-modal';
+import { IMAGES } from '../Resources/constants';
 
 export default class Settings extends Component {
   constructor(props) {
@@ -77,7 +78,7 @@ export default class Settings extends Component {
                   style={styles.imageStyle}
                   height={60}
                   resizeMode="contain"
-                  source={require('../Resources/profile.png')}
+                  source={IMAGES.profile}
                 />
               }
               hasNavArrow={false}
@@ -115,10 +116,7 @@ export default class Settings extends Component {
 
             <SettingsList.Item
               icon={
-                <Image
-                  style={styles.imageStyle}
-                  source={require('../Resources/birthday.png')}
-                />
+                <Image style={styles.imageStyle} source={IMAGES.birthday} />
               }
               title="Birthday"
               titleInfo={this.state.birthday}

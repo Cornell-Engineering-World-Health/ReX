@@ -16,6 +16,7 @@ import Card from '../Card/Card';
 import HeadacheForm from '../screens/HeadacheForm';
 import BackPainForm from '../screens/BackPainForm';
 import testData from '../Resources/CardTestData';
+import { IMAGES } from '../Resources/constants';
 
 const MAIN_FORM = 'mainform';
 const HEADACHE_FORM = 'headform';
@@ -100,27 +101,6 @@ class painForm extends React.Component {
             <View style={styles.header}>
               <Text style={styles.headerText}> When did this pain start? </Text>
             </View>
-            <View style={styles.startedQuestionView}>
-              <View style={styles.rowStyle}>
-                <ButtonWithImage
-                  text={'Started now \n' + this.state.date + ''}
-                  onPress={this._handleDatePress}
-                  imageSource={require('../Resources/nowClock.png')}
-                  backgroundColor={'#8129c7'}
-                  color={'#ffffff'}
-                />
-                <ButtonWithImage
-                  text={'Started Before\n'}
-                  onPress={this._handlePress}
-                  imageSource={require('../Resources/beforeClock.png')}
-                  backgroundColor={'#9966a1'}
-                  color={'#ffffff'}
-                />
-              </View>
-            </View>
-            <View style={styles.datePicker}>
-              <Image source={require('../Resources/calendarIcon.png')} />
-            </View>
             <View style={styles.header}>
               <Text style={styles.headerText}>Where does it hurt?</Text>
             </View>
@@ -128,7 +108,7 @@ class painForm extends React.Component {
               <ButtonWithImage
                 text={'Back Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/backPain.png')}
+                imageSource={IMAGES.backPain}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
                 onPress={() =>
@@ -140,14 +120,14 @@ class painForm extends React.Component {
               <ButtonWithImage
                 text={'Foot Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/footPain.png')}
+                imageSource={IMAGES.footPain}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
               />
               <ButtonWithImage
                 text={'Head Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/headPain.png')}
+                imageSource={IMAGES.headPain}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
                 onPress={() =>
@@ -161,21 +141,21 @@ class painForm extends React.Component {
               <ButtonWithImage
                 text={'Heart Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/heartPain.png')}
+                imageSource={IMAGES.heartPain}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
               />
               <ButtonWithImage
                 text={'Knee Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/kneePain.png')}
+                imageSource={IMAGES.kneePain}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
               />
               <ButtonWithImage
                 text={'Leg Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/legPain.png')}
+                imageSource={IMAGES.legPain}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
               />
@@ -184,21 +164,21 @@ class painForm extends React.Component {
               <ButtonWithImage
                 text={'Neck Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/neckPain.png')}
+                imageSource={IMAGES.neckPain}
                 backgroundColor={'#7c0920'}
                 color={'#ffffff'}
               />
               <ButtonWithImage
                 text={'Belly Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/stomachPain.png')}
+                imageSource={IMAGES.stomachPain}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
               />
               <ButtonWithImage
                 text={'Elbow Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/elbowPain.png')}
+                imageSource={IMAGES.elbowPain}
                 backgroundColor={'#b43649'}
                 color={'#ffffff'}
               />
@@ -210,16 +190,8 @@ class painForm extends React.Component {
               <ButtonWithImage
                 text={'Intense Pain'}
                 onPress={this._handlePress}
-                imageSource={require('../Resources/intensePain.png')}
+                imageSource={IMAGES.intensePain}
                 backgroundColor={'#7ce9ba'}
-                color={'#000000'}
-              />
-
-              <ButtonWithImage
-                text={'Cornell Pain'}
-                onPress={this._handlePress}
-                imageSource={require('../Resources/happy.png')}
-                backgroundColor={'#fcdc4d'}
                 color={'#000000'}
               />
             </View>
