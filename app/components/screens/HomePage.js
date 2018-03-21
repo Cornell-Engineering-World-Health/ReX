@@ -17,80 +17,11 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
-
+import {HomeMedicineLogger} from '../HomeMedicineLogger'
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
-const styles = StyleSheet.create({
-  topInfo: {
-    height: ((Dimensions.get('window').height)*.348),
-    backgroundColor: '#ffffff',
-    marginLeft: 2,
-    marginRight: 2,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  separator: {
-    //backgroundColor: '#f2f2f2',
-    backgroundColor: 'black',
-    height: StyleSheet.hairlineWidth,
-    marginLeft: 40,
-    marginRight: 40
-  },
-  pageContainer: {
-    flex: 1,
-    justifyContent: 'space-between'
-  },
-  header: {
-    marginTop: 20,
-    padding: 20,
-  },
-  welcomeText: {
-    color: constants.secondaryColor,
-    fontSize: 30,
-  },
-  nameText: {
-    color: 'black',
-    fontSize: 28,
-    fontWeight: '800',
-  },
-  subHeader: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  subHeaderText: {
-    color: constants.secondaryColor,
-    fontSize: 18
-  },
-  medicineViewContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    borderWidth: 1,
-    borderRadius: ((Dimensions.get('window').height)*.27),
-    overflow: 'hidden',
-  },
-  medicineViewRow: {
-    height: ((Dimensions.get('window').height)*.27),
-    flexDirection: 'row'
-  },
-  medicineButton: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    //backgroundColor: MEDICINE_BUTTON_BACKGROUND_COLOR,
-    margin: 0,
-  },
-  imageStyle: {
-    width: 100,
-    height: 100
-  }
-});
+import  styles from './styles';
+
 const medicineMorning = [
   {
     key: 1,
@@ -315,76 +246,7 @@ class Home extends React.Component {
             <View>
             </View>
           </View>
-          <View style={styles.medicineViewContainer}>
-            <View style={styles.medicineViewRow}>
-              <TouchableOpacity
-                activeOpacity={.5}
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'morning'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={require('../Resources/morningColor.png')}
-                >
-                  {medicineCompletion[0]}
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={.5}
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'afternoon'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={require('../Resources/afternoonColor.png')}
-                >
-                  {medicineCompletion[1]}
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.medicineViewRow}>
-              <TouchableOpacity
-                activeOpacity={.5}
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'evening'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={require('../Resources/eveningColor.png')}
-                >
-                  {medicineCompletion[2]}
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={.5}
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'night'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={require('../Resources/nightColor.png')}
-                >
-                  {medicineCompletion[3]}
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <HomeMedicineLogger />
         </View>
         <Modal
           onBackdropPress={() => this.setState({ modalVisible: null })}
