@@ -38,13 +38,11 @@ export const IMAGES = {
   expand: require('../Resources/Images/expand.png')
 };
 export const COLOR = {
-  PrimaryGray: '#ededed',
-  secondaryColor: '#b8b8b8',
+  PrimaryGray: '#b8b8b8',
   blue: '#79ADDC',
   purple: '#ab87b8',
   cyan: '#7fdecb',
   red: '#E85D75',
-
   summaryGray: '#b8b8b8',
   cardContainer: '#ffffff',
   cardNotes: '#808080',

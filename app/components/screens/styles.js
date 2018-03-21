@@ -5,6 +5,7 @@ const width = Dimensions.get('window').width;
 const circleWidth = width*.8;
 const height = Dimensions.get('window').height;
 
+
 export default StyleSheet.create({
   topInfo: {
     height: height - circleWidth - 75,

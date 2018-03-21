@@ -165,6 +165,7 @@ class Home extends React.Component {
   }
 
   _renderButtons() {
+    /**
     checkMark = (
       <Image
         style={{ left: 20, bottom: 3, width: 100, height: 100, opacity: 1 }}
@@ -188,7 +189,9 @@ class Home extends React.Component {
       }
     }
     return list;
+    */
   }
+
   _handleMorningPress(index, complete) {
     morningArray = this.state.morning;
     morningArray[index].completed = complete;
@@ -247,7 +250,16 @@ class Home extends React.Component {
             <View>
             </View>
           </View>
-          <HomeMedicineLogger />
+          <View style={{alignItems: 'center'}}>
+            <HomeMedicineLogger
+              done={[true, false, true, true]}
+              onPress={button => {this._onPress(button)}}
+              handlerMorning={this._handleMorningPress}
+              handlerAfternoon={this._handleAfternoonPress}
+              handlerEvening={this._handleEveningPress}
+              handlerNight={this._handleNightPress}
+            />
+          </View>
         </View>
         <Modal
           onBackdropPress={() => this.setState({ modalVisible: null })}

@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import constants from '../Resources/constants';
+import {COLOR} from '../Resources/constants';
 
 const width = Dimensions.get('window').width;
 const circleWidth = width*.8;
@@ -21,8 +21,10 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
     margin: 0,
+  },
+  buttonContent:{
+    alignItems: 'center',
   },
   imageStyle: {
     width: 100,
@@ -33,39 +35,39 @@ export default StyleSheet.create({
     borderWidth: borderW,
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    borderBottomColor: constants.PrimaryGray,
-    borderRightColor: constants.PrimaryGray,
-    borderTopColor: constants.red,
-    borderLeftColor: constants.red
+    borderBottomColor: COLOR.PrimaryGray,
+    borderRightColor: COLOR.PrimaryGray,
+    borderTopColor: COLOR.red,
+    borderLeftColor: COLOR.red
   },
   topRightQuadrant:{
     borderTopRightRadius: circleWidth,
     borderWidth: borderW,
     borderLeftWidth: 1,
     borderBottomWidth: 1,
-    borderTopColor: constants.cyan,
-    borderRightColor: constants.cyan,
-    borderBottomColor: constants.PrimaryGray,
-    borderLeftColor: constants.PrimaryGray,
+    borderTopColor: COLOR.cyan,
+    borderRightColor: COLOR.cyan,
+    borderBottomColor: COLOR.PrimaryGray,
+    borderLeftColor: COLOR.PrimaryGray,
   },
   bottomLeftQuadrant:{
     borderBottomLeftRadius: circleWidth,
     borderWidth: borderW,
     borderRightWidth: 1,
     borderTopWidth: 1,
-    borderTopColor: constants.PrimaryGray,
-    borderRightColor: constants.PrimaryGray,
-    borderBottomColor: constants.purple,
-    borderLeftColor: constants.purple
+    borderTopColor: COLOR.PrimaryGray,
+    borderRightColor: COLOR.PrimaryGray,
+    borderBottomColor: COLOR.purple,
+    borderLeftColor: COLOR.purple
   },
   bottomRightQuadrant:{
     borderBottomRightRadius: circleWidth,
     borderWidth: borderW,
     borderLeftWidth: 1,
     borderTopWidth: 1,
-    borderTopColor: constants.PrimaryGray,
-    borderLeftColor: constants.PrimaryGray,
-    borderBottomColor: constants.blue,
-    borderRightColor: constants.blue
+    borderTopColor: COLOR.PrimaryGray,
+    borderLeftColor: COLOR.PrimaryGray,
+    borderBottomColor: COLOR.blue,
+    borderRightColor: COLOR.blue
   }
 });
