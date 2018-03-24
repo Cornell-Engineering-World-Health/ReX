@@ -13,7 +13,7 @@ class main extends React.Component {
   }
   
   render() {
-    return <MenuBar />;
+    return <Circle />;
   }
 }
 

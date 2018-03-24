@@ -1,8 +1,9 @@
 import { PieChart } from 'react-native-svg-charts'
 import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from 'react-native'
 import React, { Component } from 'react'
-import constants from '../Resources/constants';
+import constants from '../Resources/constants'
 import MedicineCard from '../Card/MedicineCard'
+import PillCard from '../Card/PillCard'
 
 class Circle extends Component {
   constructor(props) {
@@ -34,8 +35,6 @@ class Circle extends Component {
     //console.log(newData)
     this.setState ({data : newData})
   }
-
-  
   
   render() {
 
@@ -62,14 +61,7 @@ class Circle extends Component {
         <Text style = {styles.headerText2}>
             March 12
         </Text>
-        </View>
-    
-         <FlatList
-         data = {[0]}
-         renderItem = {({ item, index }) => {
-            return (
-            <View>
-             <View>
+        <View>
             <View flexDirection = 'row' style = {styles.images1}>
                 <Image marginRight = {70} marginTop= {10} source = {require('../Resources/night2.png')}/>
                 <Image source = {require('../Resources/icons8-sunrise-50.png')}/> 
@@ -91,169 +83,24 @@ class Circle extends Component {
             style={ { height: 270, marginTop: 30} }
             data={ pieData }
         />    
-            <MedicineCard
-            checked = {this.state.meds[0][0]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(0, 0)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-            checked = {this.state.meds[0][1]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(0, 1)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-            checked = {this.state.meds[0][2]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(0, 2)}
-            buttonActive = {true}
-            />
-             <MedicineCard
-            checked = {this.state.meds[0][3]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(0, 3)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-           checked = {this.state.meds[0][4]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(0, 4)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-            checked = {this.state.meds[1][0]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(1, 0)}
-            buttonActive = {true}
-            /> 
-             <MedicineCard
-            checked = {this.state.meds[1][1]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(1, 1)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-           checked = {this.state.meds[2][0]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(2, 0)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-           checked = {this.state.meds[2][1]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(2, 1)}
-            buttonActive = {true}
-            />
-             <MedicineCard
-             checked = {this.state.meds[3][0]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(3, 0)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-           checked = {this.state.meds[3][1]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(3, 1)}
-            buttonActive = {true}
-            />
-           <MedicineCard
-           checked = {this.state.meds[3][2]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(3, 2)}
-            buttonActive = {true}
-            />  
-            <MedicineCard
-            checked = {this.state.meds[3][3]}
-            title = "My name i"
-            timeStamp = "4:20 AM"
-            note1 = "My name iSS eashan"
-            note2 = "Im very tired"
-            cardData = {constants.HEADACHE}
-            backgroundColor = "#ffff"
-            clicked = {true}
-            onPress = {() => this.updateMeds(3, 3)}
-            buttonActive = {true}
-            />
+        </View>
+        
+    
+         <FlatList
+         data = {[0]}
+         renderItem = {({ item, index }) => {
+            return (
+            <View>
+             
+            <PillCard />
               
             </View>
             );
          }}
          />
          
-         </View>
+        </View>
+     
     )
   }
 }
