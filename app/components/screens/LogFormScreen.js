@@ -119,6 +119,11 @@ export default class ChooseLogScreen extends React.Component {
                   valueChange={this.valueChange.bind(this)} />)
             }
           })}
+          <ChecklistInputType
+            list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
+            input_style={styles.input_container_green}
+            title_text_style={styles.title_text}
+            title_text={'Associated Symptoms'} />
           {  /*    <ChecklistInputType
             list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
             input_style={styles.input_container_green}
