@@ -1,16 +1,16 @@
 export default (constants = {
     HEADACHE_IMAGE: require('../resources/brain.png'),
     HEADACHE_BACKGROUND_COLOR: '#6dd3bf',
-  
+
     DEFAULT_IMAGE: require('../resources/default.png'),
     DEFAULT_BACKGROUND_COLOR: '#ffffff',
-  
+
     NECKPAIN_IMAGE: require('../resources/neckPain.png'),
     NECKPAIN_BACKGROUND_COLOR: '#DBFF33',
-  
+
     LEGPAIN_IMAGE: require('../resources/legPain.png'),
     LEGPAIN_BACKGROUND_COLOR: '#3BEEBD',
-  
+
     KNEEPAIN_IMAGE: require('../resources/kneePain.png'),
     KNEEPAIN_BACKGROUND_COLOR: '#FF5733',
 

@@ -1,18 +1,26 @@
-import React from 'react';
-import PainForm from './components/screens/PainForm';
-import FlatListCard from './components/screens/FlatListCard';
-import MenuBar from './components/MenuBar/MenuBar';
-import { StackNavigator } from 'react-navigation';
-import { View, NavigatorIOS, StatusBar } from 'react-native';
+import React from 'react'
+import PainForm from './components/screens/PainForm'
+import FlatListCard from './components/screens/FlatListCard'
+import MenuBar from './components/MenuBar/MenuBar'
+import { StackNavigator } from 'react-navigation'
+import { View, NavigatorIOS, StatusBar } from 'react-native'
+import {createTables,intializeDatabase} from './databaseUtil/databaseUtil';
 
 class main extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
+    createTables()
+    intializeDatabase()
   }
 
-  render() {
-    return <MenuBar />;
+  componentDidMount () {
+
+  }
+  render () {
+    return <MenuBar />
   }
 }
 
-export default main;
+
+
+export default main
