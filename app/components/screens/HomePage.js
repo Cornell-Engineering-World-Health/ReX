@@ -160,7 +160,9 @@ class Home extends React.Component {
       morning: medicineMorning,
       afternoon: medicineAfternoon,
       evening: medicineEvening,
-      night: medicineNight
+      night: medicineNight,
+      totalAmount: [4, 2, 1, 8],
+      doneAmount: [4, 2, 0, 8],
     };
   }
 
@@ -191,6 +193,7 @@ class Home extends React.Component {
     return list;
     */
   }
+
 
   _handleMorningPress(index, complete) {
     morningArray = this.state.morning;
@@ -224,9 +227,27 @@ class Home extends React.Component {
       night: nightArray
     });
   }
+
+  logAll(index){
+    doneAmount = this.state.doneAmount
+    if(doneAmount[index] == this.state.totalAmount[index]){
+      doneAmount[index] = 0;
+    } else {
+      doneAmount[index] = this.state.totalAmount[index];
+    }
+    this.setState({doneAmount});
+  }
+
   render() {
     let medicineCompletion = this._renderButtons();
     let currentDate = new Date();
+    let done = [];
+    let remaining = [];
+    for(let i = 0; i<this.state.doneAmount.length; i++){
+      done[i] = (this.state.doneAmount[i] == this.state.totalAmount[i]) ? true:false;
+      remaining[i] = this.state.totalAmount[i] - this.state.doneAmount[i]
+    }
+
     return (
       <ImageBackground
         style={{ flex: 1,backgroundColor: '#ffffff' }}
@@ -252,12 +273,13 @@ class Home extends React.Component {
           </View>
           <View style={{alignItems: 'center'}}>
             <HomeMedicineLogger
-              done={[true, false, true, true]}
+              done={done}
               onPress={button => {this._onPress(button)}}
-              handlerMorning={this._handleMorningPress}
-              handlerAfternoon={this._handleAfternoonPress}
-              handlerEvening={this._handleEveningPress}
-              handlerNight={this._handleNightPress}
+              handlerMorning={() => this.logAll(0)}
+              handlerAfternoon={() => this.logAll(1)}
+              handlerEvening={() => this.logAll(2)}
+              handlerNight={() => this.logAll(3)}
+              amtArr={remaining}
             />
           </View>
         </View>

@@ -69,5 +69,10 @@ export default StyleSheet.create({
     borderLeftColor: COLOR.PrimaryGray,
     borderBottomColor: COLOR.blue,
     borderRightColor: COLOR.blue
-  }
+  },
+  amountText: {
+    color: COLOR.PrimaryGray,
+    fontSize: 22,
+    top: -18,
+  },
 });
