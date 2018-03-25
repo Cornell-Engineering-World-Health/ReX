@@ -4,7 +4,7 @@ import {COLOR} from '../Resources/constants';
 const width = Dimensions.get('window').width;
 const circleWidth = width*.8;
 const height = Dimensions.get('window').height;
-const borderW = 4;
+const borderW = 3;
 
 export default StyleSheet.create({
   medicineViewContainer: {
