@@ -4,10 +4,13 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
+import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 import {getColor, getTranslucentColor} from '../Resources/constants';
 
 const { width } = Dimensions.get("window");
+
+
 
 
 class Calendar extends PureComponent {
@@ -55,7 +58,6 @@ class Calendar extends PureComponent {
         }
 
         this.graphRefs = [];
-
         this._onDatePress = this._onDatePress.bind(this);
     }
 
@@ -63,141 +65,88 @@ class Calendar extends PureComponent {
       this.initVisualization();
     }
 
-    pullFromDataBase = () => {
-      return [{
-        name: constants.BLURRED_VISION.title,
-        symptom:      [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0],
-        intensities:  [0, 0, 5, 0, 0, 0, 0, 7, 8, 9, 10, 9, 10, 0, 10, 0, 0, 0, 6, 1, 1, 3, 2, 0, 0, 0, 0, 5, 0, 5, 0],
-      },
-      {
-        name: constants.PILL.title,
-        symptom:      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
-        intensities:  [5, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 9, 10, 1, 10, 0, 0, 0, 0, 0, 1, 0, 2, 2, 0, 9, 0, 0, 0, 0, 0],
-      },
-      {
-        name: constants.HEADACHE.title,
-        symptom:      [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 5, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.NECKPAIN.title,
-        symptom:      [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.KNEEPAIN.title,
-        symptom:      [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.LEGPAIN.title,
-        symptom:      [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 0, 5, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      },
-      {
-        name: constants.FOOTPAIN.title,
-        symptom:      [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0],
-        intensities:  [0, 0, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 1, 0, 0, 10, 10, 0, 2, 0, 3, 0, 9, 0, 0, 0, 9, 6, 8, 0],
-      }
-    ];
-    }
-
-    //TODO PULL FROM DB, DATA FORMAT:[{graphColor, symptom, intensities},{},{}]
     initVisualization = () => {
-      let monthData = this.pullFromDataBase();
-
-
-      let dot1 = this.state.dot1;
-      let dot2 = this.state.dot2;
-      let dot3 = this.state.dot3;
-
-      for(var i = 0; i < monthData.length; i++){
-        monthData[i].symptom.map((val, j) => {
-          let tempStyle;
-          let backColor = getColor(monthData[i].name)
-          tempStyle = [{backgroundColor: backColor}, styles.dot]
-
-          if(val == 1){
-            if(this.state.dot1[j] == styles.generic){
-              dot1[j] = tempStyle;
-            } else if(this.state.dot2[j] == styles.generic){
-              dot2[j] = tempStyle;
-            } else if(this.state.dot3[j] == styles.generic){
-              dot3[j] = tempStyle;
-            }
+      pullFromDataBase(this.props.currMonth, null, data => {
+        let dot1 = this.state.dot1;
+        let dot2 = this.state.dot2;
+        let dot3 = this.state.dot3;
+        let firstIntensities;
+        let firstColor;
+        let first = true;
+        Object.keys(data).forEach(function(key) {
+          if(first){
+            first = false;
+            firstColor = getTranslucentColor(key);
+            firstIntensities = data[key].intensities;
           }
-        });
-      }
+          //Set Dots
+          data[key].intensities.map((val, j) => {
+            let tempStyle;
+            let backColor = getColor(key)
+            tempStyle = [{backgroundColor: backColor}, styles.dot]
 
-      var color = getTranslucentColor(monthData[0].name);
-      this.setState({
-        dot1: dot1,
-        dot2: dot2,
-        dot3: dot3,
-        graphColor: color,
-        intensities: monthData[0].intensities,
-      });
-    }
-
-
-/**
-    updateVisualization = (type) => {
-      let monthData = this.pullFromDataBase();
-      for(var i = 0; i < monthData.length; i++){
-        if(monthData[i].name == type){
-          let color = getTranslucentColor(type);
-
-          this.setState({
-            graphColor: color,
-            intensities: monthData[i].intensities,
-          }, function(){
-            this.graphRefs.forEach(function(g) {
-              if(g){
-                g.slideInUp(500);
+            if(val != undefined){
+              if(dot1[j] == styles.generic){
+                dot1[j] = tempStyle;
+              } else if(dot2[j] == styles.generic){
+                dot2[j] = tempStyle;
+              } else if(dot3[j] == styles.generic){
+                dot3[j] = tempStyle;
               }
-            });
+            }
+
           });
-          return;
-        }
-      }
+
+        });
+
+        this.setState({
+          dot1: dot1,
+          dot2: dot2,
+          dot3: dot3,
+          graphColor: firstColor,
+          intensities: firstIntensities,
+        });
+
+      });
+
     }
 
-*/
-    // DOWN THEN UP
     updateVisualization = (type) => {
-      let monthData = this.pullFromDataBase();
-      for(var i = 0; i < monthData.length; i++){
-        if(monthData[i].name == type){
-          let color = getTranslucentColor(type);
+      pullFromDataBase(this.props.currMonth, null, data => {
+        Object.keys(data).forEach(function(key) {
+          if(key == type){
+            let color = getTranslucentColor(type);
 
-          let last = this.graphRefs.length-1;
-          while(last > -1  && this.graphRefs[last] == undefined){
-            last--;
-          }
+            let last = this.graphRefs.length-1;
+            console.log(this.graphRefs)
+            while(last > -1  && this.graphRefs[last] == undefined){
+              last--;
+            }
+            for(var j=0; j<this.graphRefs.length; j++){
 
-          for(var j=0; j<this.graphRefs.length; j++){
-
-            if(this.graphRefs[j]){
-              this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
-              if(j == last){
-                setTimeout(()=> {
-                  this.setState({
-                    graphColor: color,
-                    intensities: monthData[i].intensities,
-                  }, function(){
-                    this.graphRefs.forEach(function(g) {
-                      if(g){
-                        g.transitionTo({bottom: 0}, 400, 'ease');
-                      }
+              if(this.graphRefs[j]){
+                this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
+                if(j == last){
+                  setTimeout(()=> {
+                    this.setState({
+                      graphColor: color,
+                      intensities: data[key].intensities,
+                    }, function(){
+                      this.graphRefs.forEach(function(g) {
+                        if(g){
+                          g.transitionTo({bottom: 0}, 400, 'ease');
+                        }
+                      });
                     });
-                  });
-                }, 200)
+                  }, 200)
+                }
               }
             }
+            return;
+
           }
-          return;
-        }
-      }
+        })
+      });
     }
 
 
@@ -275,8 +224,8 @@ class Calendar extends PureComponent {
         if (dot3[this.state.selected] == styles.genericGray){
           dot3[this.state.selected] = styles.generic
         }
-        if(baseBars[i] == styles.baseBar){
-          baseBars[i] = styles.baseBarSelected
+        if(baseBars[this.state.selected] == styles.baseBar){
+          baseBars[this.state.selected] = styles.baseBarSelected
         }
 
         baseBars[this.state.selected] = styles.baseBar
@@ -364,7 +313,7 @@ class Calendar extends PureComponent {
             var barHolder = [];
             let h = 0;
             if(this.state.intensities){
-              h = 3.13*this.state.intensities[i];
+              h = 3.13*(this.state.intensities[i] || 0);
             }
 
             return(
