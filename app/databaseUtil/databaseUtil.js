@@ -88,15 +88,18 @@ function formatAgenda(data){
         
         formattedTime = Moment(ele.timestamp, 'YYYY-MM-DD HH:mm:ss').format('h:mm A')
         j = JSON.parse(ele.fields)
-        note_value1 = ele.card_field_id1 + " " + j[ele.card_field_id1]
-        note_value2 = ele.card_field_id2 + " " + j[ele.card_field_id2]
+        note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1]
+        note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2]
         
         //TODO: should have error checking here incase json is malformatted
         //TODO: should use event_type_name for cardData
-        elementRecord = {id: ele.event_id, cardData: constants.HEADACHE, timeStamp: formattedTime, note1: note_value1, note2: note_value2}
+        
+        cardDataString = ele.event_type_name.toUpperCase()
+        elementRecord = {id: ele.event_id, cardData: constants[cardDataString], timeStamp: formattedTime, note1: note_value1, note2: note_value2}
         
         console.log(elementRecord)
         
+       
         let d = new Date(ele.day)
         d.setTime(d.getTime() + d.getTimezoneOffset()*60*1000 )
         
