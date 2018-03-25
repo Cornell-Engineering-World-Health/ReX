@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated
+} from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants from '../Resources/constants';
+import constants, { IMAGES, COLOR } from '../Resources/constants';
 
-const CHECKED_COLOR = '#e6ffe6';
-const UNCHECKED_COLOR = '#ffcccc';
+const CHECKED_COLOR = COLOR.medicineCardChecked;
+const UNCHECKED_COLOR = COLOR.medicineCardUnchecked;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,7 +27,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: '#ffffff'
+    backgroundColor: COLOR.cardContainer
   },
   imageContainer: {
     borderRadius: 5,
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     letterSpacing: 1.5,
-    color: '#373737'
+    color: COLOR.cardTitle
   },
   timeContainer: {
     marginTop: 1.5,
@@ -69,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 0.6
   },
   note: {
-    color: '#808080',
+    color: COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,
@@ -102,6 +109,13 @@ class MedicineCard extends Component {
   };
   constructor(props) {
     super(props);
+    this.state = {
+      fade: new Animated.Value(0)
+    };
+  }
+
+  componentDidMount() {
+    Animated.timing(this.state.fade, { toValue: 1, duration: 500 }).start();
   }
 
   _handlePress = () => {
@@ -132,7 +146,8 @@ class MedicineCard extends Component {
     }
 
     descriptionContainerStyle.push({
-      backgroundColor: descriptionBackground
+      backgroundColor: descriptionBackground,
+      opacity: this.state.fade
     });
 
     imageContainerStyle.push({
@@ -144,10 +159,10 @@ class MedicineCard extends Component {
     };
     let image1 = null;
     if (this.props.checked) {
-      image1 = require('../Resources/checkmark.png');
+      image1 = IMAGES.checkmark;
     } else {
       if (!this.props.image) {
-        image1 = require('../Resources/purpleCircle.png');
+        image1 = IMAGES.purpleCircle;
       } else {
         image1 = this.props.image;
       }
@@ -166,33 +181,32 @@ class MedicineCard extends Component {
             onClose={this.props.onCloseSwipeout}
             onOpen={this.props.onOpenSwipeout}
           >
-            <TouchableOpacity
-              disabled={!this.props.buttonActive}
-              onPress={this.props.onPress}
-            >
-              <View style={styles.container}>
+            <View style={styles.container}>
+              <TouchableOpacity
+                disabled={!this.props.buttonActive}
+                onPress={this.props.onPress}
+              >
                 <View style={imageContainerStyle}>
                   <Image style={styles.checkMark} source={image1} />
                 </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    marginLeft: 82,
-                    paddingTop: 120,
-                    paddingRight: 18,
-                    backgroundColor: this.props.backgroundColor
-                  }}
-                />
-
-                <View style={descriptionContainerStyle}>
-                  <View>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
-                    <Text style={styles.note}> {this.props.note1} </Text>
-                    <Text style={styles.note}> {this.props.note2} </Text>
-                  </View>
+              </TouchableOpacity>
+              <View
+                style={{
+                  position: 'absolute',
+                  marginLeft: 82,
+                  paddingTop: 120,
+                  paddingRight: 18,
+                  backgroundColor: this.props.backgroundColor
+                }}
+              />
+              <Animated.View style={descriptionContainerStyle}>
+                <View>
+                  <Text style={styles.titleText}>{this.props.title}</Text>
+                  <Text style={styles.note}> {this.props.note1} </Text>
+                  <Text style={styles.note}> {this.props.note2} </Text>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </Animated.View>
+            </View>
           </Swipeout>
         </View>
       </View>
