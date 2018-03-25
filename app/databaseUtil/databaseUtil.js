@@ -138,7 +138,7 @@ function formatAgenda(data){
         cardDataString = ele.event_type_name.toUpperCase()
         elementRecord = {id: ele.event_id, cardData: constants[cardDataString], timeStamp: formattedTime, note1: note_value1, note2: note_value2}
         
-        console.log(elementRecord)
+        //console.log(elementRecord)
         
        
         let d = new Date(ele.day)
@@ -146,9 +146,8 @@ function formatAgenda(data){
         
         let foundDate = false
         for (var i = 0; i < agendaFlatList.length; i++) {
-            console.log('inside for loop')
             if(sameDay(agendaFlatList[i].date,d)){
-                console.log('adding event')
+                //console.log('adding event')
                 agendaFlatList[i].data.push(elementRecord)
                 foundDate = true
                 break
@@ -156,14 +155,13 @@ function formatAgenda(data){
         }
         
         if(!foundDate){
-            console.log('adding a record to agendaFlatList')
+            //console.log('adding a record to agendaFlatList')
             agendaFlatList.push({date: d,data: [elementRecord]})
         }
         
     });
     
-    console.log('*************** LOGGIND AGENDA FLAT LIST ');
-    console.log(agendaFlatList) 
+    //console.log(agendaFlatList) 
     
    
   

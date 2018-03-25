@@ -107,19 +107,9 @@ class Calendar extends PureComponent {
           intensities: firstIntensities,
         });
 
-      var color = getTranslucentColor(monthData[0].name);
-      this.setState({
-        dot1: dot1,
-        dot2: dot2,
-        dot3: dot3,
-        graphColor: color,
-        intensities: monthData[0].intensities,
-
       });
 
-
-
-
+    }
 
     updateVisualization = (type) => {
       pullFromDataBase(this.props.currMonth, null, data => {

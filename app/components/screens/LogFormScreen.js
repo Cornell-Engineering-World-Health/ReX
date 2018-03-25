@@ -16,7 +16,7 @@ import PickerInputType from '../LogInputTypes/PickerInputType';
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
 import { StackNavigator } from 'react-navigation';
-import Database from './Database';
+import Database from '../../Database';
 
 export default class ChooseLogScreen extends React.Component {
   
