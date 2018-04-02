@@ -15,7 +15,7 @@ import Moment from 'moment';
 import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
-const numOfCals = 100;
+const numOfCals = 10;
 
 class Calendar extends Component {
   constructor(props) {
