@@ -5,7 +5,7 @@ import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements'
 import constants from '../Resources/constants';
 
-var data = [{'title': 'Donut 20mg', 'time': '12:20PM', 'status': true}, {'title': 'Napkin 30mg', 'time': '12:50PM', 'status': false}]
+var data = [{'title': 'Ben 20mg', 'time': '12:20PM', 'status': false}, {'title': 'Katy 30mg', 'time': '12:50PM', 'status': false}]
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -163,7 +163,7 @@ class Card extends PureComponent {
                 containerStyle = {styles.check}
                 size = '25'
                 title = {i.title}
-                checkedColor = '#7FDECB80'
+                checkedColor = '#63f3c9'
                 textStyle = {styles.noteText}
                 />
                 <View flex = {1} alignItems='flex-end'>
@@ -208,14 +208,14 @@ class Card extends PureComponent {
                   <View marginTop = {6.5} flex = {1} marginLeft= {170} >
                   <TouchableOpacity onPress = {this.toggle.bind(this)} >
                     <View flexDirection = 'row' >
-                    <Text >Show Pills </Text>  
+                    <Text >Show Pills </Text>
                     <Image style = {styles.image_style} source = {require('../Resources/icons8-expand-arrow-50.png') }/>
                     </View>
                   </TouchableOpacity>
                   </View>
                   </View>
                   </View>
-                  <View style = {{marginTop: 15}} onLayout = 
+                  <View style = {{marginTop: 15}} onLayout =
                   {this._setMaxHeight.bind(this)}>
                       {this.makePills(data)}
                   </View>

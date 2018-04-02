@@ -8,11 +8,15 @@ import PillCard from '../Card/PillCard'
 class Circle extends Component {
   constructor(props) {
     super(props);
-  
+
   this.state = {
     meds: [[0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-    colors:['#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80'],
-    data : [ 0,100, 0,100,0,100,0,100],
+    //colors:['#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80'],
+    //colors:['#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77'],
+    //innerColors:['#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C'],
+    colors:['#F46','#63f3c9','#F46','#63f3c9','#F46','#63f3c9','#F46','#63f3c9'],
+    innerColors:['#F46','#24594a','#F46','#24594a','#F46','#24594a','#F46','#24594a'],
+    data : [ 0,100, 0,100,0,100,0,100 ],
   }
 }
 
@@ -35,11 +39,11 @@ class Circle extends Component {
     //console.log(newData)
     this.setState ({data : newData})
   }
-  
+
   render() {
 
-    const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
     const choosecolor = (index) => this.state.colors[index]
+    const chooseInnerColor = (index) => this.state.innerColors[index]
 
     const pieData = this.state.data
         .filter(value => value >= 0)
@@ -52,6 +56,17 @@ class Circle extends Component {
             key: `pie-${index}`,
         }))
 
+    const innerPieData = this.state.data
+      .filter(value => value >= 0)
+      .map((value, index) => ({
+        value,
+        svg: {
+          fill: chooseInnerColor(index),
+          onPress: () => console.log('press', index),
+        },
+        key: `pie-${index}`,
+      }))
+
     return (
         <View flex = {1}>
         <View style = {styles.header}>
@@ -61,52 +76,63 @@ class Circle extends Component {
         <Text style = {styles.headerText2}>
             March 12
         </Text>
-        <View>
+        </View>
+        {/*<View>
             <View flexDirection = 'row' style = {styles.images1}>
                 <Image marginRight = {70} marginTop= {10} source = {require('../Resources/night2.png')}/>
-                <Image source = {require('../Resources/icons8-sunrise-50.png')}/> 
+                <Image source = {require('../Resources/icons8-sunrise-50.png')}/>
             </View>
             <View flexDirection = 'row' style = {styles.images2}>
                 <Image marginRight= {70} source = {require('../Resources/icons8-sunset-50.png')}/>
-                <Image marginTop = {10} source = {require('../Resources/icons8-sun-50.png')}/> 
+                <Image marginTop = {10} source = {require('../Resources/icons8-sun-50.png')}/>
             </View>
         </View>
         <View style = {styles.plusUp} />
         <View style = {styles.plusUp2} />
         <View style = {styles.plusSide} />
-        <View style = {styles.plusSide2} />
+        <View style = {styles.plusSide2} />*/}
+        <View style = {styles.pie}>
         <PieChart
             paddingBottom = {150}
             sort = {(a,b) => 0 }
             padAngle = {0}
-            innerRadius= {"90%"}
-            style={ { height: 270, marginTop: 30} }
+            innerRadius= {"83%"}
+            style={ { position: 'absolute', top: 20, left: 20, width: 270, height: 270} }
             data={ pieData }
-        />    
+        />
+        <PieChart
+            paddingBottom = {150}
+            sort = {(a,b) => 0 }
+            padAngle = {0}
+            innerRadius= {"88%"}
+            style={ {  position: 'absolute', top: 44, left: 44, width: 222, height: 222} }
+            data={ innerPieData }
+        />
+        <View style = {styles.hourHand} />
+        <View style = {styles.minuteHand} />
+        <View style = {styles.circleHand} />
         </View>
-        
-    
          <FlatList
+         style = {{marginTop: 70}}
          data = {[0]}
          renderItem = {({ item, index }) => {
             return (
             <View>
-             
+
             <PillCard />
-              
+
             </View>
             );
          }}
          />
-         
         </View>
-     
+
     )
   }
 }
 const styles = StyleSheet.create({
     header: {
-        marginTop: 20,
+        marginTop: 30,
         marginBottom: 0,
     },
     headerText: {
@@ -126,28 +152,28 @@ const styles = StyleSheet.create({
     },
     images1: {
         position: 'absolute',
-        top: 70,
-        left:100,
+        top: 80,
+        left: 120,
     },
     images2:{
         position: 'absolute',
-        left: 100,
+        left: 120,
         top: 180,
     },
     plusUp: {
         position: 'absolute',
         height: 13,
         width: 3,
-        left: 185.5,
-        top: 18,
+        left: 200.5,
+        top: 88,
         backgroundColor: 'grey'
     },
     plusUp2: {
         position: 'absolute',
         height: 13,
         width: 3,
-        left: 184.5,
-        top: 300,
+        left: 199.5,
+        top: 375,
         backgroundColor: 'grey',
         paddingBottom: 10,
 
@@ -156,17 +182,67 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 3,
         width: 13,
-        left: 40,
-        top: 177,
+        left: 58,
+        top: 227,
         backgroundColor: 'grey'
     },
     plusSide2: {
         position: 'absolute',
         height: 3,
         width: 13,
-        left: 322,
-        top: 177,
+        left: 343,
+        top: 227,
         backgroundColor: 'grey'
+    },
+    circle: {
+      position: 'absolute',
+      height: 320,
+      width: 320,
+      top: 110,
+      left: 50,
+      borderRadius: 160,
+      borderColor: '#DAE8F6',
+      borderWidth: 5,
+    },
+    pie: {
+      height: 320,
+      width: 320,
+      top: 50,
+      left: 50,
+      borderRadius: 160,
+      borderColor: '#ffffff',
+      borderWidth: 5,
+      shadowOffset:{  width: 0,  height: 0,  },
+      shadowColor: 'grey',
+      shadowRadius: 10,
+      shadowOpacity: 0.6,
+    },
+    hourHand: {
+      position: 'absolute',
+      height: 4,
+      width: 85,
+      top: 187,
+      left: 113.5,
+      transform: [{rotate: '270deg'}],
+      backgroundColor: 'black'
+    },
+    minuteHand: {
+      position: 'absolute',
+      height: 4,
+      width: 146,
+      top: 156.5,
+      left: 144,
+      transform: [{rotate: '180deg'}],
+      backgroundColor: '#fd1a77'
+    },
+    circleHand: {
+      position: 'absolute',
+      backgroundColor: '#fd1a77',
+      height: 6,
+      width: 6,
+      left: 153,
+      top: 155,
+      borderRadius: 3,
     }
 })
 export default Circle
