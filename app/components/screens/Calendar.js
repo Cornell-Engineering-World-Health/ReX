@@ -15,7 +15,7 @@ import Moment from 'moment';
 import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
-const numOfCals = 100;
+const numOfCals = 20;
 
 class Calendar extends Component {
   constructor(props) {
@@ -25,6 +25,7 @@ class Calendar extends Component {
       data.push({ key: i });
     }
     this.state = {
+      first: -numOfCals,
       last: numOfCals,
       data: data,
       currentDate: new Date()
@@ -94,16 +95,39 @@ class Calendar extends Component {
     });
   };
 
+  _loadPrev = ({viewableItems, changed}) => {
+    console.log(viewableItems.length)
+    if (viewableItems.length > 0){
+      if (viewableItems[viewableItems.length - 1].index == 0){
+        newData = [];
+        current = this.state.first;
+        for (i = 1; i < 20; i++) {
+          newData.unshift({ key: current - i });
+        }
+        this.setState({
+          data: [...newData, ...this.state.data],
+          first: current - 19
+        });
+        console.log("it worked")
+        console.log(this.state.data)
+        this.flatListRef.scrollToIndex({animated:true, index:20})
+      }
+    }
+
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <FlatList
             style={itemStyle}
+            ref={(ref) => { this.flatListRef = ref; }}
             data={this.state.data}
             renderItem={this._renderItem}
             onEndReached={this._loadMore}
             onEndReachedThreshold={50}
+            onViewableItemsChanged={this._loadPrev}
             horizontal={true}
             removeClippedSubviews={true}
             getItemLayout={this.getItemLayout}
