@@ -116,6 +116,17 @@ export function databaseFakeData(){
           console.log(JSON.stringify(rows))
         )
     },err=> console.log(err));*/
+    
+    
+    day = '2018-04-17'
+    dayArray  = [day]
+    Database.transaction(tx => {
+        tx.executeSql('SELECT event_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+        INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+        INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+        WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+          console.log(JSON.stringify(rows)))
+    })
 }
 
 
