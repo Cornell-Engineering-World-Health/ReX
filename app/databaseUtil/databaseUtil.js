@@ -38,10 +38,10 @@ export function intializeDatabase(){
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,\'1950-01-01 00:00:00\', 2)')
     /* medication reminder examples */
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    \'{"pillName": "Tylenol","dosage": "20mg","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [1,1,1,1,1,0,0],"taken": [true,true]}\' )')
+    \'{"pillName": "Tylenol","dosage": "20mg","startDate": "2018-04-01","endDate": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [1,1,1,1,1,0,0],"taken": [true,true]}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,\'1950-01-01 00:00:00\', 50)')
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
-    \'{"pillName": "Aspirin","dosage": "400mg","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [1,1,1,1,1,1,1],"taken": [true]}\' )')
+    \'{"pillName": "Aspirin","dosage": "400mg","startDate": "2018-04-01","endDate": "2018-04-20","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [1,1,1,1,1,1,1],"taken": [true]}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,\'1950-01-01 00:00:00\', 51)')
     
   }, err => console.log(err),() => console.log('intitialization complete'))
