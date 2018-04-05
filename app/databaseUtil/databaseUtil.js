@@ -139,7 +139,8 @@ export function pullFromDataBase(month, day, callback){
   Database.transaction(tx => (tx.executeSql("SELECT event_id,event_type_name, timestamp, fields, strftime(\'%Y-%m\',timestamp) FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != \'1950-01-01 00:00:00\' AND strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name != \'Medication Reminder\' and \
+      strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
       
 }
 
@@ -203,7 +204,7 @@ export function pullAgendaFromDatabase(callback){
     Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
     INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
     INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-    WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
+    WHERE timestamp != \'1950-01-01 00:00:00\' and event_type_name != \'Medication Reminder\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
     
     
 }
