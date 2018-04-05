@@ -12,154 +12,11 @@ import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
-import constants from '../Resources/constants';
+import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
+import constants, { COLOR } from '../Resources/constants';
 
-const numOfCals = 500;
+const numOfCals = 100;
 
-const flatlistData = [
-  {
-    date: new Date('March 9, 2018'),
-    data: [
-      {
-        id: 1,
-        cardData: constants.HEADACHE,
-        timeStamp: '6:00 PM',
-        note1: 'High Severity',
-        note2: 'manual input'
-      },
-      {
-        id: 2,
-        cardData: constants.BLURRED_VISION,
-        timeStamp: '10:00 PM',
-        note1: 'Medium Severity',
-        note2: 'Duration: 27 min'
-      }
-    ]
-  },
-
-  {
-    date: new Date('March 10, 2018'),
-    data: [
-      {
-        id: 3,
-        cardData: constants.LEGPAIN,
-        timeStamp: '6:00 AM',
-        note1: 'auto-generation',
-        note2: 'based on name'
-      },
-      {
-        id: 4,
-        cardData: constants.KNEEPAIN,
-        timeStamp: '8:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('March 15, 2018'),
-    data: [
-      {
-        id: 5,
-        cardData: constants.NECKPAIN,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-
-
-
-  {
-    date: new Date('April 1, 2018'),
-    data: [
-      {
-        id: 6,
-        cardData: constants.PILL,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 2, 2018'),
-    data: [
-      {
-        id: 7,
-        cardData: constants.HEADACHE,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 3, 2018'),
-    data: [
-      {
-        id: 8,
-        cardData: constants.BLURRED_VISION,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 4, 2018'),
-    data: [
-      {
-        id: 9,
-        cardData: constants.NECKPAIN,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 5, 2018'),
-    data: [
-      {
-        id: 10,
-        cardData: constants.KNEEPAIN,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 6, 2018'),
-    data: [
-      {
-        id: 11,
-        cardData: constants.LEGPAIN,
-        timeStamp: '2:00 AM',
-        note1: 'NOTE 1',
-        note2: 'NOTE 2'
-      }
-    ]
-  },
-  {
-    date: new Date('April 7, 2018'),
-    data: [
-      {
-        id: 11,
-        cardData: constants.FOOTPAIN,
-        timeStamp: '2:00 AM',
-        note1: '',
-        note2: ''
-      }
-    ]
-  },
-
-];
-
-
-const defaultData = [];
 class Calendar extends Component {
   constructor(props) {
     super(props);
@@ -168,7 +25,7 @@ class Calendar extends Component {
       data.push({ key: i });
     }
     this.state = {
-      last: 499,
+      last: numOfCals,
       data: data,
       currentDate: new Date()
     };
@@ -177,17 +34,19 @@ class Calendar extends Component {
   }
 
   _updateAgenda() {
-    let tempData = null;
+    pullAgendaFromDatabase(flatlistData =>{
+        let tempData = null;
 
-    for (var i = 0; i < flatlistData.length; i++) {
-      if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
-        tempData = flatlistData[i].data;
-        break;
-      }
-    }
-    this.setState({
-      currentAgenda: tempData
-    });
+        for (var i = 0; i < flatlistData.length; i++) {
+          if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
+            tempData = flatlistData[i].data;
+            break;
+          }
+        }
+        this.setState({
+          currentAgenda: tempData
+        });
+    })
   }
 
   getItemLayout = (data, index) => ({
