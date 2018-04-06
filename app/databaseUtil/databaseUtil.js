@@ -38,10 +38,10 @@ export function intializeDatabase(){
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,\'1950-01-01 00:00:00\', 2)')
     /* medication reminder examples */
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    \'{"pillName": "Tylenol","dosage": "20mg","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [1,1,1,1,1,0,0],"taken": [true,true]}\' )')
+    \'{"pillName": "Tylenol","dosage": "20mg","startDate": "2018-04-01","endDate": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [1,1,1,1,1,0,0],"taken": [true,true]}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,\'1950-01-01 00:00:00\', 50)')
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
-    \'{"pillName": "Aspirin","dosage": "400mg","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [1,1,1,1,1,1,1],"taken": [true]}\' )')
+    \'{"pillName": "Aspirin","dosage": "400mg","startDate": "2018-04-01","endDate": "2018-04-20","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [1,1,1,1,1,1,1],"taken": [true]}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,\'1950-01-01 00:00:00\', 51)')
 
   }, err => console.log(err),() => console.log('intitialization complete'))
@@ -116,10 +116,13 @@ export function databaseFakeData(){
           console.log(JSON.stringify(rows))
         )
     },err=> console.log(err));*/
+
+
 }
 
 
 export function pullFromDataBase(month, day, callback){
+  //TODO: year is missing?
   databaseFakeData();
   console.log('pulling from database');
 
@@ -128,7 +131,8 @@ export function pullFromDataBase(month, day, callback){
   Database.transaction(tx => (tx.executeSql("SELECT event_id,event_type_name, timestamp, fields, strftime(\'%Y-%m\',timestamp) FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != \'1950-01-01 00:00:00\' AND strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name != \'Medication Reminder\' and \
+      strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
 
 }
 
@@ -192,7 +196,39 @@ export function pullAgendaFromDatabase(callback){
     Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
     INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
     INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-    WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
+    WHERE timestamp != \'1950-01-01 00:00:00\' and event_type_name != \'Medication Reminder\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
 
 
+}
+
+function formatMedicineData(data){
+  dataTemp = {};
+  data.forEach(function(med){
+    let earliestTime = new Date(med.timestamp.replace(' ','T'))
+    let fields = JSON.parse(med.fields)
+
+    if(!dataTemp[fields.pillName]){
+      dataTemp[fields.pillName] = {
+        dosage: fields.dosage,
+        time: fields.time,
+        timeCategory: fields.timeCategory,
+        taken: fields.taken,
+      };
+    }
+
+  });
+  //console.log(dataTemp)
+  return dataTemp;
+}
+
+export function pullMedicineFromDatabase(date, callback){
+  let day = date.toISOString().substr(0,10)
+  dayArray  = [day]
+  Database.transaction(tx => {
+      tx.executeSql('SELECT event_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+      callback(formatMedicineData(rows._array)),err=>console.log(err));
+  })
 }
