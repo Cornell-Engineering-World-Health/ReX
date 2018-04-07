@@ -77,7 +77,7 @@ export function formatData(data){
 
 
 export function databaseFakeData(){
-    //console.log('faking data')
+    console.log('faking data')
     Database.transaction(tx => {
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Intensity": "2","Duration": "40"}\')')
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (3, 1,\'2018-03-07 06:00:00\', 3)')
@@ -222,6 +222,7 @@ function formatMedicineData(data){
 }
 
 export function pullMedicineFromDatabase(date, callback){
+  databaseFakeData();
   let day = date.toISOString().substr(0,10)
   dayArray  = [day]
   Database.transaction(tx => {

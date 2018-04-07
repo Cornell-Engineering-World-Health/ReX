@@ -245,9 +245,8 @@ class Calendar extends PureComponent {
     _onTitlePress = () => {
       console.log('title Press')
         pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
-
+          console.log(formattedData)
         });
-
     }
 
     _onHeadachePress = () => {

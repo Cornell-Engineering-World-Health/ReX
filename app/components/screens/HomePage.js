@@ -19,6 +19,7 @@ import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
 import {HomeMedicineLogger} from '../HomeMedicineLogger'
+import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil'
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import  styles from './styles';
@@ -155,15 +156,70 @@ const months = [
 class Home extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       modalVisible: null,
       morning: medicineMorning,
       afternoon: medicineAfternoon,
       evening: medicineEvening,
       night: medicineNight,
-      totalAmount: [4, 2, 1, 8],
-      doneAmount: [4, 2, 0, 8],
+      data: [],
+      totalAmount: [0, 0, 0, 0],
+      doneAmount: [0, 0, 0, 0],
     };
+
+
+  }
+
+  componentWillMount(){
+    let totalAmount = this.state.totalAmount
+    let doneAmount = this.state.doneAmount
+    let thisRef = this;
+    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
+      console.log('asdfa',formattedData)
+      Object.keys(formattedData).forEach(function(med){
+        let i = 0;
+        formattedData[med].timeCategory.forEach(function(time){
+          switch(time){
+            case 'Morning':
+              totalAmount[0]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[0]++;
+              }
+              break;
+            case 'Afternoon':
+              totalAmount[1]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[1]++;
+              }
+              break;
+            case 'Evening':
+              totalAmount[2]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[2]++;
+              }
+              break;
+            case 'Night':
+              totalAmount[3]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[3]++;
+              }
+              break;
+            default:
+          }
+        })
+      })
+      thisRef.setState({
+        totalAmount: totalAmount,
+        doneAmount: doneAmount,
+        data: formattedData,
+      })
+    });
+  }
+
+  //TODO: onclose, should save to storage.
+  componentWillUnmount(){
+    
   }
 
   _renderButtons() {
@@ -196,12 +252,7 @@ class Home extends React.Component {
 
 
   _handleMorningPress(index, complete) {
-    morningArray = this.state.morning;
-    morningArray[index].completed = complete;
 
-    this.setState({
-      morning: morningArray
-    });
   }
   _handleAfternoonPress(index, complete) {
     afternoonArray = this.state.afternoon;
@@ -241,6 +292,7 @@ class Home extends React.Component {
   render() {
     let medicineCompletion = this._renderButtons();
     let currentDate = new Date();
+
     let done = [];
     let remaining = [];
     for(let i = 0; i<this.state.doneAmount.length; i++){
