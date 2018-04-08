@@ -8,15 +8,15 @@ var data1 = [{'title': 'Donut 20mg', 'time': '12:20PM',
   'status': false}, {'title': 'Napkin 30mg', 'time': '12:50PM', 'status': false},
   {'title': 'Ibuprofen 80mg', 'time': '2:50PM', 'status': false}, {'title': 'Bracy 3410mg', 'time': '1:25PM', 'status': false},
    {'title': 'Katy 2000mg', 'time': '2:50PM', 'status': false},{'title': 'Bracy 4410mg', 'time': '12:50PM', 'status': false}]
-  var data2 = [{'title': 'Donut 20mg', 'time': '12:20PM',
+var data2 = [{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Napkin 30mg', 'time': '12:50PM', 'status': false},{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false},{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false},{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false},{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false}]
-  var data3 = [{'title': 'Donut 20mg', 'time': '12:20PM',
+var data3 = [{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Napkin 30mg', 'time': '12:50PM', 'status': false}]
-  var data4 = [{'title': 'Donut 20mg', 'time': '12:20PM',
+var data4 = [{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Eashan 30mg', 'time': '12:50PM', 'status': false},
          {'title': 'Bracy 100mg', 'time': '1:25PM', 'status': false}, {'title': 'Katy 2000mg', 'time': '2:50PM', 'status': false}]
 
@@ -25,17 +25,28 @@ class CoolerMedicineView extends React.Component {
   constructor(props) {
     super(props)
 
+    var arr1 = new Array(data1.length+1).join('0').split('').map(parseFloat)
+    var arr2 = new Array(data2.length+1).join('0').split('').map(parseFloat)
+    var arr3 = new Array(data3.length+1).join('0').split('').map(parseFloat)
+    var arr4 = new Array(data4.length+1).join('0').split('').map(parseFloat)
+
+    var meds = [[], [], [], []]
+    meds[0] = arr1
+    meds[1] = arr2
+    meds[2] = arr3
+    meds[3] = arr4
+
+    console.log(meds)
     this.state = {
-      meds : [[0,0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-      pmData : [ 0,100, 0,100],
-      amData : [ 0,100, 0,100],
+      meds : meds,
+      pmData : [ 0, 100, 0,100],
+      amData : [ 0, 100, 0,100],
     }
   }
 
   updateMeds = (time, index, amPm) => {
     newMeds = this.state.meds
     oldVal = this.state.meds[time][index]
-
     newMeds[time][index] = !oldVal
     this.setState ({meds : newMeds })
     this.updateArray(time, amPm)
@@ -73,10 +84,10 @@ class CoolerMedicineView extends React.Component {
         >
          <Image  source = {require('../Resources/icons8-add.png')}/>
         </TouchableOpacity>
+        {console.log(this.state.amData)}
         <Circle
         amData = {this.state.amData}
         pmData = {this.state.pmData}
-        meds = {this.state.meds}
         />
         <View style = {{marginTop: 400}}>
         <FlatList

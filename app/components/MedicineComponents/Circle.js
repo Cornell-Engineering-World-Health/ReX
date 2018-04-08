@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { PieChart } from 'react-native-svg-charts'
 import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from 'react-native'
 import React, { Component } from 'react'
@@ -8,15 +9,19 @@ import { LinearGradient } from 'expo';
 
 
 class Circle extends Component {
+  static propTypes = {
+    amData: PropTypes.array,
+    pmData: PropTypes.array,
+  };
+
   constructor(props) {
     super(props);
 
   this.state = {
-    meds: [[0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-    colors:['#6ef7c940','#6ef7c9','#ffffff','#ffffff'],
-    innerColors:['#85ada040','#85ada0','#85ada040','#85ada0'],
-    amData : [ 100, 0, 100, 0],
-    pmData : [ 100, 0, 100, 0]
+    colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940'],
+    innerColors:['#85ada0','#85ada040','#85ada0','#85ada040'],
+    amData : this.props.amData,
+    pmData : this.props.pmData
   }
 }
 
