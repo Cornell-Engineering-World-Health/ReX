@@ -32,7 +32,7 @@ class CoolerMedicineView extends React.Component {
     }
   }
  
-  updateMeds = (time, index) => {
+  updateMeds = (time, index, amPm) => {
     newMeds = this.state.meds
     oldVal = this.state.meds[time][index.index]
     newMeds[time][index.index] = !oldVal
@@ -41,7 +41,7 @@ class CoolerMedicineView extends React.Component {
 //    console.log(this.state.meds[0] )
 //    console.log(time)
     this.setState ({meds : newMeds })
-    this.updateArray(time)
+    this.updateArray(time, amPm)
   }
 
   updateArray = (time) => {
@@ -76,26 +76,26 @@ class CoolerMedicineView extends React.Component {
             <View>
                 <PillCard 
                 status = {this.state.meds}
-                setParentState={index=>this.updateMeds(0, index)}
+                setParentState={index=>this.updateMeds(0, index, 1)}
                 time = {"Morning"}
                 data = {data1}
                 />
                 <PillCard
                 status = {this.state.meds}
-                setParentState={index=>this.updateMeds(1, index)}
+                setParentState={index=>this.updateMeds(1, index, 1)}
                 time = {"Afternoon"}
                 data = {data2}
                 />
                 <PillCard 
                 status = {this.state.meds}
-                setParentState={index=>this.updateMeds(2, index)}
+                setParentState={index=>this.updateMeds(2, index, 0)}
                 time = {"Evening"}
                 data = {data3}
       
                 />
                 <PillCard
                 status = {this.state.meds}
-                setParentState={index=>this.updateMeds(3, index)}
+                setParentState={index=>this.updateMeds(3, index, 0)}
                 time = {"Night"}
                 data = {data4}
                 />

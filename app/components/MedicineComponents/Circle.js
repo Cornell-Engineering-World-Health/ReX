@@ -18,8 +18,8 @@ class Circle extends Component {
     //innerColors:['#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C'],
     colors:['#6ef7c9','#6ef7c9','#ffffff','#ffffff','#6ef7c940','#6ef7c9','#6ef7c9','#6ef7c9'],
     innerColors:['#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0'],
-    amData : [ 50, 50, 50, 50, 50, 50, 50, 50 ],
-    pmData : [ 100, 0, 100, 0, 100, 0, 100, 0]
+    amData : [ 50, 50, 50, 50],
+    pmData : [ 100, 0, 100, 0],
   }
 }
 
@@ -121,19 +121,7 @@ class Circle extends Component {
         <View style= {styles.nine}/>
 
         </View>
-         <FlatList
-         style = {{marginTop: 70}}
-         data = {[0]}
-         renderItem = {({ item, index }) => {
-            return (
-            <View>
-
-            <PillCard />
-
-            </View>
-            );
-         }}
-         />
+         
         </View>
 
     )

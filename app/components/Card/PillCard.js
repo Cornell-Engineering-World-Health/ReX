@@ -5,8 +5,6 @@ import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements'
 import constants from '../Resources/constants';
 
-var data = [{'title': 'Ben 20mg', 'time': '12:20PM', 'status': false}, {'title': 'Katy 30mg', 'time': '12:50PM', 'status': false}]
-
 const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
@@ -90,7 +88,9 @@ class Card extends PureComponent {
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.obj
+    cardData: PropTypes.obj,
+    setParentState: PropTypes.func,
+    data: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -141,8 +141,7 @@ class Card extends PureComponent {
     _onCheck = (index) => {
     status = this.state.status
     status[index] = !status[index]
-    console.log(status[index])
-    data[index].status = !data[index].status
+    this.props.data[index].status = !this.props.data[index].status
     this.setState({
         status: status //Step 2
     })
@@ -151,8 +150,7 @@ class Card extends PureComponent {
 
   makePills(data) {
       console.log('hello?')
-      return data.map((i , index) =>{
-          console.log(this.state.status)
+      return data.map((i ,index) =>{
           return(
               <View style = {styles.note}>
               <CheckBox
@@ -217,7 +215,8 @@ class Card extends PureComponent {
                   </View>
                   <View style = {{marginTop: 15}} onLayout =
                   {this._setMaxHeight.bind(this)}>
-                      {this.makePills(data)}
+                       {console.log(this.props.data)}
+                      {this.makePills(this.props.data)}
                   </View>
               </View>
             </TouchableOpacity>
