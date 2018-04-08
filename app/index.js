@@ -6,6 +6,7 @@ import { StackNavigator } from 'react-navigation';
 import { View, NavigatorIOS, StatusBar } from 'react-native';
 import Circle from './components/MedicineComponents/Circle';
 import Settings from './components/screens/Settings';
+import CoolerMedicineView from './components/screens/CoolerMedicineView'
 
 class main extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class main extends React.Component {
   }
   
   render() {
-    return <Circle />;
+    return <CoolerMedicineView />;
   }
 }
 

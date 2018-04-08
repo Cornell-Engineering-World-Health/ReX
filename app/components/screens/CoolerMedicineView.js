@@ -27,7 +27,8 @@ class CoolerMedicineView extends React.Component {
 
     this.state = {
       meds : [[0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-      data : [ 0,100, 0,100,0,100,0,100], 
+      pmData : [ 0,100, 0,100], 
+      amData : [ 0,100, 0,100],
     }
   }
  
@@ -35,10 +36,10 @@ class CoolerMedicineView extends React.Component {
     newMeds = this.state.meds
     oldVal = this.state.meds[time][index.index]
     newMeds[time][index.index] = !oldVal
-    console.log(oldVal)
-    console.log(index)
-    console.log(this.state.meds[0] )
-    console.log(time)
+//console.log(oldVal)
+//    console.log(index)
+//    console.log(this.state.meds[0] )
+//    console.log(time)
     this.setState ({meds : newMeds })
     this.updateArray(time)
   }
@@ -63,7 +64,8 @@ class CoolerMedicineView extends React.Component {
     return (
         <View>
         <Circle
-        data = {this.state.data}
+        amData = {this.state.amData}
+        pmData = {this.state.pmData}
         meds = {this.state.meds}
         />
         <View style = {{marginTop: 400}}>
