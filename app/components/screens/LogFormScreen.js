@@ -1,10 +1,11 @@
 import React from 'react'
-import {StyleSheet, Text, View, Image, Header, ScrollView, TouchableOpacity, Picker, Button} from 'react-native'
+import {StyleSheet, Text, View, Image, Header, ScrollView, TouchableOpacity, DatePickerIOS, Picker, Button} from 'react-native'
 import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
 import TextInputType from '../LogInputTypes/TextInputType'
 import PickerInputType from '../LogInputTypes/PickerInputType'
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
+import DatePicker from '../LogInputTypes/DatePicker'
 import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
 import Moment from 'moment'
@@ -32,9 +33,12 @@ export default class ChooseLogScreen extends React.Component {
               var input_types = []
               valArray[i] = json_rows[keysArray[i]]
 
+              // console.log(keysArray[i])
+
               Database.transaction(tx => (tx.executeSql('SELECT view_name FROM field_to_view_tbl \
                     WHERE field_name = ?;', [keysArray[i]], (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name
+                      console.log(input_types[i])
                       this.setState({
                         input_type_array: input_types,
                         value_labels: keysArray,
@@ -91,7 +95,7 @@ export default class ChooseLogScreen extends React.Component {
                   max_val={4}
                   value={SCALE_LABELS.indexOf(this.state.values[key])}
                   scale_labels={SCALE_LABELS}
-                  title_text={'Intensity'}
+                  title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'NumericalPickerInputType') {
@@ -103,8 +107,23 @@ export default class ChooseLogScreen extends React.Component {
                   value={this.state.values[key]}
                   min={0}
                   max={60}
+                  inc_scale={1}
                   unit={'minutes'}
-                  title_text={'Duration of Pain'}
+                  title_text={this.state.value_labels[key]}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
+            } else if (prop == 'DosagePickerInputType') {
+              return (
+                <NumericalPickerInputType
+                  key={key}
+                  input_style={styles.input_container_blue}
+                  title_text_style={styles.title_text}
+                  value={this.state.values[key]}
+                  min={0}
+                  max={40}
+                  inc_scale={10}
+                  unit={'mg'}
+                  title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'TextInputType') {
@@ -114,16 +133,31 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_green}
                   title_text_style={styles.title_text}
                   placeholder_text={'Type here...'}
-                  title_text={'Other Symptoms'}
+                  title_text={this.state.value_labels[key]}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
+            } else if (prop == 'DatePicker') {
+              return (
+                <DatePicker
+                  key={key}
+                  input_style={styles.input_container_green}
+                  title_text_style={styles.title_text}
+                  value={this.state.values[key]}
+                  title_text={this.state.value_labels[key]}
+                  val_label={this.state.value_labels[key]}
+                  valueChange={this.valueChange.bind(this)} />)
+            } else if (prop == 'DayChooserInputType') {
+              return (
+                <ChecklistInputType
+                  key={key}
+                  list_values={['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']}
+                  input_style={styles.input_container_green}
+                  title_text_style={styles.title_text}
+                  title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)} />)
             }
           })}
-          <ChecklistInputType
-            list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            title_text={'Associated Symptoms'} />
           {  /*    <ChecklistInputType
             list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
             input_style={styles.input_container_green}
