@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import constants from '../Resources/constants'
 import MedicineCard from '../Card/MedicineCard'
 import PillCard from '../Card/PillCard'
+import { LinearGradient } from 'expo';
+
 
 class Circle extends Component {
   constructor(props) {
@@ -14,9 +16,10 @@ class Circle extends Component {
     //colors:['#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80'],
     //colors:['#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77'],
     //innerColors:['#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C'],
-    colors:['#F46','#63f3c9','#F46','#63f3c9','#F46','#63f3c9','#F46','#63f3c9'],
-    innerColors:['#F46','#24594a','#F46','#24594a','#F46','#24594a','#F46','#24594a'],
-    data : [ 0,100, 0,100,0,100,0,100 ],
+    colors:['#6ef7c9','#6ef7c9','#ffffff','#ffffff','#6ef7c940','#6ef7c9','#6ef7c9','#6ef7c9'],
+    innerColors:['#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0'],
+    amData : [ 50, 50, 50, 50, 50, 50, 50, 50 ],
+    pmData : [ 100, 0, 100, 0, 100, 0, 100, 0]
   }
 }
 
@@ -30,14 +33,14 @@ class Circle extends Component {
   }
 
   updateArray = (time) => {
-    newData = this.state.data
+    newData = this.state.amData
     meds_list = this.state.meds[time]
     sum = meds_list.reduce((a, b) => a + b, 0);
     len = this.state.meds[time].length;
     newData[time*2] = 100 * (sum/len);
     newData[time*2+1] = 100 - newData[time*2];
     //console.log(newData)
-    this.setState ({data : newData})
+    this.setState ({amData : newData})
   }
 
   render() {
@@ -45,7 +48,7 @@ class Circle extends Component {
     const choosecolor = (index) => this.state.colors[index]
     const chooseInnerColor = (index) => this.state.innerColors[index]
 
-    const pieData = this.state.data
+    const pieData = this.state.amData
         .filter(value => value >= 0)
         .map((value, index) => ({
             value,
@@ -56,7 +59,7 @@ class Circle extends Component {
             key: `pie-${index}`,
         }))
 
-    const innerPieData = this.state.data
+    const innerPieData = this.state.pmData
       .filter(value => value >= 0)
       .map((value, index) => ({
         value,
@@ -70,6 +73,7 @@ class Circle extends Component {
     return (
         <View flex = {1}>
         <View style = {styles.header}>
+
         <Text style = {styles.headerText}>
             Monday
         </Text>
