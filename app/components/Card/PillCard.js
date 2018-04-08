@@ -140,12 +140,6 @@ class Card extends PureComponent {
 
     _onCheck = (index) => {
       this.props.setParentState(index)
-      status = this.state.status
-      status[index] = !status[index]
-      this.props.data[index].status = !this.props.data[index].status
-      this.setState({
-          status: status //Step 2
-        })
       this.forceUpdate()
     }
 
