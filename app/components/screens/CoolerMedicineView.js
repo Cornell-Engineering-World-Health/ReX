@@ -44,20 +44,26 @@ class CoolerMedicineView extends React.Component {
     this.updateArray(time, amPm)
   }
 
-  updateArray = (time) => {
-    newData = this.state.data
-    meds_list = this.state.meds[time]
-    sum = meds_list.reduce((a, b) => a + b, 0);
-    len = this.state.meds[time].length;
-    newData[time*2] = 100 * (sum/len);
-    console.log(newData)
-    newData[time*2+1] = 100 - newData[time*2];
-    this.setState ({data : newData})
-  }
-
-  _onCheck = (index) => {
-    this.setState({index : index})
-    this.updateMeds(0, this.state.index)
+ 
+  updateArray = (time, amPm) => {
+    if (amPm){
+      newData = this.state.amData
+      meds_list = this.state.meds[time]
+      sum = meds_list.reduce((a, b) => a + b, 0);
+      len = this.state.meds[time].length;
+      newData[time*2] = 100 * (sum/len);
+      newData[time*2+1] = 100 - newData[time*2];
+      this.setState ({amData : newData})
+    }
+    else {
+      newData = this.state.pmData
+      meds_list = this.state.meds[time]
+      sum = meds_list.reduce((a, b) => a + b, 0);
+      len = this.state.meds[time].length;
+      newData[(time - 2)*2] = 100 * (sum/len);
+      newData[(time - 2)*2+1] = 100 - newData[(time - 2)*2];
+      this.setState ({pmData : newData})
+    }
   }
 
   render() {

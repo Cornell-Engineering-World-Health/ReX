@@ -13,20 +13,10 @@ class Circle extends Component {
 
   this.state = {
     meds: [[0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-<<<<<<< HEAD
-    //colors:['#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80','#F46','#7FDECB80'],
-    //colors:['#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77','#F46','#FD1A77'],
-    //innerColors:['#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C','#F46','#5C0A2C'],
-    colors:['#6ef7c9','#6ef7c9','#ffffff','#ffffff','#6ef7c940','#6ef7c9','#6ef7c9','#6ef7c9'],
-    innerColors:['#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0','#85ada040','#85ada0'],
-    amData : [ 50, 50, 50, 50],
-    pmData : [ 100, 0, 100, 0],
-=======
     colors:['#6ef7c940','#6ef7c9','#ffffff','#ffffff'],
     innerColors:['#85ada040','#85ada0','#85ada040','#85ada0'],
     amData : [ 100, 0, 100, 0],
     pmData : [ 100, 0, 100, 0]
->>>>>>> 5320c59b6fe03be2f62f956e9e67bb492ea8e7b2
   }
 }
 
@@ -34,7 +24,6 @@ class Circle extends Component {
     newMeds = this.state.meds
     oldVal = this.state.meds[time][index]
     newMeds[time][index] = !oldVal
-    console.log(newMeds[time])
     this.setState ({meds : newMeds })
     this.updateArray(time, amPm)
   }

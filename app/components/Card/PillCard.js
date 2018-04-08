@@ -91,6 +91,7 @@ class Card extends PureComponent {
     cardData: PropTypes.obj,
     setParentState: PropTypes.func,
     data: PropTypes.array,
+    status: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -99,7 +100,7 @@ class Card extends PureComponent {
         //maxHeight : 0,
         minHeight : 10,
         animation : new Animated.Value(),
-        status : [true,true],
+        status : this.props.status,
     }
   }
 
@@ -139,12 +140,16 @@ class Card extends PureComponent {
 }
 
     _onCheck = (index) => {
+    this.props.setParentState(index)
     status = this.state.status
     status[index] = !status[index]
     this.props.data[index].status = !this.props.data[index].status
     this.setState({
         status: status //Step 2
     })
+
+  
+    console.log(status)
     this.forceUpdate()
     }
 
