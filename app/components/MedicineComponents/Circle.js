@@ -115,6 +115,11 @@ class Circle extends Component {
         <View style = {styles.hourHand} />
         <View style = {styles.minuteHand} />
         <View style = {styles.circleHand} />
+        <View style= {styles.twelve}/>
+        <View style= {styles.three}/>
+        <View style= {styles.six} />
+        <View style= {styles.nine}/>
+
         </View>
          <FlatList
          style = {{marginTop: 70}}
@@ -247,6 +252,49 @@ const styles = StyleSheet.create({
       left: 153,
       top: 155,
       borderRadius: 3,
+    },
+    twelve: {
+      position: 'absolute',
+      top:0,
+      right:157,
+      height: 13,
+      width: 3,
+      backgroundColor: 'black',
+      opacity: .1,
+      borderRadius: 30,
+    
+    },
+    three:{
+        position: 'absolute',
+        top:158,
+        right:295,
+        height: 3,
+        width: 13,
+        backgroundColor: 'black',
+        opacity: .1,
+        borderRadius: 30,
+    },
+    six:{
+        position: 'absolute',
+        top:295,
+        right:157,
+        height: 13,
+        width: 3,
+        backgroundColor: 'black',
+        opacity: .1,
+        borderRadius: 30,
+    },
+    nine:{
+        position: 'absolute',
+        top:158,
+        left:295,
+        height: 3,
+        width: 13,
+        backgroundColor: 'black',
+        opacity: .1,
+        borderRadius: 30,
+
     }
+
 })
 export default Circle
