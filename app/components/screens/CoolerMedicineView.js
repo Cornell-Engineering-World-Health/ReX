@@ -82,7 +82,7 @@ class CoolerMedicineView extends React.Component {
         style = {styles.button}
         onPress = {console.log("pressed")}
         >
-         <Image  source = {require('../Resources/icons8-add.png')}/>
+         <Image style={styles.image} source = {require('../Resources/icons8-add.png')}/>
         </TouchableOpacity>
         {console.log(this.state.amData)}
         <Circle
@@ -133,9 +133,15 @@ class CoolerMedicineView extends React.Component {
   const styles = StyleSheet.create({
     button: {
       position: 'absolute',
-      padding: 20,
-      right:-10,
-      top:20,
+      padding:50,
+      right:20,
+      top:35,
+    },
+    image:{
+      position: 'absolute',
+      right:0,
+      top:0,
+
     }
   })
 
