@@ -21,30 +21,27 @@ var data1 = [{'title': 'Donut 20mg', 'time': '12:20PM',
          {'title': 'Bracy 100mg', 'time': '1:25PM', 'status': false}, {'title': 'Katy 2000mg', 'time': '2:50PM', 'status': false}]
 
 class CoolerMedicineView extends React.Component {
-       
+
   constructor(props) {
     super(props)
 
     this.state = {
-      meds : [[0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
-      pmData : [ 0,100, 0,100], 
+      meds : [[0,0,0,0,0,0],[0,0],[0,0], [0,0,0,0]],
+      pmData : [ 0,100, 0,100],
       amData : [ 0,100, 0,100],
     }
   }
- 
+
   updateMeds = (time, index, amPm) => {
     newMeds = this.state.meds
-    oldVal = this.state.meds[time][index.index]
-    newMeds[time][index.index] = !oldVal
-//console.log(oldVal)
-//    console.log(index)
-//    console.log(this.state.meds[0] )
-//    console.log(time)
+    oldVal = this.state.meds[time][index]
+
+    newMeds[time][index] = !oldVal
     this.setState ({meds : newMeds })
     this.updateArray(time, amPm)
   }
 
- 
+
   updateArray = (time, amPm) => {
     if (amPm){
       newData = this.state.amData
@@ -80,27 +77,27 @@ class CoolerMedicineView extends React.Component {
          renderItem = {({ item, index }) => {
             return (
             <View>
-                <PillCard 
-                status = {this.state.meds}
+                <PillCard
+                status = {this.state.meds[0]}
                 setParentState={index=>this.updateMeds(0, index, 1)}
                 time = {"Morning"}
                 data = {data1}
                 />
                 <PillCard
-                status = {this.state.meds}
+                status = {this.state.meds[1]}
                 setParentState={index=>this.updateMeds(1, index, 1)}
                 time = {"Afternoon"}
                 data = {data2}
                 />
-                <PillCard 
-                status = {this.state.meds}
+                <PillCard
+                status = {this.state.meds[2]}
                 setParentState={index=>this.updateMeds(2, index, 0)}
                 time = {"Evening"}
                 data = {data3}
-      
+
                 />
                 <PillCard
-                status = {this.state.meds}
+                status = {this.state.meds[3]}
                 setParentState={index=>this.updateMeds(3, index, 0)}
                 time = {"Night"}
                 data = {data4}
@@ -110,7 +107,7 @@ class CoolerMedicineView extends React.Component {
          }}
          />
          </View>
-         
+
         </View>
   )
 

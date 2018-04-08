@@ -20,36 +20,6 @@ class Circle extends Component {
   }
 }
 
-  updateMeds = (time, index, amPm) => {
-    newMeds = this.state.meds
-    oldVal = this.state.meds[time][index]
-    newMeds[time][index] = !oldVal
-    this.setState ({meds : newMeds })
-    this.updateArray(time, amPm)
-  }
-
-  updateArray = (time, amPm) => {
-    if (amPm){
-      newData = this.state.amData
-      meds_list = this.state.meds[time]
-      sum = meds_list.reduce((a, b) => a + b, 0);
-      len = this.state.meds[time].length;
-      newData[time*2] = 100 * (sum/len);
-      newData[time*2+1] = 100 - newData[time*2];
-      this.setState ({amData : newData})
-    }
-    else {
-      newData = this.state.pmData
-      meds_list = this.state.meds[time]
-      sum = meds_list.reduce((a, b) => a + b, 0);
-      len = this.state.meds[time].length;
-      newData[(time - 2)*2] = 100 * (sum/len);
-      newData[(time - 2)*2+1] = 100 - newData[(time - 2)*2];
-      this.setState ({pmData : newData})
-    }
-    //console.log(newData)
-  }
-
   render() {
 
     const choosecolor = (index) => this.state.colors[index]
@@ -128,7 +98,6 @@ class Circle extends Component {
         <View style= {styles.nine}/>
 
         </View>
-         
         </View>
 
     )

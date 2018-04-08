@@ -89,9 +89,8 @@ class Card extends PureComponent {
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
     cardData: PropTypes.obj,
-    setParentState: PropTypes.func,
     data: PropTypes.array,
-    status: PropTypes.array,
+    status: PropTypes.array
   };
   constructor(props) {
     super(props);
@@ -140,22 +139,19 @@ class Card extends PureComponent {
 }
 
     _onCheck = (index) => {
-    this.props.setParentState(index)
-    status = this.state.status
-    status[index] = !status[index]
-    this.props.data[index].status = !this.props.data[index].status
-    this.setState({
-        status: status //Step 2
-    })
-
-  
-    console.log(status)
-    this.forceUpdate()
+      this.props.setParentState(index)
+      status = this.state.status
+      status[index] = !status[index]
+      this.props.data[index].status = !this.props.data[index].status
+      this.setState({
+          status: status //Step 2
+        })
+      this.forceUpdate()
     }
 
   makePills(data) {
       console.log('hello?')
-      return data.map((i ,index) =>{
+      return data.map((i , index) =>{
           return(
               <View style = {styles.note}>
               <CheckBox
@@ -220,7 +216,6 @@ class Card extends PureComponent {
                   </View>
                   <View style = {{marginTop: 15}} onLayout =
                   {this._setMaxHeight.bind(this)}>
-                       {console.log(this.props.data)}
                       {this.makePills(this.props.data)}
                   </View>
               </View>
