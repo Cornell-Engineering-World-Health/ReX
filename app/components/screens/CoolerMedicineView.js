@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text, Button, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity,Image } from 'react-native';
 import Circle from '../MedicineComponents/Circle.js';
 import PillCard from '../Card/PillCard';
 
@@ -46,6 +46,7 @@ class CoolerMedicineView extends React.Component {
     if (amPm){
       newData = this.state.amData
       meds_list = this.state.meds[time]
+      console.log(meds_list)
       sum = meds_list.reduce((a, b) => a + b, 0);
       len = this.state.meds[time].length;
       newData[time*2] = 100 * (sum/len);
@@ -66,6 +67,12 @@ class CoolerMedicineView extends React.Component {
   render() {
     return (
         <View>
+        <TouchableOpacity 
+        style = {styles.button}
+        onPress = {console.log("pressed")}
+        >
+         <Image  source = {require('../Resources/icons8-add.png')}/>
+        </TouchableOpacity>
         <Circle
         amData = {this.state.amData}
         pmData = {this.state.pmData}
@@ -111,6 +118,14 @@ class CoolerMedicineView extends React.Component {
         </View>
   )
 
-  }
-}
+  }}
+  const styles = StyleSheet.create({
+    button: {
+      position: 'absolute',
+      padding: 20,
+      right:-10,
+      top:20,
+    }
+  })
+
 export default CoolerMedicineView;

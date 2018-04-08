@@ -50,7 +50,6 @@ class Circle extends Component {
     return (
         <View flex = {1}>
         <View style = {styles.header}>
-
         <Text style = {styles.headerText}>
             Monday
         </Text>
@@ -58,20 +57,6 @@ class Circle extends Component {
             March 12
         </Text>
         </View>
-        {/*<View>
-            <View flexDirection = 'row' style = {styles.images1}>
-                <Image marginRight = {70} marginTop= {10} source = {require('../Resources/night2.png')}/>
-                <Image source = {require('../Resources/icons8-sunrise-50.png')}/>
-            </View>
-            <View flexDirection = 'row' style = {styles.images2}>
-                <Image marginRight= {70} source = {require('../Resources/icons8-sunset-50.png')}/>
-                <Image marginTop = {10} source = {require('../Resources/icons8-sun-50.png')}/>
-            </View>
-        </View>
-        <View style = {styles.plusUp} />
-        <View style = {styles.plusUp2} />
-        <View style = {styles.plusSide} />
-        <View style = {styles.plusSide2} />*/}
         <View style = {styles.pie}>
         <PieChart
             paddingBottom = {150}
@@ -95,7 +80,7 @@ class Circle extends Component {
         <View style= {styles.twelve}/>
         <View style= {styles.three}/>
         <View style= {styles.six} />
-        <View style= {styles.nine}/>
+        <View style= {styles.nine} />
 
         </View>
         </View>

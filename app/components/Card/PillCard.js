@@ -89,8 +89,9 @@ class Card extends PureComponent {
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
     cardData: PropTypes.obj,
+    setParentState: PropTypes.func,
     data: PropTypes.array,
-    status: PropTypes.array
+    status: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -99,7 +100,7 @@ class Card extends PureComponent {
         //maxHeight : 0,
         minHeight : 10,
         animation : new Animated.Value(),
-        status : this.props.status,
+        status : this.props.status
     }
   }
 
@@ -121,7 +122,6 @@ class Card extends PureComponent {
 
   toggle(){
     //Step 1
-    console.log("help")
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 
@@ -139,19 +139,24 @@ class Card extends PureComponent {
 }
 
     _onCheck = (index) => {
-      this.props.setParentState(index)
-      status = this.state.status
-      status[index] = !status[index]
-      this.props.data[index].status = !this.props.data[index].status
-      this.setState({
-          status: status //Step 2
-        })
-      this.forceUpdate()
+    //this.props.setParentState(index)
+    status = this.state.status
+    console.log(status)
+    console.log(status[index])
+    console.log(!status[index])
+    status[index] = !status[index]
+    this.props.data[index].status = !this.props.data[index].status
+    this.setState({
+        status: status //Step 2
+    })
+  
+    console.log(status)
+    this.forceUpdate()
     }
+    
 
   makePills(data) {
-      console.log('hello?')
-      return data.map((i , index) =>{
+      return data.map((i ,index) =>{
           return(
               <View style = {styles.note}>
               <CheckBox
@@ -183,7 +188,7 @@ class Card extends PureComponent {
 
     return (
       <Animated.View style={[styles.wrapper, {height: this.state.animation}]}>
-        <View >
+        <View>
           <Swipeout
             right={this.props.buttonsRight}
             left={this.props.buttonsLeft}
