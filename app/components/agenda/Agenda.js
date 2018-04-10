@@ -58,7 +58,16 @@ class Agenda extends Component {
                 swiperActive={true}
                 buttonActive={!this.state.expandVisible}
                 iconName={item.iconName}
-                buttonsRight={item.buttonsRight}
+                buttonsRight={[
+                  {
+                    text: 'Delete',
+                    type: 'delete'
+                  },
+                  {
+                    text: 'Edit',
+                    type: 'edit'
+                  }
+                ]}
                 buttonsLeft={item.buttonsLeft}
                 onCloseSwipeout={this._onClose}
                 onPress={this.props.onPressAgenda}

@@ -16,6 +16,7 @@ import FlatListCard from '../screens/FlatListCard';
 import Calendar from '../screens/Calendar';
 import ChooseLogScreen from '../screens/Log';
 import { IMAGES } from '../Resources/constants';
+import PushController from '../PushController/PushController';
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -274,6 +275,7 @@ class MenuBar extends React.Component {
             }}
           />
         </View>
+        <PushController />
       </View>
     );
   }
