@@ -62,10 +62,14 @@ export async function setNotification(t, b, date) {
     time: date
   };
 
-  return await Notifications.scheduleLocalNotificationAsync(
+  var p = Notifications.scheduleLocalNotificationAsync(
     localNotification,
     schedulingOptions
   );
+  console.log('type', typeof p);
+  p.then(id => {
+    console.log('id', id);
+  });
 }
 
 /*
