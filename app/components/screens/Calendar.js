@@ -16,6 +16,7 @@ import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databa
 import constants, { COLOR } from '../Resources/constants';
 
 const numOfCals = 20;
+var mutexLock = 0
 
 class Calendar extends Component {
   constructor(props) {
@@ -96,9 +97,9 @@ class Calendar extends Component {
   };
 
   _loadPrev = ({viewableItems, changed}) => {
-    console.log(viewableItems.length)
-    if (viewableItems.length > 0){
+    if (viewableItems.length > 0 && mutexLock == 0){
       if (viewableItems[viewableItems.length - 1].index == 0){
+        mutexLock = 1
         newData = [];
         current = this.state.first;
         for (i = 1; i < 20; i++) {
@@ -108,9 +109,8 @@ class Calendar extends Component {
           data: [...newData, ...this.state.data],
           first: current - 19
         });
-        console.log("it worked")
-        console.log(this.state.data)
-        this.flatListRef.scrollToIndex({animated:true, index:20})
+        this.flatListRef.scrollToIndex({animated:true, index:19})
+        mutexLock = 0
       }
     }
 
