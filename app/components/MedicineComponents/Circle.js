@@ -61,6 +61,13 @@ class Circle extends Component {
         <Text style = {styles.headerText2}>
             March 12
         </Text>
+        
+        <TouchableOpacity 
+        style = {styles.button}
+        onPress = {console.log("pressed")}
+        >
+         <Image style={styles.image} source = {require('../Resources/icons8-add.png')}/>
+        </TouchableOpacity>
         </View>
         <View style = {styles.pie}>
         <PieChart
@@ -248,7 +255,18 @@ const styles = StyleSheet.create({
         opacity: .1,
         borderRadius: 30,
 
-    }
+    },
+    button: {
+        position: 'absolute',
+        padding:50,
+        right:10,
+        top:9,
+      },
+      image:{
+        position: 'absolute',
+        right:0,
+        top:0,
+      },
 
 })
 export default Circle

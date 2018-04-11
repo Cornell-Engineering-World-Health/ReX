@@ -19,6 +19,7 @@ var data3 = [{'title': 'Donut 20mg', 'time': '12:20PM',
 var data4 = [{'title': 'Donut 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Eashan 30mg', 'time': '12:50PM', 'status': false},
          {'title': 'Bracy 100mg', 'time': '1:25PM', 'status': false}, {'title': 'Katy 2000mg', 'time': '2:50PM', 'status': false}]
+         
 
 class CoolerMedicineView extends React.Component {
 
@@ -78,12 +79,8 @@ class CoolerMedicineView extends React.Component {
   render() {
     return (
         <View>
-        <TouchableOpacity 
-        style = {styles.button}
-        onPress = {console.log("pressed")}
-        >
-         <Image style={styles.image} source = {require('../Resources/icons8-add.png')}/>
-        </TouchableOpacity>
+
+        <View>
         {console.log(this.state.amData)}
         <Circle
         amData = {this.state.amData}
@@ -125,24 +122,14 @@ class CoolerMedicineView extends React.Component {
          }}
          />
          </View>
+         </View>
 
         </View>
   )
 
   }}
   const styles = StyleSheet.create({
-    button: {
-      position: 'absolute',
-      padding:50,
-      right:20,
-      top:35,
-    },
-    image:{
-      position: 'absolute',
-      right:0,
-      top:0,
-
-    }
+    
   })
 
 export default CoolerMedicineView;
