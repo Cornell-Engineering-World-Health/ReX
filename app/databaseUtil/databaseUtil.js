@@ -1,6 +1,7 @@
 import Database from '../Database';
 import Moment from 'moment';
 import constants from '../components/Resources/constants';
+import {getCardData} from '../components/Resources/constants';
 
 export function createTables(){
   console.log('creating tables')
@@ -27,7 +28,7 @@ export function intializeDatabase(){
   Database.transaction(tx => {
     tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (1, \'Headache\', \'image.png\', \'Intensity\',\'Duration\')')
     tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (2, \'Dizziness\', \'image.png\')')
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (2, \'Blurred_Vision\', \'image.png\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (3, \'Blurred Vision\', \'image.png\', \'Intensity\',\'Duration\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, \'Intensity\', \'ScaleSlideInputType\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (2, \'Duration\', \'NumericalPickerInputType\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (3, \'Other\', \'TextInputType\')')
@@ -88,6 +89,11 @@ export function databaseFakeData(){
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (10, 1,\'2018-03-17 06:01:00\', 10)')
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Intensity": "5","Duration": "60"}\' )')
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (11, 1,\'2018-04-17 06:01:00\', 11)')
+
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\'{"Intensity": "5","Duration": "60"}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (12, 3,\'2018-04-17 06:01:00\', 12)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\'{"Intensity": "5","Duration": "60"}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (13, 3,\'2018-04-19 06:01:00\', 13)')
     },err=> console.log(err));
     /*Database.transaction(tx => {
         tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
@@ -105,14 +111,14 @@ export function databaseFakeData(){
 export function pullFromDataBase(month, day, callback){
   databaseFakeData();
   console.log('pulling from database');
-  
+
   formattedMonth = month.toISOString().substr(0,7)
   var arrayFormattedMonth = [formattedMonth]
   Database.transaction(tx => (tx.executeSql("SELECT event_id,event_type_name, timestamp, fields, strftime(\'%Y-%m\',timestamp) FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != \'1950-01-01 00:00:00\' AND strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
-      
+
 }
 
 function sameDay(d1, d2) {
@@ -126,24 +132,23 @@ function formatAgenda(data){
     console.log(data)
     agendaFlatList = []
     data.forEach(function(ele){
-        
+
         formattedTime = Moment(ele.timestamp, 'YYYY-MM-DD HH:mm:ss').format('h:mm A')
         j = JSON.parse(ele.fields)
         note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1]
         note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2]
-        
+
         //TODO: should have error checking here incase json is malformatted
         //TODO: should use event_type_name for cardData
-        
-        cardDataString = ele.event_type_name.toUpperCase()
-        elementRecord = {id: ele.event_id, cardData: constants[cardDataString], timeStamp: formattedTime, note1: note_value1, note2: note_value2}
-        
-        //console.log(elementRecord)
-        
-       
+
+        elementRecord = {id: ele.event_id, cardData: getCardData(ele.event_type_name), timeStamp: formattedTime, note1: note_value1, note2: note_value2}
+
+        console.log(elementRecord)
+
+
         let d = new Date(ele.day)
         d.setTime(d.getTime() + d.getTimezoneOffset()*60*1000 )
-        
+
         let foundDate = false
         for (var i = 0; i < agendaFlatList.length; i++) {
             if(sameDay(agendaFlatList[i].date,d)){
@@ -153,29 +158,29 @@ function formatAgenda(data){
                 break
             }
         }
-        
+
         if(!foundDate){
             //console.log('adding a record to agendaFlatList')
             agendaFlatList.push({date: d,data: [elementRecord]})
         }
-        
+
     });
-    
-    //console.log(agendaFlatList) 
-    
-   
-  
+
+    //console.log(agendaFlatList)
+
+
+
   return agendaFlatList
-  
+
 }
 export function pullAgendaFromDatabase(callback){
-    
+
     // Agenda query
     console.log('reached pullAgendaFromDatabase')
     Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
     INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
     INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
     WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
-    
-    
+
+
 }
