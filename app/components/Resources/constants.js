@@ -185,6 +185,15 @@ export function getSource (title) {
   return constants.DEFAULT.image
 }
 
+export function getCardData(title) {
+    for (var x = 0; x < types.length; x++) {
+      if (title == types[x].title) {
+        return types[x];
+      }
+    }
+    return constants.DEFAULT;
+}
+
 export function getColor (type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
