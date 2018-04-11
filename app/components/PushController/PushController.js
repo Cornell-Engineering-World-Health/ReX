@@ -45,7 +45,7 @@ export function cancelMassNotifications(notificationIDS) {
 
   returns: unique notification id
 */
-export function setNotification(t, b, date) {
+export async function setNotification(t, b, date) {
   d = {
     title: t,
     body: b
@@ -62,7 +62,7 @@ export function setNotification(t, b, date) {
     time: date
   };
 
-  return Notifications.scheduleLocalNotificationAsync(
+  return await Notifications.scheduleLocalNotificationAsync(
     localNotification,
     schedulingOptions
   );
@@ -79,7 +79,13 @@ scheduledTime: an ARRAY of times in the day, in the form of ["09:00", "18:00"] -
                                                                                   Additionally, for a time with an hour  < 12,
                                                                                   a 0 placeholder must be included (ex: 09:00)
 */
-export function setMassNotification(startDate, endDate, t, b, scheduledTime) {
+export async function setMassNotification(
+  startDate,
+  endDate,
+  t,
+  b,
+  scheduledTime
+) {
   var id_bundle = [];
 
   let tempDate = new Date(
@@ -99,7 +105,7 @@ export function setMassNotification(startDate, endDate, t, b, scheduledTime) {
         hours,
         minutes
       );
-      id_bundle += setNotification(t, b, tempDateWithTime);
+      id_bundle += await setNotification(t, b, tempDateWithTime);
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }

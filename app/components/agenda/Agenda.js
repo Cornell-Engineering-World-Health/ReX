@@ -60,12 +60,12 @@ class Agenda extends Component {
                 iconName={item.iconName}
                 buttonsRight={[
                   {
-                    text: 'Delete',
-                    type: 'delete'
-                  },
-                  {
                     text: 'Edit',
                     type: 'edit'
+                  },
+                  {
+                    text: 'Delete',
+                    type: 'delete'
                   }
                 ]}
                 buttonsLeft={item.buttonsLeft}

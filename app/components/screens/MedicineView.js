@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, Button, Alert } from 'react-native';
-
+import { Fingerprint } from 'expo';
 import {
   setMassNotification,
-  setNotification
+  setNotification,
+  cancelNotification
 } from '../PushController/PushController';
 
 const styles = StyleSheet.create({
@@ -62,24 +63,28 @@ class MedicineView extends React.Component {
   }
 
   _setNotification() {
-    setNotification(
+    let notification = setNotification(
       localNotification.title,
       localNotification.body,
       Date.now() + 2000
     );
+    console.log(notification);
   }
 
   render() {
-    //let page = this._renderScreen();
-    return (
-      <View style={{ flex: 1, padding: 50 }}>
-        <Button
-          color={'black'}
-          title={'Press for notification and then go to home screen!'}
-          onPress={this._setNotification}
-        />
-      </View>
-    );
+    let page = null;
+    if (true) {
+      page = (
+        <View style={{ flex: 1, padding: 50 }}>
+          <Button
+            color={'black'}
+            title={'Press for notification and then go to home screen!'}
+            onPress={this._setNotification}
+          />
+        </View>
+      );
+    }
+    return page;
   }
 }
 export default MedicineView;
