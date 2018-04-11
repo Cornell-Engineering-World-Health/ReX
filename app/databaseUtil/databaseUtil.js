@@ -40,11 +40,12 @@ export function intializeDatabase(){
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,\'1950-01-01 00:00:00\', 1)')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,\'1950-01-01 00:00:00\', 2)')
-    /* necessary settings */
+    /* necessary default settings */
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'height_feet\',\'5\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'height_inches\',\'8\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'weight\',\'Select\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'height\',\'Select\')')
+    tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'name\',\'Select Edit\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'icon\',\'0\')')
     
     /* medication reminder examples */
