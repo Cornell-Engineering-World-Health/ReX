@@ -6,6 +6,7 @@ import PickerInputType from '../LogInputTypes/PickerInputType'
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
 import DatePicker from '../LogInputTypes/DatePicker'
+import TimePicker from '../LogInputTypes/TimePicker'
 import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
 import Moment from 'moment'
@@ -82,6 +83,7 @@ export default class ChooseLogScreen extends React.Component {
 
   render () {
     var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible']
+    var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening']
     return (
       <ScrollView>
         <View style={styles.main_container}>
@@ -140,8 +142,8 @@ export default class ChooseLogScreen extends React.Component {
               return (
                 <DatePicker
                   key={key}
-                  input_style={styles.input_container_green}
-                  title_text_style={styles.title_text}
+                  input_style={styles.input_container_transparent_green}
+                  title_text_style={styles.title_text_green}
                   value={this.state.values[key]}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
@@ -156,6 +158,26 @@ export default class ChooseLogScreen extends React.Component {
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)} />)
+            } else if (prop == 'TimeCategoryInputType') {
+              return (
+                <View>
+                  {this.state.values[key].map((prop, timeKey) => {
+                    return (
+                      <TimePicker
+                        key={timeKey}
+                        input_style={styles.input_container_transparent_blue}
+                        title_text_style={styles.title_text_green}
+                        value={this.state.values[key][timeKey]}
+                        title_text={'Reminder Time'}
+                        val_label={this.state.value_labels[key]}
+                        chosen_date={this.state.values[key][timeKey]}
+                        valueChange={this.valueChange.bind(this)} />)
+                  })}
+                  <TouchableOpacity
+                    style={styles.add_button}>
+                    <Text style={styles.submit_text}>Add Another Time</Text>
+                  </TouchableOpacity>
+                </View>)
             }
           })}
           {  /*    <ChecklistInputType
@@ -227,6 +249,11 @@ const styles = StyleSheet.create({
     color: '#e5e5e5',
     paddingBottom: 10
   },
+  title_text_green: {
+    fontSize: 20,
+    color: '#2D8464',
+    paddingBottom: 10
+  },
   input_container_blue: {
     width: 320,
     padding: 20,
@@ -245,6 +272,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#2D8464'
   },
+  input_container_transparent_green: {
+    width: 320,
+    padding: 20,
+    marginBottom: 20,
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#2D8464'
+  },
+  input_container_transparent_blue: {
+    width: 320,
+    padding: 20,
+    marginBottom: 20,
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#2D6D84'
+  },
   submit_button: {
     marginTop: 30,
     marginBottom: 30,
@@ -253,6 +298,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#bf5252',
     padding: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#bf5252'
+  },
+  add_button: {
+    marginBottom: 20,
+    alignItems: 'bottom',
+    width: 320,
+    alignItems: 'center',
+    backgroundColor: '#bf5252',
+    padding: 20,
     borderWidth: 2,
     borderRadius: 10,
     borderColor: '#bf5252'
