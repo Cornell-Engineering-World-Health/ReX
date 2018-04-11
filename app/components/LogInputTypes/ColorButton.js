@@ -12,7 +12,6 @@ export default class ColorButton extends React.Component {
 
   changeCheckbuttonStyle () {
     this.setState({
-      button_text: this.state.button_text,
       background_color: !this.state.background_color
     })
   }
@@ -20,9 +19,11 @@ export default class ColorButton extends React.Component {
   render () {
     return (
       <TouchableOpacity
-        style={[styles.checkbutton, {backgroundColor: this.state.background_color ? '#bf5252' : 'transparent'}]}
-        onClick={this.changeCheckbuttonStyle.bind(this)}>
-        <Text style={styles.checkbox_text}>{this.state.button_text}</Text>
+        style={[styles.checkbutton, {backgroundColor: this.state.background_color ? 'white' : 'transparent'}]}
+        onPress={this.changeCheckbuttonStyle.bind(this)}>
+        <Text style={[styles.checkbox_text, {color: this.state.background_color ? '#2D6D84' : 'white'}]}>
+          {this.state.button_text}
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -36,16 +37,15 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     padding: 5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#bf5252'
+    borderColor: 'white'
   },
   checkbox: {
     flex: 1,
     padding: 5
   },
   checkbox_text: {
-    color: 'white',
     fontSize: 20
   }
 })

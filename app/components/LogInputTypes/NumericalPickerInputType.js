@@ -17,6 +17,10 @@ export default class NumericalPickerInputType extends React.Component {
     }
   }
 
+  handleChange (val) {
+    this.props.valueChange(this.props.val_label, val)
+  }
+
   render () {
     return (
       <PickerInputType
@@ -25,6 +29,7 @@ export default class NumericalPickerInputType extends React.Component {
         picker_values={this.state.picker_values}
         input_style={this.state.input_style}
         title_text_style={this.state.title_text_style}
+        handleChange={this.handleChange.bind(this)}
       />
     )
   }
