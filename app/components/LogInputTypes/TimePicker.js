@@ -6,14 +6,18 @@ import moment from 'moment'
 export default class TimePicker extends React.Component {
   constructor (props) {
     super(props)
+    date = new Date()
+    time = props.chosen_date.split(':')
+    date.setHours(time[0])
+    date.setMinutes(time[1])
+
     this.state = {
       title_text: props.title_text,
       value: props.value,
       input_style: props.input_style,
       title_text_style: props.title_text_style,
-      chosen_date: new Date().setTime(props.chosen_date)
+      chosen_date: date
     }
-    console.log(new Date().setTime(props.chosen_date))
   }
 
   handleChange (val) {

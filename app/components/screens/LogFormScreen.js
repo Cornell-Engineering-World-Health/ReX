@@ -166,7 +166,7 @@ export default class ChooseLogScreen extends React.Component {
                       <TimePicker
                         key={timeKey}
                         input_style={styles.input_container_transparent_blue}
-                        title_text_style={styles.title_text_green}
+                        title_text_style={styles.title_text_blue}
                         value={this.state.values[key][timeKey]}
                         title_text={'Reminder Time'}
                         val_label={this.state.value_labels[key]}
@@ -252,6 +252,11 @@ const styles = StyleSheet.create({
   title_text_green: {
     fontSize: 20,
     color: '#2D8464',
+    paddingBottom: 10
+  },
+  title_text_blue: {
+    fontSize: 20,
+    color: '#2D6D84',
     paddingBottom: 10
   },
   input_container_blue: {
