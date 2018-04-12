@@ -20,12 +20,23 @@ export default class ChecklistInputType extends React.Component {
       title_text: props.title_text,
       list_values: props.list_values,
       input_style: props.input_style,
-      title_text_style: props.title_text_style
+      title_text_style: props.title_text_style,
+      value: props.value
     }
   }
 
   handleChange (val) {
-    this.props.valueChange(this.props.val_label, val)
+    if (this.state.value[val] == 0) {
+      this.state.value[val] = 1
+    } else {
+      this.state.value[val] = 0
+    }
+
+    this.setState({
+      value: this.state.value
+    })
+    console.log(val)
+    this.props.valueChange(this.props.val_label, this.state.value)
   }
 
   render () {
@@ -35,7 +46,12 @@ export default class ChecklistInputType extends React.Component {
         <View style={styles.checkbox_area}>
           <ScrollView vertical>
             {this.state.list_values.map((prop, key) => {
-              return <ColorButton key={key} button_text={prop} />
+              return <ColorButton
+                key={key}
+                val_key={key}
+                button_text={prop}
+                background_color={this.state.value[key] ? true : false}
+                handleChange={this.handleChange.bind(this)} />
             })}
           </ScrollView>
         </View>

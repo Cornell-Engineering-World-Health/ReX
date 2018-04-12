@@ -157,6 +157,7 @@ export default class ChooseLogScreen extends React.Component {
                   title_text_style={styles.title_text}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
+                  value={this.state.values[key]}
                   valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'TimeCategoryInputType') {
               return (
