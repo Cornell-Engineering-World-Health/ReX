@@ -176,6 +176,17 @@ Precondition: title is a string
 
 Available titles are found in the constants variable of this file.
 */
+
+export function getCardData(title) {
+  for (var x = 0; x < types.length; x++) {
+    if (title == types[x].title) {
+      return types[x];
+    }
+  }
+  return constants.DEFAULT;
+}
+
+
 export function getSource (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
@@ -183,15 +194,6 @@ export function getSource (title) {
     }
   }
   return constants.DEFAULT.image
-}
-
-export function getCardData(title) {
-    for (var x = 0; x < types.length; x++) {
-      if (title == types[x].title) {
-        return types[x];
-      }
-    }
-    return constants.DEFAULT;
 }
 
 export function getColor (type) {
@@ -212,4 +214,4 @@ export function getTranslucentColor (type) {
   return DEFAULT.translucentColor
 }
 
-// export {constants, getColor, getTranslucentColor};
+
