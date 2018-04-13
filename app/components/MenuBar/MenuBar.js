@@ -9,13 +9,14 @@ import testData from '../Resources/CardTestData'
 import Moment from 'moment'
 import constants from '../Resources/constants'
 
-import Home from '../screens/HomePage'
-import MedicineView from '../screens/MedicineView'
-import Settings from '../screens/Settings'
-import FlatListCard from '../screens/FlatListCard'
-import Calendar from '../screens/Calendar'
-import ChooseLogScreen from '../screens/Log'
-import { IMAGES } from '../Resources/constants'
+import Home from '../screens/HomePage';
+import MedicineView from '../screens/MedicineView';
+import Settings from '../screens/Settings';
+import FlatListCard from '../screens/FlatListCard';
+import Calendar from '../screens/Calendar';
+import ChooseLogScreen from '../screens/Log';
+import { IMAGES } from '../Resources/constants';
+import PushController from '../PushController/PushController';
 
 const MEDICINE_PAGE = 'medicine'
 const SETTINGS_PAGE = 'settings'
@@ -242,8 +243,13 @@ class MenuBar extends React.Component {
             }}
           />
         </View>
+        <PushController />
       </View>
     )
   }
 }
+<<<<<<< HEAD
 export default MenuBar
+=======
+export default MenuBar;
+>>>>>>> e261bcf2a05a734a22ab97d99f3b44fa762ab3ea
