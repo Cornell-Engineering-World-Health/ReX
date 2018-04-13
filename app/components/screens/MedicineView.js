@@ -5,7 +5,8 @@ import { Fingerprint } from 'expo';
 import {
   setMassNotification,
   setNotification,
-  cancelNotification
+  cancelNotification,
+  cancelAllNotifications
 } from '../PushController/PushController';
 
 const styles = StyleSheet.create({
@@ -21,23 +22,14 @@ const localNotification = {
   body: 'Come back to our app!'
 };
 
-const medicine = [
-  {
-    title: 'Test ',
-    body: 'Long Term Test',
-    startDate: new Date('April 9, 2018'),
-    endDate: new Date('April 10, 2018'),
-    scheduledTime: ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00']
-  },
-  {
-    title: 'Hi CS Team!',
-    body: 'I set this at 12:57 on Monday!',
-    startDate: new Date('April 11, 2018'),
-    endDate: new Date('April 12, 2018'),
-    scheduledTime: ['17:00', '17:05']
-  }
-];
-const notificationIDs = [];
+const medicine = {
+  title: 'Test ',
+  body: 'Long Term Test',
+  startDate: new Date('April 14, 2018'),
+  endDate: new Date('April 24, 2018'),
+  scheduledTime: ['13:00']
+};
+
 class MedicineView extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
@@ -50,25 +42,29 @@ class MedicineView extends React.Component {
   componentWillMount() {}
 
   _setAllNotifications() {
-    for (var x = 0; x < medicine.length; x++) {
-      let current = medicine[x];
-      notificationIDs += setMassNotification(
-        current.startDate,
-        current.endDate,
-        current.title,
-        current.body,
-        current.scheduledTime
-      );
-    }
+    cancelAllNotifications();
+    setMassNotification(
+      medicine.startDate,
+      medicine.endDate,
+      medicine.title,
+      medicine.body,
+      medicine.scheduledTime,
+      ids => {
+        console.log(ids);
+      }
+    );
   }
 
   _setNotification() {
-    let notification = setNotification(
+    setNotification(
       localNotification.title,
       localNotification.body,
-      Date.now() + 2000
+      Date.now() + 2000,
+      (id, date) => {
+        console.log(id);
+        console.log(date);
+      }
     );
-    console.log(notification);
   }
 
   render() {
@@ -80,6 +76,11 @@ class MedicineView extends React.Component {
             color={'black'}
             title={'Press for notification and then go to home screen!'}
             onPress={this._setNotification}
+          />
+          <Button
+            color={'black'}
+            title={'Press for to set Mass notifications'}
+            onPress={this._setAllNotifications}
           />
         </View>
       );

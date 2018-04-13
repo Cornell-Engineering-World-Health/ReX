@@ -43,9 +43,12 @@ export function cancelMassNotifications(notificationIDS) {
   b: body of the notification  //string
   date: time/date to send notification // date object with correct time and date
 
-  returns: unique notification id
+  callBack: function to be called after the notification is set.
+    Notification id (string?) and date the notification will be sent (date object)
+    will be passed in as parameters. This notification id can be used to cancel
+    this notification in the future.
 */
-export async function setNotification(t, b, date) {
+export function setNotification(t, b, date, callBack) {
   d = {
     title: t,
     body: b
@@ -61,19 +64,20 @@ export async function setNotification(t, b, date) {
   schedulingOptions = {
     time: date
   };
-
   var p = Notifications.scheduleLocalNotificationAsync(
     localNotification,
     schedulingOptions
   );
-  console.log('type', typeof p);
   p.then(id => {
-    console.log('id', id);
+    callBack(id, date);
   });
 }
 
 /*
 IMPORTANT to adhere to these preconditions...
+Sets notifications at the given times starting at the
+startDate and ending on endDate. (Includes notifications on end date)
+
 startDate: date object with the correct start date
 endDate: date object with the correct end date
 t: string for the title of the notification set
@@ -82,13 +86,24 @@ scheduledTime: an ARRAY of times in the day, in the form of ["09:00", "18:00"] -
                                                                                   element in the array MUST be a string
                                                                                   Additionally, for a time with an hour  < 12,
                                                                                   a 0 placeholder must be included (ex: 09:00)
+callBack: function to be called after the notification is set.
+  ARRAY of objects, with Notification ids and dates that correspond to the notification
+  id will be passed in as parameters.
+  Objects will be of the form:
+  Object {
+  id: string
+  date: dateObject
+}
+
+
 */
 export async function setMassNotification(
   startDate,
   endDate,
   t,
   b,
-  scheduledTime
+  scheduledTime,
+  callBack
 ) {
   var id_bundle = [];
 
@@ -97,7 +112,6 @@ export async function setMassNotification(
     startDate.getMonth(),
     startDate.getDate()
   );
-  console.log('initial date: ' + tempDate);
   while (Moment(tempDate).isBefore(endDate)) {
     for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
@@ -109,13 +123,30 @@ export async function setMassNotification(
         hours,
         minutes
       );
-      id_bundle += await setNotification(t, b, tempDateWithTime);
+      setNotification(t, b, tempDateWithTime, (i, d) => {
+        let temp = { id: i, date: d };
+        id_bundle.push(temp);
+      });
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
-  //TODO: TRIGGER NOTIFICATION ON END DATE
 
-  return id_bundle;
+  for (var x = 0; x < scheduledTime.length; x++) {
+    let hours = parseInt(scheduledTime[x].slice(0, 2));
+    let minutes = parseInt(scheduledTime[x].slice(3, 5));
+    let tempDateWithTime = new Date(
+      tempDate.getFullYear(),
+      tempDate.getMonth(),
+      tempDate.getDate(),
+      hours,
+      minutes
+    );
+    setNotification(t, b, tempDateWithTime, (i, d) => {
+      let temp = { id: i, date: d };
+      id_bundle.push(temp);
+      callBack(id_bundle);
+    });
+  }
 }
 
 class PushController extends React.Component {
@@ -137,7 +168,6 @@ class PushController extends React.Component {
 
   listenForNotifications = () => {
     Notifications.addListener(notification => {
-      console.log(notification);
       if (notification.origin === 'received' && Platform.OS === 'ios') {
         Alert.alert(notification.data.title, notification.data.body);
       }
