@@ -9,7 +9,7 @@ import DatePicker from '../LogInputTypes/DatePicker'
 import TimePicker from '../LogInputTypes/TimePicker'
 import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
-import Moment from 'moment'
+import moment from 'moment'
 
 event_id_count = 100
 event_details_id_count = 100
@@ -65,7 +65,7 @@ export default class ChooseLogScreen extends React.Component {
   submit () {
     let event_type_id = this.state.event_type_id
     let values = JSON.stringify(this.state.submit_vals)
-    let timestamp = Moment().format('YYYY-MM-DD HH:mm:ss')
+    let timestamp = moment().format('YYYY-MM-DD HH:mm:ss')
 
     console.log(values)
 
@@ -169,13 +169,22 @@ export default class ChooseLogScreen extends React.Component {
                         input_style={styles.input_container_transparent_blue}
                         title_text_style={styles.title_text_blue}
                         value={this.state.values[key][timeKey]}
-                        title_text={'Reminder Time'}
+                        title_text={'Reminder Time ' + (timeKey + 1)}
                         val_label={this.state.value_labels[key]}
                         chosen_date={this.state.values[key][timeKey]}
-                        valueChange={this.valueChange.bind(this)} />)
+                        valueChange={(label, val) => {
+                          this.state.values[key][timeKey] = val
+                          this.valueChange(this.state.value_labels[key], this.state.values[key])
+                        }} />)
                   })}
                   <TouchableOpacity
-                    style={styles.add_button}>
+                    style={styles.add_button}
+                    onPress={() => {
+                      this.state.values[key].push(moment().format('HH:mm'))
+                      this.setState({
+                        values: this.state.values
+                      })
+                    }}>
                     <Text style={styles.submit_text}>Add Another Time</Text>
                   </TouchableOpacity>
                 </View>)

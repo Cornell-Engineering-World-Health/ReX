@@ -21,14 +21,21 @@ export default class TimePicker extends React.Component {
   }
 
   handleChange (val) {
-    this.props.valueChange(this.props.val_label, val.toLocaleDateString())
+    this.props.valueChange(this.props.val_label, moment(val.toLocaleTimeString(), 'hh:mm:ss ampm').format('HH:mm'))
     this.setState({chosen_date: val})
+  }
+
+  handleDelete (val) {
+    console.log('delete')
   }
 
   render () {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+        <View onclick={this.handleDelete.bind(this)}>
+          <Text style={styles.delete}>Delete</Text>
+        </View>
         <View style={styles.picker_container}>
           <DatePickerIOS
             style={styles.picker}
@@ -48,5 +55,8 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: 'white'
+  },
+  delete: {
+    color: 'red'
   }
 })

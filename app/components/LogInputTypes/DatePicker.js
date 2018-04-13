@@ -1,6 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, AppRegistry, TextInput, View, Picker, DatePickerIOS} from 'react-native'
 import PickerInputType from './PickerInputType'
+import moment from 'moment'
 
 export default class DatePicker extends React.Component {
   constructor (props) {
@@ -15,7 +16,7 @@ export default class DatePicker extends React.Component {
   }
 
   handleChange (val) {
-    this.props.valueChange(this.props.val_label, val.toLocaleDateString())
+    this.props.valueChange(this.props.val_label, moment(val.toLocaleDateString(), 'MM/DD/YYYY').format('YYYY-MM-DD'))
     this.setState({chosen_date: val})
   }
 
