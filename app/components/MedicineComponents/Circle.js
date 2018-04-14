@@ -18,7 +18,7 @@ class Circle extends Component {
 
   this.state = {
     colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
-    innerColors:['#85ada040','#ffffff','#85ada040','#ffffff', '#85ada040','#ffffff', '#85ada040','#ffffff'],
+    innerColors:['#85ada015','#ffffff','#85ada015','#ffffff', '#85ada015','#ffffff', '#85ada015','#ffffff'],
     amData : this.props.amData,
   }
 }
@@ -91,6 +91,7 @@ class Circle extends Component {
         <View style= {styles.three}/>
         <View style= {styles.six} />
         <View style= {styles.nine} />
+        <View style= {[styles.twelve, {transform: [{rotate: '5deg'}]} ]} />
 
         </View>
         </View>
