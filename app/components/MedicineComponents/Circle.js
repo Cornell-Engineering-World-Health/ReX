@@ -24,7 +24,7 @@ class Circle extends Component {
 }
 
   render() {
-
+    const rad = 5 * Math.PI / 180
     const choosecolor = (index) => this.state.colors[index]
     const chooseInnerColor = (index) => this.state.innerColors[index]
 
@@ -87,11 +87,364 @@ class Circle extends Component {
         <View style = {styles.hourHand} />
         <View style = {styles.minuteHand} />
         <View style = {styles.circleHand} />
-        <View style= {styles.twelve}/>
-        <View style= {styles.three}/>
         <View style= {styles.six} />
-        <View style= {styles.nine} />
-        <View style= {[styles.twelve, {transform: [{rotate: '5deg'}]} ]} />
+
+<View style = {[styles.twelve, {transform:[
+{translateY:0},
+{translateX:15},
+{rotate: ("6deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:3},
+{translateX:31},
+{rotate: ("12deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:7},
+{translateX:46},
+{rotate: ("18deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:13},
+{translateX:61},
+{rotate: ("24deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:20},
+{translateX:75},
+{rotate: ("30deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:28},
+{translateX:88},
+{rotate: ("36deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:38},
+{translateX:100},
+{rotate: ("42deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:49},
+{translateX:111},
+{rotate: ("48deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:62},
+{translateX:121},
+{rotate: ("54deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:75},
+{translateX:130},
+{rotate: ("60deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:89},
+{translateX:137},
+{rotate: ("66deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:103},
+{translateX:143},
+{rotate: ("72deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:119},
+{translateX:147},
+{rotate: ("78deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:134},
+{translateX:149},
+{rotate: ("84deg")}]}]}
+/>
+<View style = {[styles.twelve, {transform:[
+{translateY:150},
+{translateX:150},
+{rotate: ("90deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:-1},
+{translateX:-0},
+{rotate: ("-0deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:0},
+{translateX:-15},
+{rotate: ("-6deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:3},
+{translateX:-31},
+{rotate: ("-12deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:7},
+{translateX:-46},
+{rotate: ("-18deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:13},
+{translateX:-61},
+{rotate: ("-24deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:20},
+{translateX:-75},
+{rotate: ("-30deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:28},
+{translateX:-88},
+{rotate: ("-36deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:38},
+{translateX:-100},
+{rotate: ("-42deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:49},
+{translateX:-111},
+{rotate: ("-48deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:62},
+{translateX:-121},
+{rotate: ("-54deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:75},
+{translateX:-130},
+{rotate: ("-60deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:89},
+{translateX:-137},
+{rotate: ("-66deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:103},
+{translateX:-143},
+{rotate: ("-72deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:119},
+{translateX:-147},
+{rotate: ("-78deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:134},
+{translateX:-149},
+{rotate: ("-84deg")}]}]}
+/>
+
+<View style = {[styles.twelve, {transform:[
+{translateY:150},
+{translateX:-150},
+{rotate: ("-90deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:0},
+{translateX:15},
+{rotate: ("-6deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-3},
+{translateX:31},
+{rotate: ("-12deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-7},
+{translateX:46},
+{rotate: ("-18deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-13},
+{translateX:61},
+{rotate: ("-24deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-20},
+{translateX:75},
+{rotate: ("-30deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-28},
+{translateX:88},
+{rotate: ("-36deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-38},
+{translateX:100},
+{rotate: ("-42deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-49},
+{translateX:111},
+{rotate: ("-48deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-62},
+{translateX:121},
+{rotate: ("-54deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-75},
+{translateX:130},
+{rotate: ("-60deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-89},
+{translateX:137},
+{rotate: ("-66deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-103},
+{translateX:143},
+{rotate: ("-72deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-119},
+{translateX:147},
+{rotate: ("-78deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-134},
+{translateX:149},
+{rotate: ("-84deg")}]}]}
+/>
+
+
+
+<View style = {[styles.six, {transform:[
+{translateY:-0},
+{translateX:-15},
+{rotate: ("6deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-3},
+{translateX:-31},
+{rotate: ("12deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-7},
+{translateX:-46},
+{rotate: ("18deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-13},
+{translateX:-61},
+{rotate: ("24deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-20},
+{translateX:-75},
+{rotate: ("30deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-28},
+{translateX:-88},
+{rotate: ("36deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-38},
+{translateX:-100},
+{rotate: ("42deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-49},
+{translateX:-111},
+{rotate: ("48deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-62},
+{translateX:-121},
+{rotate: ("54deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-75},
+{translateX:-130},
+{rotate: ("60deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-89},
+{translateX:-137},
+{rotate: ("66deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-103},
+{translateX:-143},
+{rotate: ("72deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-119},
+{translateX:-147},
+{rotate: ("78deg")}]}]}
+/>
+
+<View style = {[styles.six, {transform:[
+{translateY:-134},
+{translateX:-149},
+{rotate: ("84deg")}]}]}
+/>
+
+       
 
         </View>
         </View>
@@ -131,7 +484,7 @@ const styles = StyleSheet.create({
     },
     plusUp: {
         position: 'absolute',
-        height: 13,
+        height: 14,
         width: 3,
         left: 200.5,
         top: 88,
@@ -139,7 +492,7 @@ const styles = StyleSheet.create({
     },
     plusUp2: {
         position: 'absolute',
-        height: 13,
+        height: 14,
         width: 3,
         left: 199.5,
         top: 375,
@@ -150,7 +503,7 @@ const styles = StyleSheet.create({
     plusSide: {
         position: 'absolute',
         height: 3,
-        width: 13,
+        width: 14,
         left: 58,
         top: 227,
         backgroundColor: 'grey'
@@ -158,7 +511,7 @@ const styles = StyleSheet.create({
     plusSide2: {
         position: 'absolute',
         height: 3,
-        width: 13,
+        width: 14,
         left: 343,
         top: 227,
         backgroundColor: 'grey'
@@ -193,7 +546,7 @@ const styles = StyleSheet.create({
       top: 187,
       left: 113.5,
       transform: [{rotate: '270deg'}],
-      backgroundColor: 'black'
+      //backgroundColor: 'black'
     },
     minuteHand: {
       position: 'absolute',
@@ -202,11 +555,11 @@ const styles = StyleSheet.create({
       top: 156.5,
       left: 144,
       transform: [{rotate: '180deg'}],
-      backgroundColor: '#fd1a77'
+      //backgroundColor: '#fd1a77'
     },
     circleHand: {
       position: 'absolute',
-      backgroundColor: '#fd1a77',
+      //backgroundColor: '#fd1a77',
       height: 6,
       width: 6,
       left: 153,
@@ -216,7 +569,7 @@ const styles = StyleSheet.create({
     twelve: {
       position: 'absolute',
       top:0,
-      right:157,
+      right:154.5,
       height: 13,
       width: 3,
       backgroundColor: 'black',
@@ -236,8 +589,8 @@ const styles = StyleSheet.create({
     },
     six:{
         position: 'absolute',
-        top:295,
-        right:157,
+        top:298.5,
+        right:154.5,
         height: 13,
         width: 3,
         backgroundColor: 'black',
