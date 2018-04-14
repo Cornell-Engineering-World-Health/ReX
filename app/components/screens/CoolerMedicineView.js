@@ -40,22 +40,20 @@ class CoolerMedicineView extends React.Component {
     console.log(meds)
     this.state = {
       meds : meds,
-      pmData : [ 0, 100, 0,100],
       amData : [ 0, 100, 0,100],
     }
   }
 
-  updateMeds = (time, index, amPm) => {
+  updateMeds = (time, index) => {
     newMeds = this.state.meds
     oldVal = this.state.meds[time][index]
     newMeds[time][index] = !oldVal
     this.setState ({meds : newMeds })
-    this.updateArray(time, amPm)
+    this.updateArray(time)
   }
 
 
-  updateArray = (time, amPm) => {
-    if (amPm){
+  updateArray = (time) => {
       newData = this.state.amData
       meds_list = this.state.meds[time]
       console.log(meds_list)
@@ -64,16 +62,6 @@ class CoolerMedicineView extends React.Component {
       newData[time*2] = 100 * (sum/len);
       newData[time*2+1] = 100 - newData[time*2];
       this.setState ({amData : newData})
-    }
-    else {
-      newData = this.state.pmData
-      meds_list = this.state.meds[time]
-      sum = meds_list.reduce((a, b) => a + b, 0);
-      len = this.state.meds[time].length;
-      newData[(time - 2)*2] = 100 * (sum/len);
-      newData[(time - 2)*2+1] = 100 - newData[(time - 2)*2];
-      this.setState ({pmData : newData})
-    }
   }
 
   render() {
@@ -84,7 +72,6 @@ class CoolerMedicineView extends React.Component {
         {console.log(this.state.amData)}
         <Circle
         amData = {this.state.amData}
-        pmData = {this.state.pmData}
         />
         <View style = {{marginTop: 400}}>
         <FlatList

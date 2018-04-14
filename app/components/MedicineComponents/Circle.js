@@ -11,7 +11,6 @@ import { LinearGradient } from 'expo';
 class Circle extends Component {
   static propTypes = {
     amData: PropTypes.array,
-    pmData: PropTypes.array,
   };
 
   constructor(props) {
@@ -21,7 +20,6 @@ class Circle extends Component {
     colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940'],
     innerColors:['#85ada0','#85ada040','#85ada0','#85ada040'],
     amData : this.props.amData,
-    pmData : this.props.pmData
   }
 }
 
@@ -41,7 +39,7 @@ class Circle extends Component {
             key: `pie-${index}`,
         }))
 
-    const innerPieData = this.state.pmData
+    const innerPieData = this.state.amData
       .filter(value => value >= 0)
       .map((value, index) => ({
         value,
