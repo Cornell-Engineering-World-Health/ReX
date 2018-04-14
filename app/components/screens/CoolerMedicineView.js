@@ -40,7 +40,7 @@ class CoolerMedicineView extends React.Component {
     console.log(meds)
     this.state = {
       meds : meds,
-      amData : [ 0, 100, 0,100],
+      amData : [ 0, 100, 0, 100, 0, 100, 0, 100],
     }
   }
 

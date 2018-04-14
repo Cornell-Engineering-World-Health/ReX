@@ -17,8 +17,8 @@ class Circle extends Component {
     super(props);
 
   this.state = {
-    colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940'],
-    innerColors:['#85ada0','#85ada040','#85ada0','#85ada040'],
+    colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
+    innerColors:['#85ada040','#ffffff','#85ada040','#ffffff', '#85ada040','#ffffff', '#85ada040','#ffffff'],
     amData : this.props.amData,
   }
 }
