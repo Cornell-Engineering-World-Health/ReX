@@ -70,8 +70,7 @@ class CoolerMedicineView extends React.Component {
     return (
         <View>
 
-        <View>
-        {console.log(this.state.amData)}
+        <View style = {{marginTop: 60}}>
         <Circle
         amData = {this.state.amData}
         />
