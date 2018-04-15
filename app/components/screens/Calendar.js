@@ -12,7 +12,7 @@ import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
-import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
+import {pullFromDataBase,pullAgendaFromDatabase,asyncDeleteEvent} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
 const numOfCals = 10;
@@ -47,6 +47,24 @@ class Calendar extends Component {
           currentAgenda: tempData
         });
     })
+  }
+  
+  _deleteItemFromAgenda(id){
+      index = -1
+      for(var i=0; i < this.currentAgenda.data.length; i++){
+          if(this.currentAgenda.data[i].id = id){
+              index = i;
+              break
+          }
+      }
+      
+      if(index != -1){
+          this.currentAgenda.data.splice(i, 1);
+          asyncDeleteEvent(id)
+      }
+      
+      //TODO: force update might be needed
+      
   }
 
   getItemLayout = (data, index) => ({
