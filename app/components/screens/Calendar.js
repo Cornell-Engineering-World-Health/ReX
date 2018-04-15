@@ -15,7 +15,7 @@ import Moment from 'moment';
 import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
-const numOfCals = 20;
+const numOfCals = 200;
 
 class Calendar extends Component {
   constructor(props) {
@@ -84,6 +84,7 @@ class Calendar extends Component {
   );
 
   _loadMore = () => {
+    console.log('LOADING MORE')
     newData = [];
     current = this.state.last;
     for (i = 1; i < 20; i++) {
@@ -116,6 +117,22 @@ class Calendar extends Component {
 
   };
 
+  _disableScroll() {
+    console.log('disable')
+    this.flatListRef.getScrollResponder().setNativeProps({
+      scrollEnabled: false
+    })
+    let thisRef = this;
+    setTimeout(function(){  thisRef._enableScroll(thisRef.flatListRef) }, 1000);
+  }
+
+_enableScroll(list) {
+  console.log('list')
+  list.getScrollResponder().setNativeProps({
+    scrollEnabled: true
+  })
+}
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -136,6 +153,8 @@ class Calendar extends Component {
             snapToAlignment="center"
             showsHorizontalScrollIndicator={false}
             initialScrollIndex={numOfCals + 1}
+            initialNumToRender={4}
+            onScrollEndDrag={() => {this._disableScroll()}}
           />
         </View>
         <View style={{ flex: 0.75 }}>

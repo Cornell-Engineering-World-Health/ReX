@@ -49,7 +49,6 @@ export function formatData(data){
   data.forEach(function(ev){
     let d = new Date(ev.timestamp.replace(' ','T'));
     let day = d.getDate() - 1;
-    console.log(day)
     let symptom = ev.event_type_name;
     let intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2 ;
 
@@ -105,14 +104,14 @@ export function databaseFakeData(){
 export function pullFromDataBase(month, day, callback){
   databaseFakeData();
   console.log('pulling from database');
-  
+
   formattedMonth = month.toISOString().substr(0,7)
   var arrayFormattedMonth = [formattedMonth]
   Database.transaction(tx => (tx.executeSql("SELECT event_id,event_type_name, timestamp, fields, strftime(\'%Y-%m\',timestamp) FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != \'1950-01-01 00:00:00\' AND strftime(\'%Y-%m\',timestamp) = ? ORDER BY timestamp", arrayFormattedMonth, (tx, { rows }) => callback(formatData(rows._array)))),err=>console.log(err));
-      
+
 }
 
 function sameDay(d1, d2) {
@@ -126,24 +125,24 @@ function formatAgenda(data){
     console.log(data)
     agendaFlatList = []
     data.forEach(function(ele){
-        
+
         formattedTime = Moment(ele.timestamp, 'YYYY-MM-DD HH:mm:ss').format('h:mm A')
         j = JSON.parse(ele.fields)
         note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1]
         note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2]
-        
+
         //TODO: should have error checking here incase json is malformatted
         //TODO: should use event_type_name for cardData
-        
+
         cardDataString = ele.event_type_name.toUpperCase()
         elementRecord = {id: ele.event_id, cardData: constants[cardDataString], timeStamp: formattedTime, note1: note_value1, note2: note_value2}
-        
+
         //console.log(elementRecord)
-        
-       
+
+
         let d = new Date(ele.day)
         d.setTime(d.getTime() + d.getTimezoneOffset()*60*1000 )
-        
+
         let foundDate = false
         for (var i = 0; i < agendaFlatList.length; i++) {
             if(sameDay(agendaFlatList[i].date,d)){
@@ -153,29 +152,29 @@ function formatAgenda(data){
                 break
             }
         }
-        
+
         if(!foundDate){
             //console.log('adding a record to agendaFlatList')
             agendaFlatList.push({date: d,data: [elementRecord]})
         }
-        
+
     });
-    
-    //console.log(agendaFlatList) 
-    
-   
-  
+
+    //console.log(agendaFlatList)
+
+
+
   return agendaFlatList
-  
+
 }
 export function pullAgendaFromDatabase(callback){
-    
+
     // Agenda query
     console.log('reached pullAgendaFromDatabase')
     Database.transaction(tx => (tx.executeSql('SELECT event_id,event_type_name, timestamp,card_field_id1, card_field_id2, event_type_icon, fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
     INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
     INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
     WHERE timestamp != \'1950-01-01 00:00:00\' ORDER BY timestamp', [], (tx, { rows }) => callback(formatAgenda(rows._array)))),err=>console.log(err));
-    
-    
+
+
 }
