@@ -37,7 +37,6 @@ class CoolerMedicineView extends React.Component {
     meds[2] = arr3
     meds[3] = arr4
 
-    console.log(meds)
     this.state = {
       meds : meds,
       amData : [ 0, 100, 0, 100, 0, 100, 0, 100],
@@ -56,7 +55,6 @@ class CoolerMedicineView extends React.Component {
   updateArray = (time) => {
       newData = this.state.amData
       meds_list = this.state.meds[time]
-      console.log(meds_list)
       sum = meds_list.reduce((a, b) => a + b, 0);
       len = this.state.meds[time].length;
       newData[time*2] = 100 * (sum/len);

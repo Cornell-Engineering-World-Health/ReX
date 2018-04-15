@@ -16,12 +16,40 @@ class Circle extends Component {
   constructor(props) {
     super(props);
 
-  this.state = {
-    colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
-    innerColors:['#85ada015','#ffffff','#85ada015','#ffffff', '#85ada015','#ffffff', '#85ada015','#ffffff'],
-    amData : this.props.amData,
-  }
+    let date = new Date();
+
+    this.state = {
+        colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
+        innerColors:['#85ada015','#ffffff','#85ada015','#ffffff', '#85ada015','#ffffff', '#85ada015','#ffffff'],
+        amData : this.props.amData,
+        hour: (date.getHours() + (date.getMinutes() + (date.getSeconds() / 60) / 60))
+    }
 }
+
+  renderPicker() {
+      console.log(this.state.hour)
+      var tempHour = Math.round(this.state.hour * 2) / 2
+      var degrees = (tempHour % 12) * 15
+      var translateX = 150.5 * Math.sin(Math.radians(degrees))
+      var translateY = 150.5 - (150.5 * Math.cos(Math.radians(degrees)))
+      if (6 < tempHour && tempHour <= 12){
+          translateX = -translateX
+          translateY = 2 * translateY
+      }
+      else if (12 < tempHour && tempHour <= 18){
+          translateX = -translateX
+          translateY = 2 * -translateY
+      }
+      else if (18 < tempHour && tempHour <= 24){
+          translateX = -translateX
+      }
+
+      return(<View style = {[styles.picker, {transform:[
+            {translateY:translateY},
+            {translateX:translateX},
+            {rotate: (degrees + "deg")}]}]}
+            />)
+  }
 
   render() {
     const rad = 5 * Math.PI / 180
@@ -87,6 +115,7 @@ class Circle extends Component {
         <View style = {styles.hourHand} />
         <View style = {styles.minuteHand} />
         <View style = {styles.circleHand} />
+        {this.renderPicker}
         <View style= {styles.six} />
 
 <View style = {[styles.twelve, {transform:[
@@ -358,8 +387,6 @@ class Circle extends Component {
 {rotate: ("-84deg")}]}]}
 />
 
-
-
 <View style = {[styles.six, {transform:[
 {translateY:-0},
 {translateX:-15},
@@ -443,8 +470,6 @@ class Circle extends Component {
 {translateX:-149},
 {rotate: ("84deg")}]}]}
 />
-
-       
 
         </View>
         </View>
@@ -608,17 +633,26 @@ const styles = StyleSheet.create({
         borderRadius: 30,
 
     },
+    picker:{
+        position: 'absolute',
+        top:0,
+        right:154.5,
+        height: 23,
+        width: 3,
+        backgroundColor: '#6ef7c9',
+        borderRadius: 30,
+    },
     button: {
         position: 'absolute',
         padding:50,
         right:10,
         top:9,
       },
-      image:{
+    image:{
         position: 'absolute',
         right:0,
         top:0,
-      },
+    },
 
 })
 export default Circle
