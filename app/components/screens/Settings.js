@@ -1,39 +1,79 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet,
-  View,
-  Text,
+  StyleSheet,View,Text,
   StatusBar,
   Image,
   FlatList,
   List,
   Alert,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  DatePickerIOS,
+  Picker,
 } from 'react-native';
 import SettingsList from 'react-native-settings-list';
 import Modal from 'react-native-modal';
 import { IMAGES } from '../Resources/constants';
 
-export default class Settings extends Component {
-  constructor(props) {
-    super(props);
-    this.onValueChange = this.onValueChange.bind(this);
-    this.state = {
-      switchValue: false,
-      birthday: 'select',
-      isDateTimePickerVisible: false,
-      text: 'Enter Name',
-      isModalVisible: false
-    };
-  }
-  toggleModal = () =>
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+export default class Settings extends Component{
+    constructor (props){
+        super(props);
+        this.onValueChange = this.onValueChange.bind(this);
+        this.state = {
+            switchValue: false,
+            birthday:  new Date(),
+            name: 'Select Edit',
+            isModalVisible: false,
+            weight : 'Select',
+            height_feet: '5',
+            height_inches : '8',
+            height : 'Select',
+            isModalVisible_birthday : false,
+            isModalVisible_height : false,
+            isModalVisible_weight : false,
+            isModalVisible_avatar : false,
+            icon :0,
 
-  render() {
-    var bgColor = '#DCE3F4';
+        };
+        this.setDate = this.setDate.bind(this);
+    }
+    setDate(newDate) {
+      this.setState({birthday: newDate })
+    }
+    handle_icon_press = (index) =>
+    this.setState({icon : index, isModalVisible_avatar: !this.state.isModalVisible_avatar});
+
+    
+
+    toggleModal = () =>
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+    toggleModal_birthday = () =>
+    this.setState({ isModalVisible_birthday: !this.state.isModalVisible_birthday });
+    toggleModal_avatar = () =>
+    this.setState({ isModalVisible_avatar: !this.state.isModalVisible_avatar});
+    toggleModal_height = () =>
+    this.setState({ isModalVisible_height: !this.state.isModalVisible_height,
+       height : this.state.height_feet + "\' "+ this.state.height_inches + "\" "});
+
+    toggleModal_weight = () =>
+    this.setState({ isModalVisible_weight: !this.state.isModalVisible_weight});
+    
+    render(){
+        var bgColor = '#DCE3F4';
+        var prof_icons = [
+          require('../Resources/icons8-wolf-100.png'),
+          require('../Resources/icons8-zebra-100.png'),
+          require('../Resources/icons8-shark-100.png'),
+          require('../Resources/icons8-jellyfish-100.png'),
+          require('../Resources/icons8-owl-100.png'),
+          require('../Resources/icons8-hamster-100.png'),
+        ]
     return (
+    <View style={styles.container}>
+      <View style={{borderBottomWidth:1, backgroundColor:'#f7f7f8',borderColor:'#c8c7cc'}}>
+        <Text style={{alignSelf:'center',marginTop:30,marginBottom:10,fontWeight:'bold',fontSize:16}}>Settings</Text>
+      </View>
       <View style={styles.container}>
         <View
           style={{
@@ -124,93 +164,130 @@ export default class Settings extends Component {
               onPress={() => Alert.alert('Option List')}
             />
 
-            <SettingsList.Item
-              title="Toggle"
-              hasSwitch={true}
-              hasNavArrow={false}
-              switchState={this.state.switchValue}
-              switchOnValueChange={this.onValueChange}
-              titleInfoStyle={styles.titleInfoStyle}
+          <Modal isVisible={this.state.isModalVisible_weight} style={styles.modal}>
+          <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
+            <TextInput
+              textAlign= 'center'
+              style={{height: 50, fontSize : 20}}
+              placeholder="Enter Weight in lbs"
+              onChangeText={(weight) => this.setState({weight: weight + " lbs"})}
             />
-            <SettingsList.Item
-              title="Settings A"
-              onPress={() => Alert.alert('Settings A')}
+            <TouchableOpacity style={styles.button} onPress={this.toggleModal_weight} alignItems='center'>
+              <Text style ={styles.text}>Submit</Text >
+            </TouchableOpacity>
+          </View>
+          </Modal>
+
+          <Modal isVisible={this.state.isModalVisible} style = {styles.modal}>
+            <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={prof_icons[this.state.icon]}/>
+            <TouchableOpacity onPress = {this.toggleModal_avatar}>
+              <Text style = {styles.placeholder}>Edit Avatar</Text>
+            </TouchableOpacity>
+            <TextInput
+              textAlign = 'center'
+              style={{height: 50, fontSize: 20}} 
+              placeholder="Enter Name"
+              onChangeText={(name) => this.setState({name})}
             />
-            <SettingsList.Item
-              title="Settings B"
-              titleInfo={this.state.birthday}
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => Alert.alert('Settings B')}
-            />
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
-            <SettingsList.Item
-              title="Option A"
-              onPress={() => Alert.alert('Option A')}
-            />
-            <SettingsList.Item
-              title="Option B"
-              onPress={() => Alert.alert('Option B')}
-            />
-            <SettingsList.Item
-              title="Option C"
-              onPress={() => Alert.alert('Option C')}
-            />
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
-            <SettingsList.Item
-              title="Option A"
-              onPress={() => Alert.alert('Option A')}
-            />
-            <SettingsList.Item
-              title="Option B"
-              onPress={() => Alert.alert('Option B')}
-            />
-            <SettingsList.Item
-              title="Option C"
-              onPress={() => Alert.alert('Option C')}
-            />
+            <TouchableOpacity style={styles.button} onPress={this.toggleModal} alignItems='center'>
+              <Text style ={styles.text}>Submit</Text >
+            </TouchableOpacity>
+            </View>
+            <Modal isVisible= {this.state.isModalVisible_avatar} style={styles.modal}>
+              <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
+                <View flexDirection='row'> 
+                <TouchableOpacity onPress = {() => this.handle_icon_press(1)}>
+                  <Image style= {styles.avatar} source={prof_icons[1]}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(0)}>
+                  <Image style= {styles.avatar} source={prof_icons[0]}/> 
+                </TouchableOpacity>
+                </View>
+                <View flexDirection='row'> 
+                <TouchableOpacity onPress = {() => this.handle_icon_press(2)}>
+                  <Image style= {styles.avatar} source={prof_icons[2]}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(3)}>
+                  <Image style= {styles.avatar} source={prof_icons[3]}/> 
+                </TouchableOpacity>
+                </View>
+                <View flexDirection='row'> 
+                <TouchableOpacity onPress = {() => this.handle_icon_press(4)}>
+                  <Image style= {styles.avatar} source={prof_icons[4]}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress = {() => this.handle_icon_press(5)}>
+                  <Image style= {styles.avatar} source={prof_icons[5]}/> 
+                </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </Modal>
           </SettingsList>
-        </View>
-      </View>
-    );
-  }
-  onValueChange(value) {
-    this.setState({ switchValue: value });
-  }
+    </View>
+    </View>
+    </View>
+  );
+}
+onValueChange(value){
+  this.setState({switchValue: value});
+}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EFEFF4',
-    flex: 1
-  },
-  profile: {
-    height: 50,
-    width: 500,
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF'
-  },
-  imageStyle: {
-    marginLeft: 15,
-    alignSelf: 'center',
-    height: 30,
-    width: 30
-  },
-  titleInfoStyle: {
-    fontSize: 16,
-    color: '#8e8e93'
-  },
-  text: {
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  button: {
-    width: 100,
-    borderRadius: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#2196F3'
-  }
-});
+    container:{
+        backgroundColor:'#EFEFF4',
+        flex:1
+    },
+    avatar:{
+      height: 100,
+      width: 100,
+      margin: 7.
+    },
+    imageStyle:{
+      marginLeft:5,
+      marginTop: 5,
+      marginBottom: 5,
+      alignSelf:'center',
+      height:55,
+      width:55
+    },
+    placeholder:{
+      color: '#bbbbbb',
+    },
+    picker: {
+      width: 100,
+    },
+    titleInfoStyle:{
+      fontSize:16,
+      color: '#8e8e93'
+    },
+    modal:{
+      flex:1,
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      borderRadius: 20,
+    },
+    contain: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    text:{
+        fontWeight : 'bold',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'black',
+    },
+    button:{
+        width: 200,
+        borderRadius: 10,
+        paddingTop: 10,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#aedfe1'
+    }
+  });
+  
