@@ -138,7 +138,12 @@ class Calendar extends Component {
 
   };
 
+  _startScroll(){
+    console.log('START')
+  }
   _disableScroll() {
+
+      console.log('END')
     this.flatListRef.getScrollResponder().setNativeProps({
       scrollEnabled: false
     })
@@ -162,8 +167,8 @@ class Calendar extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+        <View style={{  }}>
           <FlatList
             style={itemStyle}
             ref={(ref) => { this.flatListRef = ref; }}
@@ -184,11 +189,12 @@ class Calendar extends Component {
             maxToRenderPerBatch= {5}
             windowSize={5}
             viewabilityConfig={VIEWABILITY_CONFIG}
+            onScrollBeginDrag={() => {this._startScroll()}}
             onScrollEndDrag={() => {this._disableScroll()}}
             onMomentumScrollEnd={() => {this._scrollFinished()}}
           />
         </View>
-        <View style={{ flex: 0.75 }}>
+        <View style={{ height: 500 }}>
           <Agenda
             agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}

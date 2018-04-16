@@ -295,10 +295,10 @@ class Calendar extends PureComponent {
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return days.map((day) => {
                 if (day == 'SUN'){
-                    return <Text key={day} style= {styles.weekAlt}>{day}</Text>
+                    return <View  key={day} style={styles.weekItem}><Text style= {styles.weekAlt}>{day}</Text></View>
                 }
                 else{
-                    return <Text key={day} style= {styles.week}>{day}</Text>
+                    return <View key={day} style={styles.weekItem}><Text style= {styles.week}>{day}</Text></View>
                 }
             }
             );
@@ -436,9 +436,9 @@ class Calendar extends PureComponent {
                 </View>
             </TouchableOpacity>
 
-                <View style= {styles.header2}>
-                    { this.renderWeek() }
-                </View>
+            <View style= {styles.header2}>
+                { this.renderWeek() }
+            </View>
             </View>
                 <View style = {styles.tiles}>
                     { this.renderPreviousDates() }
