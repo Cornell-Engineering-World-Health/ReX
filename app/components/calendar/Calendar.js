@@ -335,7 +335,6 @@ class Calendar extends PureComponent {
                         {day}
                     </Text>
                   </View>
-                  {selectedIndicator}
                   <View style={styles.dayBox}>
                       <Animatable.View
                         ref={(b) => {this.graphRefs[i] = b;}}
@@ -351,6 +350,7 @@ class Calendar extends PureComponent {
                         </View>
                       </View>
                   </View>
+                {selectedIndicator} 
               </TouchableOpacity>
             );
         });

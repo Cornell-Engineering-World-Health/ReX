@@ -15,8 +15,12 @@ import Moment from 'moment';
 import {pullFromDataBase,pullAgendaFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
-const numOfCals = 20;
-var mutexLock = 0
+let t = new Date();
+let numOfMonths = (t.getFullYear() - 1969)*12;
+const numOfCals = numOfMonths;
+const VIEWABILITY_CONFIG = {
+    viewAreaCoveragePercentThreshold: 80,
+};
 
 class Calendar extends Component {
   constructor(props) {
@@ -27,11 +31,11 @@ class Calendar extends Component {
     }
     this.state = {
       first: -numOfCals,
-      last: numOfCals,
+      last: numOfCals-1,
       data: data,
       currentDate: new Date()
     };
-
+    this.mutexLock = 0
     this._updateAgenda();
   }
 
@@ -85,7 +89,6 @@ class Calendar extends Component {
   );
 
   _loadMore = () => {
-    console.log('LOADING MORE')
     newData = [];
     current = this.state.last;
     for (i = 1; i < 20; i++) {
@@ -98,9 +101,9 @@ class Calendar extends Component {
   };
 
   _loadPrev = ({viewableItems, changed}) => {
-    if (viewableItems.length > 0 && mutexLock == 0){
+    if (viewableItems.length > 0 && this.mutexLock == 0){
       if (viewableItems[viewableItems.length - 1].index == 0){
-        mutexLock = 1
+        this.mutexLock = 1
         newData = [];
         current = this.state.first;
         for (i = 1; i < 20; i++) {
@@ -110,28 +113,34 @@ class Calendar extends Component {
           data: [...newData, ...this.state.data],
           first: current - 19
         });
-        this.flatListRef.scrollToIndex({animated:true, index:19})
-        mutexLock = 0
+        this._enableScroll(this.flatListRef);
+        this.flatListRef.scrollToIndex({animated:false, index:19})
       }
     }
 
   };
 
   _disableScroll() {
-    console.log('disable')
     this.flatListRef.getScrollResponder().setNativeProps({
       scrollEnabled: false
     })
     let thisRef = this;
-    setTimeout(function(){  thisRef._enableScroll(thisRef.flatListRef) }, 1000);
+    setTimeout(function(){  thisRef._enableScroll(thisRef.flatListRef) }, 300);
   }
 
-_enableScroll(list) {
-  console.log('list')
-  list.getScrollResponder().setNativeProps({
-    scrollEnabled: true
-  })
-}
+  _enableScroll(list) {
+    list.getScrollResponder().setNativeProps({
+      scrollEnabled: true
+    })
+  }
+
+  _scrollFinished(){
+    if(this.mutexLock){
+      this.flatListRef.scrollToOffset({offset: itemWidth*19+1})
+    }
+    this.mutexLock = 0;
+
+  }
 
   render() {
     return (
@@ -146,15 +155,19 @@ _enableScroll(list) {
             onEndReachedThreshold={50}
             onViewableItemsChanged={this._loadPrev}
             horizontal={true}
-            removeClippedSubviews={true}
+            removeClippedSubviews={false}
             getItemLayout={this.getItemLayout}
             decelerationRate={0}
             snapToInterval={itemWidth}
             snapToAlignment="center"
             showsHorizontalScrollIndicator={false}
             initialScrollIndex={numOfCals + 1}
-            initialNumToRender={4}
+            initialNumToRender={5}
+            maxToRenderPerBatch= {5}
+            windowSize={5}
+            viewabilityConfig={VIEWABILITY_CONFIG}
             onScrollEndDrag={() => {this._disableScroll()}}
+            onMomentumScrollEnd={() => {this._scrollFinished()}}
           />
         </View>
         <View style={{ flex: 0.75 }}>
