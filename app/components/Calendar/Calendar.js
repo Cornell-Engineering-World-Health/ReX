@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
-import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
+import {pullFromDataBase, pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 import {getColor, getTranslucentColor} from '../Resources/constants';
 import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
@@ -253,6 +253,10 @@ class Calendar extends PureComponent {
     }
 
     _onTitlePress = () => {
+      console.log('title Press')
+        pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
+          console.log(formattedData)
+        });
     }
 
     _onHeadachePress = () => {
