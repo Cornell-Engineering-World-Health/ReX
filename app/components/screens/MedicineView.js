@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import HeadacheForm from '../screens/HeadacheForm';
-import BackPainForm from '../screens/BackPainForm';
-
-const HEADACHE_FORM = 'headache';
-const BACKPAIN_FORM = 'backpain';
-const MEDICINE_VIEW_HOME = 'homeview';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+import { Fingerprint } from 'expo';
+import {
+  setMassNotification,
+  setNotification,
+  cancelNotification,
+  cancelAllNotifications
+} from '../PushController/PushController';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +17,18 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 });
+const localNotification = {
+  title: 'Dont leave us!!',
+  body: 'Come back to our app!'
+};
+
+const medicine = {
+  title: 'Test ',
+  body: 'Long Term Test',
+  startDate: new Date('April 14, 2018'),
+  endDate: new Date('April 24, 2018'),
+  scheduledTime: ['13:00']
+};
 
 class MedicineView extends React.Component {
   static propTypes = {
@@ -24,63 +37,55 @@ class MedicineView extends React.Component {
 
   constructor(props) {
     super(props);
+  }
 
-    this.state = {
-      pageID: MEDICINE_VIEW_HOME
-    };
+  componentWillMount() {}
+
+  _setAllNotifications() {
+    cancelAllNotifications();
+    setMassNotification(
+      medicine.startDate,
+      medicine.endDate,
+      medicine.title,
+      medicine.body,
+      medicine.scheduledTime,
+      ids => {
+        console.log(ids);
+      }
+    );
   }
-  _renderScreen() {
-    switch (this.state.pageID) {
-      case MEDICINE_VIEW_HOME:
-        return (
-          <View style={styles.container}>
-            <Text style={{ fontSize: 40 }}> Medicine View </Text>
-            <Button
-              color={'white'}
-              title={'Headache Form'}
-              onPress={() =>
-                this.setState({
-                  pageID: HEADACHE_FORM
-                })
-              }
-            />
-            <Button
-              color={'white'}
-              title={'Backpain Form'}
-              onPress={() =>
-                this.setState({
-                  pageID: BACKPAIN_FORM
-                })
-              }
-            />
-          </View>
-        );
-        break;
-      case HEADACHE_FORM:
-        return (
-          <HeadacheForm
-            onPress={() =>
-              this.setState({
-                pageID: MEDICINE_VIEW_HOME
-              })
-            }
-          />
-        );
-      case BACKPAIN_FORM:
-        return (
-          <BackPainForm
-            onPress={() =>
-              this.setState({
-                pageID: MEDICINE_VIEW_HOME
-              })
-            }
-          />
-        );
-    }
+
+  _setNotification() {
+    setNotification(
+      localNotification.title,
+      localNotification.body,
+      Date.now() + 2000,
+      (id, date) => {
+        console.log(id);
+        console.log(date);
+      }
+    );
   }
+
   render() {
-    let page = this._renderScreen();
-    return <View style={{ flex: 1 }}>{page}</View>;
+    let page = null;
+    if (true) {
+      page = (
+        <View style={{ flex: 1, padding: 50 }}>
+          <Button
+            color={'black'}
+            title={'Press for notification and then go to home screen!'}
+            onPress={this._setNotification}
+          />
+          <Button
+            color={'black'}
+            title={'Press for to set Mass notifications'}
+            onPress={this._setAllNotifications}
+          />
+        </View>
+      );
+    }
+    return page;
   }
 }
 export default MedicineView;
