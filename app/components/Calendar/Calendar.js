@@ -121,26 +121,34 @@ class Calendar extends PureComponent {
     }
 
     updateVisualization = (type) => {
+      var graphRefs = this.graphRefs;
+      var thisRef = this; //reference to this lost on callback
+
       pullFromDataBase(this.props.currMonth, null, data => {
         Object.keys(data).forEach(function(key) {
           if(key == type){
             let color = getTranslucentColor(type);
+<<<<<<< HEAD
 
             let last = this.graphRefs.length-1;
             while(last > -1  && this.graphRefs[last] == undefined){
+=======
+            let last = graphRefs.length-1;
+            while(last > -1  && graphRefs[last] == undefined){
+>>>>>>> ec0987c9e9024640ef022f2e82649b62144fcaab
               last--;
             }
-            for(var j=0; j<this.graphRefs.length; j++){
+            for(var j=0; j<graphRefs.length; j++){
 
-              if(this.graphRefs[j]){
-                this.graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
+              if(graphRefs[j]){
+                graphRefs[j].transitionTo({bottom: -31.3}, 200, 'ease');
                 if(j == last){
                   setTimeout(()=> {
-                    this.setState({
+                    thisRef.setState({
                       graphColor: color,
                       intensities: data[key].intensities,
                     }, function(){
-                      this.graphRefs.forEach(function(g) {
+                      graphRefs.forEach(function(g) {
                         if(g){
                           g.transitionTo({bottom: 0}, 400, 'ease');
                         }
