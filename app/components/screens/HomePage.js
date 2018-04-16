@@ -17,63 +17,13 @@ import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
-import { IMAGES } from '../Resources/constants';
-
+import constants from '../Resources/constants';
+import {HomeMedicineLogger} from '../HomeMedicineLogger'
+import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil'
 const USERNAME = 'Navin';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
-const styles = StyleSheet.create({
-  separator: {
-    backgroundColor: '#f2f2f2',
-    height: StyleSheet.hairlineWidth,
-    marginLeft: 40,
-    marginRight: 40
-  },
-  pageContainer: {
-    flex: 1,
-    justifyContent: 'space-between'
-  },
-  header: {
-    marginTop: 20,
-    padding: 20,
-    alignItems: 'center'
-  },
-  welcomeText: {
-    color: 'white',
-    fontSize: 60
-  },
-  subHeader: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  subHeaderText: {
-    color: '#e5e5e5',
-    fontSize: 30
-  },
-  medicineViewContainer: {
-    flex: 1,
-    justifyContent: 'space-around'
-  },
-  medicineViewRow: {
-    flexDirection: 'row'
-  },
-  medicineButton: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50,
-    //backgroundColor: MEDICINE_BUTTON_BACKGROUND_COLOR,
-    height: 100
-  },
-  imageStyle: {
-    width: 100,
-    height: 100
-  }
-});
+import  styles from './styles';
+
 const medicineMorning = [
   {
     key: 1,
@@ -176,7 +126,7 @@ const medicineNight = [
     time: '8:00 AM',
     note: 'Take on empty stomach.',
     pillDesign: 'index1',
-    completed: true
+    completed: false
   }
 ];
 
@@ -206,16 +156,74 @@ const months = [
 class Home extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       modalVisible: null,
       morning: medicineMorning,
       afternoon: medicineAfternoon,
       evening: medicineEvening,
-      night: medicineNight
+      night: medicineNight,
+      data: [],
+      totalAmount: [0, 0, 0, 0],
+      doneAmount: [0, 0, 0, 0],
     };
+
+
+  }
+
+  componentWillMount(){
+    let totalAmount = this.state.totalAmount
+    let doneAmount = this.state.doneAmount
+    let thisRef = this;
+    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
+      console.log('asdfa',formattedData)
+      Object.keys(formattedData).forEach(function(med){
+        let i = 0;
+        formattedData[med].timeCategory.forEach(function(time){
+          switch(time){
+            case 'Morning':
+              totalAmount[0]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[0]++;
+              }
+              break;
+            case 'Afternoon':
+              totalAmount[1]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[1]++;
+              }
+              break;
+            case 'Evening':
+              totalAmount[2]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[2]++;
+              }
+              break;
+            case 'Night':
+              totalAmount[3]++;
+              if(formattedData[med].taken[i]){
+                doneAmount[3]++;
+              }
+              break;
+            default:
+          }
+        })
+      })
+      thisRef.setState({
+        totalAmount: totalAmount,
+        doneAmount: doneAmount,
+        data: formattedData,
+      })
+    });
+  }
+
+  //TODO: onclose, should save to storage.
+  componentWillUnmount(){
+    
   }
 
   _renderButtons() {
+    /**
     checkMark = (
       <Image
         style={{ left: 20, bottom: 3, width: 100, height: 100, opacity: 1 }}
@@ -239,14 +247,12 @@ class Home extends React.Component {
       }
     }
     return list;
+    */
   }
-  _handleMorningPress(index, complete) {
-    morningArray = this.state.morning;
-    morningArray[index].completed = complete;
 
-    this.setState({
-      morning: morningArray
-    });
+
+  _handleMorningPress(index, complete) {
+
   }
   _handleAfternoonPress(index, complete) {
     afternoonArray = this.state.afternoon;
@@ -272,94 +278,61 @@ class Home extends React.Component {
       night: nightArray
     });
   }
+
+  logAll(index){
+    doneAmount = this.state.doneAmount
+    if(doneAmount[index] == this.state.totalAmount[index]){
+      doneAmount[index] = 0;
+    } else {
+      doneAmount[index] = this.state.totalAmount[index];
+    }
+    this.setState({doneAmount});
+  }
+
   render() {
     let medicineCompletion = this._renderButtons();
     let currentDate = new Date();
+
+    let done = [];
+    let remaining = [];
+    for(let i = 0; i<this.state.doneAmount.length; i++){
+      done[i] = (this.state.doneAmount[i] == this.state.totalAmount[i]) ? true:false;
+      remaining[i] = this.state.totalAmount[i] - this.state.doneAmount[i]
+    }
+
     return (
-      <ImageBackground style={{ flex: 1 }} source={IMAGES.purpleGradient}>
+      <ImageBackground
+        style={{ flex: 1,backgroundColor: '#ffffff' }}
+      >
         <View style={styles.pageContainer}>
           <View>
-            <View style={styles.header}>
-              <Text style={styles.welcomeText}>Welcome</Text>
-              <Text style={styles.welcomeText}>{USERNAME}</Text>
-            </View>
-            <View style={styles.subHeader}>
-              <Text style={styles.subHeaderText}>
-                {weekdays[currentDate.getDay()]}
-              </Text>
-              <Text style={styles.subHeaderText}>
-                {months[currentDate.getMonth()]} {currentDate.getDate()}
-              </Text>
+            <View style={styles.topInfo}>
+              <View style={styles.header}>
+                <Text style={styles.welcomeText}>Welcome</Text>
+                <Text style={styles.nameText}>{USERNAME}</Text>
+              </View>
+              <View style={styles.subHeader}>
+                <Text style={styles.subHeaderText}>
+                  {weekdays[currentDate.getDay()]}
+                </Text>
+                <Text style={styles.subHeaderText}>
+                  {months[currentDate.getMonth()]} {currentDate.getDate()}
+                </Text>
+              </View>
             </View>
             <View>
-              <View style={styles.separator} />
             </View>
           </View>
-          <View style={styles.medicineViewContainer}>
-            <View style={styles.medicineViewRow}>
-              <TouchableOpacity
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'morning'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={IMAGES.morning}
-                >
-                  {medicineCompletion[0]}
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'afternoon'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={IMAGES.afternoon}
-                >
-                  {medicineCompletion[1]}
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.medicineViewRow}>
-              <TouchableOpacity
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'evening'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={IMAGES.evening}
-                >
-                  {medicineCompletion[2]}
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.medicineButton}
-                onPress={() =>
-                  this.setState({
-                    modalVisible: 'night'
-                  })
-                }
-              >
-                <ImageBackground
-                  style={styles.imageStyle}
-                  source={IMAGES.night}
-                >
-                  {medicineCompletion[3]}
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
+          <View style={{alignItems: 'center'}}>
+            <HomeMedicineLogger
+              done={done}
+              onPress={button => {this._onPress(button)}}
+              handlerMorning={() => this.logAll(0)}
+              handlerAfternoon={() => this.logAll(1)}
+              handlerEvening={() => this.logAll(2)}
+              handlerNight={() => this.logAll(3)}
+              amtArr={remaining}
+            />
           </View>
         </View>
         <Modal
