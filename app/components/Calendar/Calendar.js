@@ -128,14 +128,8 @@ class Calendar extends PureComponent {
         Object.keys(data).forEach(function(key) {
           if(key == type){
             let color = getTranslucentColor(type);
-<<<<<<< HEAD
-
-            let last = this.graphRefs.length-1;
-            while(last > -1  && this.graphRefs[last] == undefined){
-=======
             let last = graphRefs.length-1;
             while(last > -1  && graphRefs[last] == undefined){
->>>>>>> ec0987c9e9024640ef022f2e82649b62144fcaab
               last--;
             }
             for(var j=0; j<graphRefs.length; j++){
@@ -358,7 +352,7 @@ class Calendar extends PureComponent {
                         </View>
                       </View>
                   </View>
-                {selectedIndicator} 
+                {selectedIndicator}
               </TouchableOpacity>
             );
         });
