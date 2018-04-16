@@ -4,10 +4,10 @@ import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
-import {pullFromDataBase} from '../../databaseUtil/databaseUtil';
+import {pullFromDataBase, pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import constants from '../Resources/constants';
 import {getColor, getTranslucentColor} from '../Resources/constants';
-
+import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
 const { width } = Dimensions.get("window");
 
 
@@ -65,6 +65,15 @@ class Calendar extends PureComponent {
       this.initVisualization();
     }
 
+
+/**    componentDidUpdate(){
+      console.log('UPDATE')
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+      return false;//console.log("UPDATING", nextProps, nextState)
+    }
+*/
     initVisualization = () => {
       pullFromDataBase(this.props.currMonth, null, data => {
         let dot1 = this.state.dot1;
@@ -177,7 +186,7 @@ class Calendar extends PureComponent {
         }
         */
         this._clearSelection();
-
+        /**
         if (dot1[i] == styles.generic){
           dot1[i] = styles.genericGray
         }
@@ -190,7 +199,7 @@ class Calendar extends PureComponent {
         if(baseBars[i] == styles.baseBar){
           baseBars[i] = styles.baseBarSelected
         }
-
+        */
         let currentDate = new Date(this.today.getFullYear(), this.today.getMonth(), i+1)
 
         this.setState({ selected: i });
@@ -244,6 +253,10 @@ class Calendar extends PureComponent {
     }
 
     _onTitlePress = () => {
+      console.log('title Press')
+        pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
+          console.log(formattedData)
+        });
     }
 
     _onHeadachePress = () => {
@@ -309,12 +322,16 @@ class Calendar extends PureComponent {
 
 
         return dateGrid.map((day, i) => {
-            let dateStyle = this.state.backgroundColor[i] ? styles.altItem : styles.item
-            let textStyle = this.state.backgroundColor[i] ? styles.altDate : styles.date
+            //let dateStyle = this.state.backgroundColor[i] ? styles.altItem : styles.item
+            //let textStyle = this.state.backgroundColor[i] ? styles.altDate : styles.date
+            let dateStyle = styles.item
+            let textStyle = styles.date
+            let selectedIndicator = this.state.backgroundColor[i] ? (<SelectedIndicator/>):(null);
+
             var barHolder = [];
             let h = 0;
             if(this.state.intensities){
-              h = 3.13*(this.state.intensities[i] || 0);
+              h = 2.83*(this.state.intensities[i] || 0);
             }
 
             return(
@@ -339,6 +356,7 @@ class Calendar extends PureComponent {
                         </View>
                       </View>
                   </View>
+                {selectedIndicator}
               </TouchableOpacity>
             );
         });
@@ -422,7 +440,6 @@ class Calendar extends PureComponent {
                     { this.renderWeek() }
                 </View>
             </View>
-
                 <View style = {styles.tiles}>
                     { this.renderPreviousDates() }
                     { this.renderDates() }
