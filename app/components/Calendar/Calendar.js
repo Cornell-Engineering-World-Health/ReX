@@ -58,12 +58,21 @@ class Calendar extends PureComponent {
         }
 
         this.graphRefs = [];
+        this._isMounted = false;
         this._onDatePress = this._onDatePress.bind(this);
     }
 
     componentDidMount() {
+      this._isMounted = true;
+
+      console.log('mounted', this.props.currMonth)
       this.initVisualization();
     }
+    componentWillUnmount() {
+      this._isMounted = false;
+      console.log('unmounted', this.props.currMonth)
+    }
+
 
 
 /**    componentDidUpdate(){

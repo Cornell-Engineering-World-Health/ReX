@@ -107,6 +107,7 @@ class Calendar extends Component {
   );
 
   _loadMore = () => {
+    console.log('loadingMore')
     newData = [];
     current = this.state.last;
     for (i = 1; i < 20; i++) {
@@ -185,7 +186,7 @@ class Calendar extends Component {
             snapToAlignment="center"
             showsHorizontalScrollIndicator={false}
             initialScrollIndex={numOfCals + 1}
-            initialNumToRender={5}
+            initialNumToRender={3}
             maxToRenderPerBatch= {5}
             windowSize={5}
             viewabilityConfig={VIEWABILITY_CONFIG}
