@@ -24,7 +24,7 @@ export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
 
-/*
+/*a
 Cancels all notifications listed in the given array of notification IDS
 
 Precondition: notificationIDS is an array with every element being a notificationID given
@@ -97,7 +97,7 @@ callBack: function to be called after the notification is set.
 
 
 */
-export async function setMassNotification(
+export function setMassNotification(
   startDate,
   endDate,
   t,
@@ -148,7 +148,26 @@ export async function setMassNotification(
     });
   }
 }
+/*
+//New
+[
+{
+  date: startDate + time
+  ids: [id1, id2, id3]
+},
+{
+  date: startDate + time
+  ids: [id1, id2, id3]
+}
+]
 
+//Old
+[{
+id: string
+date: dateObject
+}]
+
+*/
 class PushController extends React.Component {
   constructor(props) {
     super(props);
