@@ -225,7 +225,6 @@ export function asyncDeleteEvent(id){
   },err=>console.log(err))
 }
 function formatMedicineData(data){
-  console.log('medicinal',data)
   dataTemp = {};
   data.forEach(function(med){
     let earliestTime = new Date(med.timestamp.replace(' ','T'))
