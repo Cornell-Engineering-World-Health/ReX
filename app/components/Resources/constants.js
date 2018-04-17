@@ -35,7 +35,19 @@ export const IMAGES = {
   scale: require('../Resources/Images/scale.png'),
   settings: require('../Resources/Images/settings.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
-  expand: require('../Resources/Images/expand.png')
+  expand: require('../Resources/Images/expand.png'),
+  about: require('../Resources/Images/about.png'),
+  addressBook: require('../Resources/Images/address-book.png'),
+  afternoonColor: require('../Resources/Images/afternoonColor.png'),
+  eveningColor: require('../Resources/Images/eveningColor.png'),
+  faq: require('../Resources/Images/faq.png'),
+  iconWolf: require('../Resources/Images/icons8-wolf-100.png'),
+  iconZebra: require('../Resources/Images/icons8-zebra-100.png'),
+  iconShark: require('../Resources/Images/icons8-shark-100.png'),
+  iconJellyfish: require('../Resources/Images/icons8-jellyfish-100.png'),
+  iconOwl: require('../Resources/Images/icons8-owl-100.png'),
+  iconHamster: require('../Resources/Images/icons8-hamster-100.png'),
+  quickLog: require('../Resources/Images/quicklog.png')
 };
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
