@@ -144,14 +144,14 @@ export default class Settings extends Component{
           <SettingsList.Header headerStyle={{marginTop:15}}/>
           <SettingsList.Item
             title='Contact'
-            onPress={() => Alert.alert('Option C')}
+            onPress={() => Alert.alert('ewhcornell@gmail.com')}
             icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/address-book.png')}/>}
           />
            <SettingsList.Item
             icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/faq.png')}/>}
             title='Quick Log'
             title='FAQ'
-            onPress={() => Alert.alert('Short FAQ section?')}
+            onPress={() => Alert.alert('Question: Is this app awesome?\n Answer: yes ')}
           />
         </SettingsList>
       
