@@ -151,4 +151,10 @@ export default StyleSheet.create({
     marginTop: 3,
     marginBottom: 4
   },
+  modalButton: {
+    color: '#A0A0A0',
+    fontSize: 20,
+    marginLeft: 30,
+    marginRight: 30,
+  },
 });

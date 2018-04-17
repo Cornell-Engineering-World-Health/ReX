@@ -6,7 +6,7 @@ import {
   Dimensions,
   ActivityIndicator,
   FlatList,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
@@ -19,7 +19,7 @@ let t = new Date();
 let numOfMonths = (t.getFullYear() - 1969)*12;
 const numOfCals = numOfMonths;
 const VIEWABILITY_CONFIG = {
-    viewAreaCoveragePercentThreshold: 80,
+    viewAreaCoveragePercentThreshold: 90,
 };
 
 class Calendar extends Component {
@@ -33,9 +33,12 @@ class Calendar extends Component {
       first: -numOfCals,
       last: numOfCals-1,
       data: data,
-      currentDate: new Date()
+      currentDate: new Date(),
     };
     this.mutexLock = 0
+    this.calendars = []; // references to all calendar components
+    this.currSymptomDisplay; //most recent sympotom type bar graphs shown.
+    this.currKey; //current KEY that the calendar is displaying
     this._updateAgenda();
   }
 
@@ -93,18 +96,22 @@ class Calendar extends Component {
   };
 
   _onPressAgenda = type => {
+    this.currSymptomDisplay = type;
     this.calendarRef.updateVisualization(type);
   };
 
-  _renderItem = ({ item }) => (
+  _renderItem = ({ item }) => {
+    return (
     /*<Text> {item.key} </Text>*/
     <SliderEntry
+      ref={(ref) => { this.calendars[item.key] = ref; }}
       data={
         new Date(new Date().getFullYear(), new Date().getMonth() + item.key, 0)
       }
+      pickerHandler={this._pickerHandler}
       onPressMonth={this._onPressMonth}
     />
-  );
+  )};
 
   _loadMore = () => {
     console.log('loadingMore')
@@ -119,32 +126,49 @@ class Calendar extends Component {
     });
   };
 
-  _loadPrev = ({viewableItems, changed}) => {
+  _onViewableChange = ({viewableItems, changed}) => {
+    if(viewableItems.length > 0){
+      let newKey = viewableItems[0].key
+
+      /**
+      if(this.currKey && newKey > this.currKey){//swipe to next
+      } else if(this.currKey && newKey < this.currKey){//swipe to prev
+      }
+      */
+      if(this.currSymptomDisplay){
+        this.calendars[newKey].calendar.updateVisualization(this.currSymptomDisplay);
+      }
+      this.currKey = viewableItems[0].key
+    }
     if (viewableItems.length > 0 && this.mutexLock == 0){
       if (viewableItems[viewableItems.length - 1].index == 0){
-        this.mutexLock = 1
-        newData = [];
-        current = this.state.first;
-        for (i = 1; i < 20; i++) {
-          newData.unshift({ key: current - i });
-        }
-        this.setState({
-          data: [...newData, ...this.state.data],
-          first: current - 19
-        });
-        this._enableScroll(this.flatListRef);
-        this.flatListRef.scrollToIndex({animated:false, index:19})
+        this._loadPrev();
       }
     }
+  }
+
+  _loadPrev = () => {
+    this.mutexLock = 1
+    newData = [];
+    current = this.state.first;
+    for (i = 1; i < 20; i++) {
+      newData.unshift({ key: current - i });
+    }
+    this.setState({
+      data: [...newData, ...this.state.data],
+      first: current - 19
+    });
+    this._enableScroll(this.flatListRef);
+    this.flatListRef.scrollToIndex({animated:false, index:19})
 
   };
 
   _startScroll(){
-    console.log('START')
+    //console.log('START')
   }
   _disableScroll() {
 
-      console.log('END')
+      //console.log('END')
     this.flatListRef.getScrollResponder().setNativeProps({
       scrollEnabled: false
     })
@@ -166,6 +190,10 @@ class Calendar extends Component {
 
   }
 
+  _pickerHandler(month){
+
+  }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
@@ -177,7 +205,7 @@ class Calendar extends Component {
             renderItem={this._renderItem}
             onEndReached={this._loadMore}
             onEndReachedThreshold={50}
-            onViewableItemsChanged={this._loadPrev}
+            onViewableItemsChanged={this._onViewableChange}
             horizontal={true}
             removeClippedSubviews={false}
             getItemLayout={this.getItemLayout}
@@ -203,6 +231,7 @@ class Calendar extends Component {
           />
         </View>
       </View>
+
     );
   }
 }

@@ -8,7 +8,8 @@ export default class SliderEntry extends PureComponent {
 
     static propTypes = {
         data: PropTypes.object.isRequired,
-        onPressMonth: PropTypes.func
+        onPressMonth: PropTypes.func,
+        pickerHandler: PropTypes.func,
     };
 
 
@@ -18,8 +19,10 @@ export default class SliderEntry extends PureComponent {
             <View style={styles.slideInnerContainer}>
                 <View style={[styles.imageContainer]}>
                     <Calendar
+                      ref={(ref) => { this.calendar = ref; }}
                       currMonth={ data }
                       onPressMonth={this.props.onPressMonth}
+                      pickerHandler={this.props.pickerHandler}
                     />
                   <View style={[styles.radiusMask]} />
                 </View>
