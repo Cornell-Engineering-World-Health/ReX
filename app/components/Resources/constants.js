@@ -163,6 +163,12 @@ export default (constants = {
     backgroundColor: defaultColor,
     translucentColor: defaultColor
   },
+  DIZZINESS: {
+    title: 'Dizziness',
+    image: IMAGES.default,
+    backgroundColor: '#836953',
+    translucentColor: '#83695380'
+  },
   DEFAULT: {
     image: IMAGES.default,
     title: 'Default',

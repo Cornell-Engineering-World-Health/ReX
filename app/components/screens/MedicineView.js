@@ -16,61 +16,61 @@ import { LinearGradient } from 'expo';
 
 var data1 = [
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
-  { title: 'Napkin 30mg', time: '12:50PM', status: false },
+  { title: 'Motrin 30mg', time: '12:50PM', status: false },
   { title: 'Ibuprofen 80mg', time: '2:50PM', status: false },
-  { title: 'Bracy 3410mg', time: '1:25PM', status: false },
-  { title: 'Katy 2000mg', time: '2:50PM', status: false },
-  { title: 'Bracy 4410mg', time: '12:50PM', status: false }
+  { title: 'Mucinex 3410mg', time: '1:25PM', status: false },
+  { title: 'Aspirin 20mg', time: '2:50PM', status: false },
+  { title: 'Mucinex 4410mg', time: '12:50PM', status: false }
 ];
 var data2 = [
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
-  { title: 'Napkin 30mg', time: '12:50PM', status: false },
+  { title: 'Motrin 30mg', time: '12:50PM', status: false },
   {
-    title: 'Donut 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
+    time: '12:20PM',
+    status: false
+  },
+  {
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   }
 ];
 var data3 = [
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
-  { title: 'Napkin 30mg', time: '12:50PM', status: false }
+  { title: 'Motrin 30mg', time: '12:50PM', status: false }
 ];
 var data4 = [
   {
-    title: 'Donut 20mg',
+    title: 'Tylenol 20mg',
     time: '12:20PM',
     status: false
   },
-  { title: 'Eashan 30mg', time: '12:50PM', status: false },
-  { title: 'Bracy 100mg', time: '1:25PM', status: false },
-  { title: 'Katy 2000mg', time: '2:50PM', status: false }
+  { title: 'Advil 30mg', time: '12:50PM', status: false },
+  { title: 'Mucinex 100mg', time: '1:25PM', status: false },
+  { title: 'Aspirin 30mg', time: '2:50PM', status: false }
 ];
 
 class CoolerMedicineView extends React.Component {
