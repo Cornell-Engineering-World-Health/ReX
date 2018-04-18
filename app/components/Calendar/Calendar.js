@@ -13,7 +13,6 @@ import PickerInputType from '../LogInputTypes/PickerInputType'
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 const { width } = Dimensions.get("window");
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
