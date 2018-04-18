@@ -80,10 +80,6 @@ export default class Settings extends Component {
   }
   handle_icon_press = index => {
     asyncSettingUpdate('icon', index.toString());
-    this.setState({
-      icon: index,
-      modalID: ''
-    });
   };
 
   toggleModal_height = () =>
@@ -131,6 +127,7 @@ export default class Settings extends Component {
                   <TouchableOpacity
                     key={item.index}
                     onPress={() => {
+                      this.handle_icon_press(ind);
                       this.setState({
                         choosingAvatar: false,
                         icon: ind
