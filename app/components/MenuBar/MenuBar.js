@@ -41,14 +41,13 @@ const styles = StyleSheet.create({
     height: 75,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#ffffff',
+    backgroundColor: DEFAULT_BACKGROUND_COLOR,
     alignItems: 'flex-end'
   },
   menuButtons: {
     height: 150,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#ffffff'
+    justifyContent: 'space-around'
   },
   bottomModal: {
     justifyContent: 'flex-end'
