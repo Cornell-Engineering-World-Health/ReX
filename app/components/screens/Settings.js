@@ -96,7 +96,11 @@ export default class Settings extends Component {
     if (!this.state.choosingAvatar) {
       return (
         <View style={styles.profileHeader}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ choosingAvatar: true });
+            }}
+          >
             <Image
               style={styles.profileImageStyle}
               source={prof_icons[this.state.icon]}
