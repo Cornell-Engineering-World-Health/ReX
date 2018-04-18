@@ -295,7 +295,7 @@ class Home extends React.Component {
     }
 
     return (
-      <ImageBackground style={{ flex: 1 }} source={IMAGES.blueGradient2}>
+      <ImageBackground style={{ flex: 1 }}>
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>

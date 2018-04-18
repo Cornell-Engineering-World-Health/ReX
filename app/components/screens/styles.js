@@ -33,7 +33,7 @@ export default StyleSheet.create({
     fontSize: 30
   },
   nameText: {
-    color: 'white',
+    color: 'black',
     fontSize: 28,
     fontWeight: '800'
   },

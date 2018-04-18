@@ -36,7 +36,6 @@ export const IMAGES = {
   settings: require('../Resources/Images/settings.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
   expand: require('../Resources/Images/expand.png'),
-<<<<<<< HEAD
   about: require('../Resources/Images/about.png'),
   addressBook: require('../Resources/Images/address-book.png'),
   afternoonColor: require('../Resources/Images/afternoonColor.png'),
@@ -48,14 +47,12 @@ export const IMAGES = {
   iconJellyfish: require('../Resources/Images/icons8-jellyfish-100.png'),
   iconOwl: require('../Resources/Images/icons8-owl-100.png'),
   iconHamster: require('../Resources/Images/icons8-hamster-100.png'),
-  quickLog: require('../Resources/Images/quicklog.png')
-=======
+  quickLog: require('../Resources/Images/quicklog.png'),
   tealGradient: require('../Resources/Images/tealGradient.jpg'),
   blueGradient: require('../Resources/Images/blueGradient.jpg'),
   blueGradient2: require('../Resources/Images/blueGradient2.jpg'),
   darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
   darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg')
->>>>>>> boom_tests
 };
 export const COLOR = {
   PrimaryGray: '#b8b8b8',

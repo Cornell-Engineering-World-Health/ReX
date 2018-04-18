@@ -46,7 +46,7 @@ export default class Settings extends Component {
     this.state = {
       switchValue: false,
       birthday: new Date(),
-      name: 'Select Edit',
+      name: 'Navin',
       isModalVisible: false,
       weight: '120',
       height_feet: '5',
@@ -116,11 +116,14 @@ export default class Settings extends Component {
             <FlatList
               horizontal={true}
               data={prof_icons}
-              keyExtractor={item => item.index}
+              keyExtractor={item => {
+                item.index;
+              }}
               renderItem={item => {
                 var ind = item.index;
                 return (
                   <TouchableOpacity
+                    key={item.index}
                     onPress={() => {
                       this.setState({
                         choosingAvatar: false,
@@ -158,7 +161,7 @@ export default class Settings extends Component {
         >
           <Text
             style={{
-              alignSelf: 'left',
+              alignSelf: 'flex-start',
               marginTop: 50,
               marginLeft: 20,
               marginBottom: 10,
@@ -208,6 +211,7 @@ export default class Settings extends Component {
               switchOnValueChange={this.onValueChange}
               titleInfoStyle={styles.titleInfoStyle}
             />
+
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               title="Contact"
@@ -235,10 +239,6 @@ export default class Settings extends Component {
             />
           </SettingsList>
         </View>
-        <Modal
-          isVisible={this.state.modalID == 'editProfile'}
-          style={styles.profileContainerStyles}
-        />
         <Modal
           isVisible={this.state.modalID == BIRTHDAY_ID}
           style={styles.modal}
@@ -425,7 +425,7 @@ export default class Settings extends Component {
 const styles = StyleSheet.create({
   profileHeader: {
     marginTop: 25,
-    backgroundColor: '#fffff',
+    backgroundColor: '#ffffff',
     alignItems: 'center'
   },
   profileHeaderSubText: {

@@ -166,11 +166,7 @@ class Card extends PureComponent {
             uncheckedIcon="circle-o"
             checked={this.state.status[index]}
             containerStyle={styles.check}
-<<<<<<< HEAD
             size={25}
-=======
-            size="25"
->>>>>>> boom_tests
             title={i.title}
             checkedColor="#63f3c9"
             textStyle={styles.noteText}
