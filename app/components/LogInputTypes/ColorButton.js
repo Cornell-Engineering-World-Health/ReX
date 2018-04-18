@@ -6,7 +6,8 @@ export default class ColorButton extends React.Component {
     super(props)
     this.state = {
       button_text: props.button_text,
-      background_color: false
+      background_color: props.background_color,
+      val_key: props.val_key
     }
   }
 
@@ -14,6 +15,7 @@ export default class ColorButton extends React.Component {
     this.setState({
       background_color: !this.state.background_color
     })
+    this.props.handleChange(this.state.val_key)
   }
 
   render () {
