@@ -45,8 +45,9 @@ export function intializeDatabase(){
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'height_inches\',\'8\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'weight\',\'Select\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'height\',\'Select\')')
-    tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'name\',\'Select Edit\')')
+    tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'name\',\'Navin\')')
     tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'icon\',\'0\')')
+    tx.executeSql('INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES (\'birthday\',\'2000-01-02\')')
 
     /* medication reminder examples */
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
@@ -110,9 +111,9 @@ export function databaseFakeData(){
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Intensity": "5","Duration": "60"}\' )')
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (11, 1,\'2018-04-17 06:01:00\', 11)')
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (14,\'{"Intensity": "5","Duration": "60"}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (12, 3,\'2018-04-17 06:01:00\', 14)')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (14, 3,\'2018-04-17 06:01:00\', 14)')
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Intensity": "5","Duration": "60"}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (13, 3,\'2018-04-19 06:01:00\', 15)')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (15, 3,\'2018-04-19 06:01:00\', 15)')
         /* medication reminder fake data */
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\
          \'{"pillName": "Tylenol","dosage": "20mg","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false,false]}\' )')
