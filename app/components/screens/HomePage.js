@@ -19,8 +19,7 @@ import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
 import {HomeMedicineLogger} from '../HomeMedicineLogger'
-import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil'
-const USERNAME = 'Navin';
+import {pullMedicineFromDatabase,pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil'
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import  styles from './styles';
 
@@ -166,8 +165,15 @@ class Home extends React.Component {
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
+      name: "Navin",
     };
-
+    
+    //TODO: make one function that only pulls name from database
+    pullSettingsFromDatabase((data) => {
+        this.setState({
+            name: data.name
+        })
+    })
 
   }
 
@@ -309,7 +315,7 @@ class Home extends React.Component {
             <View style={styles.topInfo}>
               <View style={styles.header}>
                 <Text style={styles.welcomeText}>Welcome</Text>
-                <Text style={styles.nameText}>{USERNAME}</Text>
+                <Text style={styles.nameText}>{this.state.name}</Text>
               </View>
               <View style={styles.subHeader}>
                 <Text style={styles.subHeaderText}>
