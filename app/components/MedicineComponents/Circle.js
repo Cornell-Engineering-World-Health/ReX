@@ -8,6 +8,7 @@ import PillCard from '../Card/PillCard'
 import { LinearGradient } from 'expo';
 import Modal from "react-native-modal";
 import LogFormScreen from "../screens/LogFormScreen"
+import Database from '../screens/Database'
 
 class Circle extends Component {
   static propTypes = {

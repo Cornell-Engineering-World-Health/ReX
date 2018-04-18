@@ -73,23 +73,23 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   submit () {
-    let event_type_id = this.state.event_type_id
-    let values = JSON.stringify(this.state.submit_vals)
-    let timestamp = moment().format('YYYY-MM-DD HH:mm:ss')
-
-    console.log(values)
-
-    Database.transaction(tx => {
-      tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
-      tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)', [event_id_count, event_type_id, timestamp, event_details_id_count])
-    }, err => console.log(err))
-
-    event_id_count++
-    event_details_id_count++
-
     if (this.state.nav) {
+      console.log('HEHHHLSHGKEHGLWKEHGLWKGHLWEKHGLWEKHGLEWKHGWLEKGHWLEKGH')
       this.props.navigation.state.params.onLog()
       this.props.navigation.pop()
+      let event_type_id = this.state.event_type_id
+      let values = JSON.stringify(this.state.submit_vals)
+      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss')
+
+      console.log(values)
+
+      Database.transaction(tx => {
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)', [event_id_count, event_type_id, timestamp, event_details_id_count])
+      }, err => console.log(err))
+
+      event_id_count++
+      event_details_id_count++
     } else {
       this.props.on_finish()
     }
@@ -175,7 +175,8 @@ export default class ChooseLogScreen extends React.Component {
                   valueChange={this.valueChange.bind(this)} />)
             } else if (prop == 'TimeCategoryInputType') {
               return (
-                <View>
+                <View
+                  key={key}>
                   {this.state.values[key].map((prop, timeKey) => {
                     return (
                       <TimePicker

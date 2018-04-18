@@ -109,6 +109,12 @@ export default (constants = {
     backgroundColor: '#FFEE93',
     translucentColor: '#FFEE9380'
   },
+  MEDICATION: {
+    image: IMAGES.pillBottle,
+    title: 'Medication Reminder',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
   KNEEPAIN: {
     image: IMAGES.kneePain,
     title: 'Knee Pain',
@@ -170,7 +176,8 @@ let types = [
   constants.BACKPAIN,
   constants.ELBOWPAIN,
   constants.HEARTPAIN,
-  constants.STOMACHPAIN
+  constants.STOMACHPAIN,
+  constants.MEDICATION
 ]
 
 /**
