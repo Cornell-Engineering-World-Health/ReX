@@ -116,11 +116,23 @@ export function databaseFakeData(){
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (15, 3,\'2018-04-19 06:01:00\', 15)')
         /* medication reminder fake data */
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
-         \'{"pillName": "Tylenol","dosage": "20mg","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false,false]}\' )')
-         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,\'2018-04-17 09:00:00\', 52)')
-         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
-         \'{"pillName": "Aspirin","dosage": "400mg","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false]}\' )')
-         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,\'2018-04-17 09:00:00\', 53)')
+         \'{"pillName": "Tylenol","dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false,false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,\'2018-04-17 09:00:00\', 52)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
+        \'{"pillName": "Aspirin","dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,\'2018-04-17 09:00:00\', 53)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (54,\
+        \'{"pillName": "Tylenol","dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,0,1,0,0,0],"taken": [false,false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (54, 4,\'2018-04-18 09:00:00\', 54)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (55,\
+        \'{"pillName": "Aspirin","dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,0,1,0,0,0],"taken": [false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,\'2018-04-18 09:00:00\', 55)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
+        \'{"pillName": "Tylenol","dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,0,0,1,0,0],"taken": [false,false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-04-19 09:00:00\', 56)')
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
+        \'{"pillName": "Aspirin","dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,0,0,1,0,0],"taken": [false]}\' )')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-04-19 09:00:00\', 57)')
 
         /* medication reminder fake data */
     },err=> console.log(err));
@@ -141,7 +153,6 @@ export function databaseFakeData(){
 
 export function pullFromDataBase(month, day, callback){
   //TODO: year is missing?
-  databaseFakeData();
   console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0,7)
@@ -227,7 +238,6 @@ export function asyncDeleteEvent(id){
 }
 function formatMedicineData(data){
   dataTemp = {};
-  console.log('plz',data)
   data.forEach(function(med){
     let earliestTime = new Date(med.timestamp.replace(' ','T'))
     let fields = JSON.parse(med.fields)
@@ -242,7 +252,7 @@ function formatMedicineData(data){
     }
 
   });
-  console.log(dataTemp)
+  //console.log(dataTemp)
   return dataTemp;
 }
 
