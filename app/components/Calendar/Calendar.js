@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
@@ -8,16 +9,17 @@ import {pullFromDataBase, pullMedicineFromDatabase} from '../../databaseUtil/dat
 import constants from '../Resources/constants';
 import {getColor, getTranslucentColor} from '../Resources/constants';
 import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
+import PickerInputType from '../LogInputTypes/PickerInputType'
+import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 const { width } = Dimensions.get("window");
-
-
-
-
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
-      onPressMonth: PropTypes.func
+      onPressMonth: PropTypes.func,
+      pickerHandler: PropTypes.func,
     };
+
 
     constructor(props){
         super(props)
@@ -55,15 +57,36 @@ class Calendar extends PureComponent {
             graphColor: 'rgba( 0, 0, 0, 0)',
             intensities: [0,0],
             baseBars: baseBars,
+            modalVisible: false,
         }
 
         this.graphRefs = [];
+        this._isMounted = false;
+        this.monthPicker = [];
+        this.yearPicker = [];
         this._onDatePress = this._onDatePress.bind(this);
     }
 
     componentDidMount() {
+      this._isMounted = true;
+
+      if(this._isCurrMonth()){
+        this._onDatePress((new Date()).getDate() - 1)
+      }
+
+      //console.log('mounted', this.props.currMonth)
       this.initVisualization();
     }
+
+    _isCurrMonth(){ //to initialize selection to 'today'
+      let d = new Date()
+      return (d.getFullYear() == this.props.currMonth.getFullYear() && d.getMonth() == this.props.currMonth.getMonth())
+    }
+    componentWillUnmount() {
+      this._isMounted = false;
+      //console.log('unmounted', this.props.currMonth)
+    }
+
 
 
 /**    componentDidUpdate(){
@@ -209,7 +232,7 @@ class Calendar extends PureComponent {
         this.setState({ dot3 })
         this.setState({ baseBars })
         this.setState({ currentDate}, function(){
-          this.props.onPressMonth(this)
+          this.props.onPressMonth(this, i)
         })
 
     }
@@ -253,10 +276,9 @@ class Calendar extends PureComponent {
     }
 
     _onTitlePress = () => {
-      console.log('title Press')
-        pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
-          console.log(formattedData)
-        });
+      this.setState({
+        modalVisible: true,
+      })
     }
 
     _onHeadachePress = () => {
@@ -295,18 +317,17 @@ class Calendar extends PureComponent {
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return days.map((day) => {
                 if (day == 'SUN'){
-                    return <Text key={day} style= {styles.weekAlt}>{day}</Text>
+                    return <View  key={day} style={styles.weekItem}><Text style= {styles.weekAlt}>{day}</Text></View>
                 }
                 else{
-                    return <Text key={day} style= {styles.week}>{day}</Text>
+                    return <View key={day} style={styles.weekItem}><Text style= {styles.week}>{day}</Text></View>
                 }
             }
             );
         };
 
     renderMonth() {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return months[this.today.getMonth()];
+        return monthNames[this.today.getMonth()];
     }
 
     renderYear() {
@@ -425,32 +446,107 @@ class Calendar extends PureComponent {
     }
 
     render() {
-
         return (
             <View style = {{flex: 1}}>
-            <View style= {styles.head}>
-            <TouchableOpacity onPress = {() => this._onTitlePress()}>
-                <View style= {styles.header}>
-                    <Text style= {styles.month}> { this.renderMonth() }</Text>
-                    <Text style= {styles.year}> {this.renderYear() }</Text>
-                </View>
-            </TouchableOpacity>
+              <View style= {styles.head}>
+                <TouchableOpacity onPress = {this._onTitlePress.bind(this)}>
+                    <View style= {styles.header}>
+                        <Text style= {styles.month}> { this.renderMonth() }</Text>
+                        <Text style= {styles.year}> {this.renderYear() }</Text>
+                    </View>
+                </TouchableOpacity>
 
                 <View style= {styles.header2}>
                     { this.renderWeek() }
                 </View>
-            </View>
-                <View style = {styles.tiles}>
-                    { this.renderPreviousDates() }
-                    { this.renderDates() }
-                    { this.renderNextDates() }
-                </View>
+              </View>
 
+              <View style = {styles.tiles}>
+                  { this.renderPreviousDates() }
+                  { this.renderDates() }
+                  { this.renderNextDates() }
+              </View>
+
+              <Modal
+                onBackdropPress={() => this.setState({ modalVisible: false })}
+                isVisible={this.state.modalVisible}
+                style={{ flex: 1}}
+                backdropOpacity={0.9}
+                animationOutTiming={600}
+                animationInTiming={600}
+              >
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      height: Dimensions.get('window').height/2,
+                      marginBottom: 20,
+                    }}
+                  >
+                   <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}
+                   >
+                    <PickerInputType
+                      ref={(m) => {this.monthPicker = m;}}
+                      input_style={{ width: 100 }}
+                      title_text_style={{
+                        color: 'white'
+                      }}
+                      value={monthNames[this.props.currMonth.getMonth()]}
+                      picker_values={monthNames}
+                      title_text={''}
+                      handleChange={() => {}}
+                    />
+                    <NumericalPickerInputType
+                      ref={(y) => {this.yearPicker = y;}}
+                      input_style={{ width: 120 }}
+                      title_text_style={{ color: 'white'}}
+                      value={this.props.currMonth.getFullYear()}
+                      min={1970}
+                      max={this.props.currMonth.getFullYear()+1000}
+                      unit={''}
+                      title_text={''}
+                      val_label={[]}
+                      valueChange={() => {}}
+                    />
+                  </View>
+                  <View
+                   style={{
+                     flex: 1,
+                     flexDirection: 'row',
+                     justifyContent: 'center',
+                     marginTop: 80,
+                   }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.pickerHandler(monthNames.indexOf(this.monthPicker.state.value)+1, this.yearPicker.picker.state.value);
+                        this.setState({
+                          modalVisible: false,
+                        })
+                      }}>
+                      <Text style={styles.modalButton}>Select</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({
+                          modalVisible: false,
+                        })
+                      }}>
+                      <Text style={styles.modalButton}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
             </View>
+
         );
     }
 }
-
-
 
 export default Calendar;

@@ -2,6 +2,8 @@ import Database from '../Database'
 import Moment from 'moment'
 import constants, {getCardData} from '../components/Resources/constants'
 
+databaseFakeData()
+
 export function createTables () {
   console.log('creating tables')
   Database.transaction(tx => {
@@ -136,9 +138,9 @@ export function databaseFakeData () {
 }
 
 export function pullFromDataBase (month, day, callback) {
-  // TODO: year is missing?
   databaseFakeData()
   console.log('pulling from database')
+  // TODO: year is missing?
 
   formattedMonth = month.toISOString().substr(0, 7)
   var arrayFormattedMonth = [formattedMonth]

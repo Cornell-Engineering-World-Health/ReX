@@ -51,8 +51,8 @@ export default class ChooseLogScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    this.createTables()
-    this.intializeDatabase()
+    //this.createTables()
+    //this.intializeDatabase()
 
     log_types_array = []
     event_ids_array = []
