@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Circle from '../MedicineComponents/Circle.js';
 import PillCard from '../Card/PillCard';
-import Modal from "react-native-modal";
+import { LinearGradient } from 'expo';
 
 var data1 = [{'title': 'Donut 20mg', 'time': '12:20PM',
   'status': false}, {'title': 'Napkin 30mg', 'time': '12:50PM', 'status': false},
@@ -73,13 +73,13 @@ class CoolerMedicineView extends React.Component {
 
   render() {
     return (
-        <View>
 
-        <View style = {{marginTop: 60}}>
+        <View style = {{flex: 1}}>
+        <View>
         <Circle
         amData = {this.state.amData}
         />
-        <View style = {{marginTop: 400}}>
+        <View style = {{ top: Dimensions.get('window').height / 2}}>
         <FlatList
          data = {[0]}
          renderItem = {({ item, index }) => {
@@ -116,14 +116,8 @@ class CoolerMedicineView extends React.Component {
          />
          </View>
          </View>
-
-         <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
-            <View>
-              <Text>test</Text>
-            </View>
-         </Modal>
-
         </View>
+
   )
 
   }}
