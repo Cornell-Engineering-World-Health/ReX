@@ -98,12 +98,13 @@ class Circle extends Component {
     return (
         <View flex = {1}>
         {/* <View style = {styles.header}> */}
-        <Text style = {styles.headerText}>
+        {/* <Text style = {styles.headerText}>
             Monday
         </Text>
         <Text style = {styles.headerText2}>
             March 12
-        </Text>
+        </Text>*/
+      }
         <TouchableOpacity
         style = {styles.button}
         onPress = {this.toggleModal}
