@@ -34,6 +34,7 @@ class Calendar extends Component {
       last: numOfCals-1,
       data: data,
       currentDate: new Date(),
+      flatlistHeight: 0,
     };
     this.mutexLock = 0
     this.calendars = []; // references to all SLIDEENTRY components which contain calendar components. indexed by KEY
@@ -133,6 +134,32 @@ class Calendar extends Component {
     });
   };
 
+  calendarHeight = (currMonth) => {
+    console.log(currMonth)
+    var today = currMonth
+    var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
+    var firstDays = new Date(today.getFullYear(), today.getMonth(), 0).getDate()
+    var first = new Date(today.getFullYear(), today.getMonth(), 1);
+    var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
+    var numberOfPrevious = first.getDay()
+    var numberOfAfter = 6 - last.getDay()
+    var total = numberOfDays + numberOfPrevious + numberOfAfter
+    console.log(numberOfDays, numberOfPrevious, numberOfAfter)
+    if (total == 35){
+        this.setState({
+          flatlistHeight: Dimensions.get('window').height * 0.50
+        })
+    }
+    else {
+        this.setState({
+          flatlistHeight: Dimensions.get('window').height * 0.56
+        })
+    }
+    // if (first.getDay() != 0){
+    //     var numberOfPrevious = firstDays - first.getDay()
+    // }
+}
+
   _onViewableChange = ({viewableItems, changed}) => {
     if(viewableItems.length > 0){
       let newKey = viewableItems[0].key
@@ -149,6 +176,7 @@ class Calendar extends Component {
       this.currIndex = viewableItems[0].index
       this.currCalendar = this.calendars[newKey]
       this.currCalendar.calendar._onDatePress(this.previouslySelected) //keep presistent day selection across months
+      this.calendarHeight(this.currCalendar.props.data)
 
     }
     if (viewableItems.length > 0 && this.mutexLock == 0){
@@ -223,6 +251,7 @@ class Calendar extends Component {
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
         <View style={{  }}>
           <FlatList
+            height={this.state.flatlistHeight}
             style={itemStyle}
             ref={(ref) => { this.flatListRef = ref; }}
             data={this.state.data}
