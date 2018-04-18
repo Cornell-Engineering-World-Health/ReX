@@ -215,11 +215,11 @@ export default class Settings extends Component {
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               title="Contact"
-              onPress={() => Alert.alert('Option C')}
+              onPress={() => Alert.alert('ewhcornell@gmail.com')}
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={50}
+                  height={60}
                   resizeMode="contain"
                   source={IMAGES.addressBook}
                 />
@@ -229,13 +229,16 @@ export default class Settings extends Component {
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={50}
+                  height={60}
                   resizeMode="contain"
                   source={IMAGES.faq}
                 />
               }
+              title="Quick Log"
               title="FAQ"
-              onPress={() => Alert.alert('Short FAQ section?')}
+              onPress={() =>
+                Alert.alert('Question: Is this app awesome?\n Answer: yes ')
+              }
             />
           </SettingsList>
         </View>
