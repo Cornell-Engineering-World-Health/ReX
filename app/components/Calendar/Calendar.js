@@ -70,8 +70,17 @@ class Calendar extends PureComponent {
     componentDidMount() {
       this._isMounted = true;
 
+      if(this._isCurrMonth()){
+        this._onDatePress((new Date()).getDate() - 1)
+      }
+
       //console.log('mounted', this.props.currMonth)
       this.initVisualization();
+    }
+
+    _isCurrMonth(){ //to initialize selection to 'today'
+      let d = new Date()
+      return (d.getFullYear() == this.props.currMonth.getFullYear() && d.getMonth() == this.props.currMonth.getMonth())
     }
     componentWillUnmount() {
       this._isMounted = false;
@@ -223,7 +232,7 @@ class Calendar extends PureComponent {
         this.setState({ dot3 })
         this.setState({ baseBars })
         this.setState({ currentDate}, function(){
-          this.props.onPressMonth(this)
+          this.props.onPressMonth(this, i)
         })
 
     }

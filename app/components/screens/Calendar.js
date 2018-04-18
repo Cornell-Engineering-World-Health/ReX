@@ -41,6 +41,7 @@ class Calendar extends Component {
     this.currKey; //current KEY that the calendar is displaying
     this.currIndex; //current INDEX that the calendar is displaying
     this.currCalendar; //current Calendar component being displayed
+    this.previouslySelected; //index of day of selectedIndicator on calendar
     this._updateAgenda();
   }
 
@@ -84,11 +85,12 @@ class Calendar extends Component {
     index
   });
 
-  _onPressMonth = ref => {
+  _onPressMonth = (ref, i) => {
     if (this.calendarRef && this.calendarRef != ref) {
       this.calendarRef._clearSelection();
     }
     this.calendarRef = ref;
+    this.previouslySelected = i;
     this.setState(
       {
         currentDate: ref.state.currentDate
@@ -142,9 +144,12 @@ class Calendar extends Component {
       if(this.currSymptomDisplay){
         this.calendars[newKey].calendar.updateVisualization(this.currSymptomDisplay);
       }
-      this.currKey = viewableItems[0].key
+
+      this.currKey = newKey
       this.currIndex = viewableItems[0].index
-      this.currCalendar = this.calendars[viewableItems[0].key]
+      this.currCalendar = this.calendars[newKey]
+      this.currCalendar.calendar._onDatePress(this.previouslySelected) //keep presistent day selection across months
+
     }
     if (viewableItems.length > 0 && this.mutexLock == 0){
       if (viewableItems[viewableItems.length - 1].index == 0){
