@@ -36,7 +36,7 @@ export const IMAGES = {
   settings: require('../Resources/Images/settings.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
   expand: require('../Resources/Images/expand.png')
-}
+};
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
   blue: '#79ADDC',
@@ -50,9 +50,9 @@ export const COLOR = {
   cardTimestamp: '#a9a9a9',
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
-}
-// TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
-const defaultColor = '#ffffff'
+};
+//TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
+const defaultColor = '#ffffff';
 
 export default (constants = {
   MONTH: [
@@ -97,21 +97,9 @@ export default (constants = {
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
   },
-  DIZZINESS: {
-    image: IMAGES.neckPain,
-    title: 'Dizziness',
-    backgroundColor: '#ab87b8',
-    translucentColor: '#ab87b880'
-  },
   NECKPAIN: {
     image: IMAGES.neckPain,
     title: 'Neck Pain',
-    backgroundColor: '#FFEE93',
-    translucentColor: '#FFEE9380'
-  },
-  MEDICATION: {
-    image: IMAGES.pillBottle,
-    title: 'Medication Reminder',
     backgroundColor: '#FFEE93',
     translucentColor: '#FFEE9380'
   },
@@ -163,12 +151,11 @@ export default (constants = {
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80'
   }
-})
+});
 let types = [
   constants.BLURRED_VISION,
   constants.PILL,
   constants.HEADACHE,
-  constants.DIZZINESS,
   constants.NECKPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,
@@ -176,9 +163,8 @@ let types = [
   constants.BACKPAIN,
   constants.ELBOWPAIN,
   constants.HEARTPAIN,
-  constants.STOMACHPAIN,
-  constants.MEDICATION
-]
+  constants.STOMACHPAIN
+];
 
 /**
 Pass in a string that represents which pain you are having (Ex: Headache, Back Pain)
@@ -189,38 +175,38 @@ Precondition: title is a string
 Available titles are found in the constants variable of this file.
 */
 
-export function getCardData (title) {
+export function getCardData(title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x]
+      return types[x];
     }
   }
-  return constants.DEFAULT
+  return constants.DEFAULT;
 }
 
-export function getSource (title) {
+export function getSource(title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x].image
+      return types[x].image;
     }
   }
-  return constants.DEFAULT.image
+  return constants.DEFAULT.image;
 }
 
-export function getColor (type) {
+export function getColor(type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].backgroundColor
+      return types[x].backgroundColor;
     }
   }
-  return constants.DEFAULT.backgroundColor
+  return constants.DEFAULT.backgroundColor;
 }
 
-export function getTranslucentColor (type) {
+export function getTranslucentColor(type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].translucentColor
+      return types[x].translucentColor;
     }
   }
-  return constants.DEFAULT.translucentColor
+  return constants.DEFAULT.translucentColor;
 }
