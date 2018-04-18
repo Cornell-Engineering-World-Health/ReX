@@ -115,12 +115,12 @@ export function databaseFakeData(){
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Intensity": "5","Duration": "60"}\' )')
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (15, 3,\'2018-04-19 06:01:00\', 15)')
         /* medication reminder fake data */
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\
+        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
          \'{"pillName": "Tylenol","dosage": "20mg","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false,false]}\' )')
-         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (12, 4,\'2018-04-17 09:00:00\', 12)')
-         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\
+         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,\'2018-04-17 09:00:00\', 52)')
+         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
          \'{"pillName": "Aspirin","dosage": "400mg","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,1,0,0,0,0],"taken": [false]}\' )')
-         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (13, 4,\'2018-04-17 09:00:00\', 13)')
+         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,\'2018-04-17 09:00:00\', 53)')
 
         /* medication reminder fake data */
     },err=> console.log(err));
@@ -227,6 +227,7 @@ export function asyncDeleteEvent(id){
 }
 function formatMedicineData(data){
   dataTemp = {};
+  console.log('plz',data)
   data.forEach(function(med){
     let earliestTime = new Date(med.timestamp.replace(' ','T'))
     let fields = JSON.parse(med.fields)
@@ -241,7 +242,7 @@ function formatMedicineData(data){
     }
 
   });
-  //console.log(dataTemp)
+  console.log(dataTemp)
   return dataTemp;
 }
 
