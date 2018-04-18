@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const dateHeight = Dimensions.get('window').height / 2.5 / 6;
 
 export default StyleSheet.create({
   head: {
@@ -17,7 +18,6 @@ export default StyleSheet.create({
       display: "flex",
       flexDirection: "row",
       marginTop: 10,
-      marginLeft: 14,
   },
   date: {
       textAlign: 'center',
@@ -39,18 +39,27 @@ export default StyleSheet.create({
       fontWeight: "bold",
       fontSize: 15,
       color: '#b8b8b8',
-      paddingLeft: Dimensions.get('window').width / 17.2,
+      justifyContent: 'center',
+      alignItems: 'center',
   },
   weekAlt: {
       fontWeight: "bold",
       fontSize: 15,
       color: '#b8b8b8',
+      justifyContent: 'center',
+      alignItems: 'center',
   },
   weekAlt2: {
       fontWeight: "bold",
       fontSize: 15,
       color: '#b8b8b8',
       marginLeft: 26,
+  },
+  weekItem:{
+    margin: 2,
+    width: Dimensions.get('window').width / 7 -7,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   month: {
       fontWeight: "bold",
@@ -73,14 +82,14 @@ export default StyleSheet.create({
      width: Dimensions.get('window').width / 7 -7,
      justifyContent: 'center',
      alignItems: 'center',
-     height: 43,
+     height: dateHeight,
    },
    altItem: {
       margin: 2,
       width: Dimensions.get('window').width / 7 -7,
       justifyContent: 'center',
       alignItems: 'center',
-      height: 43,
+      height: dateHeight,
       backgroundColor: '#A0A0A0',
    },
    generic: {
@@ -121,13 +130,11 @@ export default StyleSheet.create({
   baseBar: {
     width: (Dimensions.get('window').width / 7 -9) * 0.65,
     backgroundColor: '#FFFFFF',
-    height: 12,
     alignItems: 'center'
   },
   baseBarSelected: {
     width: (Dimensions.get('window').width / 7 -9) * 0.65,
     backgroundColor: '#A0A0A0',
-    height: 12,
     alignItems: 'center'
   },
   dayBox: {
@@ -141,7 +148,13 @@ export default StyleSheet.create({
   circles: {
     display: "flex",
     flexDirection: "row",
-    marginTop: 4,
+    marginTop: 3,
     marginBottom: 4
+  },
+  modalButton: {
+    color: '#A0A0A0',
+    fontSize: 20,
+    marginLeft: 30,
+    marginRight: 30,
   },
 });
