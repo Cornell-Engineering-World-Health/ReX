@@ -69,7 +69,7 @@ var data4 = [
     status: false
   },
   { title: 'Eashan 30mg', time: '12:50PM', status: false },
-  { title: 'Bracy 3410mg', time: '1:25PM', status: false },
+  { title: 'Bracy 100mg', time: '1:25PM', status: false },
   { title: 'Katy 2000mg', time: '2:50PM', status: false }
 ];
 

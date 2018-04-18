@@ -95,7 +95,7 @@ class Card extends PureComponent {
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.object,
+    cardData: PropTypes.obj,
     setParentState: PropTypes.func,
     data: PropTypes.array,
     status: PropTypes.array
@@ -165,7 +165,7 @@ class Card extends PureComponent {
             uncheckedIcon="circle-o"
             checked={this.state.status[index]}
             containerStyle={styles.check}
-            size={25}
+            size="25"
             title={i.title}
             checkedColor="#63f3c9"
             textStyle={styles.noteText}
@@ -225,13 +225,6 @@ class Card extends PureComponent {
                       />
                     </View>
                   </TouchableOpacity>
-
-                  <View
-                    style={{ marginTop: 15 }}
-                    onLayout={this._setMaxHeight.bind(this)}
-                  >
-                    {this.makePills(this.props.data)}
-                  </View>
                 </View>
                 <View
                   style={{ marginTop: 15 }}
