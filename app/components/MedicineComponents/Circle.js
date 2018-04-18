@@ -6,6 +6,9 @@ import constants from '../Resources/constants'
 import MedicineCard from '../Card/MedicineCard'
 import PillCard from '../Card/PillCard'
 import { LinearGradient } from 'expo';
+import Modal from "react-native-modal";
+import LogFormScreen from "../screens/LogFormScreen"
+import Database from '../screens/Database'
 
 class Circle extends Component {
   static propTypes = {
@@ -22,20 +25,26 @@ class Circle extends Component {
         colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
         innerColors:['#85ada015','#ffffff','#85ada015','#ffffff', '#85ada015','#ffffff', '#85ada015','#ffffff'],
         amData : this.props.amData,
-        hour: (date.getHours()) + (date.getMinutes()/60) + (date.getSeconds() / 3600)
+        hour: (date.getHours()) + (date.getMinutes()/60) + (date.getSeconds() / 3600),
+        isModalVisible: false
     }
 }
     Radians = (degrees) => {
         return degrees * Math.PI / 180;
     };
-    
+
+    toggleModal = () => {
+      console.log('hereeee')
+      this.setState({ isModalVisible: !this.state.isModalVisible })
+    };
+
 
   renderPicker() {
       console.log(this.state.hour)
       var tempHour = Math.round(this.state.hour * 2) / 2
       var degrees = (tempHour % 12) * 15
       console.log(degrees)
-    
+
       var translateX = 150.5 * Math.sin(this.Radians(degrees ))
       var translateY = 150.5 - (150.5 * Math.cos(this.Radians(degrees )))
 
@@ -94,11 +103,11 @@ class Circle extends Component {
         </Text>
         <Text style = {styles.headerText2}>
             March 12
-        </Text> */}
-        
-        <TouchableOpacity 
+        </Text>*/
+      }
+        <TouchableOpacity
         style = {styles.button}
-        onPress = {console.log("pressed")}
+        onPress = {this.toggleModal}
         >
         <Image style={styles.image} source = {require('../Resources/icons8-plus-math-50.png')}/>
         </TouchableOpacity>
@@ -483,7 +492,12 @@ class Circle extends Component {
 />
 </View>
 
-</View>
+        <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
+           <LogFormScreen
+              log_type={4}
+              on_finish={this.toggleModal}/>
+        </Modal>
+        </View>
 
     )
   }
