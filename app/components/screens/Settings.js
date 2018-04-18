@@ -55,7 +55,9 @@ export default class Settings extends Component {
       modalID: '',
       icon: 0,
       email: 'navin@gmail.com',
-      choosingAvatar: false
+      choosingAvatar: false,
+      touchID: false,
+      quickLog: false
     };
     this.setDate = this.setDate.bind(this);
 
@@ -94,7 +96,11 @@ export default class Settings extends Component {
     if (!this.state.choosingAvatar) {
       return (
         <View style={styles.profileHeader}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ choosingAvatar: true });
+            }}
+          >
             <Image
               style={styles.profileImageStyle}
               source={prof_icons[this.state.icon]}
@@ -207,11 +213,30 @@ export default class Settings extends Component {
               title="Quick Log"
               hasSwitch={true}
               hasNavArrow={false}
-              switchState={this.state.switchValue}
-              switchOnValueChange={this.onValueChange}
+              switchState={this.state.quickLog}
+              switchOnValueChange={() => {
+                this.setState({ quickLog: !this.state.quickLog });
+              }}
               titleInfoStyle={styles.titleInfoStyle}
             />
-
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.security}
+                />
+              }
+              title="Use Touch ID"
+              hasSwitch={true}
+              hasNavArrow={false}
+              switchState={this.state.touchID}
+              switchOnValueChange={() => {
+                this.setState({ touchID: !this.state.touchID });
+              }}
+              titleInfoStyle={styles.titleInfoStyle}
+            />
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               title="Contact"

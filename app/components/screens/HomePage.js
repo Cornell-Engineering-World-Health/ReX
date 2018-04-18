@@ -243,7 +243,6 @@ class Home extends React.Component {
       this.state.evening,
       this.state.night
     ];
-
     for (let y = 0; y < medicineArray.length; y++) {
       for (let x = 0; x < medicineArray[y].length; x++) {
         if (!medicineArray[y][x].completed) {
@@ -305,7 +304,7 @@ class Home extends React.Component {
     }
 
     return (
-      <ImageBackground style={{ flex: 1 }}>
+      <ImageBackground style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>
