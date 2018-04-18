@@ -47,8 +47,9 @@ export function cancelMassNotifications(notificationIDS) {
     Notification id (string?) and date the notification will be sent (date object)
     will be passed in as parameters. This notification id can be used to cancel
     this notification in the future.
+
 */
-export function setNotification(t, b, date, callBack) {
+function setNotification(t, b, date, callBack) {
   d = {
     title: t,
     body: b
@@ -69,7 +70,7 @@ export function setNotification(t, b, date, callBack) {
     schedulingOptions
   );
   p.then(id => {
-    callBack(id, date);
+    callBack(id, date, extraData);
   });
 }
 
@@ -93,6 +94,8 @@ callBack: function to be called after the notification is set.
   Object {
   id: string
   date: dateObject
+  title: t,
+  body: b, 
 }
 
 
@@ -142,7 +145,7 @@ export function setMassNotification(
       minutes
     );
     setNotification(t, b, tempDateWithTime, (i, d) => {
-      let temp = { id: i, date: d };
+      let temp = { id: i, date: d, title: t, body: b };
       id_bundle.push(temp);
       callBack(id_bundle);
     });
