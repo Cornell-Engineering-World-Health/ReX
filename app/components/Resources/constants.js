@@ -35,7 +35,12 @@ export const IMAGES = {
   scale: require('../Resources/Images/scale.png'),
   settings: require('../Resources/Images/settings.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
-  expand: require('../Resources/Images/expand.png')
+  expand: require('../Resources/Images/expand.png'),
+  tealGradient: require('../Resources/Images/tealGradient.jpg'),
+  blueGradient: require('../Resources/Images/blueGradient.jpg'),
+  blueGradient2: require('../Resources/Images/blueGradient2.jpg'),
+  darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
+  darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg')
 };
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
