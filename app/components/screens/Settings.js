@@ -40,6 +40,8 @@ export default class Settings extends Component{
         this.setDate = this.setDate.bind(this);
         
         pullSettingsFromDatabase((data) => {
+            console.log(data.birthday);
+            console.log(new Date(data.birthday).toString());
             this.setState({
                 birthday: new Date(data.birthday),
                 weight: data.weight,
@@ -50,6 +52,7 @@ export default class Settings extends Component{
                 icon: data.icon
             })
         })
+        
         
     }
     
