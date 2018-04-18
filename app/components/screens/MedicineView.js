@@ -7,8 +7,8 @@ import { LinearGradient } from 'expo';
 
 var data1 = [{'title': 'Tylenol 20mg', 'time': '12:20PM',
   'status': false}, {'title': 'Motrin 30mg', 'time': '12:50PM', 'status': false},
-  {'title': 'Ibuprofen 80mg', 'time': '2:50PM', 'status': false}, {'title': 'Mucinex 3410mg', 'time': '1:25PM', 'status': false},
-   {'title': 'Aspirin 20mg', 'time': '2:50PM', 'status': false},{'title': 'Mucinex 4410mg', 'time': '12:50PM', 'status': false}]
+  {'title': 'Ibuprofen 80mg', 'time': '2:50PM', 'status': false}, {'title': 'Humira 34mg', 'time': '1:25PM', 'status': false},
+   {'title': 'Aspirin 20mg', 'time': '2:50PM', 'status': false},{'title': 'Humira 44mg', 'time': '12:50PM', 'status': false}]
 var data2 = [{'title': 'Tylenol 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Motrin 30mg', 'time': '12:50PM', 'status': false},{'title': 'Tylenol 20mg', 'time': '12:20PM',
          'status': false},{'title': 'Tylenol 20mg', 'time': '12:20PM',
@@ -19,7 +19,7 @@ var data3 = [{'title': 'Tylenol 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Motrin 30mg', 'time': '12:50PM', 'status': false}]
 var data4 = [{'title': 'Tylenol 20mg', 'time': '12:20PM',
          'status': false}, {'title': 'Advil 30mg', 'time': '12:50PM', 'status': false},
-         {'title': 'Mucinex 100mg', 'time': '1:25PM', 'status': false}, {'title': 'Aspirin 30mg', 'time': '2:50PM', 'status': false}]
+         {'title': 'Humira 100mg', 'time': '1:25PM', 'status': false}, {'title': 'Aspirin 30mg', 'time': '2:50PM', 'status': false}]
          
 
 class CoolerMedicineView extends React.Component {

@@ -278,7 +278,7 @@ class Calendar extends Component {
             onMomentumScrollEnd={() => {this._scrollFinished()}}
           />
         </View>
-        <View style={{ flex: 1, height: 800 }}>
+        <View style={{ flex: 1 }}>
           <Agenda
             agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}
