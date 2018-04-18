@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { PieChart } from 'react-native-svg-charts'
-import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from 'react-native'
+import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, Dimensions} from 'react-native'
 import React, { Component } from 'react'
 import constants from '../Resources/constants'
 import MedicineCard from '../Card/MedicineCard'
@@ -88,42 +88,45 @@ class Circle extends Component {
 
     return (
         <View flex = {1}>
-        <View style = {styles.header}>
-        <Text style = {styles.headerText}>
+        {/* <View style = {styles.header}> */}
+        {/* <Text style = {styles.headerText}>
             Monday
         </Text>
         <Text style = {styles.headerText2}>
             March 12
-        </Text>
+        </Text> */}
         
         <TouchableOpacity 
         style = {styles.button}
         onPress = {console.log("pressed")}
         >
-         <Image style={styles.image} source = {require('../Resources/icons8-add.png')}/>
+        <Image style={styles.image} source = {require('../Resources/icons8-plus-math-50.png')}/>
         </TouchableOpacity>
-        </View>
-        <View style = {styles.pie}>
+        <View >
+        <View style = {{ top: Dimensions.get('window').height / 3.5, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style = {styles.pie} />
         <PieChart
-            paddingBottom = {150}
+            // paddingBottom = {150}
             sort = {(a,b) => 0 }
             padAngle = {0}
             innerRadius= {"83%"}
-            style={ { position: 'absolute', top: 20, left: 20, width: 270, height: 270} }
+            // style = {{ alignItems: 'center' }}
+            style={ { position: 'absolute', width: Dimensions.get('window').width / 1.5, height: Dimensions.get('window').width / 1.5} }
             data={ pieData }
         />
         <PieChart
-            paddingBottom = {150}
+            // paddingBottom = {150}
             sort = {(a,b) => 0 }
             padAngle = {0}
             innerRadius= {"88%"}
-            style={ {  position: 'absolute', top: 44, left: 44, width: 222, height: 222} }
+            style={ { position: 'absolute', width: Dimensions.get('window').width / 1.75, height: Dimensions.get('window').width / 1.75} }
             data={ innerPieData }
         />
-        <View style = {styles.hourHand} />
+        {/* <View style = {styles.hourHand} />
         <View style = {styles.minuteHand} />
-        <View style = {styles.circleHand} />
-        {this.renderPicker()}
+        <View style = {styles.circleHand} /> */}
+        </View>
+        {/* {this.renderPicker()} */}
         <View style= {styles.six} />
 
 <View style = {[styles.twelve, {transform:[
@@ -478,9 +481,9 @@ class Circle extends Component {
 {translateX:-149},
 {rotate: ("84deg")}]}]}
 />
+</View>
 
-        </View>
-        </View>
+</View>
 
     )
   }
@@ -550,27 +553,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'grey'
     },
     circle: {
-      position: 'absolute',
-      height: 320,
-      width: 320,
-      top: 110,
-      left: 50,
-      borderRadius: 160,
+      position: 'relative',
+      height: Dimensions.get('window').width / 1.5,
+      width: Dimensions.get('window').width / 1.5,
+      top: Dimensions.get('window').height / 3,
+      justifyContent: 'center',
+      borderRadius: Dimensions.get('window').width / 3,
       borderColor: '#DAE8F6',
       borderWidth: 5,
     },
     pie: {
-      height: 320,
-      width: 320,
-      top: 50,
-      left: 50,
-      borderRadius: 160,
-      borderColor: '#ffffff',
-      borderWidth: 5,
+      position: 'absolute',
+      height: Dimensions.get('window').width / 1.3,
+      width: Dimensions.get('window').width / 1.3,
+      alignItems: 'center',
+      borderRadius: Dimensions.get('window').width / 2.6,
+      backgroundColor: '#ffffff',
       shadowOffset:{  width: 0,  height: 0,  },
       shadowColor: 'grey',
       shadowRadius: 10,
       shadowOpacity: 0.6,
+      elevation: 1,
     },
     hourHand: {
       position: 'absolute',
@@ -601,45 +604,23 @@ const styles = StyleSheet.create({
     },
     twelve: {
       position: 'absolute',
-      top:0,
-      right:154.5,
+      top: Dimensions.get('window').height / 13.4,
+      left: Dimensions.get('window').width / 2,
       height: 13,
       width: 3,
       backgroundColor: 'black',
       opacity: .1,
       borderRadius: 30,
-
-    },
-    three:{
-        position: 'absolute',
-        top:158,
-        right:295,
-        height: 3,
-        width: 13,
-        backgroundColor: 'black',
-        opacity: .1,
-        borderRadius: 30,
     },
     six:{
         position: 'absolute',
-        top:298.5,
-        right:154.5,
+        top:Dimensions.get('window').height / 2.08,
+        left: Dimensions.get('window').width / 2,
         height: 13,
         width: 3,
         backgroundColor: 'black',
         opacity: .1,
         borderRadius: 30,
-    },
-    nine:{
-        position: 'absolute',
-        top:158,
-        left:295,
-        height: 3,
-        width: 13,
-        backgroundColor: 'black',
-        opacity: .1,
-        borderRadius: 30,
-
     },
     picker:{
         position: 'absolute',
@@ -652,9 +633,9 @@ const styles = StyleSheet.create({
     },
     button: {
         position: 'absolute',
-        padding:50,
-        right:10,
-        top:9,
+        padding: 50,
+        right: Dimensions.get('window').width / 20,
+        top: Dimensions.get('window').height / 20,
       },
     image:{
         position: 'absolute',
