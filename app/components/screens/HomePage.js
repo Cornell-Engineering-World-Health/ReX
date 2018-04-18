@@ -18,11 +18,16 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
+<<<<<<< HEAD
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
   pullSettingsFromDatabase
 } from '../../databaseUtil/databaseUtil';
+=======
+import {HomeMedicineLogger} from '../HomeMedicineLogger'
+import {pullMedicineFromDatabase,pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil'
+>>>>>>> 3293813571b6524d86d2ae4304490d39432b203e
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
 
@@ -168,6 +173,7 @@ class Home extends React.Component {
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
+<<<<<<< HEAD
       name: 'Navin'
     };
 
@@ -177,6 +183,18 @@ class Home extends React.Component {
         name: data.name
       });
     });
+=======
+      name: "Navin",
+    };
+    
+    //TODO: make one function that only pulls name from database
+    pullSettingsFromDatabase((data) => {
+        this.setState({
+            name: data.name
+        })
+    })
+
+>>>>>>> 3293813571b6524d86d2ae4304490d39432b203e
   }
 
   componentWillMount() {
