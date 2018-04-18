@@ -216,9 +216,11 @@ class Calendar extends Component {
   }
 
   _enableScroll(list) {
-    list.getScrollResponder().setNativeProps({
-      scrollEnabled: true
-    })
+    if(list){
+      list.getScrollResponder().setNativeProps({
+        scrollEnabled: true
+      })
+    }
   }
 
   _scrollFinished(){
