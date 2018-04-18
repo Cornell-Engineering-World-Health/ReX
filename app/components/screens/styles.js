@@ -1,10 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import {COLOR} from '../Resources/constants';
+import { COLOR } from '../Resources/constants';
 
 const width = Dimensions.get('window').width;
-const circleWidth = width*.8;
+const circleWidth = width * 0.8;
 const height = Dimensions.get('window').height;
-
 
 export default StyleSheet.create({
   topInfo: {
@@ -27,16 +26,16 @@ export default StyleSheet.create({
   },
   header: {
     marginTop: 20,
-    padding: 20,
+    padding: 20
   },
   welcomeText: {
     color: COLOR.PrimaryGray,
-    fontSize: 30,
+    fontSize: 30
   },
   nameText: {
-    color: 'black',
+    color: 'white',
     fontSize: 28,
-    fontWeight: '800',
+    fontWeight: '800'
   },
   subHeader: {
     marginLeft: 20,
@@ -53,6 +52,5 @@ export default StyleSheet.create({
   imageStyle: {
     width: 100,
     height: 100
-  },
-
+  }
 });
