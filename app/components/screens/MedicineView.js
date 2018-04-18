@@ -45,7 +45,6 @@ class CoolerMedicineView extends React.Component {
     this.state = {
       meds : meds,
       amData : [ 0, 100, 0, 100, 0, 100, 0, 100],
-      isModalVisible: false
     };
   }
 
@@ -67,9 +66,6 @@ class CoolerMedicineView extends React.Component {
       newData[time*2+1] = 100 - newData[time*2];
       this.setState ({amData : newData})
   }
-
-  toggleModal = () =>
-  this.setState({ isModalVisible: !this.state.isModalVisible });
 
   render() {
     return (
@@ -122,13 +118,6 @@ class CoolerMedicineView extends React.Component {
 
   }}
   const styles = StyleSheet.create({
-
-    modal:{
-      flex:1,
-      justifyContent: 'center',
-      backgroundColor: 'white',
-      borderRadius: 20,
-    }
     
   })
 
