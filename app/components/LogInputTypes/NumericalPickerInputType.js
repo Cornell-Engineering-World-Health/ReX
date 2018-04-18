@@ -15,7 +15,7 @@ export default class NumericalPickerInputType extends React.Component {
     for (let i = props.min; i <= props.max; i++) {
       this.state.picker_values.push(i + ' ' + props.unit)
     }
-    this.picker = [];
+    this.picker = []; //reference to inner picker to get value
   }
 
   handleChange (val) {

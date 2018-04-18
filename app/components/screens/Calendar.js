@@ -36,9 +36,11 @@ class Calendar extends Component {
       currentDate: new Date(),
     };
     this.mutexLock = 0
-    this.calendars = []; // references to all calendar components
+    this.calendars = []; // references to all SLIDEENTRY components which contain calendar components. indexed by KEY
     this.currSymptomDisplay; //most recent sympotom type bar graphs shown.
     this.currKey; //current KEY that the calendar is displaying
+    this.currIndex; //current INDEX that the calendar is displaying
+    this.currCalendar; //current Calendar component being displayed
     this._updateAgenda();
   }
 
@@ -108,28 +110,30 @@ class Calendar extends Component {
       data={
         new Date(new Date().getFullYear(), new Date().getMonth() + item.key, 0)
       }
-      pickerHandler={this._pickerHandler}
+      pickerHandler={this._pickerHandler.bind(this)}
       onPressMonth={this._onPressMonth}
     />
   )};
 
-  _loadMore = () => {
+  _loadMore = (num, callback) => {
+    if(!num) num = 20
     console.log('loadingMore')
     newData = [];
     current = this.state.last;
-    for (i = 1; i < 20; i++) {
+    for (i = 1; i < num; i++) {
       newData.push({ key: i + current });
     }
     this.setState({
       data: [...this.state.data, ...newData],
-      last: current + 19
+      last: current + num-1
+    }, function(){
+      if(callback){callback()}
     });
   };
 
   _onViewableChange = ({viewableItems, changed}) => {
     if(viewableItems.length > 0){
       let newKey = viewableItems[0].key
-
       /**
       if(this.currKey && newKey > this.currKey){//swipe to next
       } else if(this.currKey && newKey < this.currKey){//swipe to prev
@@ -139,6 +143,8 @@ class Calendar extends Component {
         this.calendars[newKey].calendar.updateVisualization(this.currSymptomDisplay);
       }
       this.currKey = viewableItems[0].key
+      this.currIndex = viewableItems[0].index
+      this.currCalendar = this.calendars[viewableItems[0].key]
     }
     if (viewableItems.length > 0 && this.mutexLock == 0){
       if (viewableItems[viewableItems.length - 1].index == 0){
@@ -190,8 +196,21 @@ class Calendar extends Component {
 
   }
 
-  _pickerHandler(month){
+  _pickerHandler(month, year){
+    let thisMonth = this.currCalendar.calendar.props.currMonth.getMonth()+1
+    let thisYear = this.currCalendar.calendar.props.currMonth.getFullYear()
 
+    let newIdx = this.currIndex + (year - thisYear)*12 + (month - thisMonth)
+    try{
+      this.flatListRef.scrollToIndex({animated:false, index:newIdx})
+    }catch(err){
+      if(err.name == 'Invariant Violation'){
+          thisRef = this;
+          this._loadMore(newIdx - this.state.last, function(){
+            thisRef.flatListRef.scrollToIndex({animated:false, index:newIdx})
+          });
+      }
+    }
   }
 
   render() {

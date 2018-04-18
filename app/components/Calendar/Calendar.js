@@ -12,7 +12,7 @@ import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
 import PickerInputType from '../LogInputTypes/PickerInputType'
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 const { width } = Dimensions.get("window");
-
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 class Calendar extends PureComponent {
     static propTypes = {
       currMonth: PropTypes.object,
@@ -318,8 +318,7 @@ class Calendar extends PureComponent {
         };
 
     renderMonth() {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return months[this.today.getMonth()];
+        return monthNames[this.today.getMonth()];
     }
 
     renderYear() {
@@ -438,7 +437,6 @@ class Calendar extends PureComponent {
     }
 
     render() {
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return (
             <View style = {{flex: 1}}>
               <View style= {styles.head}>
@@ -490,8 +488,8 @@ class Calendar extends PureComponent {
                       title_text_style={{
                         color: 'white'
                       }}
-                      value={months[this.props.currMonth.getMonth()]}
-                      picker_values={months}
+                      value={monthNames[this.props.currMonth.getMonth()]}
+                      picker_values={monthNames}
                       title_text={''}
                       handleChange={() => {}}
                     />
@@ -518,8 +516,7 @@ class Calendar extends PureComponent {
                   >
                     <TouchableOpacity
                       onPress={() => {
-                        console.log(this.yearPicker.picker.state.value, this.monthPicker.state.value)
-                        this.props.pickerHandler();
+                        this.props.pickerHandler(monthNames.indexOf(this.monthPicker.state.value)+1, this.yearPicker.picker.state.value);
                         this.setState({
                           modalVisible: false,
                         })
