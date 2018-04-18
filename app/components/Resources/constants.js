@@ -52,7 +52,8 @@ export const IMAGES = {
   blueGradient: require('../Resources/Images/blueGradient.jpg'),
   blueGradient2: require('../Resources/Images/blueGradient2.jpg'),
   darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
-  darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg')
+  darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
+  security: require('../Resources/Images/icons8-protect-40.png')
 };
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
