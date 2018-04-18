@@ -12,8 +12,11 @@ import {
   TextInput,
   TouchableOpacity,
   DatePickerIOS,
-  Picker
+  Picker,
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
+import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import Modal from 'react-native-modal';
 import moment from 'moment';
@@ -21,7 +24,7 @@ import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
 } from '../../databaseUtil/databaseUtil';
-import { IMAGES } from '../Resources/constants';
+import { IMAGES, COLOR } from '../Resources/constants';
 
 const AVATAR_ID = 'avatarID';
 const BIRTHDAY_ID = 'birthdayID';
@@ -29,6 +32,13 @@ const HEIGHT_ID = 'heightID';
 const WEIGHT_ID = 'weightID';
 const EDIT_ID = 'editID';
 
+const prof_icons = [
+  IMAGES.iconWolf,
+  IMAGES.iconZebra,
+  IMAGES.iconJellyfish,
+  IMAGES.iconOwl,
+  IMAGES.iconHamster
+];
 export default class Settings extends Component {
   constructor(props) {
     super(props);
@@ -38,16 +48,14 @@ export default class Settings extends Component {
       birthday: new Date(),
       name: 'Select Edit',
       isModalVisible: false,
-      weight: 'Select',
+      weight: '120',
       height_feet: '5',
       height_inches: '8',
       height: 'Select',
-      isModalVisible_birthday: false,
-      isModalVisible_height: false,
-      isModalVisible_weight: false,
-      isModalVisible_avatar: false,
       modalID: '',
-      icon: 0
+      icon: 0,
+      email: 'navin@gmail.com',
+      choosingAvatar: false
     };
     this.setDate = this.setDate.bind(this);
 
@@ -82,16 +90,63 @@ export default class Settings extends Component {
       height: this.state.height_feet + "' " + this.state.height_inches + '" '
     });
 
+  _renderHeader() {
+    if (!this.state.choosingAvatar) {
+      return (
+        <View style={styles.profileHeader}>
+          <TouchableOpacity>
+            <Image
+              style={styles.profileImageStyle}
+              source={prof_icons[this.state.icon]}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ choosingAvatar: true });
+            }}
+          >
+            <Text style={styles.profileHeaderSubText}>Change Avatar</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ height: 150, alignItems: 'center' }}>
+          <View style={styles.profileHeader}>
+            <FlatList
+              horizontal={true}
+              data={prof_icons}
+              keyExtractor={item => item.index}
+              renderItem={item => {
+                var ind = item.index;
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({
+                        choosingAvatar: false,
+                        icon: ind
+                      });
+                    }}
+                  >
+                    <Image
+                      style={styles.profileImageStyle}
+                      source={prof_icons[item.index]}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          <Text style={styles.profileHeaderSubText}>Pick your Avatar!</Text>
+        </View>
+      );
+    }
+  }
+
   render() {
     var bgColor = '#DCE3F4';
-    var prof_icons = [
-      IMAGES.iconWolf,
-      IMAGES.iconZebra,
-      IMAGES.iconJellyfish,
-      IMAGES.iconOwl,
-      IMAGES.iconHamster
-    ];
 
+    let header = this._renderHeader();
     return (
       <View style={styles.container}>
         <View
@@ -103,11 +158,12 @@ export default class Settings extends Component {
         >
           <Text
             style={{
-              alignSelf: 'center',
-              marginTop: 30,
+              alignSelf: 'left',
+              marginTop: 50,
+              marginLeft: 20,
               marginBottom: 10,
               fontWeight: 'bold',
-              fontSize: 16
+              fontSize: 35
             }}
           >
             Settings
@@ -120,58 +176,27 @@ export default class Settings extends Component {
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
+                  height={100}
+                  width={100}
+                  resizeMode="cover"
                   source={prof_icons[this.state.icon]}
                 />
               }
               hasNavArrow={false}
               title={this.state.name}
-              titleInfo="Edit"
+              titleInfo={'Edit' + '\n' + 'Profile'}
+              titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
               onPress={() => {
                 this.setState({ modalID: EDIT_ID });
               }}
             />
 
-            <SettingsList.Item
-              title="Birthday"
-              hasNavArrow={false}
-              onPress={() => {
-                this.setState({ modalID: BIRTHDAY_ID });
-              }}
-              switchState={this.state.switchValue}
-              titleInfo={moment(this.state.birthday).format('MMM D, YYYY')}
-              switchOnValueChange={this.onValueChange}
-              titleInfoStyle={styles.titleInfoStyle}
-            />
-            <SettingsList.Item
-              title="Height"
-              onPress={() => {
-                this.setState({ modalID: HEIGHT_ID });
-              }}
-              hasNavArrow={false}
-              titleInfo={this.state.height}
-              switchState={this.state.switchValue}
-              switchOnValueChange={this.onValueChange}
-              titleInfoStyle={styles.titleInfoStyle}
-            />
-            <SettingsList.Item
-              title="Weight"
-              hasNavArrow={false}
-              onPress={() => {
-                this.setState({ modalID: WEIGHT_ID });
-              }}
-              titleInfo={this.state.weight}
-              switchState={this.state.switchValue}
-              switchOnValueChange={this.onValueChange}
-              titleInfoStyle={styles.titleInfoStyle}
-            />
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={60}
+                  height={50}
                   resizeMode="contain"
                   source={IMAGES.quickLog}
                 />
@@ -190,7 +215,7 @@ export default class Settings extends Component {
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={60}
+                  height={50}
                   resizeMode="contain"
                   source={IMAGES.addressBook}
                 />
@@ -200,17 +225,20 @@ export default class Settings extends Component {
               icon={
                 <Image
                   style={styles.imageStyle}
-                  height={60}
+                  height={50}
                   resizeMode="contain"
                   source={IMAGES.faq}
                 />
               }
-              title="Quick Log"
               title="FAQ"
               onPress={() => Alert.alert('Short FAQ section?')}
             />
           </SettingsList>
         </View>
+        <Modal
+          isVisible={this.state.modalID == 'editProfile'}
+          style={styles.profileContainerStyles}
+        />
         <Modal
           isVisible={this.state.modalID == BIRTHDAY_ID}
           style={styles.modal}
@@ -311,12 +339,16 @@ export default class Settings extends Component {
           </View>
         </Modal>
 
-        <Modal isVisible={this.state.modalID == EDIT_ID} style={styles.modal}>
+        <Modal isVisible={this.state.modalID == 'remove'} style={styles.modal}>
           <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
             <Image source={prof_icons[this.state.icon]} />
-            <TouchableOpacity onPress={this.toggleModal_avatar}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+            >
               <Text style={styles.placeholder}>Edit Avatar</Text>
             </TouchableOpacity>
             <TextInput
@@ -338,44 +370,50 @@ export default class Settings extends Component {
               <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
           </View>
-          <Modal
-            isVisible={this.state.modalID == AVATAR_ID}
-            style={styles.modal}
-          >
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <View flexDirection="row">
-                <TouchableOpacity onPress={() => this.handle_icon_press(1)}>
-                  <Image style={styles.avatar} source={prof_icons[1]} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.handle_icon_press(0)}>
-                  <Image style={styles.avatar} source={prof_icons[0]} />
-                </TouchableOpacity>
-              </View>
-              <View flexDirection="row">
-                <TouchableOpacity onPress={() => this.handle_icon_press(2)}>
-                  <Image style={styles.avatar} source={prof_icons[2]} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.handle_icon_press(3)}>
-                  <Image style={styles.avatar} source={prof_icons[3]} />
-                </TouchableOpacity>
-              </View>
-              <View flexDirection="row">
-                <TouchableOpacity onPress={() => this.handle_icon_press(4)}>
-                  <Image style={styles.avatar} source={prof_icons[4]} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.handle_icon_press(5)}>
-                  <Image style={styles.avatar} source={prof_icons[5]} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
         </Modal>
+        <KeyboardAvoidingView>
+          <Modal isVisible={this.state.modalID == EDIT_ID} style={styles.modal}>
+            <ScrollView>
+              {header}
+              <View style={styles.profileBody}>
+                <TextField
+                  label={'Name'}
+                  value={this.state.name}
+                  onChangeText={name => this.setState({ name })}
+                />
+                <TextField
+                  label={'Email'}
+                  value={this.state.email}
+                  onChangeText={email => {
+                    this.setState({ email: email });
+                  }}
+                />
+                <TextField
+                  label={'Birthday'}
+                  value={this.state.birthday.toLocaleDateString()}
+                />
+                <TextField
+                  label={'Height'}
+                  value={
+                    this.state.height_feet +
+                    ' ft ' +
+                    this.state.height_inches +
+                    ' in'
+                  }
+                />
+                <TextField label={'Weight'} value={this.state.weight} />
+                <View style={{ padding: 20 }}>
+                  <TouchableOpacity
+                    style={styles.submit_button}
+                    onPress={() => this.setState({ modalID: '' })}
+                  >
+                    <Text style={styles.submit_text}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+          </Modal>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -385,6 +423,18 @@ export default class Settings extends Component {
 }
 
 const styles = StyleSheet.create({
+  profileHeader: {
+    marginTop: 25,
+    backgroundColor: '#fffff',
+    alignItems: 'center'
+  },
+  profileHeaderSubText: {
+    fontSize: 15,
+    color: '#71d7fc'
+  },
+  profileBody: {
+    padding: 25
+  },
   container: {
     backgroundColor: '#EFEFF4',
     flex: 1
@@ -413,9 +463,8 @@ const styles = StyleSheet.create({
     color: '#8e8e93'
   },
   modal: {
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    borderRadius: 20
+    borderRadius: 20,
+    backgroundColor: 'white'
   },
   contain: {
     flex: 1,
@@ -437,5 +486,91 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#aedfe1'
+  },
+  profileContainerStyles: {
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  submit_text: {
+    color: 'white',
+    fontSize: 25
+  },
+  submit_button: {
+    alignItems: 'center',
+    backgroundColor: '#bf5252',
+    padding: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#bf5252'
   }
 });
+/*
+<SettingsList.Item
+  title="Birthday"
+  hasNavArrow={false}
+  onPress={() => {
+    this.setState({ modalID: BIRTHDAY_ID });
+  }}
+  switchState={this.state.switchValue}
+  titleInfo={moment(this.state.birthday).format('MMM D, YYYY')}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+<SettingsList.Item
+  title="Height"
+  onPress={() => {
+    this.setState({ modalID: HEIGHT_ID });
+  }}
+  hasNavArrow={false}
+  titleInfo={this.state.height}
+  switchState={this.state.switchValue}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+<SettingsList.Item
+  title="Weight"
+  hasNavArrow={false}
+  onPress={() => {
+    this.setState({ modalID: WEIGHT_ID });
+  }}
+  titleInfo={this.state.weight}
+  switchState={this.state.switchValue}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+
+
+
+<View
+  style={{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}
+>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(1)}>
+      <Image style={styles.avatar} source={prof_icons[1]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(0)}>
+      <Image style={styles.avatar} source={prof_icons[0]} />
+    </TouchableOpacity>
+  </View>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(2)}>
+      <Image style={styles.avatar} source={prof_icons[2]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(3)}>
+      <Image style={styles.avatar} source={prof_icons[3]} />
+    </TouchableOpacity>
+  </View>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(4)}>
+      <Image style={styles.avatar} source={prof_icons[4]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(5)}>
+      <Image style={styles.avatar} source={prof_icons[5]} />
+    </TouchableOpacity>
+  </View>
+</View>
+*/
