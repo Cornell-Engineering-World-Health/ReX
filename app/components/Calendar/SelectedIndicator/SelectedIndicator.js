@@ -3,6 +3,8 @@ import { Text, View, ImageBackground, TouchableHighlight, Dimensions } from 'rea
 import { StyleSheet } from 'react-native';
 import {COLOR} from '../../Resources/constants';
 const width = Dimensions.get('window').width / 7 -7;
+const height = Dimensions.get('window').height / 2.5 / 6;
+
 const SelectedIndicator = () => {
 
   return (
@@ -19,7 +21,7 @@ const whitespace = (Dimensions.get('window').width / 7 -9) * 0.65;
 const styles = StyleSheet.create({
   box: {
     width: width,
-    height: 43,
+    height: height,
     position: 'absolute',
     borderWidth: 3,
     alignItems: 'center',
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
   whiteSide: {
     position: 'absolute',
     width: 3,
-    height: 43 - (width - whitespace),
+    height: height - (width - whitespace),
     backgroundColor: 'white',
     top: (width-whitespace)/2 - 3,
   },
