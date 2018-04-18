@@ -149,10 +149,8 @@ export default (constants = {
     image: IMAGES.default,
     title: 'Default',
     backgroundColor: '#ffffff',
-    translucentColor: '#ffffff80',
-  },
-
-
+    translucentColor: '#ffffff80'
+  }
 });
 let types = [
   constants.BLURRED_VISION,
@@ -186,14 +184,13 @@ export function getCardData(title) {
   return constants.DEFAULT;
 }
 
-
-export function getSource (title) {
+export function getSource(title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
       return types[x].image;
     }
   }
-  return DEFAULT.image;
+  return constants.DEFAULT.image;
 }
 
 export function getColor(type) {
@@ -202,7 +199,7 @@ export function getColor(type) {
       return types[x].backgroundColor;
     }
   }
-  return DEFAULT.backgroundColor;
+  return constants.DEFAULT.backgroundColor;
 }
 
 export function getTranslucentColor(type) {
@@ -211,5 +208,5 @@ export function getTranslucentColor(type) {
       return types[x].translucentColor;
     }
   }
-  return DEFAULT.translucentColor;
+  return constants.DEFAULT.translucentColor;
 }
