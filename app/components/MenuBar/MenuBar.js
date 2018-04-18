@@ -16,6 +16,7 @@ import FlatListCard from '../screens/FlatListCard'
 import Calendar from '../screens/Calendar'
 import ChooseLogScreen from '../screens/Log'
 import { IMAGES } from '../Resources/constants'
+import PushController from '../PushController/PushController'
 
 const MEDICINE_PAGE = 'medicine'
 const SETTINGS_PAGE = 'settings'
@@ -110,8 +111,7 @@ class MenuBar extends React.Component {
         return <Settings />
         break
       case SYMPTOM_LOG_CHOOSER:
-        return <ChooseLogScreen
-          onLog={this.onLog.bind(this)} />
+        return <ChooseLogScreen onLog={this.onLog.bind(this)} />
         break
     }
   }
@@ -123,7 +123,8 @@ class MenuBar extends React.Component {
       <View style={styles.container}>
         <StatusBar barStyle='dark-content' />
         {page}
-        <View style={styles.addButton}
+        <View
+          style={styles.addButton}
           onPress={() => {
             this.setState({
               selectedID: SYMPTOM_LOG_CHOOSER
@@ -242,8 +243,10 @@ class MenuBar extends React.Component {
             }}
           />
         </View>
+        <PushController />
       </View>
     )
   }
 }
+
 export default MenuBar

@@ -90,6 +90,7 @@ export default class ChooseLogScreen extends React.Component {
       <ScrollView>
       <View style={styles.log_container}>
       {this.state.log_types.map((prop, key) => {
+        if(this.state.event_ids[key] != 4) {
         return (
           <TouchableOpacity
             key = {key}
@@ -100,6 +101,7 @@ export default class ChooseLogScreen extends React.Component {
               style={styles.log_button_img}
               source={getSource(prop)} />
           </TouchableOpacity>)
+        }
       })}
         </View>
       </ScrollView>

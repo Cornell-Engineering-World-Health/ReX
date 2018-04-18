@@ -18,7 +18,16 @@ export default class ChooseLogScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    let log_type = this.props.navigation.state.params.log_type
+    var log_type = 0
+    var nav = true
+    if (this.props.log_type) {
+      log_type = this.props.log_type
+      nav = false
+    } else {
+      log_type = this.props.navigation.state.params.log_type
+    }
+    console.log('log type----')
+    console.log(log_type)
     var keysArray = []
 
     Database.transaction(tx => (tx.executeSql('SELECT fields FROM event_tbl \
@@ -54,7 +63,8 @@ export default class ChooseLogScreen extends React.Component {
     var input_types = []
 
     this.state = {
-      input_type_array: input_types
+      input_type_array: input_types,
+      nav: nav
     }
   }
 
@@ -77,8 +87,12 @@ export default class ChooseLogScreen extends React.Component {
     event_id_count++
     event_details_id_count++
 
-    this.props.navigation.state.params.onLog()
-    this.props.navigation.pop()
+    if (this.state.nav) {
+      this.props.navigation.state.params.onLog()
+      this.props.navigation.pop()
+    } else {
+      this.props.on_finish()
+    }
   }
 
   render () {
@@ -95,7 +109,7 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
                   max_val={4}
-                  value={SCALE_LABELS.indexOf(this.state.values[key])}
+                  value={parseInt(this.state.values[key])}
                   scale_labels={SCALE_LABELS}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}

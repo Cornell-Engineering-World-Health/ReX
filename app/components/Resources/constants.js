@@ -38,6 +38,11 @@ export const IMAGES = {
   expand: require('../Resources/Images/expand.png')
 }
 export const COLOR = {
+  PrimaryGray: '#b8b8b8',
+  blue: '#79ADDC',
+  purple: '#ab87b8',
+  cyan: '#7fdecb',
+  red: '#E85D75',
   summaryGray: '#b8b8b8',
   cardContainer: '#ffffff',
   cardNotes: '#808080',
@@ -93,7 +98,7 @@ export default (constants = {
     translucentColor: '#ab87b880'
   },
   DIZZINESS: {
-    image: IMAGES.intensePain,
+    image: IMAGES.neckPain,
     title: 'Dizziness',
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
@@ -176,6 +181,16 @@ Precondition: title is a string
 
 Available titles are found in the constants variable of this file.
 */
+
+export function getCardData (title) {
+  for (var x = 0; x < types.length; x++) {
+    if (title == types[x].title) {
+      return types[x]
+    }
+  }
+  return constants.DEFAULT
+}
+
 export function getSource (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
@@ -191,7 +206,7 @@ export function getColor (type) {
       return types[x].backgroundColor
     }
   }
-  return DEFAULT.backgroundColor
+  return constants.DEFAULT.backgroundColor
 }
 
 export function getTranslucentColor (type) {
@@ -200,7 +215,5 @@ export function getTranslucentColor (type) {
       return types[x].translucentColor
     }
   }
-  return DEFAULT.translucentColor
+  return constants.DEFAULT.translucentColor
 }
-
-// export {constants, getColor, getTranslucentColor};
