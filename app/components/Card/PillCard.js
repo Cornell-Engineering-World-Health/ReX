@@ -1,8 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated
+} from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
 import constants from '../Resources/constants';
 
 const styles = StyleSheet.create({
@@ -10,11 +17,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 3,
     borderColor: '#DFDFDF',
-    borderWidth : 1,
+    borderWidth: 1,
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
-    overflow:'hidden',
+    overflow: 'hidden'
   },
 
   container: {
@@ -22,16 +29,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   descriptionContainer: {
-    flexDirection : 'row',
+    flexDirection: 'row',
     flex: 1,
-    alignItems : 'flex-end'
+    alignItems: 'flex-end'
   },
   titleText: {
     fontWeight: '600',
     fontSize: 19,
-    letterSpacing: .5,
+    letterSpacing: 0.5,
     color: '#373737',
-    fontFamily: 'Chalkboard SE',
+    fontFamily: 'Chalkboard SE'
   },
   timeContainer: {
     marginTop: 1.5,
@@ -46,28 +53,27 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 0.6
   },
-  image_style :{
-    height : 20,
-    width: 20,
-
+  image_style: {
+    height: 20,
+    width: 20
   },
-  note : {
-      flexDirection:'row',
-      alignItems: 'center',
+  note: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   noteText: {
     color: '#808080',
     fontSize: 16,
     fontWeight: '400',
-    letterSpacing: 1.0,
+    letterSpacing: 1.0
   },
-  check:{
+  check: {
     backgroundColor: 'white',
     borderRadius: 0,
     borderColor: 'white',
     marginLeft: 0,
     marginRight: 0,
-    padding :0,
+    padding: 0
   },
   swipe: {
     borderRadius: 10
@@ -88,95 +94,99 @@ class Card extends PureComponent {
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.obj,
+    cardData: PropTypes.object,
     setParentState: PropTypes.func,
     data: PropTypes.array,
-    status: PropTypes.array,
+    status: PropTypes.array
   };
   constructor(props) {
     super(props);
     this.state = {
-        expanded : true,
-        //maxHeight : 0,
-        minHeight : 10,
-        animation : new Animated.Value(),
-        status : this.props.status
-    }
+      expanded: true,
+      //maxHeight : 0,
+      minHeight: 10,
+      animation: new Animated.Value(),
+      status: this.props.status
+    };
   }
 
   _handlePress = () => {
     console.log('button pressed. ');
   };
 
-  _setMaxHeight(event){
+  _setMaxHeight(event) {
     this.setState({
-        maxHeight   : event.nativeEvent.layout.height
+      maxHeight: event.nativeEvent.layout.height
     });
   }
 
-  _setMinHeight(event){
+  _setMinHeight(event) {
     this.setState({
-        minHeight   : event.nativeEvent.layout.height + 25
-    })
+      minHeight: event.nativeEvent.layout.height + 25
+    });
   }
 
-  toggle(){
+  toggle() {
     //Step 1
-    let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
-        finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+    let initialValue = this.state.expanded
+        ? this.state.maxHeight + this.state.minHeight
+        : this.state.minHeight,
+      finalValue = this.state.expanded
+        ? this.state.minHeight
+        : this.state.maxHeight + this.state.minHeight;
 
     this.setState({
-        expanded : !this.state.expanded  //Step 2
+      expanded: !this.state.expanded //Step 2
     });
 
-    this.state.animation.setValue(initialValue);  //Step 3
-    Animated.spring(     //Step 4
-        this.state.animation,
-        {
-            toValue: finalValue
-        }
-    ).start();  //Step 5
-}
+    this.state.animation.setValue(initialValue); //Step 3
+    Animated.spring(
+      //Step 4
+      this.state.animation,
+      {
+        toValue: finalValue
+      }
+    ).start(); //Step 5
+  }
 
-    _onCheck = (index) => {
-      this.props.setParentState(index)
-      this.forceUpdate()
-    }
-    
+  _onCheck = index => {
+    this.props.setParentState(index);
+    this.forceUpdate();
+  };
 
   makePills(data) {
-      return data.map((i ,index) =>{
-          return(
-              <View style = {styles.note}>
-              <CheckBox
-                onPress = {() => {this._onCheck(index)}}
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checked={this.state.status[index]}
-                containerStyle = {styles.check}
-                size = '25'
-                title = {i.title}
-                checkedColor = '#63f3c9'
-                textStyle = {styles.noteText}
-                />
-                <View flex = {1} alignItems='flex-end'>
-                    <Text style ={ styles.noteText}>
-                        {i.time}
-                    </Text>
-                </View>
-              </View>
-          )
-      })
+    return data.map((i, index) => {
+      return (
+        <View style={styles.note}>
+          <CheckBox
+            onPress={() => {
+              this._onCheck(index);
+            }}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            checked={this.state.status[index]}
+            containerStyle={styles.check}
+            size={25}
+            title={i.title}
+            checkedColor="#63f3c9"
+            textStyle={styles.noteText}
+          />
+          <View flex={1} alignItems="flex-end">
+            <Text style={styles.noteText}>{i.time}</Text>
+          </View>
+        </View>
+      );
+    });
   }
 
   render() {
     const imageContainerStyle = [styles.imageContainer];
 
     var image = constants.DEFAULT.image;
-    var time= "Morning";
+    var time = 'Morning';
 
     return (
-      <Animated.View style={[styles.wrapper, {height: this.state.animation}]}>
+      <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
         <View>
           <Swipeout
             right={this.props.buttonsRight}
@@ -192,26 +202,33 @@ class Card extends PureComponent {
               onPress={() => this.props.onPress(time)}
             >
               <View style={styles.container}>
-
-                <View style={styles.descriptionContainer} onLayout={this._setMinHeight.bind(this)}>
+                <View
+                  style={styles.descriptionContainer}
+                  onLayout={this._setMinHeight.bind(this)}
+                >
                   <View>
                     <Text style={styles.titleText}>{time}</Text>
                   </View>
-                  <View >
-                  <View marginTop = {6.5} flex = {1} marginLeft= {170} >
-                  <TouchableOpacity onPress = {this.toggle.bind(this)} >
-                    <View flexDirection = 'row' >
-                    <Text >Show Pills </Text>
-                    <Image style = {styles.image_style} source = {require('../Resources/icons8-expand-arrow-50.png') }/>
+                  <View>
+                    <View marginTop={6.5} flex={1} marginLeft={170}>
+                      <TouchableOpacity onPress={this.toggle.bind(this)}>
+                        <View flexDirection="row">
+                          <Text>Show Pills </Text>
+                          <Image
+                            style={styles.image_style}
+                            source={require('../Resources/icons8-expand-arrow-50.png')}
+                          />
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
                   </View>
-                  </View>
-                  </View>
-                  <View style = {{marginTop: 15}} onLayout =
-                  {this._setMaxHeight.bind(this)}>
-                      {this.makePills(this.props.data)}
-                  </View>
+                </View>
+                <View
+                  style={{ marginTop: 15 }}
+                  onLayout={this._setMaxHeight.bind(this)}
+                >
+                  {this.makePills(this.props.data)}
+                </View>
               </View>
             </TouchableOpacity>
           </Swipeout>
