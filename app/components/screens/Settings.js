@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet,View,Text,
+  StyleSheet,
+  View,
+  Text,
   StatusBar,
   Image,
   FlatList,
@@ -11,325 +13,585 @@ import {
   TouchableOpacity,
   DatePickerIOS,
   Picker,
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
+import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 import moment from 'moment';
-import {asyncSettingUpdate,pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil'
+import {
+  asyncSettingUpdate,
+  pullSettingsFromDatabase
+} from '../../databaseUtil/databaseUtil';
+import { IMAGES, COLOR } from '../Resources/constants';
 
-export default class Settings extends Component{
-    constructor (props){
-        super(props);
-        this.onValueChange = this.onValueChange.bind(this);
-        this.state = {
-            switchValue: false,
-            birthday:  new Date(),
-            name: 'Select Edit',
-            isModalVisible: false,
-            weight : 'Select',
-            height_feet: '5',
-            height_inches : '8',
-            height : 'Select',
-            isModalVisible_birthday : false,
-            isModalVisible_height : false,
-            isModalVisible_weight : false,
-            isModalVisible_avatar : false,
-            icon :0,
+const AVATAR_ID = 'avatarID';
+const BIRTHDAY_ID = 'birthdayID';
+const HEIGHT_ID = 'heightID';
+const WEIGHT_ID = 'weightID';
+const EDIT_ID = 'editID';
 
-        };
-        this.setDate = this.setDate.bind(this);
-        
-        pullSettingsFromDatabase((data) => {
-            this.setState({
-                birthday: new Date(data.birthday),
-                weight: data.weight,
-                name: data.name,
-                height_feet: data.height_feet,
-                height_inches: data.height_inches,
-                height: data.height_feet + "\' "+ data.height_inches + "\" ",
-                icon: data.icon
-            })
-        })
-        
-    }
-    
-    setDate(newDate) {
-      asyncSettingUpdate('birthday',newDate);
-      this.setState({birthday: newDate })
-    }
-    handle_icon_press = (index) =>
-    {    
-        asyncSettingUpdate('icon',index.toString());
-        this.setState({icon : index, isModalVisible_avatar: !this.state.isModalVisible_avatar});
-    }
+const prof_icons = [
+  IMAGES.iconWolf,
+  IMAGES.iconZebra,
+  IMAGES.iconJellyfish,
+  IMAGES.iconOwl,
+  IMAGES.iconHamster
+];
+export default class Settings extends Component {
+  constructor(props) {
+    super(props);
+    this.onValueChange = this.onValueChange.bind(this);
+    this.state = {
+      switchValue: false,
+      birthday: new Date(),
+      name: 'Navin',
+      isModalVisible: false,
+      weight: '120',
+      height_feet: '5',
+      height_inches: '8',
+      height: 'Select',
+      modalID: '',
+      icon: 0,
+      email: 'navin@gmail.com',
+      choosingAvatar: false,
+      touchID: false,
+      quickLog: false
+    };
+    this.setDate = this.setDate.bind(this);
 
-    
+    pullSettingsFromDatabase(data => {
+      this.setState({
+        birthday: new Date(data.birthday),
+        weight: data.weight,
+        name: data.name,
+        height_feet: data.height_feet,
+        height_inches: data.height_inches,
+        height: data.height_feet + "' " + data.height_inches + '" ',
+        icon: data.icon
+      });
+    });
+  }
 
-    toggleModal = () =>
-    this.setState({ isModalVisible: !this.state.isModalVisible });
-    toggleModal_birthday = () =>
-    this.setState({ isModalVisible_birthday: !this.state.isModalVisible_birthday });
-    toggleModal_avatar = () =>
-    this.setState({ isModalVisible_avatar: !this.state.isModalVisible_avatar});
-    toggleModal_height = () =>
-    this.setState({ isModalVisible_height: !this.state.isModalVisible_height,
-       height : this.state.height_feet + "\' "+ this.state.height_inches + "\" "});
+  setDate(newDate) {
+    asyncSettingUpdate('birthday', newDate);
+    this.setState({ birthday: newDate });
+  }
+  handle_icon_press = index => {
+    asyncSettingUpdate('icon', index.toString());
+    this.setState({
+      icon: index,
+      modalID: ''
+    });
+  };
 
-    toggleModal_weight = () =>
-    this.setState({ isModalVisible_weight: !this.state.isModalVisible_weight});
-    
-    render(){
-        var bgColor = '#DCE3F4';
-        var prof_icons = [
-          require('../Resources/icons8-wolf-100.png'),
-          require('../Resources/icons8-zebra-100.png'),
-          require('../Resources/icons8-shark-100.png'),
-          require('../Resources/icons8-jellyfish-100.png'),
-          require('../Resources/icons8-owl-100.png'),
-          require('../Resources/icons8-hamster-100.png'),
-        ]
-    return (
-    <View style={styles.container}>
-      <View style={{borderBottomWidth:1, backgroundColor:'#f7f7f8',borderColor:'#c8c7cc'}}>
-        <Text style={{alignSelf:'center',marginTop:30,marginBottom:10,fontWeight:'bold',fontSize:16}}>Settings</Text>
-      </View>
-      <View style={styles.container}>
-        <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
-          <SettingsList.Header headerStyle={{marginTop:15}}/>
-          <SettingsList.Item 
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={prof_icons[this.state.icon]}/>}
-            hasNavArrow={false}
-            title= {this.state.name}
-            titleInfo='Edit'
-            onPress = {this.toggleModal}
-          />
-         
-          <SettingsList.Item
-            title='Birthday'
-            hasNavArrow = {false}
-            onPress = {this.toggleModal_birthday}
-            switchState={this.state.switchValue}
-            titleInfo = { moment(this.state.birthday).format("MMM D, YYYY")}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Item
-            title='Height'
-            onPress = {this.toggleModal_height}
-            hasNavArrow = {false}
-            titleInfo = {this.state.height}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Item
-            title='Weight'
-            hasNavArrow = {false}
-            onPress = {this.toggleModal_weight}
-            titleInfo = {this.state.weight}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Header headerStyle={{marginTop:15}}/>
-          <SettingsList.Item
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/quicklog.png')}/>}
-            title='Quick Log'
-            hasSwitch = {true}
-            hasNavArrow = {false}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            titleInfoStyle={styles.titleInfoStyle}
-          />
-          <SettingsList.Header headerStyle={{marginTop:15}}/>
-          <SettingsList.Item
-            title='Contact'
-            onPress={() => Alert.alert('Option C')}
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/address-book.png')}/>}
-          />
-           <SettingsList.Item
-            icon={<Image style={styles.imageStyle} height={60} resizeMode='contain' source={require('../Resources/faq.png')}/>}
-            title='Quick Log'
-            title='FAQ'
-            onPress={() => Alert.alert('Short FAQ section?')}
-          />
-        </SettingsList>
-      
-    </View>
-          <Modal isVisible={this.state.isModalVisible_birthday} style={styles.modal}>
-             <View style={styles.contain}>
-             <DatePickerIOS
-                style={{height: 44}} itemStyle={{height: 44}}
-                mode='date'
-                date={this.state.birthday}
-                onDateChange={this.setDate}
-                  /> 
-             </View>
-             <View style={{flex : 1, alignItems: 'center', justifyContent: 'center' }}>
-             <TouchableOpacity style={styles.button} onPress={this.toggleModal_birthday} >
-                  <Text style ={styles.text}>Submit</Text >
-             </TouchableOpacity>
-             </View>
-          </Modal>
+  toggleModal_height = () =>
+    this.setState({
+      modalID: '',
+      height: this.state.height_feet + "' " + this.state.height_inches + '" '
+    });
 
-          <Modal isVisible={this.state.isModalVisible_height} style={styles.modal}>
-             <View style={styles.contain} flexDirection = 'row' >
-             <Picker
-             style = {styles.picker}
-             selectedValue={this.state.height_feet}
-             onValueChange={(itemValue) => {asyncSettingUpdate('height_feet',itemValue); this.setState({height_feet: itemValue})}}
-             >
-              <Picker.Item label = "4 feet" value = "4"/>
-              <Picker.Item label = "5 feet" value = "5"/>
-              <Picker.Item label = "6 feet" value = "6"/>
-              <Picker.Item label = "7 feet" value = "7"/>
-             </Picker>
-             <Picker
-             style = {styles.picker}
-             selectedValue={this.state.height_inches}
-             onValueChange={(itemValue) => { asyncSettingUpdate('height_inches',itemValue); this.setState({height_inches: itemValue})}}
-             >
-              <Picker.Item label = "1 inch" value = "1"/>
-              <Picker.Item label = "2 inches" value = "2"/>
-              <Picker.Item label = "3 inches" value = "3"/>
-              <Picker.Item label = "4 inches" value = "4"/>
-              <Picker.Item label = "5 inches" value = "5"/>
-              <Picker.Item label = "6 inches" value = "6"/>
-              <Picker.Item label = "7 inches" value = "7"/>
-              <Picker.Item label = "8 inches" value = "8"/>
-              <Picker.Item label = "9 inches" value = "9"/>
-              <Picker.Item label = "10 inches" value = "10"/>
-              <Picker.Item label = "11 inches" value = "11"/>
-             </Picker>
-             </View>
-             <View style={{flex : 1, alignItems: 'center', justifyContent: 'center' }}>
-             <TouchableOpacity style={styles.button} onPress={this.toggleModal_height} >
-                  <Text style ={styles.text}>Submit</Text >
-             </TouchableOpacity>
-             </View>
-          </Modal>
-
-          <Modal isVisible={this.state.isModalVisible_weight} style={styles.modal}>
-          <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
-            <TextInput
-              textAlign= 'center'
-              style={{height: 50, fontSize : 20}}
-              placeholder="Enter Weight in lbs"
-              onChangeText={(weight) => {asyncSettingUpdate('weight',weight); this.setState({weight: weight + " lbs"})}}
+  _renderHeader() {
+    if (!this.state.choosingAvatar) {
+      return (
+        <View style={styles.profileHeader}>
+          <TouchableOpacity>
+            <Image
+              style={styles.profileImageStyle}
+              source={prof_icons[this.state.icon]}
             />
-            <TouchableOpacity style={styles.button} onPress={this.toggleModal_weight} alignItems='center'>
-              <Text style ={styles.text}>Submit</Text >
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ choosingAvatar: true });
+            }}
+          >
+            <Text style={styles.profileHeaderSubText}>Change Avatar</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ height: 150, alignItems: 'center' }}>
+          <View style={styles.profileHeader}>
+            <FlatList
+              horizontal={true}
+              data={prof_icons}
+              keyExtractor={item => {
+                item.index;
+              }}
+              renderItem={item => {
+                var ind = item.index;
+                return (
+                  <TouchableOpacity
+                    key={item.index}
+                    onPress={() => {
+                      this.setState({
+                        choosingAvatar: false,
+                        icon: ind
+                      });
+                    }}
+                  >
+                    <Image
+                      style={styles.profileImageStyle}
+                      source={prof_icons[item.index]}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          <Text style={styles.profileHeaderSubText}>Pick your Avatar!</Text>
+        </View>
+      );
+    }
+  }
+
+  render() {
+    var bgColor = '#DCE3F4';
+
+    let header = this._renderHeader();
+    return (
+      <View style={styles.container}>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            backgroundColor: '#f7f7f8',
+            borderColor: '#c8c7cc'
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: 'flex-start',
+              marginTop: 50,
+              marginLeft: 20,
+              marginBottom: 10,
+              fontWeight: 'bold',
+              fontSize: 35
+            }}
+          >
+            Settings
+          </Text>
+        </View>
+        <View style={styles.container}>
+          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={100}
+                  width={100}
+                  resizeMode="cover"
+                  source={prof_icons[this.state.icon]}
+                />
+              }
+              hasNavArrow={false}
+              title={this.state.name}
+              titleInfo={'Edit' + '\n' + 'Profile'}
+              titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
+              onPress={() => {
+                this.setState({ modalID: EDIT_ID });
+              }}
+            />
+
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.quickLog}
+                />
+              }
+              title="Quick Log"
+              hasSwitch={true}
+              hasNavArrow={false}
+              switchState={this.state.quickLog}
+              switchOnValueChange={() => {
+                this.setState({ quickLog: !this.state.quickLog });
+              }}
+              titleInfoStyle={styles.titleInfoStyle}
+            />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.security}
+                />
+              }
+              title="Use Touch ID"
+              hasSwitch={true}
+              hasNavArrow={false}
+              switchState={this.state.touchID}
+              switchOnValueChange={() => {
+                this.setState({ touchID: !this.state.touchID });
+              }}
+              titleInfoStyle={styles.titleInfoStyle}
+            />
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+            <SettingsList.Item
+              title="Contact"
+              onPress={() => Alert.alert('Option C')}
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.addressBook}
+                />
+              }
+            />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.faq}
+                />
+              }
+              title="FAQ"
+              onPress={() => Alert.alert('Short FAQ section?')}
+            />
+          </SettingsList>
+        </View>
+        <Modal
+          isVisible={this.state.modalID == BIRTHDAY_ID}
+          style={styles.modal}
+        >
+          <View style={styles.contain}>
+            <DatePickerIOS
+              style={{ height: 44 }}
+              itemStyle={{ height: 44 }}
+              mode="date"
+              date={this.state.birthday}
+              onDateChange={this.setDate}
+            />
+          </View>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+            >
+              <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
           </View>
-          </Modal>
+        </Modal>
 
-          <Modal isVisible={this.state.isModalVisible} style = {styles.modal}>
-            <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={prof_icons[this.state.icon]}/>
-            <TouchableOpacity onPress = {this.toggleModal_avatar}>
-              <Text style = {styles.placeholder}>Edit Avatar</Text>
+        <Modal isVisible={this.state.modalID == HEIGHT_ID} style={styles.modal}>
+          <View style={styles.contain} flexDirection="row">
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.height_feet}
+              onValueChange={itemValue => {
+                asyncSettingUpdate('height_feet', itemValue);
+                this.setState({ height_feet: itemValue });
+              }}
+            >
+              <Picker.Item label="4 feet" value="4" />
+              <Picker.Item label="5 feet" value="5" />
+              <Picker.Item label="6 feet" value="6" />
+              <Picker.Item label="7 feet" value="7" />
+            </Picker>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.height_inches}
+              onValueChange={itemValue => {
+                asyncSettingUpdate('height_inches', itemValue);
+                this.setState({ height_inches: itemValue });
+              }}
+            >
+              <Picker.Item label="1 inch" value="1" />
+              <Picker.Item label="2 inches" value="2" />
+              <Picker.Item label="3 inches" value="3" />
+              <Picker.Item label="4 inches" value="4" />
+              <Picker.Item label="5 inches" value="5" />
+              <Picker.Item label="6 inches" value="6" />
+              <Picker.Item label="7 inches" value="7" />
+              <Picker.Item label="8 inches" value="8" />
+              <Picker.Item label="9 inches" value="9" />
+              <Picker.Item label="10 inches" value="10" />
+              <Picker.Item label="11 inches" value="11" />
+            </Picker>
+          </View>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.toggleModal_height}
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <Modal isVisible={this.state.modalID == WEIGHT_ID} style={styles.modal}>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <TextInput
+              textAlign="center"
+              style={{ height: 50, fontSize: 20 }}
+              placeholder="Enter Weight in lbs"
+              onChangeText={weight => {
+                asyncSettingUpdate('weight', weight);
+                this.setState({ weight: weight + ' lbs' });
+              }}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <Modal isVisible={this.state.modalID == 'remove'} style={styles.modal}>
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Image source={prof_icons[this.state.icon]} />
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+            >
+              <Text style={styles.placeholder}>Edit Avatar</Text>
             </TouchableOpacity>
             <TextInput
-              textAlign = 'center'
-              style={{height: 50, fontSize: 20}} 
+              textAlign="center"
+              style={{ height: 50, fontSize: 20 }}
               placeholder="Enter Name"
-              onChangeText={(name) => {asyncSettingUpdate('name',name); this.setState({name})}}
+              onChangeText={name => {
+                asyncSettingUpdate('name', name);
+                this.setState({ name });
+              }}
             />
-            <TouchableOpacity style={styles.button} onPress={this.toggleModal} alignItems='center'>
-              <Text style ={styles.text}>Submit</Text >
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
-            </View>
-            <Modal isVisible= {this.state.isModalVisible_avatar} style={styles.modal}>
-              <View style={{ flex: 1 , alignItems: 'center', justifyContent: 'center' }}>
-                <View flexDirection='row'> 
-                <TouchableOpacity onPress = {() => this.handle_icon_press(1)}>
-                  <Image style= {styles.avatar} source={prof_icons[1]}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress = {() => this.handle_icon_press(0)}>
-                  <Image style= {styles.avatar} source={prof_icons[0]}/> 
-                </TouchableOpacity>
-                </View>
-                <View flexDirection='row'> 
-                <TouchableOpacity onPress = {() => this.handle_icon_press(2)}>
-                  <Image style= {styles.avatar} source={prof_icons[2]}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress = {() => this.handle_icon_press(3)}>
-                  <Image style= {styles.avatar} source={prof_icons[3]}/> 
-                </TouchableOpacity>
-                </View>
-                <View flexDirection='row'> 
-                <TouchableOpacity onPress = {() => this.handle_icon_press(4)}>
-                  <Image style= {styles.avatar} source={prof_icons[4]}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress = {() => this.handle_icon_press(5)}>
-                  <Image style= {styles.avatar} source={prof_icons[5]}/> 
-                </TouchableOpacity>
+          </View>
+        </Modal>
+        <KeyboardAvoidingView>
+          <Modal isVisible={this.state.modalID == EDIT_ID} style={styles.modal}>
+            <ScrollView>
+              {header}
+              <View style={styles.profileBody}>
+                <TextField
+                  label={'Name'}
+                  value={this.state.name}
+                  onChangeText={name => this.setState({ name })}
+                />
+                <TextField
+                  label={'Email'}
+                  value={this.state.email}
+                  onChangeText={email => {
+                    this.setState({ email: email });
+                  }}
+                />
+                <TextField
+                  label={'Birthday'}
+                  value={this.state.birthday.toLocaleDateString()}
+                />
+                <TextField
+                  label={'Height'}
+                  value={
+                    this.state.height_feet +
+                    ' ft ' +
+                    this.state.height_inches +
+                    ' in'
+                  }
+                />
+                <TextField label={'Weight'} value={this.state.weight} />
+                <View style={{ padding: 20 }}>
+                  <TouchableOpacity
+                    style={styles.submit_button}
+                    onPress={() => this.setState({ modalID: '' })}
+                  >
+                    <Text style={styles.submit_text}>Submit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </Modal>
+            </ScrollView>
           </Modal>
-    </View>
-  );
-}
-onValueChange(value){
-  this.setState({switchValue: value});
-}
+        </KeyboardAvoidingView>
+      </View>
+    );
+  }
+  onValueChange(value) {
+    this.setState({ switchValue: value });
+  }
 }
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'#EFEFF4',
-        flex:1
-    },
-    avatar:{
-      height: 100,
-      width: 100,
-      margin: 7.
-    },
-    imageStyle:{
-      marginLeft:5,
-      marginTop: 5,
-      marginBottom: 5,
-      alignSelf:'center',
-      height:55,
-      width:55
-    },
-    placeholder:{
-      color: '#bbbbbb',
-    },
-    picker: {
-      width: 100,
-    },
-    titleInfoStyle:{
-      fontSize:16,
-      color: '#8e8e93'
-    },
-    modal:{
-      flex:1,
-      justifyContent: 'center',
-      backgroundColor: 'white',
-      borderRadius: 20,
-    },
-    contain: {
-      flex: 1,
-      justifyContent: 'center'
-    },
-    text:{
-        fontWeight : 'bold',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'black',
-    },
-    button:{
-        width: 200,
-        borderRadius: 10,
-        paddingTop: 10,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#aedfe1'
-    }
-  });
-  
+  profileHeader: {
+    marginTop: 25,
+    backgroundColor: '#ffffff',
+    alignItems: 'center'
+  },
+  profileHeaderSubText: {
+    fontSize: 15,
+    color: '#71d7fc'
+  },
+  profileBody: {
+    padding: 25
+  },
+  container: {
+    backgroundColor: '#EFEFF4',
+    flex: 1
+  },
+  avatar: {
+    height: 100,
+    width: 100,
+    margin: 7
+  },
+  imageStyle: {
+    marginLeft: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    alignSelf: 'center',
+    height: 55,
+    width: 55
+  },
+  placeholder: {
+    color: '#bbbbbb'
+  },
+  picker: {
+    width: 100
+  },
+  titleInfoStyle: {
+    fontSize: 16,
+    color: '#8e8e93'
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white'
+  },
+  contain: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  text: {
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'black'
+  },
+  button: {
+    width: 200,
+    borderRadius: 10,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#aedfe1'
+  },
+  profileContainerStyles: {
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  submit_text: {
+    color: 'white',
+    fontSize: 25
+  },
+  submit_button: {
+    alignItems: 'center',
+    backgroundColor: '#bf5252',
+    padding: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#bf5252'
+  }
+});
+/*
+<SettingsList.Item
+  title="Birthday"
+  hasNavArrow={false}
+  onPress={() => {
+    this.setState({ modalID: BIRTHDAY_ID });
+  }}
+  switchState={this.state.switchValue}
+  titleInfo={moment(this.state.birthday).format('MMM D, YYYY')}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+<SettingsList.Item
+  title="Height"
+  onPress={() => {
+    this.setState({ modalID: HEIGHT_ID });
+  }}
+  hasNavArrow={false}
+  titleInfo={this.state.height}
+  switchState={this.state.switchValue}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+<SettingsList.Item
+  title="Weight"
+  hasNavArrow={false}
+  onPress={() => {
+    this.setState({ modalID: WEIGHT_ID });
+  }}
+  titleInfo={this.state.weight}
+  switchState={this.state.switchValue}
+  switchOnValueChange={this.onValueChange}
+  titleInfoStyle={styles.titleInfoStyle}
+/>
+
+
+
+<View
+  style={{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}
+>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(1)}>
+      <Image style={styles.avatar} source={prof_icons[1]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(0)}>
+      <Image style={styles.avatar} source={prof_icons[0]} />
+    </TouchableOpacity>
+  </View>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(2)}>
+      <Image style={styles.avatar} source={prof_icons[2]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(3)}>
+      <Image style={styles.avatar} source={prof_icons[3]} />
+    </TouchableOpacity>
+  </View>
+  <View flexDirection="row">
+    <TouchableOpacity onPress={() => this.handle_icon_press(4)}>
+      <Image style={styles.avatar} source={prof_icons[4]} />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => this.handle_icon_press(5)}>
+      <Image style={styles.avatar} source={prof_icons[5]} />
+    </TouchableOpacity>
+  </View>
+</View>
+*/
