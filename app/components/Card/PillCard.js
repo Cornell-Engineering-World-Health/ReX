@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
     borderRadius: 3,
-    borderColor: '#DFDFDF',
+    borderColor: '#ece9e6',
     borderWidth : 1,
     marginLeft: 10,
     marginRight: 10,
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   descriptionContainer: {
-    flexDirection : 'row',
     flex: 1,
-    alignItems : 'flex-end'
+    flexDirection : 'row',
+    backgroundColor: 'transparent'
   },
   titleText: {
     fontWeight: '600',
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     marginRight: 10,
     alignItems: 'flex-end',
-    flex: 0.6
+    flex: 0.6,
+    backgroundColor: 'transparent'
   },
   timeStamp: {
     fontSize: 16,
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
   image_style :{
     height : 20,
     width: 20,
-
   },
   note : {
       flexDirection:'row',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.0,
   },
   check:{
-    backgroundColor: 'white',
+    backgroundColor: '#00000000',
     borderRadius: 0,
     borderColor: 'white',
     marginLeft: 0,
@@ -97,10 +97,10 @@ class Card extends PureComponent {
     super(props);
     this.state = {
         expanded : true,
-        //maxHeight : 0,
         minHeight : 10,
         animation : new Animated.Value(),
-        status : this.props.status
+        status : this.props.status,
+        arrow : 'expand'
     }
   }
 
@@ -121,21 +121,24 @@ class Card extends PureComponent {
   }
 
   toggle(){
-    //Step 1
+ 
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 
+    var currentArrow = this.state.expanded? 'collapse' : 'expand'
+
     this.setState({
-        expanded : !this.state.expanded  //Step 2
+        expanded : !this.state.expanded,
+        arrow : currentArrow
     });
 
-    this.state.animation.setValue(initialValue);  //Step 3
-    Animated.spring(     //Step 4
+    this.state.animation.setValue(initialValue);  
+    Animated.spring(     
         this.state.animation,
         {
             toValue: finalValue
         }
-    ).start();  //Step 5
+    ).start();  
 }
 
     _onCheck = (index) => {
@@ -173,7 +176,6 @@ class Card extends PureComponent {
     const imageContainerStyle = [styles.imageContainer];
 
     var image = constants.DEFAULT.image;
-    var time= "Morning";
 
     return (
       <Animated.View style={[styles.wrapper, {height: this.state.animation}]}>
@@ -195,18 +197,21 @@ class Card extends PureComponent {
 
                 <View style={styles.descriptionContainer} onLayout={this._setMinHeight.bind(this)}>
                   <View>
-                    <Text style={styles.titleText}>{time}</Text>
+                    <Text style={styles.titleText}>{this.props.time}</Text>
                   </View>
-                  <View >
-                  <View marginTop = {6.5} flex = {1} marginLeft= {170} >
-                  <TouchableOpacity onPress = {this.toggle.bind(this)} >
-                    <View flexDirection = 'row' >
-                    <Text >Show Pills </Text>
-                    <Image style = {styles.image_style} source = {require('../Resources/icons8-expand-arrow-50.png') }/>
+                  <TouchableOpacity onPress = {this.toggle.bind(this)} style = {{flex: 1,  alignItems: 'flex-end' }} >
+                    <View flexDirection = 'row' marginTop = {7}>
+                    <Text> Show Pills </Text>
+                    <Image style = {styles.image_style} source = { () => {
+                      if (this.state.arrow == 'expand'){
+                        return require('../Resources/icons8-expand-arrow-50.png')
+                      }
+                      else {
+                        return require('../Resources/icons8-collapse-arrow-50.png')
+                      }
+                    }  }/>
                     </View>
                   </TouchableOpacity>
-                  </View>
-                  </View>
                   </View>
                   <View style = {{marginTop: 15}} onLayout =
                   {this._setMaxHeight.bind(this)}>
