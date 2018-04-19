@@ -104,7 +104,6 @@ class Circle extends Component {
         </TouchableOpacity>
         <View >
         <View style = {{ top: Dimensions.get('window').height / 3.5, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style = {{ zIndex: 0 }}>MONDAY</Text>
         <View style = {styles.pie} />
         <PieChart
             // paddingBottom = {150}
