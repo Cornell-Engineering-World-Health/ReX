@@ -18,10 +18,13 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
-import {HomeMedicineLogger} from '../HomeMedicineLogger'
-import {pullMedicineFromDatabase,pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil'
+import { HomeMedicineLogger } from '../HomeMedicineLogger';
+import {
+  pullMedicineFromDatabase,
+  pullSettingsFromDatabase
+} from '../../databaseUtil/databaseUtil';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
-import  styles from './styles';
+import styles from './styles';
 
 const medicineMorning = [
   {
@@ -165,68 +168,65 @@ class Home extends React.Component {
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
-      name: "Navin",
+      name: 'Navin'
     };
-    
-    //TODO: make one function that only pulls name from database
-    pullSettingsFromDatabase((data) => {
-        this.setState({
-            name: data.name
-        })
-    })
 
+    //TODO: make one function that only pulls name from database
+    pullSettingsFromDatabase(data => {
+      this.setState({
+        name: data.name
+      });
+    });
   }
 
-  componentWillMount(){
-    let totalAmount = this.state.totalAmount
-    let doneAmount = this.state.doneAmount
+  componentWillMount() {
+    let totalAmount = this.state.totalAmount;
+    let doneAmount = this.state.doneAmount;
     let thisRef = this;
-    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
-      console.log('asdfa',formattedData)
-      Object.keys(formattedData).forEach(function(med){
+    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
+      console.log('asdfa', formattedData);
+      Object.keys(formattedData).forEach(function(med) {
         let i = 0;
-        formattedData[med].timeCategory.forEach(function(time){
-          switch(time){
+        formattedData[med].timeCategory.forEach(function(time) {
+          switch (time) {
             case 'Morning':
               totalAmount[0]++;
-              if(formattedData[med].taken[i]){
+              if (formattedData[med].taken[i]) {
                 doneAmount[0]++;
               }
               break;
             case 'Afternoon':
               totalAmount[1]++;
-              if(formattedData[med].taken[i]){
+              if (formattedData[med].taken[i]) {
                 doneAmount[1]++;
               }
               break;
             case 'Evening':
               totalAmount[2]++;
-              if(formattedData[med].taken[i]){
+              if (formattedData[med].taken[i]) {
                 doneAmount[2]++;
               }
               break;
             case 'Night':
               totalAmount[3]++;
-              if(formattedData[med].taken[i]){
+              if (formattedData[med].taken[i]) {
                 doneAmount[3]++;
               }
               break;
             default:
           }
-        })
-      })
+        });
+      });
       thisRef.setState({
         totalAmount: totalAmount,
         doneAmount: doneAmount,
-        data: formattedData,
-      })
+        data: formattedData
+      });
     });
   }
 
   //TODO: onclose, should save to storage.
-  componentWillUnmount(){
-    
-  }
+  componentWillUnmount() {}
 
   _renderButtons() {
     /**
@@ -243,7 +243,6 @@ class Home extends React.Component {
       this.state.evening,
       this.state.night
     ];
-
     for (let y = 0; y < medicineArray.length; y++) {
       for (let x = 0; x < medicineArray[y].length; x++) {
         if (!medicineArray[y][x].completed) {
@@ -256,10 +255,7 @@ class Home extends React.Component {
     */
   }
 
-
-  _handleMorningPress(index, complete) {
-
-  }
+  _handleMorningPress(index, complete) {}
   _handleAfternoonPress(index, complete) {
     afternoonArray = this.state.afternoon;
     afternoonArray[index].completed = complete;
@@ -285,14 +281,14 @@ class Home extends React.Component {
     });
   }
 
-  logAll(index){
-    doneAmount = this.state.doneAmount
-    if(doneAmount[index] == this.state.totalAmount[index]){
+  logAll(index) {
+    doneAmount = this.state.doneAmount;
+    if (doneAmount[index] == this.state.totalAmount[index]) {
       doneAmount[index] = 0;
     } else {
       doneAmount[index] = this.state.totalAmount[index];
     }
-    this.setState({doneAmount});
+    this.setState({ doneAmount });
   }
 
   render() {
@@ -301,15 +297,14 @@ class Home extends React.Component {
 
     let done = [];
     let remaining = [];
-    for(let i = 0; i<this.state.doneAmount.length; i++){
-      done[i] = (this.state.doneAmount[i] == this.state.totalAmount[i]) ? true:false;
-      remaining[i] = this.state.totalAmount[i] - this.state.doneAmount[i]
+    for (let i = 0; i < this.state.doneAmount.length; i++) {
+      done[i] =
+        this.state.doneAmount[i] == this.state.totalAmount[i] ? true : false;
+      remaining[i] = this.state.totalAmount[i] - this.state.doneAmount[i];
     }
 
     return (
-      <ImageBackground
-        style={{ flex: 1,backgroundColor: '#ffffff' }}
-      >
+      <ImageBackground style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>
@@ -326,13 +321,14 @@ class Home extends React.Component {
                 </Text>
               </View>
             </View>
-            <View>
-            </View>
+            <View />
           </View>
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <HomeMedicineLogger
               done={done}
-              onPress={button => {this._onPress(button)}}
+              onPress={button => {
+                this._onPress(button);
+              }}
               handlerMorning={() => this.logAll(0)}
               handlerAfternoon={() => this.logAll(1)}
               handlerEvening={() => this.logAll(2)}
