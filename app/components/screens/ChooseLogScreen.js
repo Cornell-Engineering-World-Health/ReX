@@ -126,32 +126,27 @@ export default class ChooseLogScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ImageBackground style={{ flex: 1 }}>
-        <ScrollView>
-          <View style={styles.log_container}>
-            {this.state.log_types.map((prop, key) => {
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={styles.log_button}
-                  onPress={() =>
-                    navigate('Form', {
-                      onLog: this.returnToCal.bind(this),
-                      log_type: this.state.event_ids[key]
-                    })
-                  }
-                >
-                  <Text style={styles.log_button_text}>{prop}</Text>
-                  <Image
-                    style={styles.log_button_img}
-                    source={getSource(prop)}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </ImageBackground>
+      <ScrollView>
+        <View style={styles.log_container}>
+          {this.state.log_types.map((prop, key) => {
+            return (
+              <TouchableOpacity
+                key={key}
+                style={styles.log_button}
+                onPress={() =>
+                  navigate('Form', {
+                    onLog: this.returnToCal.bind(this),
+                    log_type: this.state.event_ids[key]
+                  })
+                }
+              >
+                <Text style={styles.log_button_text}>{prop}</Text>
+                <Image style={styles.log_button_img} source={getSource(prop)} />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
     );
   }
 }

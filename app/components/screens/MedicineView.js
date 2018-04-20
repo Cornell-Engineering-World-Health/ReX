@@ -131,9 +131,9 @@ class CoolerMedicineView extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Circle amData={this.state.amData} />
-          <View style={{ top: Dimensions.get('window').height / 2 }}>
+          <View style={{ flex: 0.75 }}>
             <FlatList
               data={[0]}
               renderItem={({ item, index }) => {

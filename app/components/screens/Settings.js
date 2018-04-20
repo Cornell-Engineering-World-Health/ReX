@@ -13,6 +13,7 @@ import {
   Picker,
   NavigatorIOS
 } from 'react-native';
+import { sendMail } from '../Mail/MailController';
 import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
@@ -215,7 +216,15 @@ class Settings extends Component {
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               title="Contact"
-              onPress={() => Alert.alert('ewhcornell@gmail.com')}
+              onPress={() => {
+                sendMail(
+                  ['ewhcornell@gmail.com'],
+                  'Comments on Your App',
+                  'Dear Engineering World Health Body, \n',
+                  null,
+                  null //no attachments + callback
+                );
+              }}
               icon={
                 <Image
                   style={styles.imageStyle}
