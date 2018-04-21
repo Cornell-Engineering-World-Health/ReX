@@ -306,6 +306,45 @@ export function pullMedicineFromDatabase(date, callback){
   })
 }
 
+function updateMedicineData(data,time){
+    data.forEach(function(med){
+        var fields = JSON.parse(med.fields)
+        console.log(med)
+        var idx = fields.timeCategory.indexOf(time);
+        
+        if (idx !=-1){
+            console.log('updating')
+            let newTaken = fields.taken.slice()
+            newTaken[idx] = true
+            console.log(newTaken)
+            fields.taken = newTaken
+            let newFields = JSON.stringify(fields)
+            let queryArgs = [newFields, med.event_details_id]
+            Database.transaction(tx => {
+                tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs);
+            },err=>console.log(err))
+        }
+    })
+}
+
+export function databaseTakeMedicines(date,timeIndex){
+  let timeArray = ['Morning','Afternoon','Evening','Night']
+  let timeString = timeArray[timeIndex]
+  let day = date.toISOString().substr(0,10)
+  dayArray  = [day]
+  
+  console.log('date ', day)
+  console.log('time ', timeString)
+  
+  Database.transaction(tx => {
+      tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+      updateMedicineData(rows._array,timeString));
+  },err=>console.log(err))
+  
+}
 export function asyncSettingUpdate(name, value){
   inputArray = [name,value]
   Database.transaction(tx => {
@@ -326,3 +365,4 @@ export function pullSettingsFromDatabase(callback){
       tx.executeSql('SELECT * from settings_tbl',[], (_, { rows }) => callback(parseSettings(rows._array)))
   }, err=>console.log(err))
 }
+

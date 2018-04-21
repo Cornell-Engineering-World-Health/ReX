@@ -21,7 +21,8 @@ import constants from '../Resources/constants';
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  databaseTakeMedicines
 } from '../../databaseUtil/databaseUtil';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
@@ -282,6 +283,7 @@ class Home extends React.Component {
   }
 
   logAll(index) {
+    databaseTakeMedicines(new Date('2018-04-17'),index);
     doneAmount = this.state.doneAmount;
     if (doneAmount[index] == this.state.totalAmount[index]) {
       doneAmount[index] = 0;
