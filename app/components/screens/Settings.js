@@ -23,15 +23,7 @@ import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
 } from '../../databaseUtil/databaseUtil';
-import { IMAGES, COLOR } from '../Resources/constants';
-
-const prof_icons = [
-  IMAGES.iconWolf,
-  IMAGES.iconZebra,
-  IMAGES.iconJellyfish,
-  IMAGES.iconOwl,
-  IMAGES.iconHamster
-];
+import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
 
 class Settings extends Component {
   static propTypes = {
@@ -57,67 +49,6 @@ class Settings extends Component {
     };
   }
 
-  _renderHeader() {
-    if (!this.state.choosingAvatar) {
-      return (
-        <View style={styles.profileHeader}>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({ choosingAvatar: true });
-            }}
-          >
-            <Image
-              style={styles.profileImageStyle}
-              source={prof_icons[this.state.icon]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({ choosingAvatar: true });
-            }}
-          >
-            <Text style={styles.profileHeaderSubText}>Change Avatar</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return (
-        <View style={{ height: 150, alignItems: 'center' }}>
-          <View style={styles.profileHeader}>
-            <FlatList
-              horizontal={true}
-              data={prof_icons}
-              keyExtractor={item => {
-                item.index;
-              }}
-              renderItem={item => {
-                var ind = item.index;
-                return (
-                  <TouchableOpacity
-                    key={item.index}
-                    onPress={() => {
-                      this.handle_icon_press(ind);
-                      this.setState({
-                        choosingAvatar: false,
-                        icon: ind
-                      });
-                    }}
-                  >
-                    <Image
-                      style={styles.profileImageStyle}
-                      source={prof_icons[item.index]}
-                    />
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-          <Text style={styles.profileHeaderSubText}>Pick your Avatar!</Text>
-        </View>
-      );
-    }
-  }
-
   render() {
     var bgColor = '#DCE3F4';
     pullSettingsFromDatabase(data => {
@@ -131,7 +62,6 @@ class Settings extends Component {
         icon: data.icon
       });
     });
-    let header = this._renderHeader();
     return (
       <View style={styles.container}>
         <View
@@ -164,7 +94,7 @@ class Settings extends Component {
                   height={100}
                   width={100}
                   resizeMode="cover"
-                  source={prof_icons[this.state.icon]}
+                  source={profile_icons[this.state.icon]}
                 />
               }
               hasNavArrow={false}
@@ -260,18 +190,6 @@ class Settings extends Component {
 }
 
 const styles = StyleSheet.create({
-  profileHeader: {
-    marginTop: 25,
-    backgroundColor: '#ffffff',
-    alignItems: 'center'
-  },
-  profileHeaderSubText: {
-    fontSize: 15,
-    color: '#71d7fc'
-  },
-  profileBody: {
-    padding: 25
-  },
   container: {
     backgroundColor: '#EFEFF4',
     flex: 1
@@ -289,53 +207,9 @@ const styles = StyleSheet.create({
     height: 55,
     width: 55
   },
-  placeholder: {
-    color: '#bbbbbb'
-  },
-  picker: {
-    width: 100
-  },
   titleInfoStyle: {
     fontSize: 16,
     color: '#8e8e93'
-  },
-
-  contain: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  text: {
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'black'
-  },
-  button: {
-    width: 200,
-    borderRadius: 10,
-    paddingTop: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#aedfe1'
-  },
-  profileContainerStyles: {
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  submit_text: {
-    color: 'white',
-    fontSize: 25
-  },
-  submit_button: {
-    alignItems: 'center',
-    backgroundColor: '#bf5252',
-    padding: 15,
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: '#bf5252'
   }
 });
 const ProfileRoute = {
@@ -354,17 +228,3 @@ export default class settingsList extends React.Component {
     );
   }
 }
-// export default StackNavigator(
-//   {
-//     Home: {
-//       screen: Settings,
-//       navigationOptions: {
-//         header: null
-//       }
-//     },
-//     Profile: { screen: Profile }
-//   },
-//   {
-//     initialRouteName: 'Profile'
-//   }
-// );

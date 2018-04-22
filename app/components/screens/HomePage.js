@@ -17,6 +17,7 @@ import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
+import { IMAGES, profile_icons } from '../Resources/constants';
 import constants from '../Resources/constants';
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
 import {
@@ -174,7 +175,8 @@ class Home extends React.Component {
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase(data => {
       this.setState({
-        name: data.name
+        name: data.name,
+        icon: data.icon
       });
     });
   }
@@ -308,9 +310,22 @@ class Home extends React.Component {
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>
-              <View style={styles.header}>
-                <Text style={styles.welcomeText}>Welcome</Text>
-                <Text style={styles.nameText}>{this.state.name}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View style={styles.header}>
+                  <Text style={styles.welcomeText}>Welcome</Text>
+                  <Text style={styles.nameText}>{this.state.name}</Text>
+                </View>
+                <View style={{ marginTop: 25, marginRight: 20 }}>
+                  <Image
+                    source={profile_icons[this.state.icon]}
+                    style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                  />
+                </View>
               </View>
               <View style={styles.subHeader}>
                 <Text style={styles.subHeaderText}>
@@ -321,7 +336,6 @@ class Home extends React.Component {
                 </Text>
               </View>
             </View>
-            <View />
           </View>
           <View style={{ alignItems: 'center' }}>
             <HomeMedicineLogger
