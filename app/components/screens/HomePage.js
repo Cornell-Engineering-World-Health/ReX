@@ -283,7 +283,7 @@ class Home extends React.Component {
   }
 
   logAll(index) {
-    databaseTakeMedicines(new Date('2018-04-17'),index);
+    databaseTakeMedicines(new Date('2018-04-17'),index,true);
     doneAmount = this.state.doneAmount;
     if (doneAmount[index] == this.state.totalAmount[index]) {
       doneAmount[index] = 0;

@@ -306,7 +306,7 @@ export function pullMedicineFromDatabase(date, callback){
   })
 }
 
-function updateMedicineData(data,time){
+function updateMedicineData(data,time,takenVal){
     data.forEach(function(med){
         var fields = JSON.parse(med.fields)
         console.log(med)
@@ -315,7 +315,7 @@ function updateMedicineData(data,time){
         if (idx !=-1){
             console.log('updating')
             let newTaken = fields.taken.slice()
-            newTaken[idx] = true
+            newTaken[idx] = takenVal
             console.log(newTaken)
             fields.taken = newTaken
             let newFields = JSON.stringify(fields)
@@ -327,7 +327,7 @@ function updateMedicineData(data,time){
     })
 }
 
-export function databaseTakeMedicines(date,timeIndex){
+export function databaseTakeMedicines(date,timeIndex,takenVal){
   let timeArray = ['Morning','Afternoon','Evening','Night']
   let timeString = timeArray[timeIndex]
   let day = date.toISOString().substr(0,10)
@@ -341,7 +341,7 @@ export function databaseTakeMedicines(date,timeIndex){
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
-      updateMedicineData(rows._array,timeString));
+      updateMedicineData(rows._array,timeString,takenVal));
   },err=>console.log(err))
   
 }
