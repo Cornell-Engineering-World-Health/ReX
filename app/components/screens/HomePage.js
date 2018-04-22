@@ -216,6 +216,7 @@ class Home extends React.Component {
               break;
             default:
           }
+          i++;
         });
       });
       thisRef.setState({
