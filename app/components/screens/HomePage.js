@@ -165,9 +165,10 @@ class Home extends React.Component {
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
+      originalDoneAmount: [0,0,0,0],
       name: "Navin",
     };
-    
+
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase((data) => {
         this.setState({
@@ -213,11 +214,13 @@ class Home extends React.Component {
               break;
             default:
           }
+          i++;
         })
       })
       thisRef.setState({
         totalAmount: totalAmount,
         doneAmount: doneAmount,
+        originalDoneAmount: doneAmount.slice(), //copy by value, not reference
         data: formattedData,
       })
     });
@@ -225,7 +228,7 @@ class Home extends React.Component {
 
   //TODO: onclose, should save to storage.
   componentWillUnmount(){
-    
+
   }
 
   _renderButtons() {
@@ -257,38 +260,10 @@ class Home extends React.Component {
   }
 
 
-  _handleMorningPress(index, complete) {
-
-  }
-  _handleAfternoonPress(index, complete) {
-    afternoonArray = this.state.afternoon;
-    afternoonArray[index].completed = complete;
-
-    this.setState({
-      afternoon: afternoonArray
-    });
-  }
-  _handleEveningPress(index, complete) {
-    eveningArray = this.state.evening;
-    eveningArray[index].completed = complete;
-
-    this.setState({
-      evening: eveningArray
-    });
-  }
-  _handleNightPress(index, complete) {
-    nightArray = this.state.night;
-    nightArray[index].completed = complete;
-
-    this.setState({
-      night: nightArray
-    });
-  }
-
   logAll(index){
     doneAmount = this.state.doneAmount
     if(doneAmount[index] == this.state.totalAmount[index]){
-      doneAmount[index] = 0;
+      doneAmount[index] = this.state.originalDoneAmount[index];
     } else {
       doneAmount[index] = this.state.totalAmount[index];
     }
