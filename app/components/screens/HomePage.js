@@ -13,15 +13,17 @@ import {
   Animated
 } from 'react-native';
 import Moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
 import constants from '../Resources/constants';
+import {IMAGES, COLOR} from '../Resources/constants';
 import {HomeMedicineLogger} from '../HomeMedicineLogger'
 import {pullMedicineFromDatabase,pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil'
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
-import  styles from './styles';
+import styles from './styles';
 
 const medicineMorning = [
   {
@@ -176,6 +178,8 @@ class Home extends React.Component {
         })
     })
 
+    this.iconDropDown;
+    this.backgroundColorDropDown;
   }
 
   componentWillMount(){
@@ -183,7 +187,6 @@ class Home extends React.Component {
     let doneAmount = this.state.doneAmount
     let thisRef = this;
     pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData){
-      console.log('asdfa',formattedData)
       Object.keys(formattedData).forEach(function(med){
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time){
@@ -261,11 +264,19 @@ class Home extends React.Component {
 
 
   logAll(index){
+    let time;
     doneAmount = this.state.doneAmount
     if(doneAmount[index] == this.state.totalAmount[index]){
       doneAmount[index] = this.state.originalDoneAmount[index];
     } else {
       doneAmount[index] = this.state.totalAmount[index];
+      switch(index){
+        case 0: this.iconDropDown = IMAGES.morningColorW; this.backgroundColorDropDown = COLOR.red; time = 'morning'; break;
+        case 2: this.iconDropDown = IMAGES.eveningColorW; this.backgroundColorDropDown = COLOR.purple; time = 'evening'; break;
+        case 3: this.iconDropDown = IMAGES.nightColorW; this.backgroundColorDropDown = COLOR.blue; time = 'night'; break;
+        default: this.iconDropDown = IMAGES.afternoonColorW; this.backgroundColorDropDown = COLOR.cyan; time = 'afternoon'
+      }
+      this.dropdown.alertWithType('custom', 'All '+time+' medications are taken!','')
     }
     this.setState({doneAmount});
   }
@@ -464,6 +475,14 @@ class Home extends React.Component {
             />
           </View>
         </Modal>
+        <DropdownAlert
+          ref={ref => this.dropdown = ref}
+          closeInterval={3000}
+          imageSrc={this.iconDropDown}
+          containerStyle={{
+            backgroundColor: this.backgroundColorDropDown,
+          }}
+        />
       </ImageBackground>
     );
   }
