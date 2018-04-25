@@ -2,7 +2,7 @@
   "expo": {
     "sdkVersion": "25.0.0",
     "splash": {
-      "image": "./app/components/Resources/Images/brain.png",
+      "image": "./app/components/Resources/Images/icons8-jellyfish-100.png",
       "backgroundColor": "#7fdecb"
     }
   }
