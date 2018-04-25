@@ -19,6 +19,7 @@ import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
 import { StackNavigator } from 'react-navigation';
 import Profile from './EditProfile.js';
+import Summary from './Summary.js';
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
@@ -143,16 +144,32 @@ class Settings extends Component {
               }}
               titleInfoStyle={styles.titleInfoStyle}
             />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={50}
+                  resizeMode="contain"
+                  source={IMAGES.view}
+                />
+              }
+              title="View History"
+              hasNavArrow={true}
+              onPress={() => {
+                this.props.navigator.push(SummaryPage);
+              }}
+              titleInfoStyle={styles.titleInfoStyle}
+            />
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               title="Contact"
               onPress={() => {
                 sendMail(
-                  ['ewhcornell@gmail.com'],
+                  ['navinr13@gmail.com'],
                   'Comments on Your App',
                   'Dear Engineering World Health Body, \n',
                   null,
-                  null //no attachments + callback
+                  null
                 );
               }}
               icon={
@@ -214,6 +231,9 @@ const styles = StyleSheet.create({
 });
 const ProfileRoute = {
   component: Profile
+};
+const SummaryPage = {
+  component: Summary
 };
 export default class settingsList extends React.Component {
   render() {

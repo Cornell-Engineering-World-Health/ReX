@@ -62,7 +62,9 @@ export const IMAGES = {
   blueGradient2: require('../Resources/Images/blueGradient2.jpg'),
   darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
   darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
-  security: require('../Resources/Images/icons8-protect-40.png')
+  security: require('../Resources/Images/icons8-protect-40.png'),
+  view: require('../Resources/Images/view.png'),
+  export: require('../Resources/Images/export.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,

@@ -221,6 +221,8 @@ export default class Profile extends Component {
         </View>
         <Modal
           isVisible={this.state.modalID == HEIGHT_ID}
+          animationInTiming={500}
+          animationOutTiming={500}
           onBackdropPress={() => {
             this.setState({ modalID: '' });
           }}
@@ -289,6 +291,8 @@ export default class Profile extends Component {
             this.setState({ modalID: '' });
           }}
           swipDirection={'down'}
+          animationInTiming={500}
+          animationOutTiming={500}
           style={{
             justifyContent: 'flex-end',
             margin: 0
@@ -323,6 +327,15 @@ export default class Profile extends Component {
 
         <Modal
           isVisible={this.state.modalID == BIRTHDAY_ID}
+          animationInTiming={500}
+          animationOutTiming={500}
+          onBackdropPress={() => {
+            this.setState({ modalID: '' });
+          }}
+          onSwipe={() => {
+            this.setState({ modalID: '' });
+          }}
+          swipDirection={'down'}
           style={styles.modal}
         >
           <View

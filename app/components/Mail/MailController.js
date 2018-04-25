@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Platform } from 'react-native';
-import { MailComposer } from 'expo';
+import { MailComposer, takeSnapshotAsync } from 'expo';
 
 const saveOptions = {
   recipients: ['navinr13@gmail.com'],
@@ -19,7 +19,13 @@ callBack: function to be called after email has been sent. Passes in object cont
 status field that has "sent", "saved", or "cancelled" (**use null for no callBack)
 
 */
-export function sendMail(recipients, subject, body, attachments, callBack) {
+export async function sendMail(
+  recipients,
+  subject,
+  body,
+  attachments,
+  callBack
+) {
   let options = {
     recipients: recipients,
     subject: subject,
