@@ -95,7 +95,7 @@ export const COLOR = {
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
 };
-//TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
+// TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
 
 export default (constants = {
@@ -132,6 +132,12 @@ export default (constants = {
   HEADACHE: {
     image: IMAGES.brain,
     title: 'Headache',
+    backgroundColor: '#7fdecb',
+    translucentColor: '#7fdecb80'
+  },
+  DIZZINESS: {
+    image: IMAGES.intensePain,
+    title: 'Dizziness',
     backgroundColor: '#7fdecb',
     translucentColor: '#7fdecb80'
   },
@@ -206,6 +212,7 @@ let types = [
   constants.BLURRED_VISION,
   constants.PILL,
   constants.HEADACHE,
+  constants.DIZZINESS,
   constants.NECKPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,
