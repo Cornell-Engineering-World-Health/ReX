@@ -46,7 +46,7 @@ export const IMAGES = {
   nightColorW: require('../Resources/Images/nightW.png'),
   about: require('../Resources/Images/about.png'),
   addressBook: require('../Resources/Images/address-book.png'),
-  afternoonColor: require('../Resources/Images/afternoonColor.png'),
+  afternoonColor: require('../Resources/Images/afternoonC.png'),
   eveningColor: require('../Resources/Images/eveningColor.png'),
   faq: require('../Resources/Images/faq.png'),
   iconWolf: require('../Resources/Images/icons8-wolf-100.png'),

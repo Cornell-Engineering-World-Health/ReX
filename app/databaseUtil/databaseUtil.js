@@ -2,7 +2,7 @@ import Database from '../Database';
 import Moment from 'moment';
 import constants, {getCardData} from '../components/Resources/constants';
 
-  databaseFakeData();
+
 
 export function createTables(){
   console.log('creating tables')
@@ -325,6 +325,13 @@ function updateMedicineData(data,time,takenVal){
             },err=>console.log(err))
         }
     })
+    /**
+    Database.transaction(tx => {
+        tx.executeSql('Select * from event_details_tbl where event_details_id = 55 OR event_details_id = 54',[], (_, { rows }) =>
+          console.log(JSON.stringify(rows))
+        )
+    },err=> console.log(err));
+    */
 }
 
 export function databaseTakeMedicines(date,timeIndex,takenVal){
