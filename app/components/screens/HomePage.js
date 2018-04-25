@@ -117,10 +117,7 @@ class Home extends React.Component {
     }
 
     return (
-      <ImageBackground
-        style={{ flex: 1, backgroundColor: '#ffffff' }}
-        source={IMAGES.darkBlueGradient2}
-      >
+      <ImageBackground style={{ flex: 1, backgroundColor: '#ffffff' }}>
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>

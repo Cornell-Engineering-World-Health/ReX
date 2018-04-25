@@ -95,7 +95,7 @@ class Card extends PureComponent {
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.obj,
+    cardData: PropTypes.object,
     setParentState: PropTypes.func,
     data: PropTypes.array,
     status: PropTypes.array
