@@ -6,20 +6,24 @@ import {
   Dimensions,
   ActivityIndicator,
   FlatList,
-  StyleSheet,
+  StyleSheet
 } from 'react-native';
 import { itemWidth } from '../Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../Calendar';
 import Agenda from '../Agenda/Agenda';
 import Moment from 'moment';
-import {pullFromDataBase,pullAgendaFromDatabase,asyncDeleteEvent} from '../../databaseUtil/databaseUtil';
+import {
+  pullFromDataBase,
+  pullAgendaFromDatabase,
+  asyncDeleteEvent
+} from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
 
 let t = new Date();
-let numOfMonths = (t.getFullYear() - 1969)*12;
+let numOfMonths = (t.getFullYear() - 1969) * 12;
 const numOfCals = numOfMonths;
 const VIEWABILITY_CONFIG = {
-    viewAreaCoveragePercentThreshold: 90,
+  viewAreaCoveragePercentThreshold: 90
 };
 
 class Calendar extends Component {
@@ -31,12 +35,12 @@ class Calendar extends Component {
     }
     this.state = {
       first: -numOfCals,
-      last: numOfCals-1,
+      last: numOfCals - 1,
       data: data,
       currentDate: new Date(),
-      flatlistHeight: 0,
+      flatlistHeight: 0
     };
-    this.mutexLock = 0
+    this.mutexLock = 0;
     this.calendars = []; // references to all SLIDEENTRY components which contain calendar components. indexed by KEY
     this.currSymptomDisplay; //most recent sympotom type bar graphs shown.
     this.currKey; //current KEY that the calendar is displaying
@@ -47,37 +51,38 @@ class Calendar extends Component {
   }
 
   _updateAgenda() {
-    pullAgendaFromDatabase(flatlistData =>{
-        let tempData = null;
+    pullAgendaFromDatabase(flatlistData => {
+      let tempData = null;
 
-        for (var i = 0; i < flatlistData.length; i++) {
-          if (Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')) {
-            tempData = flatlistData[i].data;
-            break;
-          }
+      for (var i = 0; i < flatlistData.length; i++) {
+        if (
+          Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')
+        ) {
+          tempData = flatlistData[i].data;
+          break;
         }
-        this.setState({
-          currentAgenda: tempData
-        });
-    })
+      }
+      this.setState({
+        currentAgenda: tempData
+      });
+    });
   }
 
-  _deleteItemFromAgenda(id){
-      index = -1
-      for(var i=0; i < this.currentAgenda.data.length; i++){
-          if(this.currentAgenda.data[i].id = id){
-              index = i;
-              break
-          }
+  _deleteItemFromAgenda(id) {
+    index = -1;
+    for (var i = 0; i < this.currentAgenda.data.length; i++) {
+      if ((this.currentAgenda.data[i].id = id)) {
+        index = i;
+        break;
       }
+    }
 
-      if(index != -1){
-          this.currentAgenda.data.splice(i, 1);
-          asyncDeleteEvent(id)
-      }
+    if (index != -1) {
+      this.currentAgenda.data.splice(i, 1);
+      asyncDeleteEvent(id);
+    }
 
-      //TODO: force update might be needed
-
+    //TODO: force update might be needed
   }
 
   getItemLayout = (data, index) => ({
@@ -107,87 +112,107 @@ class Calendar extends Component {
 
   _renderItem = ({ item }) => {
     return (
-    /*<Text> {item.key} </Text>*/
-    <SliderEntry
-      ref={(ref) => { this.calendars[item.key] = ref; }}
-      data={
-        new Date(new Date().getFullYear(), new Date().getMonth() + item.key, 0)
-      }
-      pickerHandler={this._pickerHandler.bind(this)}
-      onPressMonth={this._onPressMonth}
-    />
-  )};
+      /*<Text> {item.key} </Text>*/
+      <SliderEntry
+        ref={ref => {
+          this.calendars[item.key] = ref;
+        }}
+        data={
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth() + item.key,
+            0
+          )
+        }
+        pickerHandler={this._pickerHandler.bind(this)}
+        onPressMonth={this._onPressMonth}
+      />
+    );
+  };
 
   _loadMore = (num, callback) => {
-    if(!num) num = 20
-    console.log('loadingMore')
+    if (!num) num = 20;
+    console.log('loadingMore');
     newData = [];
     current = this.state.last;
     for (i = 1; i < num; i++) {
       newData.push({ key: i + current });
     }
-    this.setState({
-      data: [...this.state.data, ...newData],
-      last: current + num-1
-    }, function(){
-      if(callback){callback()}
-    });
+    this.setState(
+      {
+        data: [...this.state.data, ...newData],
+        last: current + num - 1
+      },
+      function() {
+        if (callback) {
+          callback();
+        }
+      }
+    );
   };
 
-  calendarHeight = (currMonth) => {
-    console.log(currMonth)
-    var today = currMonth
-    var numberOfDays = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
-    var firstDays = new Date(today.getFullYear(), today.getMonth(), 0).getDate()
+  calendarHeight = currMonth => {
+    console.log(currMonth);
+    var today = currMonth;
+    var numberOfDays = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      0
+    ).getDate();
+    var firstDays = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0
+    ).getDate();
     var first = new Date(today.getFullYear(), today.getMonth(), 1);
     var last = new Date(today.getFullYear(), today.getMonth(), numberOfDays);
-    var numberOfPrevious = first.getDay()
-    var numberOfAfter = 6 - last.getDay()
-    var total = numberOfDays + numberOfPrevious + numberOfAfter
-    console.log(numberOfDays, numberOfPrevious, numberOfAfter)
-    if (total == 35){
-        this.setState({
-          flatlistHeight: Dimensions.get('window').height * 0.50
-        })
-    }
-    else {
-        this.setState({
-          flatlistHeight: Dimensions.get('window').height * 0.56
-        })
+    var numberOfPrevious = first.getDay();
+    var numberOfAfter = 6 - last.getDay();
+    var total = numberOfDays + numberOfPrevious + numberOfAfter;
+    console.log(numberOfDays, numberOfPrevious, numberOfAfter);
+    if (total == 35) {
+      this.setState({
+        flatlistHeight: Dimensions.get('window').height * 0.5
+      });
+    } else {
+      this.setState({
+        flatlistHeight: Dimensions.get('window').height * 0.56
+      });
     }
     // if (first.getDay() != 0){
     //     var numberOfPrevious = firstDays - first.getDay()
     // }
-}
+  };
 
-  _onViewableChange = ({viewableItems, changed}) => {
-    if(viewableItems.length > 0){
-      let newKey = viewableItems[0].key
+  _onViewableChange = ({ viewableItems, changed }) => {
+    if (viewableItems.length > 0) {
+      let newKey = viewableItems[0].key;
       /**
       if(this.currKey && newKey > this.currKey){//swipe to next
       } else if(this.currKey && newKey < this.currKey){//swipe to prev
       }
       */
-      if(this.currSymptomDisplay){
-        this.calendars[newKey].calendar.updateVisualization(this.currSymptomDisplay);
+      if (this.currSymptomDisplay) {
+        this.calendars[newKey].calendar.updateVisualization(
+          this.currSymptomDisplay
+        );
       }
 
-      this.currKey = newKey
-      this.currIndex = viewableItems[0].index
-      this.currCalendar = this.calendars[newKey]
-      this.currCalendar.calendar._onDatePress(this.previouslySelected) //keep presistent day selection across months
-      this.calendarHeight(this.currCalendar.props.data)
-
+      this.currKey = newKey;
+      this.currIndex = viewableItems[0].index;
+      this.currCalendar = this.calendars[newKey];
+      this.currCalendar.calendar._onDatePress(this.previouslySelected); //keep presistent day selection across months
+      this.calendarHeight(this.currCalendar.props.data);
     }
-    if (viewableItems.length > 0 && this.mutexLock == 0){
-      if (viewableItems[viewableItems.length - 1].index == 0){
+    if (viewableItems.length > 0 && this.mutexLock == 0) {
+      if (viewableItems[viewableItems.length - 1].index == 0) {
         this._loadPrev();
       }
     }
-  }
+  };
 
   _loadPrev = () => {
-    this.mutexLock = 1
+    this.mutexLock = 1;
     newData = [];
     current = this.state.first;
     for (i = 1; i < 20; i++) {
@@ -198,52 +223,51 @@ class Calendar extends Component {
       first: current - 19
     });
     this._enableScroll(this.flatListRef);
-    this.flatListRef.scrollToIndex({animated:false, index:19})
-
+    this.flatListRef.scrollToIndex({ animated: false, index: 19 });
   };
 
-  _startScroll(){
+  _startScroll() {
     //console.log('START')
   }
   _disableScroll() {
-
-      //console.log('END')
+    //console.log('END')
     this.flatListRef.getScrollResponder().setNativeProps({
       scrollEnabled: false
-    })
+    });
     let thisRef = this;
-    setTimeout(function(){  thisRef._enableScroll(thisRef.flatListRef) }, 200);
+    setTimeout(function() {
+      thisRef._enableScroll(thisRef.flatListRef);
+    }, 200);
   }
 
   _enableScroll(list) {
-    if(list){
+    if (list) {
       list.getScrollResponder().setNativeProps({
         scrollEnabled: true
-      })
+      });
     }
   }
 
-  _scrollFinished(){
-    if(this.mutexLock){
-      this.flatListRef.scrollToOffset({offset: itemWidth*19+1})
+  _scrollFinished() {
+    if (this.mutexLock) {
+      this.flatListRef.scrollToOffset({ offset: itemWidth * 19 + 1 });
     }
     this.mutexLock = 0;
-
   }
 
-  _pickerHandler(month, year){
-    let thisMonth = this.currCalendar.calendar.props.currMonth.getMonth()+1
-    let thisYear = this.currCalendar.calendar.props.currMonth.getFullYear()
+  _pickerHandler(month, year) {
+    let thisMonth = this.currCalendar.calendar.props.currMonth.getMonth() + 1;
+    let thisYear = this.currCalendar.calendar.props.currMonth.getFullYear();
 
-    let newIdx = this.currIndex + (year - thisYear)*12 + (month - thisMonth)
-    try{
-      this.flatListRef.scrollToIndex({animated:false, index:newIdx})
-    }catch(err){
-      if(err.name == 'Invariant Violation'){
-          thisRef = this;
-          this._loadMore(newIdx - this.state.last, function(){
-            thisRef.flatListRef.scrollToIndex({animated:false, index:newIdx})
-          });
+    let newIdx = this.currIndex + (year - thisYear) * 12 + (month - thisMonth);
+    try {
+      this.flatListRef.scrollToIndex({ animated: false, index: newIdx });
+    } catch (err) {
+      if (err.name == 'Invariant Violation') {
+        thisRef = this;
+        this._loadMore(newIdx - this.state.last, function() {
+          thisRef.flatListRef.scrollToIndex({ animated: false, index: newIdx });
+        });
       }
     }
   }
@@ -251,11 +275,13 @@ class Calendar extends Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-        <View style={{  }}>
+        <View style={{}}>
           <FlatList
             height={this.state.flatlistHeight}
             style={itemStyle}
-            ref={(ref) => { this.flatListRef = ref; }}
+            ref={ref => {
+              this.flatListRef = ref;
+            }}
             data={this.state.data}
             renderItem={this._renderItem}
             onEndReached={this._loadMore}
@@ -270,15 +296,21 @@ class Calendar extends Component {
             showsHorizontalScrollIndicator={false}
             initialScrollIndex={numOfCals + 1}
             initialNumToRender={3}
-            maxToRenderPerBatch= {5}
+            maxToRenderPerBatch={5}
             windowSize={5}
             viewabilityConfig={VIEWABILITY_CONFIG}
-            onScrollBeginDrag={() => {this._startScroll()}}
-            onScrollEndDrag={() => {this._disableScroll()}}
-            onMomentumScrollEnd={() => {this._scrollFinished()}}
+            onScrollBeginDrag={() => {
+              this._startScroll();
+            }}
+            onScrollEndDrag={() => {
+              this._disableScroll();
+            }}
+            onMomentumScrollEnd={() => {
+              this._scrollFinished();
+            }}
           />
         </View>
-        <View style={{ height: 500 }}>
+        <View style={{ flex: 1 }}>
           <Agenda
             agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}
@@ -286,7 +318,6 @@ class Calendar extends Component {
           />
         </View>
       </View>
-
     );
   }
 }

@@ -49,7 +49,7 @@ export function cancelMassNotifications(notificationIDS) {
     this notification in the future.
 
 */
-function setNotification(t, b, date, callBack) {
+export function setNotification(t, b, date, callBack) {
   d = {
     title: t,
     body: b
@@ -95,7 +95,7 @@ callBack: function to be called after the notification is set.
   id: string
   date: dateObject
   title: t,
-  body: b, 
+  body: b,
 }
 
 

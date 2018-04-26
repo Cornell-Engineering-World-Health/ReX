@@ -60,6 +60,15 @@ export const IMAGES = {
   iconJellyfish: require('../Resources/Images/icons8-jellyfish-100.png'),
   iconOwl: require('../Resources/Images/icons8-owl-100.png'),
   iconHamster: require('../Resources/Images/icons8-hamster-100.png'),
+  iconCow: require('../Resources/Images/icons8-cow-100.png'),
+  iconMask: require('../Resources/Images/icons8-anonymous-mask-96.png'),
+  iconDog: require('../Resources/Images/icons8-dog-100.png'),
+  iconHorse: require('../Resources/Images/icons8-horse-100.png'),
+  iconPanda: require('../Resources/Images/icons8-panda-100.png'),
+  iconPig: require('../Resources/Images/icons8-pig-100.png'),
+  iconStork: require('../Resources/Images/icons8-stork-64.png'),
+  iconTurtle: require('../Resources/Images/icons8-turtle-100.png'),
+  iconWhale: require('../Resources/Images/icons8-whale-100.png'),
   quickLog: require('../Resources/Images/quicklog.png'),
   tealGradient: require('../Resources/Images/tealGradient.jpg'),
   blueGradient: require('../Resources/Images/blueGradient.jpg'),
@@ -67,7 +76,24 @@ export const IMAGES = {
   darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
   darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
   security: require('../Resources/Images/icons8-protect-40.png'),
+  view: require('../Resources/Images/view.png'),
+  export: require('../Resources/Images/export.png')
 };
+export const profile_icons = [
+  IMAGES.iconWolf,
+  IMAGES.iconZebra,
+  IMAGES.iconJellyfish,
+  IMAGES.iconOwl,
+  IMAGES.iconHamster,
+  IMAGES.iconCow,
+  IMAGES.iconMask,
+  IMAGES.iconDog,
+  IMAGES.iconHorse,
+  IMAGES.iconPanda,
+  IMAGES.iconPig,
+  IMAGES.iconTurtle
+];
+
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
   blue: '#79ADDC',
@@ -82,7 +108,7 @@ export const COLOR = {
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
 };
-//TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
+// TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
 
 export default (constants = {
@@ -119,6 +145,12 @@ export default (constants = {
   HEADACHE: {
     image: IMAGES.brain,
     title: 'Headache',
+    backgroundColor: '#7fdecb',
+    translucentColor: '#7fdecb80'
+  },
+  DIZZINESS: {
+    image: IMAGES.intensePain,
+    title: 'Dizziness',
     backgroundColor: '#7fdecb',
     translucentColor: '#7fdecb80'
   },
@@ -176,6 +208,12 @@ export default (constants = {
     backgroundColor: defaultColor,
     translucentColor: defaultColor
   },
+  DIZZINESS: {
+    title: 'Dizziness',
+    image: IMAGES.default,
+    backgroundColor: '#836953',
+    translucentColor: '#83695380'
+  },
   DEFAULT: {
     image: IMAGES.default,
     title: 'Default',
@@ -187,6 +225,7 @@ let types = [
   constants.BLURRED_VISION,
   constants.PILL,
   constants.HEADACHE,
+  constants.DIZZINESS,
   constants.NECKPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,

@@ -200,9 +200,7 @@ class MenuBar extends React.Component {
               });
             }}
           />
-          <GestureRecognizer
-            onSwipeUp={() => this.setState({ buttonsVisible: true })}
-          >
+          <GestureRecognizer>
             <ButtonWithImage
               shadow
               rounded

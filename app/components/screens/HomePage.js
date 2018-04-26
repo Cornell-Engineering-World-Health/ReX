@@ -14,10 +14,9 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
-import PillDesign from '../MedicineComponents/PillDesign';
 import ButtonWithImage from '../Button/ButtonWithImage';
-import MedicineCard from '../Card/MedicineCard';
 import Modal from 'react-native-modal';
+import { IMAGES, profile_icons } from '../Resources/constants';
 import constants from '../Resources/constants';
 import {IMAGES, COLOR} from '../Resources/constants';
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
@@ -29,145 +28,12 @@ import {
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
 
-const medicineMorning = [
-  {
-    key: 1,
-    title: 'Tylenol',
-    quantity: '2 pills',
-    dosage: '400 mg',
-    time: '6:00 PM',
-    pillDesign: 'index1',
-    note: 'Take after eating meal.',
-    completed: false
-  },
-  {
-    key: 2,
-    title: 'Sharpies',
-    quantity: '2 pens',
-    dosage: '400 mg',
-    time: '8:00 AM',
-    note: 'Take on empty stomach.',
-    pillDesign: 'index1',
-    completed: false
-  },
-  {
-    key: 10,
-    title: 'Tylenol',
-    quantity: '2 pills',
-    dosage: '400 mg',
-    time: '6:00 PM',
-    pillDesign: 'index1',
-    note: 'Take after eating meal.',
-    completed: false
-  },
-  {
-    key: 11,
-    title: 'Sharpies',
-    quantity: '2 pens',
-    dosage: '400 mg',
-    time: '8:00 AM',
-    note: 'Take on empty stomach.',
-    pillDesign: 'index1',
-    completed: false
-  }
-];
-const medicineAfternoon = [
-  {
-    key: 3,
-    title: 'Tylenol',
-    quantity: '2 pills',
-    dosage: '400 mg',
-    time: '6:00 PM',
-    pillDesign: 'index1',
-    note: 'Take after eating meal.',
-    completed: false
-  },
-  {
-    key: 4,
-    title: 'Sharpies',
-    quantity: '2 pens',
-    time: '8:00 AM',
-    note: 'Take on empty stomach.',
-    pillDesign: 'index1',
-    completed: false
-  }
-];
-const medicineEvening = [
-  {
-    key: 5,
-    title: 'Tylenol',
-    quantity: '2 pills',
-    dosage: '400 mg',
-    time: '6:00 PM',
-    pillDesign: 'index1',
-    note: 'Take after eating meal.',
-    completed: false
-  },
-  {
-    key: 6,
-    title: 'Sharpies',
-    quantity: '2 pens',
-    time: '8:00 AM',
-    note: 'Take on empty stomach.',
-    pillDesign: 'index1',
-    completed: false
-  }
-];
-const medicineNight = [
-  {
-    key: 5,
-    title: 'Tylenol',
-    quantity: '2 pills',
-    dosage: '400 mg',
-    time: '6:00 PM',
-    pillDesign: 'index1',
-    note: 'Take after eating meal.',
-    completed: true
-  },
-  {
-    key: 6,
-    title: 'Sharpies',
-    quantity: '2 pens',
-    time: '8:00 AM',
-    note: 'Take on empty stomach.',
-    pillDesign: 'index1',
-    completed: false
-  }
-];
-
-const weekdays = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
-];
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
 class Home extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       modalVisible: null,
-      morning: medicineMorning,
-      afternoon: medicineAfternoon,
-      evening: medicineEvening,
-      night: medicineNight,
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
@@ -180,7 +46,8 @@ class Home extends React.Component {
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase((data) => {
         this.setState({
-            name: data.name
+            name: data.name,
+            icon: data.icon
         })
     })
     this.didRevert = [false, false, false, false]
@@ -251,33 +118,6 @@ class Home extends React.Component {
     }
   }
 
-  _renderButtons() {
-    /**
-    checkMark = (
-      <Image
-        style={{ left: 20, bottom: 3, width: 100, height: 100, opacity: 1 }}
-        source={IMAGES.checkMark}
-      />
-    );
-    list = [checkMark, checkMark, checkMark, checkMark];
-    medicineArray = [
-      this.state.morning,
-      this.state.afternoon,
-      this.state.evening,
-      this.state.night
-    ];
-    for (let y = 0; y < medicineArray.length; y++) {
-      for (let x = 0; x < medicineArray[y].length; x++) {
-        if (!medicineArray[y][x].completed) {
-          list[y] = null;
-          break;
-        }
-      }
-    }
-    return list;
-    */
-  }
-
 
   logAll(index){
     let time
@@ -341,7 +181,6 @@ class Home extends React.Component {
   }
 
   render() {
-    let medicineCompletion = this._renderButtons();
     let currentDate = new Date();
 
     let done = [];
@@ -357,20 +196,33 @@ class Home extends React.Component {
         <View style={styles.pageContainer}>
           <View>
             <View style={styles.topInfo}>
-              <View style={styles.header}>
-                <Text style={styles.welcomeText}>Welcome</Text>
-                <Text style={styles.nameText}>{this.state.name}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View style={styles.header}>
+                  <Text style={styles.welcomeText}>Welcome</Text>
+                  <Text style={styles.nameText}>{this.state.name}</Text>
+                </View>
+                <View style={{ marginTop: 25, marginRight: 20 }}>
+                  <Image
+                    source={profile_icons[this.state.icon]}
+                    style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                  />
+                </View>
               </View>
               <View style={styles.subHeader}>
                 <Text style={styles.subHeaderText}>
-                  {weekdays[currentDate.getDay()-1]}
+                  {constants.DAY[currentDate.getDay()]}
                 </Text>
                 <Text style={styles.subHeaderText}>
-                  {months[currentDate.getMonth()]} {currentDate.getDate()}
+                  {constants.MONTH[currentDate.getMonth()]}{' '}
+                  {currentDate.getDate()}
                 </Text>
               </View>
             </View>
-            <View />
           </View>
           <View style={{ alignItems: 'center' }}>
             <HomeMedicineLogger
@@ -386,162 +238,6 @@ class Home extends React.Component {
             />
           </View>
         </View>
-        <Modal
-          onBackdropPress={() => this.setState({ modalVisible: null })}
-          onSwipe={() => this.setState({ modalVisible: null })}
-          swipeDirection={'down'}
-          swipeThreshold={25}
-          style={styles.medicineStyle}
-          isVisible={this.state.modalVisible == 'afternoon'}
-        >
-          <View style={{ flex: 0.75 }}>
-            <FlatList
-              data={this.state.afternoon}
-              extraData={this.state}
-              renderItem={({ item, index }) => {
-                return (
-                  <MedicineCard
-                    buttonActive={true}
-                    swiperActive={item.completed}
-                    title={item.title}
-                    timeStamp={item.time}
-                    note1={item.quantity + ' ' + item.dosage}
-                    note2={item.note}
-                    checked={item.completed}
-                    onPress={() => this._handleAfternoonPress(index, true)}
-                    buttonsRight={[
-                      {
-                        onPress: () => this._handleAfternoonPress(index, false),
-
-                        text: 'Undo',
-                        type: 'delete'
-                      }
-                    ]}
-                  />
-                );
-              }}
-            />
-          </View>
-        </Modal>
-        <Modal
-          onBackdropPress={() => this.setState({ modalVisible: null })}
-          onSwipe={() => this.setState({ modalVisible: null })}
-          swipeDirection={'down'}
-          swipeThreshold={25}
-          style={styles.medicineStyle}
-          isVisible={this.state.modalVisible == 'morning'}
-        >
-          <View style={{ flex: 0.75 }}>
-            <FlatList
-              data={this.state.morning}
-              extraData={this.state}
-              renderItem={({ item, index }) => {
-                return (
-                  <MedicineCard
-                    buttonActive={true}
-                    swiperActive={item.completed}
-                    title={item.title}
-                    timeStamp={item.time}
-                    note1={item.quantity + ' ' + item.dosage}
-                    note2={item.note}
-                    checked={item.completed}
-                    onPress={() => this._handleMorningPress(index, true)}
-                    buttonsRight={[
-                      {
-                        onPress: () => this._handleMorningPress(index, false),
-
-                        text: 'Undo',
-                        type: 'delete'
-                      }
-                    ]}
-                  />
-                );
-              }}
-            />
-          </View>
-        </Modal>
-        <Modal
-          onBackdropPress={() => this.setState({ modalVisible: null })}
-          onSwipe={() => this.setState({ modalVisible: null })}
-          swipeDirection={'down'}
-          swipeThreshold={25}
-          style={styles.medicineStyle}
-          isVisible={this.state.modalVisible == 'evening'}
-        >
-          <View style={{ flex: 0.75 }}>
-            <FlatList
-              data={this.state.evening}
-              extraData={this.state}
-              renderItem={({ item, index }) => {
-                return (
-                  <MedicineCard
-                    buttonActive={true}
-                    title={item.title}
-                    swiperActive={item.completed}
-                    timeStamp={item.time}
-                    note1={item.quantity + ' ' + item.dosage}
-                    note2={item.note}
-                    checked={item.completed}
-                    onPress={() => this._handleEveningPress(index, true)}
-                    buttonsRight={[
-                      {
-                        onPress: () => this._handleEveningPress(index, false),
-
-                        text: 'Undo',
-                        type: 'delete'
-                      }
-                    ]}
-                  />
-                );
-              }}
-            />
-          </View>
-        </Modal>
-        <Modal
-          onBackdropPress={() => this.setState({ modalVisible: null })}
-          onSwipe={() => this.setState({ modalVisible: null })}
-          swipeDirection={'down'}
-          swipeThreshold={40}
-          style={styles.medicineStyle}
-          isVisible={this.state.modalVisible == 'night'}
-        >
-          <View style={{ flex: 0.75 }}>
-            <FlatList
-              data={this.state.night}
-              extraData={this.state}
-              renderItem={({ item, index }) => {
-                return (
-                  <MedicineCard
-                    buttonActive={true}
-                    title={item.title}
-                    swiperActive={item.completed}
-                    timeStamp={item.time}
-                    note1={item.quantity + ' ' + item.dosage}
-                    note2={item.note}
-                    checked={item.completed}
-                    onPress={() => this._handleNightPress(index, true)}
-                    buttonsRight={[
-                      {
-                        onPress: () => this._handleNightPress(index, false),
-
-                        text: 'Undo',
-                        type: 'delete'
-                      }
-                    ]}
-                  />
-                );
-              }}
-            />
-          </View>
-        </Modal>
-        <DropdownAlert
-          ref={ref => this.dropdown = ref}
-          closeInterval={4000}
-          imageSrc={this.state.iconDropDown}
-          containerStyle={{
-            backgroundColor: this.state.backgroundColorDropDown,
-          }}
-        />
       </ImageBackground>
     );
   }
