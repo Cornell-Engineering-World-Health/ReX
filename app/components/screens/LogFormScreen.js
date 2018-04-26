@@ -1,104 +1,139 @@
-import React from 'react'
-import {StyleSheet, Text, View, Image, Header, ScrollView, TouchableOpacity, DatePickerIOS, Picker, Button} from 'react-native'
-import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
-import TextInputType from '../LogInputTypes/TextInputType'
-import PickerInputType from '../LogInputTypes/PickerInputType'
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
-import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
-import DatePicker from '../LogInputTypes/DatePicker'
-import TimePicker from '../LogInputTypes/TimePicker'
-import { StackNavigator } from 'react-navigation'
-import Database from '../../Database'
-import moment from 'moment'
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Header,
+  ScrollView,
+  TouchableOpacity,
+  DatePickerIOS,
+  Picker,
+  Button
+} from 'react-native';
+import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
+import TextInputType from '../LogInputTypes/TextInputType';
+import PickerInputType from '../LogInputTypes/PickerInputType';
+import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
+import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
+import DatePicker from '../LogInputTypes/DatePicker';
+import TimePicker from '../LogInputTypes/TimePicker';
+import { StackNavigator } from 'react-navigation';
+import Database from '../../Database';
+import moment from 'moment';
 
-event_id_count = 100
-event_details_id_count = 100
+event_id_count = 100;
+event_details_id_count = 100;
 
 export default class ChooseLogScreen extends React.Component {
-
-  constructor (props) {
-    super(props)
-    var log_type = 0
-    var nav = true
+  constructor(props) {
+    super(props);
+    var log_type = 0;
+    var nav = true;
     if (this.props.log_type) {
-      log_type = this.props.log_type
-      nav = false
+      log_type = this.props.log_type;
+      nav = false;
     } else {
-      log_type = this.props.navigation.state.params.log_type
+      log_type = this.props.navigation.state.params.log_type;
     }
-    console.log('log type----')
-    console.log(log_type)
-    var keysArray = []
+    console.log('log type----');
+    console.log(log_type);
+    var keysArray = [];
 
-    Database.transaction(tx => (tx.executeSql('SELECT fields FROM event_tbl \
+    Database.transaction(
+      tx =>
+        tx.executeSql(
+          "SELECT fields FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp = \'1950-01-01 00:00:00\' \
-          AND event_type_id = ?;', [log_type], (tx, { rows }) => {
-            json_rows = JSON.parse(rows._array[0].fields)
-            keysArray = Object.keys(json_rows)
+          WHERE timestamp = '1950-01-01 00:00:00' \
+          AND event_type_id = ?;",
+          [log_type],
+          (tx, { rows }) => {
+            json_rows = JSON.parse(rows._array[0].fields);
+            keysArray = Object.keys(json_rows);
 
-            var valArray = []
+            var valArray = [];
 
             for (let i = 0; i < keysArray.length; i++) {
-              var input_types = []
-              valArray[i] = json_rows[keysArray[i]]
+              var input_types = [];
+              valArray[i] = json_rows[keysArray[i]];
 
               // console.log(keysArray[i])
 
-              Database.transaction(tx => (tx.executeSql('SELECT view_name FROM field_to_view_tbl \
-                    WHERE field_name = ?;', [keysArray[i]], (tx, { rows }) => {
-                      input_types[i] = rows._array[0].view_name
-                      console.log(input_types[i])
+              Database.transaction(
+                tx =>
+                  tx.executeSql(
+                    'SELECT view_name FROM field_to_view_tbl \
+                    WHERE field_name = ?;',
+                    [keysArray[i]],
+                    (tx, { rows }) => {
+                      input_types[i] = rows._array[0].view_name;
+                      console.log(input_types[i]);
                       this.setState({
                         input_type_array: input_types,
                         value_labels: keysArray,
                         values: valArray,
                         submit_vals: json_rows,
                         event_type_id: log_type
-                      })
-                    })), err => console.log(err))
+                      });
+                    }
+                  ),
+                err => console.log(err)
+              );
             }
-          })), err => console.log(err))
+          }
+        ),
+      err => console.log(err)
+    );
 
-    var input_types = []
+    var input_types = [];
 
     this.state = {
       input_type_array: input_types,
       nav: nav
-    }
+    };
   }
 
-  valueChange (label, value) {
-    this.state.submit_vals[label] = value
+  valueChange(label, value) {
+    this.state.submit_vals[label] = value;
   }
 
-  submit () {
+  submit() {
     if (this.state.nav) {
       // Symptoms
-      this.props.navigation.state.params.onLog()
-      this.props.navigation.pop()
-      let event_type_id = this.state.event_type_id
-      let values = JSON.stringify(this.state.submit_vals)
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss')
+      this.props.navigation.state.params.onLog();
+      this.props.navigation.pop();
+      let event_type_id = this.state.event_type_id;
+      let values = JSON.stringify(this.state.submit_vals);
+      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
 
-      console.log(values)
+      console.log(values);
 
-      Database.transaction(tx => {
-        tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)', [event_details_id_count, values])
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)', [event_id_count, event_type_id, timestamp, event_details_id_count])
-      }, err => console.log(err))
+      Database.transaction(
+        tx => {
+          tx.executeSql(
+            'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)',
+            [event_details_id_count, values]
+          );
+          tx.executeSql(
+            'INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)',
+            [event_id_count, event_type_id, timestamp, event_details_id_count]
+          );
+        },
+        err => console.log(err)
+      );
 
-      event_id_count++
-      event_details_id_count++
+      event_id_count++;
+      event_details_id_count++;
     } else {
       // Medications
-      this.props.on_finish()
+      this.props.on_finish();
     }
   }
 
-  render () {
-    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible']
-    var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening']
+  render() {
+    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible'];
+    var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening'];
     return (
       <ScrollView>
         <View style={styles.main_container}>
@@ -114,7 +149,9 @@ export default class ChooseLogScreen extends React.Component {
                   scale_labels={SCALE_LABELS}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'NumericalPickerInputType') {
               return (
                 <NumericalPickerInputType
@@ -128,7 +165,9 @@ export default class ChooseLogScreen extends React.Component {
                   unit={'minutes'}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'DosagePickerInputType') {
               return (
                 <NumericalPickerInputType
@@ -142,7 +181,9 @@ export default class ChooseLogScreen extends React.Component {
                   unit={'mg'}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'TextInputType') {
               return (
                 <TextInputType
@@ -152,7 +193,9 @@ export default class ChooseLogScreen extends React.Component {
                   placeholder_text={'Type here...'}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'DatePicker') {
               return (
                 <DatePicker
@@ -162,22 +205,33 @@ export default class ChooseLogScreen extends React.Component {
                   value={this.state.values[key]}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'DayChooserInputType') {
               return (
                 <ChecklistInputType
                   key={key}
-                  list_values={['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']}
+                  list_values={[
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday'
+                  ]}
                   input_style={styles.input_container_green}
                   title_text_style={styles.title_text}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   value={this.state.values[key]}
-                  valueChange={this.valueChange.bind(this)} />)
+                  valueChange={this.valueChange.bind(this)}
+                />
+              );
             } else if (prop == 'TimeCategoryInputType') {
               return (
-                <View
-                  key={key}>
+                <View key={key}>
                   {this.state.values[key].map((prop, timeKey) => {
                     return (
                       <TimePicker
@@ -189,24 +243,31 @@ export default class ChooseLogScreen extends React.Component {
                         val_label={this.state.value_labels[key]}
                         chosen_date={this.state.values[key][timeKey]}
                         valueChange={(label, val) => {
-                          this.state.values[key][timeKey] = val
-                          this.valueChange(this.state.value_labels[key], this.state.values[key])
-                        }} />)
+                          this.state.values[key][timeKey] = val;
+                          this.valueChange(
+                            this.state.value_labels[key],
+                            this.state.values[key]
+                          );
+                        }}
+                      />
+                    );
                   })}
                   <TouchableOpacity
                     style={styles.add_button}
                     onPress={() => {
-                      this.state.values[key].push(moment().format('HH:mm'))
+                      this.state.values[key].push(moment().format('HH:mm'));
                       this.setState({
                         values: this.state.values
-                      })
-                    }}>
+                      });
+                    }}
+                  >
                     <Text style={styles.submit_text}>Add Another Time</Text>
                   </TouchableOpacity>
-                </View>)
+                </View>
+              );
             }
           })}
-          {  /*    <ChecklistInputType
+          {/*    <ChecklistInputType
             list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
             input_style={styles.input_container_green}
             title_text_style={styles.title_text}
@@ -251,15 +312,16 @@ export default class ChooseLogScreen extends React.Component {
             title_text={'Duration of Pain'} />
           <TouchableOpacity style={styles.submit_button}>
             <Text style={styles.submit_text}>Submit</Text>
-          </TouchableOpacity> */ }
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.submit_button}
-            onPress={this.submit.bind(this)}>
+            onPress={this.submit.bind(this)}
+          >
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -348,4 +410,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25
   }
-})
+});
