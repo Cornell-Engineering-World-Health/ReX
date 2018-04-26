@@ -15,10 +15,12 @@ class ButtonSelector extends React.Component {
 
   render() {
     let background = this.props.defaultBackgroundColor;
+    let icon = this.props.imageSource
     if (this.props.selected) {
-      background = this.props.selectedBackgroundColor;
+      icon = this.props.selectedImageSource
+      //background = this.props.selectedBackgroundColor;
     }
-    return <ButtonWithImage {...this.props} backgroundColor={background} />;
+    return <ButtonWithImage {...this.props} imageSource={icon} backgroundColor={background} />;
   }
 }
 

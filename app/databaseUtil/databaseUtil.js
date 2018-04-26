@@ -167,10 +167,10 @@ export function databaseFakeData(){
         tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,\'2018-04-25 09:00:00\', 55)')
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
         \'{"pillName": "Tylenol","dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00","18:00"],"timeCategory": ["Morning","Evening"],"daysOfWeek": [0,0,0,0,1,0,0],"taken": [false,false]}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-04-24 09:00:00\', 56)')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-04-26 09:00:00\', 56)')
         tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
         \'{"pillName": "Aspirin","dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","time": ["09:00"],"timeCategory": ["Morning"],"daysOfWeek": [0,0,0,0,1,0,0],"taken": [false]}\' )')
-        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-04-24 09:00:00\', 57)')
+        tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-04-26 09:00:00\', 57)')
 
         /* medication reminder fake data */
     },err=> console.log(err));
@@ -190,7 +190,6 @@ export function databaseFakeData(){
 
 
 export function pullFromDataBase(month, day, callback){
-  //TODO: year is missing?
   console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0,7)
@@ -295,6 +294,7 @@ function formatMedicineData(data){
 }
 
 export function pullMedicineFromDatabase(date, callback){
+  date.setTime(date.getTime() + date.getTimezoneOffset()*60*1000 )
   let day = date.toISOString().substr(0,10)
   dayArray  = [day]
   Database.transaction(tx => {
@@ -337,6 +337,7 @@ function updateMedicineData(data,time,takenVal){
 export function databaseTakeMedicines(date,timeIndex,takenVal){
   let timeArray = ['Morning','Afternoon','Evening','Night']
   let timeString = timeArray[timeIndex]
+  date.setTime(date.getTime() + date.getTimezoneOffset()*60*1000 )
   let day = date.toISOString().substr(0,10)
   dayArray  = [day]
 

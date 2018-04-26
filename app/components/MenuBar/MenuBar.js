@@ -171,6 +171,7 @@ class MenuBar extends React.Component {
           </Modal>
           <ButtonSelector
             imageSource={IMAGES.homeIcon}
+            selectedImageSource={IMAGES.homeIcon2}
             width={50}
             height={50}
             rounded
@@ -186,6 +187,7 @@ class MenuBar extends React.Component {
 
           <ButtonSelector
             imageSource={IMAGES.calendar}
+            selectedImageSource={IMAGES.calendar2}
             width={50}
             height={50}
             rounded
@@ -204,7 +206,8 @@ class MenuBar extends React.Component {
             <ButtonWithImage
               shadow
               rounded
-              imageSource={IMAGES.plusSign2}
+              imageSource={IMAGES.plusSign}
+              selectedImageSource={IMAGES.plusSign2}
               width={50}
               height={50}
               onPress={() => {
@@ -216,6 +219,7 @@ class MenuBar extends React.Component {
           </GestureRecognizer>
           <ButtonSelector
             imageSource={IMAGES.pillBottle}
+            selectedImageSource={IMAGES.pillBottle2}
             width={50}
             height={50}
             rounded
@@ -230,6 +234,7 @@ class MenuBar extends React.Component {
           />
           <ButtonSelector
             imageSource={IMAGES.settings}
+            selectedImageSource={IMAGES.settings2}
             width={50}
             height={50}
             rounded
