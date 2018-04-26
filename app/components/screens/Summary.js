@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontStyle: 'bold',
-    fontSize: '20',
+    fontSize: 20,
     textAlign: 'center',
     color: '#000000'
   },
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
   text: { fontSize: 23, textAlign: 'center' },
   headerText: {
     color: '#000000',
-    fontSize: '25',
+    fontSize: 25,
     textAlign: 'center'
   },
   row: { flexDirection: 'row', backgroundColor: '#ffffff' },
