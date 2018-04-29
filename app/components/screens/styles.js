@@ -11,7 +11,6 @@ export default StyleSheet.create({
     marginLeft: 2,
     marginRight: 2,
     flexDirection: 'column',
-    justifyContent: 'space-between'
   },
   separator: {
     //backgroundColor: '#f2f2f2',
@@ -36,6 +35,16 @@ export default StyleSheet.create({
     color: 'black',
     fontSize: 28,
     fontWeight: '800'
+  },
+  middleMessage:{
+    marginLeft: 20,
+    marginRight: 20,
+    paddingTop: 20,
+    flex: 1,
+  },
+  middleMessageText:{
+    fontSize: 20,
+    color: COLOR.PrimaryGray
   },
   subHeader: {
     marginLeft: 20,

@@ -16,7 +16,7 @@ import Moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import Modal from 'react-native-modal';
-import { IMAGES, profile_icons } from '../Resources/constants';
+import { profile_icons } from '../Resources/constants';
 import constants from '../Resources/constants';
 import {IMAGES, COLOR} from '../Resources/constants';
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
@@ -41,6 +41,7 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
+      message: 'yo uahvent ave a hheahce in 3%d%d days!'
     };
 
     //TODO: make one function that only pulls name from database
@@ -213,6 +214,9 @@ class Home extends React.Component {
                   />
                 </View>
               </View>
+              <View style={styles.middleMessage}>
+                <Text style={styles.middleMessageText}>{this.state.message}</Text>
+              </View>
               <View style={styles.subHeader}>
                 <Text style={styles.subHeaderText}>
                   {constants.DAY[currentDate.getDay()]}
@@ -238,6 +242,14 @@ class Home extends React.Component {
             />
           </View>
         </View>
+        <DropdownAlert
+          ref={ref => this.dropdown = ref}
+          closeInterval={4000}
+          imageSrc={this.state.iconDropDown}
+          containerStyle={{
+            backgroundColor: this.state.backgroundColorDropDown,
+          }}
+        />
       </ImageBackground>
     );
   }
