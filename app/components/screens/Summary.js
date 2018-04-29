@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Text,
   Alert,
-  Image
+  Image,
+  Modal
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import {
@@ -21,12 +22,21 @@ import {
 import { IMAGES } from '../Resources/constants';
 import { sendMail } from '../Mail/MailController';
 import { takeSnapshotAsync } from 'expo';
+import {
+  AreaChart,
+  LineChart,
+  Grid,
+  XAxis,
+  YAxis
+} from 'react-native-svg-charts';
+import * as shape from 'd3-shape';
 //pull from database the event types that have been recorded in the database
 const types = ['Date', 'Notes'];
 
 //Title to be associated with: Headache
 const headacheData = [
   { intensity: '9', duration: '2 hours', date: '4-9-18' },
+  { intensity: '1', duration: '2 hours', date: '4-9-18' },
   { intensity: '8', duration: '4 hours', date: '4-10-18' },
   { intensity: '7', duration: '7 hours', date: '4-11-18' },
   { intensity: '1', duration: '12 hours', date: '4-12-18' },
@@ -81,7 +91,8 @@ export default class Summary extends React.Component {
     this.state = {
       title: totalHeaders[0],
       scrollViewWidth: 0,
-      scrollViewHeight: 0
+      scrollViewHeight: 0,
+      chart: ''
     };
     if (totalData.length > 0) {
       this.setState({ title: totalHeaders[0] });
@@ -158,6 +169,7 @@ export default class Summary extends React.Component {
         onPress={() => {
           console.log(index, 'index');
           console.log(data, 'data');
+          this.setState({ modalID: 'chart' });
         }}
       >
         <View style={[styles.btn, { backgroundColor: boxColor }]}>
@@ -196,7 +208,12 @@ export default class Summary extends React.Component {
       </View>
     );
   }
-
+  _getDate(d) {
+    date = d.item.date;
+    var num = date.indexOf('-');
+    var endNum = date.lastIndexOf('-');
+    return parseInt(date.substring(num + 1, endNum));
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -245,6 +262,59 @@ export default class Summary extends React.Component {
             </View>
           ))}
         </Swiper>
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ marginTop: 10, fontSize: 25, textAlign: 'center' }}>
+            Headaches
+          </Text>
+          <View style={{ flexDirection: 'row', padding: 20 }}>
+            <YAxis
+              min={0}
+              max={10}
+              data={totalData[0]}
+              svg={{
+                fill: 'grey',
+                fontSize: 10
+              }}
+              contentInset={{ top: 10, bottom: 10 }}
+              formatLabel={value => value}
+              yAccessor={item => {
+                return parseInt(item.item.intensity);
+              }}
+            />
+            <View style={{ flex: 1 }}>
+              <LineChart
+                showGrid={true}
+                gridMin={0}
+                gridMax={10}
+                animate={true}
+                style={{ height: 200 }}
+                data={totalData[0]}
+                xAccessor={item => {
+                  return this._getDate(item);
+                }}
+                yAccessor={item => {
+                  return parseInt(item.item.intensity);
+                }}
+                contentInset={{ top: 10, bottom: 10 }}
+                curve={shape.curveNatural}
+                svg={{ stroke: 'rgb(134, 65, 244)' }}
+              />
+              <XAxis
+                style={{ marginHorizontal: -10 }}
+                data={totalData[0]}
+                svg={{
+                  fill: 'grey',
+                  fontSize: 10
+                }}
+                contentInset={{ top: 10, bottom: 10, left: 10 }}
+                formatLabel={value => value}
+                xAccessor={item => {
+                  return this._getDate(item);
+                }}
+              />
+            </View>
+          </View>
+        </View>
       </View>
     );
   }
