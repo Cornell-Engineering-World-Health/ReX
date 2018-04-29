@@ -41,7 +41,7 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: 'yo uahvent ave a hheahce in 3%d%d days!'
+      message: 'you haven\'t had a headache in 5 days!'
     };
 
     //TODO: make one function that only pulls name from database
