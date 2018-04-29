@@ -24,15 +24,21 @@ import moment from 'moment'
 
 event_id_count = 100
 event_details_id_count = 100
+keyStart = 200
 
 export default class ChooseLogScreen extends React.Component {
   constructor (props) {
     super(props)
     var log_type = 0
     var nav = true
+    var timestamp = '1950-01-01 00:00:00'
     if (this.props.log_type) {
       log_type = this.props.log_type
       nav = false
+      if (this.props.timestamp) {
+        timestamp = this.props.timestamp
+        console.log('here!!!!!!!!!!!' + timestamp)
+      }
     } else {
       log_type = this.props.navigation.state.params.log_type
     }
@@ -43,11 +49,11 @@ export default class ChooseLogScreen extends React.Component {
     Database.transaction(
       tx =>
         tx.executeSql(
-          "SELECT fields FROM event_tbl \
+          'SELECT fields FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp = '1950-01-01 00:00:00' \
-          AND event_type_id = ?;",
-          [log_type],
+          WHERE timestamp = ? \
+          AND event_type_id = ?;',
+          [timestamp, log_type],
           (tx, { rows }) => {
             json_rows = JSON.parse(rows._array[0].fields)
             keysArray = Object.keys(json_rows)
@@ -100,14 +106,14 @@ export default class ChooseLogScreen extends React.Component {
 
   submit () {
     if (this.state.nav) {
-      // Symptoms
+      // Log new symptoms
       this.props.navigation.state.params.onLog()
       this.props.navigation.pop()
       let event_type_id = this.state.event_type_id
       let values = JSON.stringify(this.state.submit_vals)
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss')
+      let timestamp = moment().format('YYYY-MM-DD HH:mm:00')
 
-      console.log(values)
+      console.log(timestamp)
 
       Database.transaction(
         tx => {
@@ -126,8 +132,13 @@ export default class ChooseLogScreen extends React.Component {
       event_id_count++
       event_details_id_count++
     } else {
-      // Medications
       this.props.on_finish()
+      if (this.props.timestamp) {
+        // Edit symptom log
+        console.log('edit symptom log')
+      } else {
+        // Add new medication
+      }
     }
   }
 
@@ -145,7 +156,7 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
                   max_val={4}
-                  value={parseInt(this.state.values[key])}
+                  value={parseInt(this.state.values[key]) - 1}
                   scale_labels={SCALE_LABELS}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
@@ -190,6 +201,7 @@ export default class ChooseLogScreen extends React.Component {
                   key={key}
                   input_style={styles.input_container_green}
                   title_text_style={styles.title_text}
+                  text={this.state.values[key]}
                   placeholder_text={'Type here...'}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
@@ -270,52 +282,6 @@ export default class ChooseLogScreen extends React.Component {
               )
             }
           })}
-          {/*    <ChecklistInputType
-            list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            title_text={'Associated Symptoms'} />
-          <PickerInputType
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            value={'Sharp'}
-            picker_values={['Pressure-like', 'Sharp', 'Throbbing']}
-            title_text={'Type of Headache'} />
-          <ScaleSlideInputType
-            input_style={styles.input_container_blue}
-            title_text_style={styles.title_text}
-            max_val={4}
-            value={2}
-            scale_labels={['None', 'A Little', 'Medium', 'A Lot', 'Horrible']}
-            title_text={'Intensity'} />
-          <PickerInputType
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            value={'Top of Head'}
-            picker_values={['Back of Head', 'Top of Head', 'Forehead']}
-            title_text={'Location of Pain'} />
-          <PickerInputType
-            input_style={styles.input_container_blue}
-            title_text_style={styles.title_text}
-            value={'Naproxen'}
-            picker_values={['Tylenol', 'Ibuprofen', 'Naproxen', 'Excedrin', 'Fioricet']}
-            title_text={'Medication Needed'} />
-          <TextInputType
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            placeholder_text={'Type here...'}
-            title_text={'Other Symptoms'} />
-          <NumericalPickerInputType
-            input_style={styles.input_container_blue}
-            title_text_style={styles.title_text}
-            value={3}
-            min={0}
-            max={6}
-            unit={'hours'}
-            title_text={'Duration of Pain'} />
-          <TouchableOpacity style={styles.submit_button}>
-            <Text style={styles.submit_text}>Submit</Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.submit_button}
             onPress={this.submit.bind(this)}
