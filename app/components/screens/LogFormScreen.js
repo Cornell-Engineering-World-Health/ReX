@@ -13,6 +13,7 @@ import moment from 'moment'
 
 event_id_count = 100
 event_details_id_count = 100
+keyStart = 200
 
 export default class ChooseLogScreen extends React.Component {
 
@@ -181,13 +182,21 @@ export default class ChooseLogScreen extends React.Component {
                   {this.state.values[key].map((prop, timeKey) => {
                     return (
                       <TimePicker
-                        key={timeKey}
+                        key={this.state.values.length + timeKey}
                         input_style={styles.input_container_transparent_blue}
                         title_text_style={styles.title_text_blue}
                         value={this.state.values[key][timeKey]}
                         title_text={'Reminder Time ' + (timeKey + 1)}
                         val_label={this.state.value_labels[key]}
                         chosen_date={this.state.values[key][timeKey]}
+                        deletePressed={() => {
+                          this.state.values[key].splice(timeKey, 1)
+                          console.log(this.state.values[key])
+                          this.valueChange(this.state.value_labels[key], this.state.values[key])
+                          this.setState({
+                            values: this.state.values
+                          })
+                        }}
                         valueChange={(label, val) => {
                           this.state.values[key][timeKey] = val
                           this.valueChange(this.state.value_labels[key], this.state.values[key])
