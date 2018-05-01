@@ -49,7 +49,8 @@ export default class ChooseLogScreen extends React.Component {
     this.state = {
       navigate: this.props.navigation,
       log_types: log_types_array,
-      event_ids: event_ids_array
+      event_ids: event_ids_array,
+      bodyLabel: this.props.bodyLabel,
     };
   }
 

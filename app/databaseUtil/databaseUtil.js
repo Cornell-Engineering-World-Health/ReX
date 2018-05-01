@@ -2,7 +2,6 @@ import Database from '../Database'
 import Moment from 'moment'
 import constants, {getCardData} from '../components/Resources/constants'
 
-databaseFakeData()
 
 export function createTables () {
   console.log('creating tables')
