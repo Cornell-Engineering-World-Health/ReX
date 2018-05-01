@@ -66,6 +66,7 @@ export default class ChooseLogScreen extends React.Component {
           <View style={styles.log_container}>
             {this.state.log_types.map((prop, key) => {
               if (this.state.event_ids[key] != 4) {
+                console.log(prop)
                 return (
                   <TouchableOpacity
                     key={key}
