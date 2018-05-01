@@ -33,9 +33,14 @@ export default class ChooseLogScreen extends React.Component {
       tx =>
         tx.executeSql('SELECT * FROM event_type_tbl', [], (tx, { rows }) => {
           json_rows = rows._array;
+          let j = 0;
           for (let i = 0; i < json_rows.length; i++) {
-            log_types_array[i] = json_rows[i].event_type_name;
-            event_ids_array[i] = json_rows[i].event_type_id;
+            if(json_rows[i].event_type_category == this.props.navigation.state.params.bodyLabel){
+              console.log(json_rows[i].event_type_category, this.props.bodyLabel)
+              log_types_array[j] = json_rows[i].event_type_name;
+              event_ids_array[j] = json_rows[i].event_type_id;
+              j++;
+            }
           }
 
           this.setState({
@@ -50,7 +55,7 @@ export default class ChooseLogScreen extends React.Component {
       navigate: this.props.navigation,
       log_types: log_types_array,
       event_ids: event_ids_array,
-      bodyLabel: this.props.bodyLabel,
+      bodyLabel: this.props.navigation.state.params.bodyLabel,
     };
   }
 
@@ -66,7 +71,6 @@ export default class ChooseLogScreen extends React.Component {
           <View style={styles.log_container}>
             {this.state.log_types.map((prop, key) => {
               if (this.state.event_ids[key] != 4) {
-                console.log(prop)
                 return (
                   <TouchableOpacity
                     key={key}
