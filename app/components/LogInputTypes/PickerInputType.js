@@ -39,7 +39,7 @@ export default class PickerInputType extends React.Component {
                   key={key}
                   label={prop}
                   value={prop}
-                  color="white"
+                  color="#747375"
                 />
               );
             })}
@@ -56,5 +56,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  picker: { width: 200 }
+  picker: { width: 200, color: 'green' }
 });

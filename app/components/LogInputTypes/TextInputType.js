@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, AppRegistry, TextInput, View} from 'react-native'
+import {StyleSheet, Text, AppRegistry, TextInput, View, Image} from 'react-native'
 
 export default class TextInputType extends React.Component {
   constructor (props) {
@@ -15,7 +15,8 @@ export default class TextInputType extends React.Component {
   render () {
     return (
       <View style={this.state.input_style}>
-        <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+        <View style = {{flex: 1, flexDirection: 'row'}}>
+        <Image source = {require('../Resources/Images/icons8-right-arrow-filled-50.png')} style = {styles.images}/>
         <TextInput style={styles.text}
           onChangeText={(text) => {
             this.setState({text})
@@ -23,6 +24,7 @@ export default class TextInputType extends React.Component {
           }}
           placeholder={this.state.placeholder_text}
         />
+        </View>
       </View>
     )
   }
@@ -30,7 +32,14 @@ export default class TextInputType extends React.Component {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 30,
-    color: 'white'
+    fontSize: 20,
+    color: 'white',
+
+  },
+  images: {
+    height: 30,
+    width: 30,
+    marginRight: 10
+
   }
 })

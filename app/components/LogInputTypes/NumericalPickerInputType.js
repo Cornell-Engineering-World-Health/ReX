@@ -26,11 +26,9 @@ export default class NumericalPickerInputType extends React.Component {
     return (
       <PickerInputType
         ref={(p) => {this.picker = p}}
-        title_text={this.state.title_text}
         value={this.state.value}
         picker_values={this.state.picker_values}
         input_style={this.state.input_style}
-        title_text_style={this.state.title_text_style}
         handleChange={this.handleChange.bind(this)}
       />
     )

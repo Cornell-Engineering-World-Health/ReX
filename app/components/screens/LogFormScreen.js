@@ -21,6 +21,7 @@ import TimePicker from '../LogInputTypes/TimePicker';
 import { StackNavigator } from 'react-navigation';
 import Database from '../../Database';
 import moment from 'moment';
+import { LinearGradient } from 'expo';
 
 event_id_count = 100;
 event_details_id_count = 100;
@@ -135,14 +136,20 @@ export default class ChooseLogScreen extends React.Component {
     var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible'];
     var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening'];
     return (
-      <ScrollView>
+      <ScrollView backgroundColor = '#fffbfd'>
+        <View>
+        {/* <View style = {{justifyContent: 'center', alignItems: 'center', flex: 1, marginTop: 20}}>
+          <Text style={styles.main_header}>LOG SYMPTOM</Text>
+        </View> */}
         <View style={styles.main_container}>
           {this.state.input_type_array.map((prop, key) => {
             if (prop == 'ScaleSlideInputType') {
               return (
+                <View style = {{flex: 1, flexDirection: 'column'}}>
+                <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <ScaleSlideInputType
                   key={key}
-                  input_style={styles.input_container_blue}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text}
                   max_val={4}
                   value={parseInt(this.state.values[key])}
@@ -151,12 +158,15 @@ export default class ChooseLogScreen extends React.Component {
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+                </View>
               );
             } else if (prop == 'NumericalPickerInputType') {
               return (
+                <View style = {{flex: 1, flexDirection: 'column'}}>
+                <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <NumericalPickerInputType
                   key={key}
-                  input_style={styles.input_container_blue}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text}
                   value={this.state.values[key]}
                   min={0}
@@ -167,12 +177,15 @@ export default class ChooseLogScreen extends React.Component {
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+                </View>
               );
             } else if (prop == 'DosagePickerInputType') {
               return (
+              <View style = {{flex: 1, flexDirection: 'column'}}>
+              <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <NumericalPickerInputType
                   key={key}
-                  input_style={styles.input_container_blue}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text}
                   value={this.state.values[key]}
                   min={0}
@@ -183,21 +196,27 @@ export default class ChooseLogScreen extends React.Component {
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+              </View>
               );
             } else if (prop == 'TextInputType') {
               return (
+              <View style = {{flex: 1, flexDirection: 'column'}}>
+              <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <TextInputType
                   key={key}
-                  input_style={styles.input_container_green}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text}
                   placeholder_text={'Type here...'}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+              </View>
               );
             } else if (prop == 'DatePicker') {
               return (
+              <View style = {{flex: 1, flexDirection: 'column'}}>
+              <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <DatePicker
                   key={key}
                   input_style={styles.input_container_transparent_green}
@@ -207,9 +226,12 @@ export default class ChooseLogScreen extends React.Component {
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+              </View>
               );
             } else if (prop == 'DayChooserInputType') {
               return (
+              <View style = {{flex: 1, flexDirection: 'column'}}>
+              <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <ChecklistInputType
                   key={key}
                   list_values={[
@@ -228,6 +250,7 @@ export default class ChooseLogScreen extends React.Component {
                   value={this.state.values[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
+              </View>
               );
             } else if (prop == 'TimeCategoryInputType') {
               return (
@@ -266,7 +289,8 @@ export default class ChooseLogScreen extends React.Component {
                 </View>
               );
             }
-          })}
+          }
+          )}
           {/*    <ChecklistInputType
             list_values={['Light sensitivity', 'Sound sensitivity', 'Nausea', 'Pulsatile tinnitus', 'Scalp pain (allodynia)', 'Back pain', 'Neck pain']}
             input_style={styles.input_container_green}
@@ -313,12 +337,19 @@ export default class ChooseLogScreen extends React.Component {
           <TouchableOpacity style={styles.submit_button}>
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity> */}
+          <LinearGradient
+          colors={['#49dcb1', '#49dce6']}
+          style={{alignItems: 'center', width: 320, borderRadius: 100}}
+          start={[0., 0.]}
+          end={[1.0, 0.]} >
           <TouchableOpacity
             style={styles.submit_button}
             onPress={this.submit.bind(this)}
           >
             <Text style={styles.submit_text}>Submit</Text>
           </TouchableOpacity>
+          </LinearGradient>
+        </View>
         </View>
       </ScrollView>
     );
@@ -327,7 +358,7 @@ export default class ChooseLogScreen extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    marginTop: 50,
+    marginTop: 30,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -351,10 +382,10 @@ const styles = StyleSheet.create({
     width: 320,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: '#2D6D84',
+    backgroundColor: '#',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D6D84'
+    borderColor: '#'
   },
   input_container_green: {
     width: 320,
@@ -384,16 +415,15 @@ const styles = StyleSheet.create({
     borderColor: '#2D6D84'
   },
   submit_button: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: 15,
+    marginBottom: 15,
     alignItems: 'bottom',
     width: 320,
     alignItems: 'center',
-    backgroundColor: '#bf5252',
-    padding: 15,
+    backgroundColor: 'transparent',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#bf5252'
+    borderColor: 'transparent'
   },
   add_button: {
     marginBottom: 20,
@@ -408,6 +438,30 @@ const styles = StyleSheet.create({
   },
   submit_text: {
     color: 'white',
-    fontSize: 25
+    fontSize: 20
+  },
+  shadow_input_container: {
+    shadowOffset:{  width: 1,  height: 1,  },
+    shadowColor: 'grey',
+    shadowOpacity: 0.2,
+    width: 320,
+    padding: 20,
+    marginBottom: 20,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    borderColor: '#49dcb1',
+    backgroundColor: '#ffffff'
+  },
+  box_title_text: {
+    fontSize: 12,
+    // color: '#a7a4a6',
+    color: '#747375',
+    fontWeight: 'bold',
+    paddingBottom: 10
+  },
+  main_header: {
+    fontSize: 18,
+    color: '#49dcb1',
+    fontWeight: 'bold',
   }
 });
