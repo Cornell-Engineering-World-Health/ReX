@@ -302,6 +302,28 @@ export function pullMedicineFromDatabase (date, callback) {
   })
 }
 
+/*startDate and endDate should be javascript dates*/
+export function asyncCreateMedicineEvents(name,dosage,startDate,endDate,timeArray,timeCategories,event_id,event_details_id){
+    Database.transaction(tx = {
+        for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+            dateString  = d.toISOString().substr(0, 10)
+            
+            /* inserting event_details record */
+            var taken = timeArray.map(t=> {return false})
+            detailsJson = {'Pill Name': name,'Dosage':dosage, 'Start Date':startDate,'End Date': endDate, 'Time':timeArray,'Time Category':timeCategories,'Taken': taken}
+            console.log(detailsJson)
+            var inputArray = [String(event_details_id), JSON.stringify(detailsJson)]
+            tx.executeSql('INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?',inputArray)
+            
+            /* inserting event record */
+            var formattedTimeStamp = Moment(dateString + ' ' + timeArray[0], 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm:ss')
+            inputArray = [String(event_id),'4',formattedTimeStamp ,String(event_type_id)]
+            tx.executeSql('INSERT OR REPLACE INTO (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-04-19 09:00:00\', 57)', inputArray)
+            event_id +=1
+            event_details_id +=1
+        }
+    })
+}
 export function asyncSettingUpdate (name, value) {
   inputArray = [name, value]
   Database.transaction(tx => {
@@ -321,3 +343,5 @@ export function pullSettingsFromDatabase (callback) {
     tx.executeSql('SELECT * from settings_tbl', [], (_, { rows }) => callback(parseSettings(rows._array)))
   }, err => console.log(err))
 }
+
+

@@ -36,7 +36,7 @@ class Home extends React.Component {
       doneAmount: [0, 0, 0, 0],
       name: 'Navin'
     };
-
+    asyncCreateMedicineEvents('Humara','20 mg',new Date('2018-04-02'),new Date('2018-05-28'),['09:00','18:00'],['Morning','Afternoon'],500,500)
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase(data => {
       this.setState({
