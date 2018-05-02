@@ -33,6 +33,8 @@ import * as shape from 'd3-shape';
 //pull from database the event types that have been recorded in the database
 const types = ['Date', 'Notes'];
 
+//pretend i get an intensity + frequency for all stuff
+
 //Title to be associated with: Headache
 const headacheData = [
   { intensity: '9', duration: '2 hours', date: '4-9-18' },
@@ -341,7 +343,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   dateText: {
-    fontStyle: 'normal',
+    fontStyle: 'bold',
     fontSize: 20,
     textAlign: 'center',
     color: '#000000'

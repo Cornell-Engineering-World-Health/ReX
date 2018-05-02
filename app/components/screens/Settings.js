@@ -18,8 +18,9 @@ import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
 import { StackNavigator } from 'react-navigation';
-import Profile from './EditProfile.js';
-import Summary from './Summary.js';
+import Profile from './EditProfile';
+import Summary from './Summary';
+import SummaryGraph from './SummaryGraph';
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
@@ -156,7 +157,7 @@ class Settings extends Component {
               title="View History"
               hasNavArrow={true}
               onPress={() => {
-                this.props.navigator.push(SummaryPage);
+                this.props.navigator.push(SummaryGraphPage);
               }}
               titleInfoStyle={styles.titleInfoStyle}
             />
@@ -234,6 +235,9 @@ const ProfileRoute = {
 };
 const SummaryPage = {
   component: Summary
+};
+const SummaryGraphPage = {
+  component: SummaryGraph
 };
 export default class settingsList extends React.Component {
   render() {
