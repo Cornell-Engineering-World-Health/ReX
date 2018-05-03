@@ -65,7 +65,9 @@ export const IMAGES = {
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
-  body: require('../Resources/Images/body.png')
+  body: require('../Resources/Images/body.png'),
+  female: require('../Resources/Images/female_body.png'),
+  male: require('../Resources/Images/male_body.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,

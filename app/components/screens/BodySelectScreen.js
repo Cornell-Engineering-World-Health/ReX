@@ -17,6 +17,7 @@ import { StackNavigator } from 'react-navigation';
 import Database from '../../Database';
 import { BODY_PARTS, COLOR, IMAGES } from '../Resources/constants';
 import ButtonWithImage from '../Button/ButtonWithImage';
+import {pullSettingsFromDatabase} from '../../databaseUtil/databaseUtil';
 const height =  Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const opacity = '30';
@@ -30,6 +31,7 @@ export default class BodySelectScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+
     return (
       <View style={{flex: 1}}>
         <ImageBackground
@@ -37,6 +39,7 @@ export default class BodySelectScreen extends React.Component {
           style={{flex: 1, flexDirection: 'row'}}
           source={IMAGES.body}
         >
+          <View style={styles.emptyVertical}/>
           <View style={[styles.vertical, {alignItems: 'flex-end'}]}>
             <View
               style={styles.head}
@@ -92,43 +95,52 @@ export default class BodySelectScreen extends React.Component {
               style={[styles.arm_right, { width: width / 5,}]}
             />
             <View
-              style={[styles.legs, {flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}]}
+              style={[styles.legs, {}]}
             >
-              <TouchableOpacity
-                style={styles.wholeBodyButton}
-                onPress={() => {
-                  navigate('Choose', {
-                    bodyLabel: BODY_PARTS.BODY
-                  })
-                }}
+              <View
+                style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
               >
-                <Text>Whole Body</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.wholeBodyButton}
+                  onPress={() => {
+                    navigate('Choose', {
+                      bodyLabel: BODY_PARTS.BODY
+                    })
+                  }}
+                >
+                  <Text>Whole Body</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
+          <View style={styles.emptyVertical}/>
         </ImageBackground>
       </View>
     );
   }
 }
 
+
 const styles = StyleSheet.create({
+  emptyVertical: {
+    width: width / 8,
+  },
   vertical: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
   },
   legs: {
-    width: width /3,
+    width: width /4,
     height: height/3,
   },
   torso: {
-    width: width /3,
+    width: width /4,
     flex: 1,
   },
   head: {
-    width: width /3,
-    height: height/5,
+    width: width /4,
+    height: height/8,
   },
   arm_left: {
     flex: 1,

@@ -36,7 +36,6 @@ export default class ChooseLogScreen extends React.Component {
           let j = 0;
           for (let i = 0; i < json_rows.length; i++) {
             if(json_rows[i].event_type_category == this.props.navigation.state.params.bodyLabel){
-              console.log(json_rows[i].event_type_category, this.props.bodyLabel)
               log_types_array[j] = json_rows[i].event_type_name;
               event_ids_array[j] = json_rows[i].event_type_id;
               j++;
