@@ -41,7 +41,7 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: 'you haven\'t had a headache in 5 days!'
+      message: 'You haven\'t had a headache in 5 days!'
     };
 
     //TODO: make one function that only pulls name from database
@@ -102,7 +102,6 @@ class Home extends React.Component {
   }
 
   componentWillUnmount(){
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
     //console.log(this.state.doneAmount, this.state.originalDoneAmount, this.state.totalAmount)
     let done = this.state.doneAmount
     let o_done = this.state.originalDoneAmount
@@ -136,8 +135,9 @@ class Home extends React.Component {
     }
 
     doneAmount = this.state.doneAmount
+    dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
     if(this.state.originalDoneAmount[index] == this.state.totalAmount[index]){
-      dropDownTitle = 'No '+time+' medications to be taken!'
+      dropDownMessage = 'No '+time+' medications to be taken!'
     }else if(doneAmount[index] == this.state.totalAmount[index]){
       doneAmount[index] = this.state.originalDoneAmount[index];
       backgroundColorDropDown = COLOR.PrimaryGray
@@ -145,7 +145,7 @@ class Home extends React.Component {
       dropDownMessage = 'Touch and hold to revert logs of ALL '+time+' medications.'
     } else {
       doneAmount[index] = this.state.totalAmount[index];
-      dropDownTitle = 'All remaining '+time+' medications are taken!'
+      dropDownMessage = 'All remaining '+time+' medications are taken!'
     }
     thisRef = this;
     this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
@@ -166,16 +166,16 @@ class Home extends React.Component {
     }
     let doneAmount = this.state.doneAmount
     let originalDoneAmount = this.state.originalDoneAmount
-
+    dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
     if(this.state.totalAmount[index] == 0){
-      dropDownTitle = 'No '+time+' medications are being tracked.'
+      dropDownMessage = 'No '+time+' medications are being tracked.'
     } else if(this.state.originalDoneAmount[index] == 0){
-      dropDownTitle = 'No '+time+ ' medications to revert.'
+      dropDownMessage = 'No '+time+ ' medications to revert.'
     } else {
       doneAmount[index] = 0
       originalDoneAmount[index] = 0
       this.didRevert[index] = true;
-      dropDownTitle = 'ALL '+time+' medications logs have been reverted!'
+      dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
 

@@ -174,10 +174,10 @@ export function databaseFakeData(){
           tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,\'2018-04-18 09:00:00\', 55)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
               \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false,false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-04-26 09:00:00\', 56)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-05-05 09:00:00\', 56)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
               \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-04-26 09:00:00\', 57)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-05-05 09:00:00\', 57)')
 
 
         /* medication reminder fake data */

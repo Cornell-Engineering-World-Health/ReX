@@ -44,7 +44,8 @@ export default StyleSheet.create({
   },
   middleMessageText:{
     fontSize: 20,
-    color: COLOR.PrimaryGray
+    color: COLOR.PrimaryGray,
+    textAlign: 'center'
   },
   subHeader: {
     marginLeft: 20,
