@@ -13,6 +13,7 @@ import {
 import Circle from '../MedicineComponents/Circle.js';
 import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
+import Check from '../MedicineComponents/Check';
 
 var data1 = [
   {
@@ -106,8 +107,35 @@ class CoolerMedicineView extends React.Component {
 
     this.state = {
       meds: meds,
-      amData: [0, 100, 0, 100, 0, 100, 0, 100]
+      amData: [0, 100, 0, 100, 0, 100, 0, 100],
+      animateCheck: false,
     };
+  }
+
+  onComplete = (renderBool) => {
+    if (renderBool == 1){
+      console.log("nani?")
+      this.setState({
+        animateCheck: true
+      })
+    }
+    else {
+      this.setState({
+        animateCheck: false
+      })
+    }
+  }
+
+  renderCheck = () => {
+    console.log("at least checking?")
+    if (this.state.animateCheck == true){
+      console.log("suck me")
+      return (
+        <View style = {{position: 'absolute', left: Dimensions.get('window').width / 2.5, top: Dimensions.get('window').height / 4.4}}>
+        <Check />
+        </View>
+      )
+    }
   }
 
   updateMeds = (time, index) => {
@@ -126,13 +154,21 @@ class CoolerMedicineView extends React.Component {
     newData[time * 2] = 100 * (sum / len);
     newData[time * 2 + 1] = 100 - newData[time * 2];
     this.setState({ amData: newData });
+    if (this.state.amData.toString() == ([100, 0, 100, 0, 100, 0, 100, 0]).toString()){
+      this.onComplete(1)
+    }
+    else {
+      this.onComplete(0)
+    }
   };
 
   render() {
+
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Circle amData={this.state.amData} />
+          {this.renderCheck()}
           <View style={{ flex: 0.75 }}>
             <FlatList
               data={[0]}

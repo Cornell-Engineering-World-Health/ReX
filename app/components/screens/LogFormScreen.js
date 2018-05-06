@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   DatePickerIOS,
   Picker,
+  Animated,
   Button
 } from 'react-native';
 import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';

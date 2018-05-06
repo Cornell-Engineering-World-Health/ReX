@@ -19,7 +19,6 @@ class Circle extends Component {
 
     let date = new Date(1997, 12, 10, 5, 2, 49, 19);
 
-
     this.state = {
         colors:['#6ef7c9','#6ef7c940','#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940', '#6ef7c9','#6ef7c940'],
         innerColors:['#85ada015','#ffffff','#85ada015','#ffffff', '#85ada015','#ffffff', '#85ada015','#ffffff'],
@@ -27,6 +26,7 @@ class Circle extends Component {
         hour: (date.getHours()) + (date.getMinutes()/60) + (date.getSeconds() / 3600),
         isModalVisible: false
     }
+
   }
   
     Radians = (degrees) => {

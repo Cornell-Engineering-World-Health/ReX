@@ -107,7 +107,7 @@ class Card extends PureComponent {
       minHeight: 10,
       animation: new Animated.Value(),
       status: this.props.status,
-      arrow: 'expand'
+      arrow: require('../Resources/icons8-collapse-arrow-50.png')
     };
   }
 
@@ -135,7 +135,8 @@ class Card extends PureComponent {
         ? this.state.minHeight
         : this.state.maxHeight + this.state.minHeight;
 
-    var currentArrow = this.state.expanded ? 'collapse' : 'expand';
+    var arrows = [require('../Resources/icons8-expand-arrow-50.png'), require('../Resources/icons8-collapse-arrow-50.png')]
+    var currentArrow = this.state.expanded ? arrows[0] : arrows[1]
 
     this.setState({
       expanded: !this.state.expanded,
@@ -215,13 +216,7 @@ class Card extends PureComponent {
                       <Text> Show Pills </Text>
                       <Image
                         style={styles.image_style}
-                        source={() => {
-                          if (this.state.arrow == 'expand') {
-                            return require('../Resources/icons8-expand-arrow-50.png');
-                          } else {
-                            return require('../Resources/icons8-collapse-arrow-50.png');
-                          }
-                        }}
+                        source={this.state.arrow}
                       />
                     </View>
                   </TouchableOpacity>
