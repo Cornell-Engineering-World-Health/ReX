@@ -17,18 +17,17 @@ export default StyleSheet.create({
   medicineButton: {
     width: circleWidth/2,
     height: circleWidth/2,
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     margin: 0,
   },
   buttonContent:{
+    position: 'absolute',
     alignItems: 'center',
+    width: circleWidth/2*.5, 
+    height: circleWidth/2*.8,
   },
   imageStyle: {
-    width: 100,
-    height: 100
+    width: circleWidth/2*.5,
+    height: circleWidth/2*.7,
   },
   topLeftQuadrant:{
     borderTopLeftRadius: circleWidth,
