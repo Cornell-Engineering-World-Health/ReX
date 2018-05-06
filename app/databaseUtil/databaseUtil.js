@@ -12,7 +12,7 @@ export function createTables () {
             'CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `field_name` TEXT NOT NULL UNIQUE, `view_name` TEXT NOT NULL);'
           )
     tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));'
+            'CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,`event_type_category` TEXT, FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));'
             )
     tx.executeSql(
             'CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER NOT NULL PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));'
@@ -29,12 +29,12 @@ export function intializeDatabase () {
   console.log('intializing database')
   date = new Date()
   Database.transaction(tx => {
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (1, \'Headache\', \'image.png\', \'Intensity\',\'Duration\')')
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (2, \'Dizziness\', \'image.png\')')
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (3, \'Blurred Vision\', \'image.png\', \'Intensity\',\'Duration\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, \'Headache\', \'image.png\', \'Intensity\',\'Duration\',\'HEAD\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values (2, \'Dizziness\', \'image.png\',\'HEAD\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, \'Blurred Vision\', \'image.png\', \'Intensity\',\'Duration\',\'HEAD\')')
     tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon) values (4, \'Medication Reminder\', \'image.png\')')
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (5, \'Knee Pain\', \'image.png\', \'Intensity\',\'Duration\')')
-    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2) values (6, \'Back Pain\', \'image.png\', \'Intensity\',\'Duration\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (5, \'Knee Pain\', \'image.png\', \'Intensity\',\'Duration\',\'LEGS\')')
+    tx.executeSql('INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (6, \'Back Pain\', \'image.png\', \'Intensity\',\'Duration\',\'TORSO\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, \'Intensity\', \'ScaleSlideInputType\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (2, \'Duration\', \'NumericalPickerInputType\')')
     tx.executeSql('INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (3, \'Other\', \'TextInputType\')')
@@ -75,7 +75,7 @@ export function intializeDatabase () {
   }, err => console.log(err), () => console.log('intitialization complete'))
 
   Database.transaction(tx => {
-    tx.executeSql('Select * from event_tbl;', [], (tx, {rows}) => console.log(JSON.stringify(rows)))
+    tx.executeSql('Select * from event_type_tbl;', [], (tx, {rows}) => console.log(JSON.stringify(rows)))
   }, err => console.log(err))
   // console.log(Database)
 }
