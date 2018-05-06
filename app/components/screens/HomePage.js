@@ -13,14 +13,17 @@ import {
   Animated
 } from 'react-native';
 import Moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 import ButtonWithImage from '../Button/ButtonWithImage';
 import Modal from 'react-native-modal';
-import { IMAGES, profile_icons } from '../Resources/constants';
+import { profile_icons } from '../Resources/constants';
 import constants from '../Resources/constants';
+import {IMAGES, COLOR} from '../Resources/constants';
 import { HomeMedicineLogger } from '../HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  databaseTakeMedicines
 } from '../../databaseUtil/databaseUtil';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
@@ -34,24 +37,28 @@ class Home extends React.Component {
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
-      name: 'Navin'
+      originalDoneAmount: [0,0,0,0],
+      name: "Navin",
+      iconDropDown: IMAGES.afternoonColorW,
+      backgroundColorDropDown: COLOR.cyan,
+      message: 'You haven\'t had a headache in 5 days!'
     };
     //TODO: make one function that only pulls name from database
-    pullSettingsFromDatabase(data => {
-      this.setState({
-        name: data.name,
-        icon: data.icon
-      });
-    });
+    pullSettingsFromDatabase((data) => {
+        this.setState({
+            name: data.name,
+            icon: data.icon
+        })
+    })
+    this.didRevert = [false, false, false, false]
   }
 
   componentWillMount() {
     let totalAmount = this.state.totalAmount;
     let doneAmount = this.state.doneAmount;
     let thisRef = this;
-    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
-      console.log('asdfa', formattedData);
-      Object.keys(formattedData).forEach(function(med) {
+    pullMedicineFromDatabase(new Date(), function(formattedData){
+      Object.keys(formattedData).forEach(function(med){
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time) {
           switch (time) {
@@ -81,27 +88,96 @@ class Home extends React.Component {
               break;
             default:
           }
-        });
-      });
+          i++;
+        })
+      })
       thisRef.setState({
         totalAmount: totalAmount,
         doneAmount: doneAmount,
-        data: formattedData
-      });
+        originalDoneAmount: doneAmount.slice(), //copy by value, not reference
+        data: formattedData,
+      })
     });
   }
 
-  //TODO: onclose, should save to storage.
-  componentWillUnmount() {}
+  componentWillUnmount(){
+    //console.log(this.state.doneAmount, this.state.originalDoneAmount, this.state.totalAmount)
+    let done = this.state.doneAmount
+    let o_done = this.state.originalDoneAmount
+    let tot = this.state.totalAmount
 
-  logAll(index) {
-    doneAmount = this.state.doneAmount;
-    if (doneAmount[index] == this.state.totalAmount[index]) {
-      doneAmount[index] = 0;
+    for(let i = 0; i < tot.length; i++){
+      if(done[i] != o_done[i]){
+        console.log('true', i)
+        databaseTakeMedicines(new Date(), i, true)
+      } else if(this.didRevert[i]){
+        databaseTakeMedicines(new Date(), i, false)
+        console.log('false', i)
+      }
+    }
+  }
+
+
+  logAll(index){
+    let time
+    let iconDropDown
+    let backgroundColorDropDown
+    let dropDownTitle = ''
+    let dropDownMessage = ''
+
+
+    switch(index){
+      case 0: iconDropDown = IMAGES.morningColorW; backgroundColorDropDown = COLOR.red; time = 'morning'; break;
+      case 2: iconDropDown = IMAGES.eveningColorW; backgroundColorDropDown = COLOR.purple; time = 'evening'; break;
+      case 3: iconDropDown = IMAGES.nightColorW; backgroundColorDropDown = COLOR.blue; time = 'night'; break;
+      default: iconDropDown = IMAGES.afternoonColorW; backgroundColorDropDown = COLOR.cyan; time = 'afternoon'
+    }
+
+    doneAmount = this.state.doneAmount
+    dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
+    if(this.state.originalDoneAmount[index] == this.state.totalAmount[index]){
+      dropDownMessage = 'No '+time+' medications to be taken!'
+    }else if(doneAmount[index] == this.state.totalAmount[index]){
+      doneAmount[index] = this.state.originalDoneAmount[index];
+      backgroundColorDropDown = COLOR.PrimaryGray
+      dropDownTitle = 'Undo for '+time+' medications'
+      dropDownMessage = 'Touch and hold to revert logs of ALL '+time+' medications.'
     } else {
       doneAmount[index] = this.state.totalAmount[index];
+      dropDownMessage = 'All remaining '+time+' medications are taken!'
     }
-    this.setState({ doneAmount });
+    thisRef = this;
+    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
+  }
+
+  revertAll(index){
+    let time
+    let iconDropDown
+    let backgroundColorDropDown
+    let dropDownTitle = ''
+    let dropDownMessage = ''
+
+    switch(index){
+      case 0: iconDropDown = IMAGES.morningColorW; backgroundColorDropDown = COLOR.red; time = 'morning'; break;
+      case 2: iconDropDown = IMAGES.eveningColorW; backgroundColorDropDown = COLOR.purple; time = 'evening'; break;
+      case 3: iconDropDown = IMAGES.nightColorW; backgroundColorDropDown = COLOR.blue; time = 'night'; break;
+      default: iconDropDown = IMAGES.afternoonColorW; backgroundColorDropDown = COLOR.cyan; time = 'afternoon'
+    }
+    let doneAmount = this.state.doneAmount
+    let originalDoneAmount = this.state.originalDoneAmount
+    dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
+    if(this.state.totalAmount[index] == 0){
+      dropDownMessage = 'No '+time+' medications are being tracked.'
+    } else if(this.state.originalDoneAmount[index] == 0){
+      dropDownMessage = 'No '+time+ ' medications to revert.'
+    } else {
+      doneAmount[index] = 0
+      originalDoneAmount[index] = 0
+      this.didRevert[index] = true;
+      dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
+    }
+    this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
+
   }
 
   render() {
@@ -137,6 +213,9 @@ class Home extends React.Component {
                   />
                 </View>
               </View>
+              <View style={styles.middleMessage}>
+                <Text style={styles.middleMessageText}>{this.state.message}</Text>
+              </View>
               <View style={styles.subHeader}>
                 <Text style={styles.subHeaderText}>
                   {constants.DAY[currentDate.getDay()]}
@@ -154,14 +233,22 @@ class Home extends React.Component {
               onPress={button => {
                 this._onPress(button);
               }}
-              handlerMorning={() => this.logAll(0)}
-              handlerAfternoon={() => this.logAll(1)}
-              handlerEvening={() => this.logAll(2)}
-              handlerNight={() => this.logAll(3)}
+              handlerMorning={(isLongPress) => {if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}}
+              handlerAfternoon={(isLongPress) => {if(!isLongPress){this.logAll(1)}else{this.revertAll(1)}}}
+              handlerEvening={(isLongPress) => {if(!isLongPress){this.logAll(2)}else{this.revertAll(2)}}}
+              handlerNight={(isLongPress) => {if(!isLongPress){this.logAll(3)}else{this.revertAll(3)}}}
               amtArr={remaining}
             />
           </View>
         </View>
+        <DropdownAlert
+          ref={ref => this.dropdown = ref}
+          closeInterval={4000}
+          imageSrc={this.state.iconDropDown}
+          containerStyle={{
+            backgroundColor: this.state.backgroundColorDropDown,
+          }}
+        />
       </ImageBackground>
     );
   }
