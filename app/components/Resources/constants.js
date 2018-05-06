@@ -64,7 +64,8 @@ export const IMAGES = {
   darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
-  export: require('../Resources/Images/export.png')
+  export: require('../Resources/Images/export.png'),
+  body: require('../Resources/Images/bodyLarge.png'),
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -95,6 +96,15 @@ export const COLOR = {
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
 };
+
+export const BODY_PARTS = {
+    ARMS: 'ARMS',
+    LEGS: 'LEGS',
+    TORSO: 'TORSO',
+    HEAD: 'HEAD',
+    BODY: 'BODY',
+}
+
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
 
