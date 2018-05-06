@@ -1,3 +1,3 @@
-import { SQLite } from 'expo';
+import { SQLite } from 'expo'
 
-module.exports = SQLite.openDatabase('db70.db');
+module.exports = SQLite.openDatabase('db78.db')
