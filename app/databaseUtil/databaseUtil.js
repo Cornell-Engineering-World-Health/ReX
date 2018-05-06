@@ -264,9 +264,11 @@ export function pullAgendaFromDatabase (callback) {
 
 export function asyncDeleteEvent (id) {
   inputArray = [id]
+  console.log ('trying to delete event with id :', id)
   Database.transaction(tx => {
-    tx.executeSql('DELETE FROM event_tbl WHERE event_details_id = ?', inputArray)
+    tx.executeSql('DELETE FROM event_tbl WHERE event_details_id = ?', inputArray,(tx, { rows }) => console.log('event has been deleted with id :', id), err => console.log(err))
   }, err => console.log(err))
+  
 }
 function formatMedicineData (data) {
   dataTemp = {}
