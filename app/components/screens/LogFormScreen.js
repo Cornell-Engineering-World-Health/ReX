@@ -20,10 +20,11 @@ import DatePicker from '../LogInputTypes/DatePicker'
 import TimePicker from '../LogInputTypes/TimePicker'
 import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
+import {asyncCreateMedicineEvents} from '../../databaseUtil/databaseUtil';
 import moment from 'moment'
 
-event_id_count = 100
-event_details_id_count = 100
+event_id_count = 600
+event_details_id_count = 600
 keyStart = 200
 
 export default class ChooseLogScreen extends React.Component {
@@ -37,13 +38,11 @@ export default class ChooseLogScreen extends React.Component {
       nav = false
       if (this.props.timestamp) {
         timestamp = this.props.timestamp
-        console.log('here!!!!!!!!!!!' + timestamp)
       }
     } else {
       log_type = this.props.navigation.state.params.log_type
     }
-    console.log('log type----')
-    console.log(log_type)
+    console.log('log type----',log_type)
     var keysArray = []
 
     Database.transaction(
@@ -113,7 +112,7 @@ export default class ChooseLogScreen extends React.Component {
       let values = JSON.stringify(this.state.submit_vals)
       let timestamp = moment().format('YYYY-MM-DD HH:mm:00')
 
-      console.log(timestamp)
+      //console.log(timestamp)
 
       Database.transaction(
         tx => {
@@ -138,6 +137,8 @@ export default class ChooseLogScreen extends React.Component {
         console.log('edit symptom log')
       } else {
         // Add new medication
+        asyncCreateMedicineEvents(this.state.submit_vals['Pill Name'],this.state.submit_vals['Dosage'],new Date(this.state.submit_vals['Start Date']),
+        new Date(this.state.submit_vals['End Date']),this.state.submit_vals['Time'],this.state.submit_vals['Time Category'],event_id_count,event_details_id_count);
       }
     }
   }

@@ -324,12 +324,6 @@ export function asyncCreateMedicineEvents(name,dosage,startDate,endDate,timeArra
         }
     }, err => console.log(err))
     
-    Database.transaction(tx => {
-        tx.executeSql('Select * from event_details_tbl',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));
-    
 }
 export function asyncSettingUpdate (name, value) {
   inputArray = [name, value]
