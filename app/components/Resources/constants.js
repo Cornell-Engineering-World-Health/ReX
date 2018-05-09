@@ -8,7 +8,8 @@ export const IMAGES = {
   backPain: require('../Resources/Images/backPain.png'),
   birthday: require('../Resources/Images/birthday.png'),
   brain: require('../Resources/Images/brain.png'),
-  calendar: require('../Resources/Images/calendar.png'),
+  calendar: require('../Resources/Images/calendarScreen.png'),
+  calendar2: require('../Resources/Images/calendarScreen2.png'),
   checkmark: require('../Resources/Images/checkmark.png'),
   default: require('../Resources/Images/default.png'),
   elbowPain: require('../Resources/Images/elbowPain.png'),
@@ -17,7 +18,8 @@ export const IMAGES = {
   glasses: require('../Resources/Images/glasses.png'),
   headPain: require('../Resources/Images/headPain.png'),
   heartPain: require('../Resources/Images/heartPain.png'),
-  homeIcon: require('../Resources/Images/homeIcon.png'),
+  homeIcon: require('../Resources/Images/homeScreen.png'),
+  homeIcon2: require('../Resources/Images/homeScreen2.png'),
   intensePain: require('../Resources/Images/intensePain.png'),
   kneePain: require('../Resources/Images/kneePain.png'),
   legPain: require('../Resources/Images/legPain.png'),
@@ -25,7 +27,9 @@ export const IMAGES = {
   morning: require('../Resources/Images/morning.png'),
   neckPain: require('../Resources/Images/neckPain.png'),
   night: require('../Resources/Images/night.png'),
-  pillBottle: require('../Resources/Images/pillBottle.png'),
+  pillBottle: require('../Resources/Images/medicationScreen.png'),
+  pillBottle2: require('../Resources/Images/medicationScreen2.png'),
+  plusSign: require('../Resources/Images/plusSign.png'),
   plusSign2: require('../Resources/Images/plusSign2.png'),
   profile: require('../Resources/Images/profile.png'),
   profilePic: require('../Resources/Images/profilePic.png'),
@@ -33,12 +37,21 @@ export const IMAGES = {
   purpleGradient: require('../Resources/Images/purpleGradient.jpg'),
   purpleGradient2: require('../Resources/Images/purpleGradient2.jpg'),
   scale: require('../Resources/Images/scale.png'),
-  settings: require('../Resources/Images/settings.png'),
+  settings: require('../Resources/Images/settingsScreen.png'),
+  settings2: require('../Resources/Images/settingsScreen2.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
   expand: require('../Resources/Images/expand.png'),
+  morningColor: require('../Resources/Images/morningC.png'),
+  afternoonColor: require('../Resources/Images/afternoonC.png'),
+  eveningColor: require('../Resources/Images/eveningC.png'),
+  nightColor: require('../Resources/Images/nightC.png'),
+  morningColorW: require('../Resources/Images/morningW.png'),
+  afternoonColorW: require('../Resources/Images/afternoonW.png'),
+  eveningColorW: require('../Resources/Images/eveningW.png'),
+  nightColorW: require('../Resources/Images/nightW.png'),
   about: require('../Resources/Images/about.png'),
   addressBook: require('../Resources/Images/address-book.png'),
-  afternoonColor: require('../Resources/Images/afternoonColor.png'),
+  afternoonColor: require('../Resources/Images/afternoonC.png'),
   eveningColor: require('../Resources/Images/eveningColor.png'),
   faq: require('../Resources/Images/faq.png'),
   iconWolf: require('../Resources/Images/icons8-wolf-100.png'),
@@ -66,6 +79,7 @@ export const IMAGES = {
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
   hamburgerMenu: require('../Resources/Images/icons8-menu-26.png')
+  body: require('../Resources/Images/bodyLarge.png'),
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -96,6 +110,15 @@ export const COLOR = {
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
 };
+
+export const BODY_PARTS = {
+    ARMS: 'ARMS',
+    LEGS: 'LEGS',
+    TORSO: 'TORSO',
+    HEAD: 'HEAD',
+    BODY: 'BODY',
+}
+
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
 

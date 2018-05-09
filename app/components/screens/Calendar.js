@@ -237,7 +237,7 @@ class Calendar extends Component {
     let thisRef = this;
     setTimeout(function() {
       thisRef._enableScroll(thisRef.flatListRef);
-    }, 300);
+    }, 200);
   }
 
   _enableScroll(list) {

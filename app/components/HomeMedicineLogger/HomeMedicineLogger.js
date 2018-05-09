@@ -8,9 +8,11 @@ import {
   Dimensions
 } from 'react-native';
 import styles from './styles';
-import { COLOR, IMAGES } from '../Resources/constants';
+import {COLOR, IMAGES} from '../Resources/constants';
 const opacity = '20';
-const shift = Dimensions.get('window').width * 0.02;
+const shift = 4*(Dimensions.get('window').width*.4)/(3*Math.PI);
+const radius = Dimensions.get('window').width*.4
+
 
 const HomeMedicineLogger = ({
   done,
@@ -32,77 +34,65 @@ const HomeMedicineLogger = ({
   });
 
   return (
-    <View style={styles.medicineViewContainer}>
-      <View style={styles.medicineViewRow}>
-        <TouchableHighlight
-          activeOpacity={0.5}
-          underlayColor={colors[0]}
-          style={[
-            { backgroundColor: done[0] },
-            styles.medicineButton,
-            styles.topLeftQuadrant
-          ]}
-          onPress={handlerMorning}
-        >
-          <View style={[styles.buttonContent, { left: shift, top: shift }]}>
-            <ImageBackground
-              style={styles.imageStyle}
-              source={require('../Resources/morningColor.png')}
-            />
-            <Text style={styles.amountText}>{amtArr[0]}</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={colors[1]}
-          style={[
-            { backgroundColor: done[1] },
-            styles.medicineButton,
-            styles.topRightQuadrant
-          ]}
-          onPress={handlerAfternoon}
-        >
-          <View style={[styles.buttonContent, { right: shift, top: shift }]}>
-            <ImageBackground
-              style={styles.imageStyle}
-              source={IMAGES.afternoonColor}
-            />
-            <Text style={styles.amountText}>{amtArr[1]}</Text>
-          </View>
-        </TouchableHighlight>
-      </View>
-      <View style={styles.medicineViewRow}>
-        <TouchableHighlight
-          underlayColor={colors[2]}
-          style={[
-            { backgroundColor: done[2] },
-            styles.medicineButton,
-            styles.bottomLeftQuadrant
-          ]}
-          onPress={handlerEvening}
-        >
-          <View style={[styles.buttonContent, { left: shift, bottom: shift }]}>
-            <ImageBackground
-              style={styles.imageStyle}
-              source={IMAGES.eveningColor}
-            />
-            <Text style={styles.amountText}>{amtArr[2]}</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={colors[3]}
-          style={[
-            { backgroundColor: done[3] },
-            styles.medicineButton,
-            styles.bottomRightQuadrant
-          ]}
-          onPress={handlerNight}
-        >
-          <View style={[styles.buttonContent, { right: shift, bottom: shift }]}>
-            <ImageBackground
-              style={styles.imageStyle}
-              source={require('../Resources/nightColor.png')}
-            />
-            <Text style={styles.amountText}>{amtArr[3]}</Text>
+  <View style={styles.medicineViewContainer}>
+    <View style={styles.medicineViewRow}>
+      <TouchableHighlight
+        activeOpacity={.5}
+        underlayColor={colors[0]}
+        style={[{backgroundColor: done[0]}, styles.medicineButton, styles.topLeftQuadrant]}
+        onPress={() => {handlerMorning(false)}}
+        onLongPress={() => {handlerMorning(true)}}
+      >
+        <View style={[styles.buttonContent, {right: shift-radius*.5/2, bottom: shift-radius*.8/2}]}>
+          <ImageBackground
+            style={styles.imageStyle}
+            source={IMAGES.morningColor}
+          />
+        <Text style={styles.amountText}>{amtArr[0]}</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight
+        underlayColor={colors[1]}
+        style={[{backgroundColor: done[1]}, styles.medicineButton, styles.topRightQuadrant]}
+        onPress={() => {handlerAfternoon(false)}}
+        onLongPress={() => {handlerAfternoon(true)}}
+      >
+        <View style={[styles.buttonContent, {left: shift-radius*.5/2, bottom: shift-radius*.8/2}]}>
+          <ImageBackground
+            style={styles.imageStyle}
+            source={IMAGES.afternoonColor}
+          />
+        <Text style={styles.amountText}>{amtArr[1]}</Text>
+        </View>
+      </TouchableHighlight>
+    </View>
+    <View style={styles.medicineViewRow}>
+      <TouchableHighlight
+        underlayColor={colors[2]}
+        style={[{backgroundColor: done[2]}, styles.medicineButton, styles.bottomLeftQuadrant]}
+        onPress={() => {handlerEvening(false)}}
+        onLongPress={() => {handlerEvening(true)}}
+      >
+        <View style={[styles.buttonContent, {right: shift-radius*.5/2, top: shift-radius*.8/2}]}>
+          <ImageBackground
+            style={styles.imageStyle}
+            source={IMAGES.eveningColor}
+          />
+        <Text style={styles.amountText}>{amtArr[2]}</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight
+        underlayColor={colors[3]}
+        style={[{backgroundColor: done[3]}, styles.medicineButton, styles.bottomRightQuadrant]}
+        onPress={() => {handlerNight(false)}}
+        onLongPress={() => {handlerNight(true)}}
+      >
+      <View style={[styles.buttonContent, {left: shift-radius*.5/2, top: shift-radius*.8/2}]}>
+        <ImageBackground
+          style={styles.imageStyle}
+          source={IMAGES.nightColor}
+        />
+        <Text style={styles.amountText}>{amtArr[3]}</Text>
           </View>
         </TouchableHighlight>
       </View>

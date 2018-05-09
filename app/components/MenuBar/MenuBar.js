@@ -41,13 +41,14 @@ const styles = StyleSheet.create({
     height: 75,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: DEFAULT_BACKGROUND_COLOR,
+    backgroundColor: '#ffffff',
     alignItems: 'flex-end'
   },
   menuButtons: {
     height: 150,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    backgroundColor: '#ffffff'
   },
   bottomModal: {
     justifyContent: 'flex-end'
@@ -170,6 +171,7 @@ class MenuBar extends React.Component {
           </Modal>
           <ButtonSelector
             imageSource={IMAGES.homeIcon}
+            selectedImageSource={IMAGES.homeIcon2}
             width={50}
             height={50}
             rounded
@@ -185,6 +187,7 @@ class MenuBar extends React.Component {
 
           <ButtonSelector
             imageSource={IMAGES.calendar}
+            selectedImageSource={IMAGES.calendar2}
             width={50}
             height={50}
             rounded
@@ -201,7 +204,8 @@ class MenuBar extends React.Component {
             <ButtonWithImage
               shadow
               rounded
-              imageSource={IMAGES.plusSign2}
+              imageSource={IMAGES.plusSign}
+              selectedImageSource={IMAGES.plusSign2}
               width={50}
               height={50}
               onPress={() => {
@@ -213,6 +217,7 @@ class MenuBar extends React.Component {
           </GestureRecognizer>
           <ButtonSelector
             imageSource={IMAGES.pillBottle}
+            selectedImageSource={IMAGES.pillBottle2}
             width={50}
             height={50}
             rounded
@@ -227,6 +232,7 @@ class MenuBar extends React.Component {
           />
           <ButtonSelector
             imageSource={IMAGES.settings}
+            selectedImageSource={IMAGES.settings2}
             width={50}
             height={50}
             rounded
