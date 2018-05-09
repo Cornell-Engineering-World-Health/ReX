@@ -62,7 +62,7 @@ class Calendar extends Component {
           Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')
         ) {
           tempData = flatlistData[i].data;
-          console.log(flatlistData[i]);
+          //console.log(flatlistData[i]);
           break;
         }
       }
@@ -113,6 +113,11 @@ class Calendar extends Component {
     this.currSymptomDisplay = type;
     this.calendarRef.updateVisualization(type);
   };
+
+  _refreshCalendar = () => {
+    console.log(this.currSymptomDisplay)
+    this.calendarRef.initVisualization(this.currSymptomDisplay);
+  }
 
   _renderItem = ({ item }) => {
     return (
@@ -327,6 +332,7 @@ class Calendar extends Component {
           <Agenda
             agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}
+            refreshCalendar={this._refreshCalendar}
             date={this.state.currentDate.toLocaleDateString()}
             toggleModal={this.toggleModal}
           />
