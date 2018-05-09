@@ -78,8 +78,8 @@ export const IMAGES = {
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
-  body: require('../Resources/Images/bodyLarge.png'),
-};
+  body: require('../Resources/Images/bodyLarge.png')
+}
 export const profile_icons = [
   IMAGES.iconWolf,
   IMAGES.iconZebra,
@@ -93,7 +93,7 @@ export const profile_icons = [
   IMAGES.iconPanda,
   IMAGES.iconPig,
   IMAGES.iconTurtle
-];
+]
 
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
@@ -108,18 +108,18 @@ export const COLOR = {
   cardTimestamp: '#a9a9a9',
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
-};
+}
 
 export const BODY_PARTS = {
-    ARMS: 'ARMS',
-    LEGS: 'LEGS',
-    TORSO: 'TORSO',
-    HEAD: 'HEAD',
-    BODY: 'BODY',
+  ARMS: 'ARMS',
+  LEGS: 'LEGS',
+  TORSO: 'TORSO',
+  HEAD: 'HEAD',
+  BODY: 'BODY'
 }
 
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
-const defaultColor = '#ffffff';
+const defaultColor = '#ffffff'
 
 export default (constants = {
   MONTH: [
@@ -218,19 +218,13 @@ export default (constants = {
     backgroundColor: defaultColor,
     translucentColor: defaultColor
   },
-  DIZZINESS: {
-    title: 'Dizziness',
-    image: IMAGES.default,
-    backgroundColor: '#836953',
-    translucentColor: '#83695380'
-  },
   DEFAULT: {
     image: IMAGES.default,
     title: 'Default',
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80'
   }
-});
+})
 let types = [
   constants.BLURRED_VISION,
   constants.PILL,
@@ -244,7 +238,7 @@ let types = [
   constants.ELBOWPAIN,
   constants.HEARTPAIN,
   constants.STOMACHPAIN
-];
+]
 
 /**
 Pass in a string that represents which pain you are having (Ex: Headache, Back Pain)
@@ -255,38 +249,38 @@ Precondition: title is a string
 Available titles are found in the constants variable of this file.
 */
 
-export function getCardData(title) {
+export function getCardData (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x];
+      return types[x]
     }
   }
-  return constants.DEFAULT;
+  return constants.DEFAULT
 }
 
-export function getSource(title) {
+export function getSource (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x].image;
+      return types[x].image
     }
   }
-  return constants.DEFAULT.image;
+  return constants.DEFAULT.image
 }
 
-export function getColor(type) {
+export function getColor (type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].backgroundColor;
+      return types[x].backgroundColor
     }
   }
-  return constants.DEFAULT.backgroundColor;
+  return constants.DEFAULT.backgroundColor
 }
 
-export function getTranslucentColor(type) {
+export function getTranslucentColor (type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].translucentColor;
+      return types[x].translucentColor
     }
   }
-  return constants.DEFAULT.translucentColor;
+  return constants.DEFAULT.translucentColor
 }
