@@ -220,7 +220,7 @@ export default class ChooseLogScreen extends React.Component {
               <Text style = {styles.box_title_text}>{this.state.value_labels[key].toUpperCase()}</Text>
                 <DatePicker
                   key={key}
-                  input_style={styles.input_container_transparent_green}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text_green}
                   value={this.state.values[key]}
                   title_text={this.state.value_labels[key]}
@@ -244,7 +244,7 @@ export default class ChooseLogScreen extends React.Component {
                     'Friday',
                     'Saturday'
                   ]}
-                  input_style={styles.input_container_green}
+                  input_style={styles.shadow_input_container}
                   title_text_style={styles.title_text}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}

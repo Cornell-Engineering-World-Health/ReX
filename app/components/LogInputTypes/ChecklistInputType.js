@@ -27,7 +27,6 @@ export default class ChecklistInputType extends React.Component {
   render() {
     return (
       <View style={this.state.input_style}>
-        <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
         <ScrollView horizontal>
           <View style={styles.checkbox_area}>
             {this.state.list_values.map((prop, key) => {
