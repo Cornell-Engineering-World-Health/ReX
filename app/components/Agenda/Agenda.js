@@ -18,6 +18,7 @@ import GestureRecognizer, {
 } from 'react-native-swipe-gestures';
 import moment from 'moment'
 import Database from '../../Database'
+import {asyncDeleteEvent} from '../../databaseUtil/databaseUtil';
 
 class Agenda extends Component {
   static propTypes = {
@@ -29,13 +30,11 @@ class Agenda extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandVisible: false
+      expandVisible: false,
+      changeToForceRender: 1,
     };
   }
 
-  _onDelete = () => {
-    console.log('Deleted Item');
-  };
 
   _keyExtractor = (item, index) => item.id;
 
@@ -77,11 +76,31 @@ class Agenda extends Component {
                             var eventType = JSON.parse(rows._array[0].event_type_id)
                             this.props.toggleModal(timestamp, eventType)
                           }),err => console.log(err))
+                          
+                      /*force a render with new changes  */
                     }
                   },
                   {
                     text: 'Delete',
-                    type: 'delete'
+                    type: 'delete',
+                    onPress: () =>{
+                        asyncDeleteEvent(item.id)
+                        
+                        console.log(this.props.agendaInfo)
+                        /* find object with correct id and delte it from agendaInfo */
+                        for (var i =0; i < this.props.agendaInfo.length; i++) {
+                            if (this.props.agendaInfo[i].id === item.id) {
+                                this.props.agendaInfo.splice(i,1);
+                                break;
+                            }
+                        }
+                        console.log(this.props.agendaInfo)
+                        
+                        this.setState({ changeToForceRender: this.state.changeToForceRender +1})
+                        this.setState({ state: this.state });
+                        this.forceUpdate() 
+                        this._renderAgenda()
+                    }
                   }
                 ]}
                 buttonsLeft={item.buttonsLeft}
