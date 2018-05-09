@@ -8,6 +8,7 @@ import PillCard from '../Card/PillCard'
 import { LinearGradient } from 'expo'
 import Modal from "react-native-modal"
 import LogFormScreen from "../screens/LogFormScreen"
+import { StackNavigator } from 'react-navigation'
 
 class Circle extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ class Circle extends Component {
         isModalVisible: false
     }
   }
-  
+
     Radians = (degrees) => {
         return degrees * Math.PI / 180;
     };
@@ -107,7 +108,7 @@ class Circle extends Component {
 
         <TouchableOpacity
         style = {styles.button}
-        onPress = {this.toggleModal}
+        onPress = {this.props.log}
         >
         <Image style={styles.image} source = {require('../Resources/icons8-plus-math-50.png')}/>
         </TouchableOpacity>
