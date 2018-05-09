@@ -31,6 +31,9 @@ class FlatListCard extends React.Component {
   };
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      data: this.props.data
+    };
   }
   _onDelete(id) {
     for (let i = 0; i < this.props.data.length; i++) {

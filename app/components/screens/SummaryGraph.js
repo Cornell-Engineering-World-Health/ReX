@@ -32,19 +32,23 @@ import {
   BarChart
 } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
-
-const januaryData = { frequency: 2, avgIntensity: 9 };
-const februaryData = { frequency: 1, avgIntensity: 8 };
-const marchData = { frequency: 3, avgIntensity: 4 };
-const aprilData = { frequency: 10, avgIntensity: 5 };
-const mayData = { frequency: 4, avgIntensity: 8 };
-const juneData = { frequency: 10, avgIntensity: 5 };
-const julyData = { frequency: 5, avgIntensity: 1 };
-const augustData = { frequency: 10, avgIntensity: 3 };
-const septemberData = { frequency: 9, avgIntensity: 5 };
-const octoberData = { frequency: 1, avgIntensity: 8 };
-const novemberData = { frequency: 3, avgIntensity: 9 };
-const decemberData = { frequency: 5, avgIntensity: 9 };
+import SideMenu from 'react-native-side-menu';
+import ButtonSelector from '../MenuBar/ButtonSelector';
+import { Dropdown } from 'react-native-material-dropdown';
+//AVG DURATION IN MINUTES
+//-----------------------------FOR YEAR VIEW----------------------------------//
+const januaryData = { avgFrequency: 25, avgIntensity: 5, avgDuration: 10 }; //averages over the course of only the month
+const februaryData = { avgFrequency: 1, avgIntensity: 4, avgDuration: 10 };
+const marchData = { avgFrequency: 3, avgIntensity: 2, avgDuration: 9 };
+const aprilData = { avgFrequency: 25, avgIntensity: 4, avgDuration: 1 };
+const mayData = { avgFrequency: 4, avgIntensity: 2, avgDuration: 4 };
+const juneData = {};
+const julyData = {};
+const augustData = {};
+const septemberData = {};
+const octoberData = {};
+const novemberData = {};
+const decemberData = {};
 const yearData = [
   januaryData,
   februaryData,
@@ -59,7 +63,9 @@ const yearData = [
   novemberData,
   decemberData
 ];
-const yearInitials = [
+//----------------------------------------------------------------------------//
+
+const monthInitials = [
   'JAN',
   'FEB',
   'MAR',
@@ -73,20 +79,80 @@ const yearInitials = [
   'NOV',
   'DEC'
 ];
+
+const THREE_MONTH_VIEW = 'Three Months';
+const SIX_MONTH_VIEW = 'Six Months';
+const YEAR_VIEW = 'Year';
+
+const MODES = ['Intensity', 'Frequency', 'Duration']; //types of graphs we support
+
 export default class SummaryGraph extends React.Component {
   constructor(props) {
     super(props);
-    let w = Dimensions.get('window').width;
+
+    let DEFAULT_VIEW = YEAR_VIEW; //original duration to be displayed
+
+    let currentMonth = new Date().getMonth();
+    let w = Dimensions.get('window').width * 0.95;
+    let xAxis = this._getMonthAndLabels(DEFAULT_VIEW, currentMonth);
+
     this.state = {
       width: w,
+      yAxisType: MODES[1],
+      xAxisData: xAxis.xAxisData,
+      xAxisLabels: xAxis.xAxisLabels,
+      isOpen: false,
       type: 'Headache',
-      graphType: 'Frequency'
+      durationView: DEFAULT_VIEW,
+      lastViewedMonth: currentMonth
     };
   }
+  _updateMonthAndLabels(tempDurationView) {
+    let xAxis = this._getMonthAndLabels(
+      tempDurationView,
+      this.state.lastViewedMonth
+    );
+    this.setState({
+      durationView: tempDurationView,
+      xAxisData: xAxis.xAxisData,
+      xAxisLabels: xAxis.xAxisLabels
+    });
+  }
+  _getMonthAndLabels(durationView, endMonth) {
+    let labels = [];
+    let data = [];
+    let data_length = 0;
+
+    switch (durationView) {
+      case THREE_MONTH_VIEW:
+        data_length = 3;
+        break;
+      case SIX_MONTH_VIEW:
+        data_length = 6;
+        break;
+      case YEAR_VIEW:
+        data_length = 12;
+        endMonth = 11;
+        break;
+    }
+
+    let startMonth = endMonth + 1 - data_length;
+
+    if (startMonth < 0) startMonth = 0;
+    for (var x = startMonth; x < endMonth + 1; x++) {
+      data.push(yearData[x]);
+      labels.push(monthInitials[x]);
+    }
+    return {
+      xAxisData: data,
+      xAxisLabels: labels
+    };
+  }
+
   _getColor(intensity, currentRGB) {
     var index = currentRGB.lastIndexOf(',');
     var firstHalf = currentRGB.slice(0, index + 1);
-    let alpha = intensity / 10;
+    let alpha = intensity / 5;
     return firstHalf + alpha + ')';
   }
 
@@ -97,14 +163,18 @@ export default class SummaryGraph extends React.Component {
     }
     return data;
   }
-  _renderXAxis(data) {
+
+  _renderXAxis() {
     let axis = [];
-    let length = data.length;
+    let length = this.state.xAxisLabels.length;
     let w = this.state.width / length;
+
     for (var x = 0; x < length; x++) {
       axis.push(
-        <View style={{ width: w }}>
-          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{data[x]}</Text>
+        <View style={{ width: w, alignItems: 'center' }}>
+          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>
+            {this.state.xAxisLabels[x]}
+          </Text>
         </View>
       );
     }
@@ -120,12 +190,23 @@ export default class SummaryGraph extends React.Component {
     );
   }
   _renderYAxis(minVal, maxVal, height) {
+    //for simplicity, this function changes maxVal to be an even number (would be above the maxVal)
+    //want a maximum of 10 labels on the screen at one time
+    let interval = 1; //assume rendering every label (interval 1 means render everything)
+    if (maxVal - minVal > 10) {
+      //there are more than 10 labels, need to only render some of them
+      interval = Math.round((maxVal - minVal) / 10.0);
+    }
     let axis = [];
     let h = height;
     let length = maxVal - minVal;
-    for (var x = maxVal; x > minVal; x--) {
+    for (var x = maxVal; x > minVal; x = x - interval) {
       axis.push(
-        <View style={{ height: h / length }}>
+        <View
+          style={{
+            height: h / length * interval
+          }}
+        >
           <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{x}</Text>
         </View>
       );
@@ -133,9 +214,7 @@ export default class SummaryGraph extends React.Component {
     return (
       <View
         style={{
-          height: height,
-          flexDirection: 'column',
-          marginBottom: height / length * 0.5
+          height: height
         }}
       >
         {axis}
@@ -144,26 +223,48 @@ export default class SummaryGraph extends React.Component {
   }
   _getStats() {
     var total = 0;
-    var l = yearData.length;
-    var counter = 0; //number of headahces
+    var length = this.state.xAxisData.length;
+    var counter = 0; //number of occurances
     var mostFrequentMonth = []; //array of most frequent months
-    var highestFrequency = 0;
-    for (var x = 0; x < l; x++) {
-      let ai = yearData[x].avgIntensity;
-      let f = yearData[x].frequency;
+    var greatestFrequency = 0; //holds the greatest number of times the thing occurred
+    var greatestIntensity = 0;
+    var greatestDuration = 0;
+    var avgLength = 0; // average duration
 
-      total += ai * f;
-      counter += f;
-      if (f > highestFrequency) {
-        highestFrequency = f;
+    for (var x = 0; x < length; x++) {
+      let avgIntensity = this.state.xAxisData[x].avgIntensity;
+      let avgFrequency = this.state.xAxisData[x].avgFrequency;
+      let avgDuration = this.state.xAxisData[x].avgDuration;
+
+      if (!avgFrequency) continue;
+
+      counter += avgFrequency;
+      if (avgIntensity) {
+        total += avgIntensity * avgFrequency;
+      }
+      if (avgDuration) {
+        avgLength += avgDuration * avgFrequency;
+      }
+      if (avgFrequency > greatestFrequency) {
+        greatestFrequency = avgFrequency;
         mostFrequentMonth = [constants.MONTH[x]];
-      } else if (f == highestFrequency) {
+      } else if (avgFrequency == greatestFrequency) {
         mostFrequentMonth.push(constants.MONTH[x]);
       }
+
+      if (avgDuration > greatestDuration) greatestDuration = avgDuration;
+      if (avgIntensity > greatestIntensity) greatestIntensity = avgIntensity;
     }
 
     return {
-      avgIntensity: Math.round(total / counter),
+      avgIntensity: Math.round(total / counter), //average intensity over the course of the entire dataset
+      greatestIntensity: greatestIntensity,
+
+      avgDuration: Math.round(avgLength / counter), //average duration over the entire dataset
+      greatestDuration: greatestDuration,
+
+      greatestFrequency: greatestFrequency,
+
       mostFrequentMonth: mostFrequentMonth
     };
   }
@@ -174,7 +275,7 @@ export default class SummaryGraph extends React.Component {
     });
     sendMail(
       ['navinr13@gmail.com'],
-      'Headache Frequency Information',
+      this.state.type + 'Frequency Information',
       'Exporting information from Jellyfiih',
       [uri],
       null
@@ -182,81 +283,160 @@ export default class SummaryGraph extends React.Component {
   }
 
   render() {
-    let formattedData = this._formatData(yearData, 'rgba(0, 175, 255, 0)');
-    let xAxis = this._renderXAxis(yearInitials);
-    let yAxis = this._renderYAxis(0, 10, 200);
-    let stats = this._getStats();
-    let body = (
-      <View style={{ flex: 1, justifyContent: 'space-between' }}>
-        <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
-          {yAxis}
-          <View style={styles.container}>
-            <BarChart
-              animate={true}
-              style={{ height: 200, width: this.state.width }}
-              data={formattedData}
-              yAccessor={item => {
-                return item.item.frequency;
-              }}
-              xAccessor={index => {
-                return yearInitials[index];
-              }}
-              contentInset={{ top: 0, bottom: 0 }}
-              gridMin={0}
-              gridMax={10}
-              spacingInner={0}
-            />
-            {xAxis}
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View>
-            <Text style={styles.bodyText}>
-              The average headache intensity was...
-            </Text>
-            <Text style={styles.bodySubText}> {stats.avgIntensity} / 10</Text>
-          </View>
-          <View>
-            <Text style={styles.bodyText}>
-              Headaches happened most frequently in...
-            </Text>
-            <Text style={styles.bodySubText}>
-              {stats.mostFrequentMonth.map((month, index) => {
-                console.log(month);
-                if (stats.mostFrequentMonth.length == 1) return month;
-                if (index == stats.mostFrequentMonth.length - 1)
-                  return ' and ' + month;
-                if (index == stats.mostFrequentMonth.length - 2) return month;
-                return month + ', ';
-              })}
-            </Text>
-          </View>
-        </View>
+    let dropDownModes = [
+      { value: MODES[0] },
+      { value: MODES[1] },
+      { value: MODES[2] }
+    ];
+    let dropDownTime = [
+      { value: THREE_MONTH_VIEW },
+      { value: SIX_MONTH_VIEW },
+      { value: YEAR_VIEW }
+    ];
+    const menu = (
+      <View style={styles.menu}>
+        <TouchableOpacity
+          style={styles.exportButton}
+          onPress={() => {
+            this.setState({ isOpen: false }, () =>
+              setTimeout(() => {
+                this._exportScreen();
+              }, 300)
+            );
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Export Data</Text>
+        </TouchableOpacity>
+        <View style={{ padding: 10 }} />
+        <Dropdown
+          value={'Frequency'}
+          label="Graph Type"
+          data={dropDownModes}
+          fontSize={20}
+          selectedItemColor={'#56f769'}
+          onChangeText={(value, index, data) =>
+            this.setState({ yAxisType: value })
+          }
+        />
+        <View style={{ padding: 10 }} />
+        <Dropdown
+          value={this.state.durationView}
+          label="Duration"
+          data={dropDownTime}
+          fontSize={20}
+          selectedItemColor={'#56f769'}
+          onChangeText={(value, index, data) => {
+            this._updateMonthAndLabels(value);
+          }}
+        />
       </View>
     );
 
+    let formattedData = this._formatData(
+      this.state.xAxisData,
+      'rgba(0, 175, 255, 0)'
+    );
+    let stats = this._getStats();
+    let xAxis = this._renderXAxis();
+    let yAxis = this._renderYAxis(
+      0,
+      stats['greatest' + this.state.yAxisType],
+      200
+    );
+
     return (
-      <View style={styles.wrapper}>
-        <View style={styles.header}>
-          <View style={{ marginLeft: 20 }}>
-            <Text style={styles.mainHeaderText}>Headache Frequency 2018</Text>
+      <SideMenu menu={menu} isOpen={this.state.isOpen}>
+        <View style={styles.wrapper}>
+          <View style={styles.header}>
+            <View style={{ marginLeft: 20 }}>
+              <Text style={styles.mainHeaderText}>
+                {this.state.type} {' ' + this.state.yAxisType} 2018
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ isOpen: true });
+              }}
+            >
+              <View style={{ padding: 20 }}>
+                <Image
+                  source={IMAGES.hamburgerMenu}
+                  style={{ width: 25, height: 25 }}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              this._exportScreen(body);
-            }}
-          >
-            <Image source={IMAGES.export} style={{ width: 25, height: 25 }} />
-            <Text> Export </Text>
-          </TouchableOpacity>
+          <View style={{ flex: 1, justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
+              {yAxis}
+              <View style={styles.container}>
+                <BarChart
+                  animate={true}
+                  style={{ height: 200, width: this.state.width }}
+                  data={formattedData}
+                  yAccessor={item => {
+                    return item.item['avg' + this.state.yAxisType];
+                  }}
+                  xAccessor={index => {
+                    return monthInitials[index];
+                  }}
+                  contentInset={{ top: 0, bottom: 0 }}
+                  gridMin={0}
+                  spacingInner={0}
+                />
+                {xAxis}
+              </View>
+            </View>
+            <View style={styles.body}>
+              <View style={styles.subBodyView}>
+                <Text style={styles.bodyText}>
+                  Average Headache Intensity:{'  '}
+                </Text>
+                <Text style={styles.bodySubText}>{stats.avgIntensity} / 5</Text>
+              </View>
+              <View style={styles.subBodyView}>
+                <Text style={styles.bodyText}>Average Duration:{'  '}</Text>
+                <Text style={styles.bodySubText}>
+                  {stats.avgDuration} minutes
+                </Text>
+              </View>
+              <View style={{ padding: 20 }}>
+                <Text style={styles.bodyText}>Greatest Frequency:{'  '}</Text>
+                <Text style={styles.bodySubText}>
+                  {stats.mostFrequentMonth.map((month, index) => {
+                    if (stats.mostFrequentMonth.length == 1) return month;
+                    if (index == stats.mostFrequentMonth.length - 1)
+                      return ' and ' + month;
+                    if (index == stats.mostFrequentMonth.length - 2)
+                      return month;
+                    return month + ', ';
+                  })}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
-        {body}
-      </View>
+      </SideMenu>
     );
   }
 }
 
 styles = StyleSheet.create({
+  exportButton: {
+    height: 50,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#aedfe1'
+  },
+  menu: {
+    flex: 1,
+    width: window.width,
+    height: window.height,
+    backgroundColor: 'white',
+    padding: 20
+  },
   wrapper: {
     backgroundColor: '#ffffff',
     flex: 1
@@ -265,36 +445,36 @@ styles = StyleSheet.create({
     flex: 1
   },
   mainHeaderText: {
-    fontSize: 35,
+    fontSize: 25,
     textAlign: 'center',
     color: '#000000'
   },
   header: {
-    flex: 0.2,
+    flex: 0.15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#ead3ff',
     marginBottom: 10
   },
-  title: {
-    fontSize: 30,
-    color: 'black',
-    alignSelf: 'center'
+  subBodyView: {
+    flexDirection: 'row',
+    padding: 10
   },
   bodyText: {
     fontSize: 20,
-    color: '#000000',
-    alignSelf: 'center'
+    color: '#000000'
   },
   bodySubText: {
-    fontSize: 30,
-    color: '#000000',
-    alignSelf: 'center'
+    fontSize: 20,
+    color: '#3b2dff',
+    alignSelf: 'center',
+    flexWrap: 'wrap'
   },
   body: {
     flex: 1,
-    alignSelf: 'center',
-    justifyContent: 'space-around'
+    alignSelf: 'left',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start'
   }
 });
