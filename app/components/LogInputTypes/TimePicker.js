@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, AppRegistry, TextInput, View, Picker, DatePickerIOS} from 'react-native'
+import {StyleSheet, Text, AppRegistry, TextInput, View, Picker, DatePickerIOS, TouchableOpacity} from 'react-native'
 import PickerInputType from './PickerInputType'
 import moment from 'moment'
 
@@ -26,16 +26,16 @@ export default class TimePicker extends React.Component {
   }
 
   handleDelete (val) {
-    console.log('delete')
+    this.props.deletePressed()
   }
 
   render () {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <View onclick={this.handleDelete.bind(this)}>
+        <TouchableOpacity onPress={this.handleDelete.bind(this)}>
           <Text style={styles.delete}>Delete</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.picker_container}>
           <DatePickerIOS
             style={styles.picker}
