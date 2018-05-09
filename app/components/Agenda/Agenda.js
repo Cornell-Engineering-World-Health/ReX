@@ -96,9 +96,10 @@ class Agenda extends Component {
                         }
                         console.log(this.props.agendaInfo)
                         
-                        /*this.setState({ changeToForceRender: this.state.changeToForceRender +1})
+                        this.setState({ changeToForceRender: this.state.changeToForceRender +1})
                         this.setState({ state: this.state });
-                        this.forceUpdate() */
+                        this.forceUpdate() 
+                        this._renderAgenda()
                     }
                   }
                 ]}
