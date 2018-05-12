@@ -16,10 +16,14 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import GestureRecognizer, {
   swipeDirections
 } from 'react-native-swipe-gestures';
+import moment from 'moment'
+import Database from '../../Database'
+import {asyncDeleteEvent} from '../../databaseUtil/databaseUtil';
 
 class Agenda extends Component {
   static propTypes = {
     onPressAgenda: PropTypes.func,
+    refreshCalendar: PropTypes.func,
     agendaInfo: PropTypes.array,
     date: PropTypes.string
   };
@@ -27,23 +31,28 @@ class Agenda extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expandVisible: false
+      expandVisible: false,
+      changeToForceRender: 1,
+      agendaInfo: [],
     };
   }
 
-  _onDelete = () => {
-    console.log('Deleted Item');
-  };
+  shouldComponentUpdate(nextProps, nextState){
+    if(this.props.agendaInfo != nextProps.agendaInfo){
+      this.setState({agendaInfo: nextProps.agendaInfo})
+    }
+    return true
+  }
 
   _keyExtractor = (item, index) => item.id;
 
   _renderAgenda() {
-    if (this.props.agendaInfo) {
+    if (this.state.agendaInfo && this.state.agendaInfo.length != 0) {
       return (
         <FlatList
-          data={this.props.agendaInfo}
+          data={this.state.agendaInfo}
           keyExtractor={item => item.id}
-          extraData={this.props}
+          extraData={this.state}
           renderItem={({ item, index }) => {
             return (
               <Card
@@ -61,11 +70,44 @@ class Agenda extends Component {
                 buttonsRight={[
                   {
                     text: 'Edit',
-                    type: 'edit'
+                    type: 'edit',
+                    onPress: () => {
+                      var timestamp = moment(this.props.date + ' ' + item.timeStamp, 'MM/DD/YYYY hh:mm A').format('YYYY-MM-DD HH:mm:ss')
+                      console.log('NAME IS:::: ' + item.cardData.title)
+
+                      Database.transaction(tx =>
+                        tx.executeSql(
+                          'SELECT event_type_id FROM event_type_tbl \
+                          WHERE event_type_name = ?;',
+                          [item.cardData.title],
+                          (tx, {rows}) => {
+                            var eventType = JSON.parse(rows._array[0].event_type_id)
+                            this.props.toggleModal(timestamp, eventType)
+                          }),err => console.log(err))
+
+                      /*force a render with new changes  */
+                    }
                   },
                   {
                     text: 'Delete',
-                    type: 'delete'
+                    type: 'delete',
+                    onPress: () =>{
+                        asyncDeleteEvent(item.id)
+                        let a_info = this.state.agendaInfo
+
+                        /* find object with correct id and delte it from agendaInfo */
+                        for (var i =0; i < a_info.length; i++) {
+                            if (a_info[i].id === item.id) {
+                                a_info.splice(i,1);
+                                break;
+                            }
+                        }
+                        this.props.refreshCalendar();
+                        this.setState({ changeToForceRender: this.state.changeToForceRender +1})
+                        this.setState({ state: this.state });
+                        this.setState({ agendaInfo: a_info })
+
+                    }
                   }
                 ]}
                 buttonsLeft={item.buttonsLeft}

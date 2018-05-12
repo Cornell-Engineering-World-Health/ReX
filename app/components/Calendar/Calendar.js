@@ -98,17 +98,29 @@ class Calendar extends PureComponent {
       return false;//console.log("UPDATING", nextProps, nextState)
     }
 */
-    initVisualization = () => {
+
+    /** Pulls symptom data from storage and initilizes the calendar. Optional parameter to see a particular
+    *  graph first. */
+    initVisualization = (type) => {
       pullFromDataBase(this.props.currMonth, null, data => {
-        let dot1 = this.state.dot1;
-        let dot2 = this.state.dot2;
-        let dot3 = this.state.dot3;
+        let dot1 = [];
+        let dot2 = [];
+        let dot3 = [];
+        for (var i = 0; i < this.numberOfDays; i++){
+            dot1[i] = styles.generic;
+            dot2[i] = styles.generic;
+            dot3[i] = styles.generic;
+        }
         let firstIntensities;
         let firstColor;
         let first = true;
         Object.keys(data).forEach(function(key) {
           if(first){
             first = false;
+            firstColor = getTranslucentColor(key);
+            firstIntensities = data[key].intensities;
+          }
+          if(type == key){//use color and intensity graph of input param type
             firstColor = getTranslucentColor(key);
             firstIntensities = data[key].intensities;
           }

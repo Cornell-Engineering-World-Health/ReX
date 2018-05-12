@@ -8,7 +8,8 @@ export const IMAGES = {
   backPain: require('../Resources/Images/backPain.png'),
   birthday: require('../Resources/Images/birthday.png'),
   brain: require('../Resources/Images/brain.png'),
-  calendar: require('../Resources/Images/calendar.png'),
+  calendar: require('../Resources/Images/calendarScreen.png'),
+  calendar2: require('../Resources/Images/calendarScreen2.png'),
   checkmark: require('../Resources/Images/checkmark.png'),
   default: require('../Resources/Images/default.png'),
   elbowPain: require('../Resources/Images/elbowPain.png'),
@@ -17,7 +18,8 @@ export const IMAGES = {
   glasses: require('../Resources/Images/glasses.png'),
   headPain: require('../Resources/Images/headPain.png'),
   heartPain: require('../Resources/Images/heartPain.png'),
-  homeIcon: require('../Resources/Images/homeIcon.png'),
+  homeIcon: require('../Resources/Images/homeScreen.png'),
+  homeIcon2: require('../Resources/Images/homeScreen2.png'),
   intensePain: require('../Resources/Images/intensePain.png'),
   kneePain: require('../Resources/Images/kneePain.png'),
   legPain: require('../Resources/Images/legPain.png'),
@@ -25,7 +27,9 @@ export const IMAGES = {
   morning: require('../Resources/Images/morning.png'),
   neckPain: require('../Resources/Images/neckPain.png'),
   night: require('../Resources/Images/night.png'),
-  pillBottle: require('../Resources/Images/pillBottle.png'),
+  pillBottle: require('../Resources/Images/medicationScreen.png'),
+  pillBottle2: require('../Resources/Images/medicationScreen2.png'),
+  plusSign: require('../Resources/Images/plusSign.png'),
   plusSign2: require('../Resources/Images/plusSign2.png'),
   profile: require('../Resources/Images/profile.png'),
   profilePic: require('../Resources/Images/profilePic.png'),
@@ -33,12 +37,21 @@ export const IMAGES = {
   purpleGradient: require('../Resources/Images/purpleGradient.jpg'),
   purpleGradient2: require('../Resources/Images/purpleGradient2.jpg'),
   scale: require('../Resources/Images/scale.png'),
-  settings: require('../Resources/Images/settings.png'),
+  settings: require('../Resources/Images/settingsScreen.png'),
+  settings2: require('../Resources/Images/settingsScreen2.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
   expand: require('../Resources/Images/expand.png'),
+  morningColor: require('../Resources/Images/morningC.png'),
+  afternoonColor: require('../Resources/Images/afternoonC.png'),
+  eveningColor: require('../Resources/Images/eveningC.png'),
+  nightColor: require('../Resources/Images/nightC.png'),
+  morningColorW: require('../Resources/Images/morningW.png'),
+  afternoonColorW: require('../Resources/Images/afternoonW.png'),
+  eveningColorW: require('../Resources/Images/eveningW.png'),
+  nightColorW: require('../Resources/Images/nightW.png'),
   about: require('../Resources/Images/about.png'),
   addressBook: require('../Resources/Images/address-book.png'),
-  afternoonColor: require('../Resources/Images/afternoonColor.png'),
+  afternoonColor: require('../Resources/Images/afternoonC.png'),
   eveningColor: require('../Resources/Images/eveningColor.png'),
   faq: require('../Resources/Images/faq.png'),
   iconWolf: require('../Resources/Images/icons8-wolf-100.png'),
@@ -64,8 +77,9 @@ export const IMAGES = {
   darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
-  export: require('../Resources/Images/export.png')
-};
+  export: require('../Resources/Images/export.png'),
+  body: require('../Resources/Images/bodyLarge.png')
+}
 export const profile_icons = [
   IMAGES.iconWolf,
   IMAGES.iconZebra,
@@ -79,7 +93,7 @@ export const profile_icons = [
   IMAGES.iconPanda,
   IMAGES.iconPig,
   IMAGES.iconTurtle
-];
+]
 
 export const COLOR = {
   PrimaryGray: '#b8b8b8',
@@ -94,9 +108,18 @@ export const COLOR = {
   cardTimestamp: '#a9a9a9',
   medicineCardChecked: '#e6ffe6',
   medicineCardUnchecked: '#ffc2b3'
-};
+}
+
+export const BODY_PARTS = {
+  ARMS: 'ARMS',
+  LEGS: 'LEGS',
+  TORSO: 'TORSO',
+  HEAD: 'HEAD',
+  BODY: 'BODY'
+}
+
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
-const defaultColor = '#ffffff';
+const defaultColor = '#ffffff'
 
 export default (constants = {
   MONTH: [
@@ -195,19 +218,13 @@ export default (constants = {
     backgroundColor: defaultColor,
     translucentColor: defaultColor
   },
-  DIZZINESS: {
-    title: 'Dizziness',
-    image: IMAGES.default,
-    backgroundColor: '#836953',
-    translucentColor: '#83695380'
-  },
   DEFAULT: {
     image: IMAGES.default,
     title: 'Default',
     backgroundColor: '#ffffff',
     translucentColor: '#ffffff80'
   }
-});
+})
 let types = [
   constants.BLURRED_VISION,
   constants.PILL,
@@ -221,7 +238,7 @@ let types = [
   constants.ELBOWPAIN,
   constants.HEARTPAIN,
   constants.STOMACHPAIN
-];
+]
 
 /**
 Pass in a string that represents which pain you are having (Ex: Headache, Back Pain)
@@ -232,38 +249,38 @@ Precondition: title is a string
 Available titles are found in the constants variable of this file.
 */
 
-export function getCardData(title) {
+export function getCardData (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x];
+      return types[x]
     }
   }
-  return constants.DEFAULT;
+  return constants.DEFAULT
 }
 
-export function getSource(title) {
+export function getSource (title) {
   for (var x = 0; x < types.length; x++) {
     if (title == types[x].title) {
-      return types[x].image;
+      return types[x].image
     }
   }
-  return constants.DEFAULT.image;
+  return constants.DEFAULT.image
 }
 
-export function getColor(type) {
+export function getColor (type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].backgroundColor;
+      return types[x].backgroundColor
     }
   }
-  return constants.DEFAULT.backgroundColor;
+  return constants.DEFAULT.backgroundColor
 }
 
-export function getTranslucentColor(type) {
+export function getTranslucentColor (type) {
   for (var x = 0; x < types.length; x++) {
     if (type == types[x].title) {
-      return types[x].translucentColor;
+      return types[x].translucentColor
     }
   }
-  return constants.DEFAULT.translucentColor;
+  return constants.DEFAULT.translucentColor
 }

@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   picker: {
-    color: 'white'
+    backgroundColor: 'white'
   }
 })

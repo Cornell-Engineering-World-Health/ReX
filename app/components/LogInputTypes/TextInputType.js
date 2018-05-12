@@ -8,7 +8,8 @@ export default class TextInputType extends React.Component {
       title_text: props.title_text,
       placeholder_text: props.placeholder_text,
       input_style: props.input_style,
-      title_text_style: props.title_text_style
+      title_text_style: props.title_text_style,
+      text: props.text
     }
   }
 
@@ -18,8 +19,9 @@ export default class TextInputType extends React.Component {
         <View style = {{flex: 1, flexDirection: 'row'}}>
         <Image source = {require('../Resources/Images/icons8-right-arrow-filled-50.png')} style = {styles.images}/>
         <TextInput style={styles.text}
+          value={this.state.text == 'NONE' ? '' : this.state.text}
           onChangeText={(text) => {
-            this.setState({text})
+            this.setState({text: text})
             this.props.valueChange(this.props.val_label, text)
           }}
           placeholder={this.state.placeholder_text}

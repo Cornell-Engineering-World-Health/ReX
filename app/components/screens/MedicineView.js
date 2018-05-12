@@ -14,6 +14,7 @@ import Circle from '../MedicineComponents/Circle.js';
 import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
 import Check from '../MedicineComponents/Check';
+import { StackNavigator } from 'react-navigation'
 
 var data1 = [
   {
@@ -163,12 +164,18 @@ class CoolerMedicineView extends React.Component {
   };
 
   render() {
-
+    const { navigate } = this.props.navigation
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
-          <Circle amData={this.state.amData} />
           {this.renderCheck()}
+          <Circle
+            log={()=>{
+              {navigate('Form', {
+                log_type: 4
+              })}
+            }}
+            amData={this.state.amData} />
           <View style={{ flex: 0.75 }}>
             <FlatList
               data={[0]}
