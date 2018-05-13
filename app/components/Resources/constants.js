@@ -78,8 +78,8 @@ export const IMAGES = {
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
-  hamburgerMenu: require('../Resources/Images/icons8-menu-26.png')
-  body: require('../Resources/Images/bodyLarge.png'),
+  hamburgerMenu: require('../Resources/Images/icons8-menu-26.png'),
+  body: require('../Resources/Images/bodyLarge.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -112,12 +112,12 @@ export const COLOR = {
 };
 
 export const BODY_PARTS = {
-    ARMS: 'ARMS',
-    LEGS: 'LEGS',
-    TORSO: 'TORSO',
-    HEAD: 'HEAD',
-    BODY: 'BODY',
-}
+  ARMS: 'ARMS',
+  LEGS: 'LEGS',
+  TORSO: 'TORSO',
+  HEAD: 'HEAD',
+  BODY: 'BODY'
+};
 
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
