@@ -13,7 +13,8 @@ import {
 import Circle from '../MedicineComponents/Circle.js';
 import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator } from 'react-navigation';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 var data1 = [
   {
@@ -107,7 +108,8 @@ class CoolerMedicineView extends React.Component {
 
     this.state = {
       meds: meds,
-      amData: [0, 100, 0, 100, 0, 100, 0, 100]
+      amData: [0, 100, 0, 100, 0, 100, 0, 100],
+      data: data1
     };
   }
 
@@ -129,9 +131,38 @@ class CoolerMedicineView extends React.Component {
     this.setState({ amData: newData });
   };
 
+  onSwipeLeft = gestureState => {
+    console.log("swiped left")
+    var meds_new = new Array(data2.length + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
+    this.setState({
+      data: data2,
+      // meds: meds_new
+    })
+  };
+
+  onSwipeRight = gestureState => {
+    console.log("swiped right")
+    var meds_new = new Array(data3.length + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
+    this.setState({
+      data: data3,
+      // meds: meds_new
+    })
+  };
+
   render() {
     const { navigate } = this.props.navigation
     return (
+      <GestureRecognizer
+        onSwipeLeft={(state) => this.onSwipeLeft(state)}
+        onSwipeRight={(state) => this.onSwipeRight(state)}
+        style = {{flex: 1, backgroundColor: 'white'}}
+      >
       <View style={{ flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           <Circle
@@ -151,25 +182,25 @@ class CoolerMedicineView extends React.Component {
                       status={this.state.meds[0]}
                       setParentState={index => this.updateMeds(0, index, 1)}
                       time={'Morning'}
-                      data={data1}
+                      data={this.state.data}
                     />
                     <PillCard
                       status={this.state.meds[1]}
                       setParentState={index => this.updateMeds(1, index, 1)}
                       time={'Afternoon'}
-                      data={data2}
+                      data={this.state.data}
                     />
                     <PillCard
                       status={this.state.meds[2]}
                       setParentState={index => this.updateMeds(2, index, 0)}
                       time={'Evening'}
-                      data={data3}
+                      data={this.state.data}
                     />
                     <PillCard
                       status={this.state.meds[3]}
                       setParentState={index => this.updateMeds(3, index, 0)}
                       time={'Night'}
-                      data={data4}
+                      data={this.state.data}
                     />
                   </View>
                 );
@@ -178,6 +209,7 @@ class CoolerMedicineView extends React.Component {
           </View>
         </View>
       </View>
+      </GestureRecognizer>
     );
   }
 }
