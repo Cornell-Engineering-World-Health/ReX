@@ -18,6 +18,8 @@ import {
   asyncDeleteEvent
 } from '../../databaseUtil/databaseUtil';
 import constants, { COLOR } from '../Resources/constants';
+import Modal from "react-native-modal"
+import LogFormScreen from "../screens/LogFormScreen"
 
 let t = new Date();
 let numOfMonths = (t.getFullYear() - 1969) * 12;
@@ -38,7 +40,8 @@ class Calendar extends Component {
       last: numOfCals - 1,
       data: data,
       currentDate: new Date(),
-      flatlistHeight: 0
+      flatlistHeight: 0,
+      isModalVisible: false
     };
     this.mutexLock = 0;
     this.calendars = []; // references to all SLIDEENTRY components which contain calendar components. indexed by KEY
@@ -59,6 +62,7 @@ class Calendar extends Component {
           Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')
         ) {
           tempData = flatlistData[i].data;
+          //console.log(flatlistData[i]);
           break;
         }
       }
@@ -109,6 +113,11 @@ class Calendar extends Component {
     this.currSymptomDisplay = type;
     this.calendarRef.updateVisualization(type);
   };
+
+  _refreshCalendar = () => {
+    console.log(this.currSymptomDisplay)
+    this.calendarRef.initVisualization(this.currSymptomDisplay);
+  }
 
   _renderItem = ({ item }) => {
     return (
@@ -272,6 +281,15 @@ class Calendar extends Component {
     }
   }
 
+  toggleModal = (timestamp, logtype) => {
+    console.log('hereeee')
+    this.setState({
+      isModalVisible: !this.state.isModalVisible,
+      modalTimestamp: timestamp,
+      modalLogType: logtype
+     })
+  };
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
@@ -314,9 +332,17 @@ class Calendar extends Component {
           <Agenda
             agendaInfo={this.state.currentAgenda}
             onPressAgenda={this._onPressAgenda}
+            refreshCalendar={this._refreshCalendar}
             date={this.state.currentDate.toLocaleDateString()}
+            toggleModal={this.toggleModal}
           />
         </View>
+        <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
+           <LogFormScreen
+              log_type={this.state.modalLogType}
+              on_finish={this.toggleModal}
+              timestamp={this.state.modalTimestamp}/>
+        </Modal>
       </View>
     );
   }

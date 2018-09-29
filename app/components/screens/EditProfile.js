@@ -63,7 +63,7 @@ export default class Profile extends Component {
         height_feet: data.height_feet,
         height_inches: data.height_inches,
         height: data.height_feet + "' " + data.height_inches + '" ',
-        icon: data.icon,
+        icon: data.icon
       });
     });
   }

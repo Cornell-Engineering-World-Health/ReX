@@ -43,7 +43,6 @@ class Home extends React.Component {
       backgroundColorDropDown: COLOR.cyan,
       message: 'You haven\'t had a headache in 5 days!'
     };
-
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase((data) => {
         this.setState({

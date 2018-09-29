@@ -511,18 +511,20 @@ export function pullAgendaFromDatabase(callback) {
 
 export function asyncDeleteEvent(id) {
   inputArray = [id];
+  console.log('trying to delete event with id :', id);
   Database.transaction(
     tx => {
       tx.executeSql(
         'DELETE FROM event_tbl WHERE event_details_id = ?',
-        inputArray
+        inputArray,
+        (tx, { rows }) => console.log('event has been deleted with id :', id),
+        err => console.log(err)
       );
     },
     err => console.log(err)
   );
 }
 function formatMedicineData(data) {
-  console.log(data);
   dataTemp = {};
   data.forEach(function(med) {
     let earliestTime = new Date(med.timestamp.replace(' ', 'T'));
@@ -558,6 +560,67 @@ export function pullMedicineFromDatabase(date, callback) {
   });
 }
 
+/*startDate and endDate should be javascript dates*/
+export function asyncCreateMedicineEvents(
+  name,
+  dosage,
+  startDate,
+  endDate,
+  timeArray,
+  timeCategories,
+  event_id,
+  event_details_id
+) {
+  Database.transaction(
+    tx => {
+      for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+        dateString = d.toISOString().substr(0, 10);
+
+        /* inserting event_details record */
+        var taken = timeArray.map(t => {
+          return false;
+        });
+        detailsJson = {
+          'Pill Name': name,
+          Dosage: dosage,
+          'Start Date': startDate,
+          'End Date': endDate,
+          Time: timeArray,
+          'Time Category': timeCategories,
+          Taken: taken
+        };
+        //console.log("detailsjson: ",detailsJson)
+        var inputArray = [
+          String(event_details_id),
+          JSON.stringify(detailsJson)
+        ];
+        tx.executeSql(
+          'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
+          inputArray
+        );
+
+        /* inserting event record */
+        var formattedTimeStamp = Moment(
+          dateString + ' ' + timeArray[0],
+          'YYYY-MM-DD HH:mm'
+        ).format('YYYY-MM-DD HH:mm:ss');
+        inputArray = [
+          String(event_id),
+          '4',
+          formattedTimeStamp,
+          String(event_details_id)
+        ];
+        tx.executeSql(
+          'INSERT OR REPLACE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?,?,?)',
+          inputArray
+        );
+        event_id += 1;
+        event_details_id += 1;
+      }
+    },
+    err => console.log(err)
+  );
+}
 function updateMedicineData(data, time, takenVal) {
   data.forEach(function(med) {
     var fields = JSON.parse(med.fields);
