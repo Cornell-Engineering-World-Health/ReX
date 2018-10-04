@@ -11,7 +11,7 @@ import {
   Dimensions
 } from 'react-native';
 import Circle from '../MedicineComponents/Circle.js';
-import DoseCard from '../Card/DoseCard';
+import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -75,7 +75,7 @@ var data4 = [
   { title: 'Aspirin 30mg', time: '2:50PM', status: false }
 ];
 
-class CoolerMedicineView extends React.Component {
+class MedicineViewBackup extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
   };
@@ -163,106 +163,45 @@ class CoolerMedicineView extends React.Component {
         onSwipeRight={(state) => this.onSwipeRight(state)}
         style = {{flex: 1, backgroundColor: 'white'}}
       >
-      <View style={{ left: 20, top: 20, flex: 1, backgroundColor: 'white'}}>
+      <View style={{ flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
-          {/* <Circle
+          <Circle
             log={()=>{
               {navigate('Form', {
                 log_type: 4
               })}
             }}
-            amData={this.state.amData} /> */}
-          <View style={{ flex: 1 }}>
+            amData={this.state.amData} />
+          <View style={{ flex: 0.75 }}>
             <FlatList
               data={[0]}
               renderItem={({ item, index }) => {
                 return (
                   <View>
-                    <DoseCard
+                    <PillCard
                       status={this.state.meds[0]}
                       setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Dinonuggies'}
-                      dosage={'500mg'}
+                      time={'Morning'}
                       data={this.state.data}
                     />
-                    <DoseCard
+                    <PillCard
                       status={this.state.meds[1]}
                       setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Detergent'}
-                      dosage={'45mg'}
+                      time={'Afternoon'}
                       data={this.state.data}
                     />
-                    <DoseCard
+                    <PillCard
                       status={this.state.meds[2]}
                       setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Potato'}
-                      dosage={'60mg'}
+                      time={'Evening'}
                       data={this.state.data}
                     />
-                    <DoseCard
+                    <PillCard
                       status={this.state.meds[3]}
                       setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Groot'}
-                      dosage={'400mg'}
+                      time={'Night'}
                       data={this.state.data}
                     />
-                    <DoseCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Assortedpaints'}
-                      dosage={'500mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Mystery'}
-                      dosage={'45mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Charizard'}
-                      dosage={'60mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Navinramsaroop'}
-                      dosage={'400mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Runningoutofnames'}
-                      dosage={'500mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Ignore'}
-                      dosage={'45mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Slidingwheee'}
-                      dosage={'60mg'}
-                      data={this.state.data}
-                    />
-                    <DoseCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Youfoundme'}
-                      dosage={'400mg'}
-                      data={this.state.data}
-                    />
-                    
                   </View>
                 );
               }}
@@ -276,4 +215,4 @@ class CoolerMedicineView extends React.Component {
 }
 const styles = StyleSheet.create({});
 
-export default CoolerMedicineView;
+export default MedicineViewBackup;
