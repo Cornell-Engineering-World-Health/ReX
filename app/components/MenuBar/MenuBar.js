@@ -11,7 +11,7 @@ import constants from '../Resources/constants'
 
 import Home from '../screens/HomePage'
 import MedicineView from '../screens/MedicinePage'
-import Settings from '../screens/Settings'
+import Settings from '../screens/SurveyScreen'
 import FlatListCard from '../screens/FlatListCard'
 import Calendar from '../screens/Calendar'
 import ChooseLogScreen from '../screens/Log'

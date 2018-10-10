@@ -22,83 +22,76 @@ import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
 import {asyncCreateMedicineEvents} from '../../databaseUtil/databaseUtil'
 import moment from 'moment'
+import survey from '../../survey/questions.json'
 
+mapTypeToComponent = {
+  scale: "ScaleSlideInputType",
+  checklist: "ChecklistInputType",
+  numerical: "NumericalPickerInputType",
+  text: "TextInputType",
+  date: "DatePicker",
+  time: "TimeCategoryInputType"
+}
+mapTypeToInitVal = {
+  scale: 0,
+  checklist: [],
+  numerical: 0,
+  text: "",
+  date: new Date(),
+  time: new Date(),
+}
 event_id_count = 600
 event_details_id_count = 600
 keyStart = 200
 
-export default class ChooseLogScreen extends React.Component {
+export default class SurveyScreen extends React.Component {
   constructor (props) {
     super(props)
-    var log_type = 0
-    var nav = true
-    var timestamp = '1950-01-01 00:00:00'
-    if (this.props.log_type) {
-      log_type = this.props.log_type
-      nav = false
-      if (this.props.timestamp) {
-        timestamp = this.props.timestamp
-      }
-    } else {
-      log_type = this.props.navigation.state.params.log_type
-    }
-    console.log('log type----', log_type)
-    var keysArray = []
-
-    Database.transaction(
-      tx =>
-        tx.executeSql(
-          'SELECT fields FROM event_tbl \
-          INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-          WHERE timestamp = ? \
-          AND event_type_id = ?;',
-          [timestamp, log_type],
-          (tx, { rows }) => {
-            json_rows = JSON.parse(rows._array[0].fields)
-            keysArray = Object.keys(json_rows)
-            var valArray = []
-
-            for (let i = 0; i < keysArray.length; i++) {
-              var input_types = []
-              valArray[i] = json_rows[keysArray[i]]
-
-              // console.log(keysArray[i])
-
-              Database.transaction(
-                tx =>
-                  tx.executeSql(
-                    'SELECT view_name FROM field_to_view_tbl \
-                    WHERE field_name = ?;',
-                    [keysArray[i]],
-                    (tx, { rows }) => {
-                      input_types[i] = rows._array[0].view_name
-                      console.log(keysArray[i], input_types[i], keysArray, 'ASDF')
-                      this.setState({
-                        input_type_array: input_types,
-                        value_labels: keysArray,
-                        values: valArray,
-                        submit_vals: json_rows,
-                        event_type_id: log_type
-                      })
-                    }
-                  ),
-                err => console.log(err)
-              )
-            }
-          }
-        ),
-      err => console.log(err)
+    let keysArray = survey["Questions"].map((q) => q["QuestionType"])
+    let titles = survey["Questions"].map((q) => q["Title"])
+    let inputTypes = keysArray.map((t) => mapTypeToComponent[t])
+    let valOptions = {};
+    survey["Questions"].forEach((q, i) => {
+      if(q["Values"]) {valOptions[q["Title"]] = q["Values"]}}
     )
-
-    var input_types = []
+    let valArray = survey["Questions"].map((q) => {
+      if(q["QuestionType"] == "scale" && q["Values"]){
+        return Math.floor((q["Values"].length-1) / 2)
+      } else if(q["QuestionType"] == "checklist" && q["Values"]){
+          return q["Values"].map(e => false)
+      }
+      else{
+        return mapTypeToInitVal[q["QuestionType"]]
+      }
+    })
+    let submit_vals = {};
+    survey["Questions"].forEach((q, i) => {
+      if(q["QuestionType"] == "scale" && q["Values"]){
+        submit_vals[q["Title"]] =
+          q["Values"][Math.floor((q["Values"].length-1) / 2)]
+      } else if(q["QuestionType"] == "checklist" && q["Values"]){
+        let submit_map = {}
+        q["Values"].forEach(e => {
+          submit_map[e] = false
+        })
+        submit_vals[q["Title"]] =submit_map
+      } else {
+        submit_vals[q["Title"]] = valArray[i]
+      }
+    })
 
     this.state = {
-      input_type_array: input_types,
-      nav: nav
+      input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+      value_labels: titles, //my type labels - question
+      values: valArray, //current value - 0
+      submit_vals: submit_vals, //pairs of question: value {q: a}
+      valOptions: valOptions, //for questions with params, gives bounds
+      surveyId: survey["SurveyName"]//survey name
     }
   }
 
   valueChange (label, value) {
+      console.log(this.state.submit_vals)
     this.state.submit_vals[label] = value
   }
 
@@ -143,25 +136,28 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   render () {
-    console.log(this.state)
-    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible']
-    var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening']
     return (
       <ScrollView>
         <View style={styles.main_container}>
           {this.state.input_type_array.map((prop, key) => {
             if (prop == 'ScaleSlideInputType') {
+              let numOfOptions = (this.state.valOptions[this.state.value_labels[key]]) ?
+              (this.state.valOptions[this.state.value_labels[key]]).length : 1;
               return (
                 <ScaleSlideInputType
                   key={key}
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
-                  max_val={4}
-                  value={parseInt(this.state.values[key]) - 1}
-                  scale_labels={SCALE_LABELS}
+                  max_val={numOfOptions - 1}
+                  value={this.state.values[key]}
+                  scale_labels={this.state.valOptions[this.state.value_labels[key]] || []}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)}
+                  valueChange={(label, value) => {
+                    this.valueChange(label,
+                       this.state.valOptions[this.state.value_labels[key]][value])
+                     }
+                  }
                 />
               )
             } else if (prop == 'NumericalPickerInputType') {
@@ -172,25 +168,9 @@ export default class ChooseLogScreen extends React.Component {
                   title_text_style={styles.title_text}
                   value={this.state.values[key]}
                   min={0}
-                  max={60}
+                  max={100}
                   inc_scale={1}
-                  unit={'minutes'}
-                  title_text={this.state.value_labels[key]}
-                  val_label={this.state.value_labels[key]}
-                  valueChange={this.valueChange.bind(this)}
-                />
-              )
-            } else if (prop == 'DosagePickerInputType') {
-              return (
-                <NumericalPickerInputType
-                  key={key}
-                  input_style={styles.input_container_blue}
-                  title_text_style={styles.title_text}
-                  value={this.state.values[key]}
-                  min={0}
-                  max={40}
-                  inc_scale={10}
-                  unit={'mg'}
+                  unit={''}
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={this.valueChange.bind(this)}
@@ -221,19 +201,11 @@ export default class ChooseLogScreen extends React.Component {
                   valueChange={this.valueChange.bind(this)}
                 />
               )
-            } else if (prop == 'DayChooserInputType') {
+            } else if (prop == 'ChecklistInputType') {
               return (
                 <ChecklistInputType
                   key={key}
-                  list_values={[
-                    'Sunday',
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday'
-                  ]}
+                  list_values={this.state.valOptions[this.state.value_labels[key]]}
                   input_style={styles.input_container_green}
                   title_text_style={styles.title_text}
                   title_text={this.state.value_labels[key]}
@@ -241,44 +213,6 @@ export default class ChooseLogScreen extends React.Component {
                   value={this.state.values[key]}
                   valueChange={this.valueChange.bind(this)}
                 />
-              )
-            } else if (prop == 'TimeCategoryInputType') {
-              return (
-                <View key={key}>
-                  {this.state.values[key].map((prop, timeKey) => {
-                    return (
-                      <TimePicker
-                        key={this.state.values.length + timeKey + this.state.values[key][timeKey]}
-                        input_style={styles.input_container_transparent_blue}
-                        title_text_style={styles.title_text_blue}
-                        value={this.state.values[key][timeKey]}
-                        title_text={'Reminder Time ' + (timeKey + 1)}
-                        val_label={this.state.value_labels[key]}
-                        chosen_date={this.state.values[key][timeKey]}
-                        deletePressed={() => {
-                          this.state.values[key].splice(timeKey, 1)
-                          this.valueChange(this.state.value_labels[key], this.state.values[key])
-                          this.setState({
-                            values: this.state.values
-                          })
-                        }}
-                        valueChange={(label, val) => {
-                          this.state.values[key][timeKey] = val
-                          this.valueChange(this.state.value_labels[key], this.state.values[key])
-                        }} />)
-                  })}
-                  <TouchableOpacity
-                    style={styles.add_button}
-                    onPress={() => {
-                      this.state.values[key].push(moment().format('HH:mm'))
-                      this.setState({
-                        values: this.state.values
-                      })
-                    }}
-                  >
-                    <Text style={styles.submit_text}>Add Another Time</Text>
-                  </TouchableOpacity>
-                </View>
               )
             }
           })}

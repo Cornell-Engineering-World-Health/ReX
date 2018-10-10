@@ -72,6 +72,7 @@ export function intializeDatabase () {
     tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
     \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-20","Days Of Week": [1,1,1,1,1,1,1],"Time": ["09:00"],"Time Category": ["Morning"],"Taken": [true]}\' )')
     tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,\'1950-01-01 00:00:00\', 51)')
+
   }, err => console.log(err), () => console.log('intitialization complete'))
 
   Database.transaction(tx => {
@@ -268,7 +269,7 @@ export function asyncDeleteEvent (id) {
   Database.transaction(tx => {
     tx.executeSql('DELETE FROM event_tbl WHERE event_details_id = ?', inputArray,(tx, { rows }) => console.log('event has been deleted with id :', id), err => console.log(err))
   }, err => console.log(err))
-  
+
 }
 function formatMedicineData (data) {
   dataTemp = {}
@@ -307,14 +308,14 @@ export function asyncCreateMedicineEvents(name,dosage,startDate,endDate,timeArra
     Database.transaction(tx => {
         for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
             dateString  = d.toISOString().substr(0, 10)
-            
+
             /* inserting event_details record */
             var taken = timeArray.map(t=> {return false})
             detailsJson = {'Pill Name': name,'Dosage':dosage, 'Start Date':startDate,'End Date': endDate, 'Time':timeArray,'Time Category':timeCategories,'Taken': taken}
             //console.log("detailsjson: ",detailsJson)
             var inputArray = [String(event_details_id), JSON.stringify(detailsJson)]
             tx.executeSql('INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',inputArray)
-            
+
             /* inserting event record */
             var formattedTimeStamp = Moment(dateString + ' ' + timeArray[0], 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm:ss')
             inputArray = [String(event_id),'4',formattedTimeStamp ,String(event_details_id)]
@@ -323,7 +324,7 @@ export function asyncCreateMedicineEvents(name,dosage,startDate,endDate,timeArra
             event_details_id +=1
         }
     }, err => console.log(err))
-    
+
 }
 function updateMedicineData(data,time,takenVal){
     data.forEach(function(med){
@@ -391,5 +392,3 @@ export function pullSettingsFromDatabase (callback) {
     tx.executeSql('SELECT * from settings_tbl', [], (_, { rows }) => callback(parseSettings(rows._array)))
   }, err => console.log(err))
 }
-
-
