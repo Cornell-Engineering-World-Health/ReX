@@ -14,18 +14,17 @@ import constants from '../Resources/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 10,
-    borderRadius: 3,
-    borderColor: '#ece9e6',
-    borderWidth: 1,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    overflow: 'hidden'
+    padding: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   container: {
     flexDirection: 'column',
-    backgroundColor: '#ffffff'
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ecfaf7',
+    borderColor: '#7fdecb',
+    borderWidth: 2,
   },
   descriptionContainer: {
     flex: 1,
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
   },
   timeStamp: {
     fontSize: 16,
-    color: '#a9a9a9',
+    color: '#373737',
     fontWeight: '600',
     letterSpacing: 0.6
   },
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   noteText: {
-    color: '#808080',
+    color: '#373737',
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0
@@ -105,7 +104,10 @@ class Card extends PureComponent {
       minHeight: 10,
       animation: new Animated.Value(),
       status: this.props.status,
-      arrow: 'expand'
+      arrow: 'expand',
+      backgroundColor: '#ecfaf7',
+      borderColor: '#7fdecb',
+      textColor: '#000000',
     };
   }
 
@@ -125,31 +127,47 @@ class Card extends PureComponent {
     });
   }
 
-  toggle() {
-    let initialValue = this.state.expanded
-        ? this.state.maxHeight + this.state.minHeight
-        : this.state.minHeight,
-      finalValue = this.state.expanded
-        ? this.state.minHeight
-        : this.state.maxHeight + this.state.minHeight;
-
-    var currentArrow = this.state.expanded ? 'collapse' : 'expand';
-
-    this.setState({
-      expanded: !this.state.expanded,
-      arrow: currentArrow
-    });
-
-    this.state.animation.setValue(initialValue);
-    Animated.spring(this.state.animation, {
-      toValue: finalValue
-    }).start();
+  _handleClick = () => {
+    if (this.state.backgroundColor == '#ecfaf7' ){
+      this.setState({
+        backgroundColor: '#FFFFFF',
+        borderColor:'#FFFFFF' ,
+        textColor: '#DDDDDD',
+      }) 
+    } else {
+      this.setState({
+        backgroundColor: '#ecfaf7',
+        borderColor:'#7fdecb',
+        textColor: '#373737',
+      })
+    } 
+    console.log(this.state.borderColor);
   }
+  // toggle() {
+  //   let initialValue = this.state.expanded
+  //       ? this.state.maxHeight + this.state.minHeight
+  //       : this.state.minHeight,
+  //     finalValue = this.state.expanded
+  //       ? this.state.minHeight
+  //       : this.state.maxHeight + this.state.minHeight;
 
-  _onCheck = index => {
-    this.props.setParentState(index);
-    this.forceUpdate();
-  };
+  //   var currentArrow = this.state.expanded ? 'collapse' : 'expand';
+
+  //   this.setState({
+  //     expanded: !this.state.expanded,
+  //     arrow: currentArrow
+  //   });
+
+  //   this.state.animation.setValue(initialValue);
+  //   Animated.spring(this.state.animation, {
+  //     toValue: finalValue
+  //   }).start();
+  // }
+
+  // _onCheck = index => {
+  //   this.props.setParentState(index);
+  //   this.forceUpdate();
+  // };
 
   makePills(data) {
     return data.map((i, index) => {
@@ -183,7 +201,6 @@ class Card extends PureComponent {
 
     return (
       <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
-        <View style={styles.shadowWrapper}>
           <Swipeout
             right={this.props.buttonsRight}
             left={this.props.buttonsLeft}
@@ -200,21 +217,21 @@ class Card extends PureComponent {
               disabled={!this.props.buttonActive}
               onPress={() => this.props.onPress(time)}
             >
-              <View style={styles.container}>
+              <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor}]}>
                 <View
                   style={styles.descriptionContainer}
                   onLayout={this._setMinHeight.bind(this)}
                 >
                   <View style = {{ flexDirection: 'column'}} >
-                    <Text style={styles.titleText}>{this.props.time}</Text>
-                    <Text style={{color: "#c5b3af"}}>{this.props.dosage}</Text>
+                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.time}</Text>
+                    <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={this.toggle.bind(this)}
+                    onPress = {this._handleClick}
                     style={{ flex: 1, alignItems: 'flex-end' }}
                   >
                     <View flexDirection="row" marginTop={7}>
-                      <Text style = {{fontSize: 14, color: '#b8b8b8'}}> One Left </Text>
+                      <Text style = {{fontSize: 14, color: this.state.textColor}}> Take Now </Text>
                       <Image
                         style={styles.image_style}
                         source={() => {
@@ -232,7 +249,6 @@ class Card extends PureComponent {
             </TouchableOpacity>
             </View>
           </Swipeout>
-        </View>
       </Animated.View>
     );
   }

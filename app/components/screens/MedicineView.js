@@ -163,7 +163,7 @@ class CoolerMedicineView extends React.Component {
         onSwipeRight={(state) => this.onSwipeRight(state)}
         style = {{flex: 1, backgroundColor: 'white'}}
       >
-      <View style={{ left: 20, top: 20, flex: 1, backgroundColor: 'white'}}>
+      <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           {/* <Circle
             log={()=>{
