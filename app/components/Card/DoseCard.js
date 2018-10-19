@@ -139,14 +139,22 @@ class Card extends PureComponent {
         borderColor:'#FFFFFF' ,
         textColor: '#DDDDDD',
       })
+
     } else {
+      if (this.state.passed == 0){
       this.setState({
         backgroundColor: '#ecfaf7',
         borderColor:'#7fdecb',
         textColor: '#373737',
       })
+    } else {
+        this.setState({
+          backgrounColor: '#fcf0f2',
+          borderColor: '#F8CED5',
+          textColor: '#373737',
+        })
+      }
     } 
-    console.log(this.state.borderColor);
   }
   // toggle() {
   //   let initialValue = this.state.expanded
