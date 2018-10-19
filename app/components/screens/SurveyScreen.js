@@ -11,6 +11,7 @@ import {
   Picker,
   Button
 } from 'react-native'
+import { FileSystem } from 'expo';
 import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
 import TextInputType from '../LogInputTypes/TextInputType'
 import PickerInputType from '../LogInputTypes/PickerInputType'
@@ -24,7 +25,7 @@ import {asyncCreateMedicineEvents} from '../../databaseUtil/databaseUtil'
 import moment from 'moment'
 import survey from '../../survey/questions.json'
 
-mapTypeToComponent = {
+const mapTypeToComponent = {
   scale: "ScaleSlideInputType",
   checklist: "ChecklistInputType",
   numerical: "NumericalPickerInputType",
@@ -32,7 +33,7 @@ mapTypeToComponent = {
   date: "DatePicker",
   time: "TimeCategoryInputType"
 }
-mapTypeToInitVal = {
+const mapTypeToInitVal = {
   scale: 0,
   checklist: [],
   numerical: 0,
@@ -40,9 +41,8 @@ mapTypeToInitVal = {
   date: new Date(),
   time: new Date(),
 }
-event_id_count = 600
-event_details_id_count = 600
-keyStart = 200
+const SURVEY_DIR = FileSystem.documentDirectory + "test11"
+const FILE_NAME = "survey.csv"
 
 export default class SurveyScreen extends React.Component {
   constructor (props) {
@@ -59,8 +59,7 @@ export default class SurveyScreen extends React.Component {
         return Math.floor((q["Values"].length-1) / 2)
       } else if(q["QuestionType"] == "checklist" && q["Values"]){
           return q["Values"].map(e => false)
-      }
-      else{
+      } else{
         return mapTypeToInitVal[q["QuestionType"]]
       }
     })
@@ -75,6 +74,9 @@ export default class SurveyScreen extends React.Component {
           submit_map[e] = false
         })
         submit_vals[q["Title"]] =submit_map
+      } else if(q["QuestionType"] == "date"){
+        submit_vals[q["Title"]] =
+         moment((new Date()).toLocaleDateString(), 'MM/DD/YYYY').format('YYYY-MM-DD')
       } else {
         submit_vals[q["Title"]] = valArray[i]
       }
@@ -91,48 +93,57 @@ export default class SurveyScreen extends React.Component {
   }
 
   valueChange (label, value) {
-      console.log(this.state.submit_vals)
     this.state.submit_vals[label] = value
   }
 
   submit () {
-    if (this.state.nav) {
-      // Log new symptoms
-      this.props.navigation.state.params.onLog()
-      this.props.navigation.pop()
-      let event_type_id = this.state.event_type_id
-      let values = JSON.stringify(this.state.submit_vals)
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:00')
-
-      // console.log(timestamp)
-
-      Database.transaction(
-        tx => {
-          tx.executeSql(
-            'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)',
-            [event_details_id_count, values]
-          )
-          tx.executeSql(
-            'INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)',
-            [event_id_count, event_type_id, timestamp, event_details_id_count]
-          )
-        },
-        err => console.log(err)
-      )
-
-      event_id_count++
-      event_details_id_count++
-    } else {
-      this.props.on_finish()
-      if (this.props.timestamp) {
-        // Edit symptom log
-        console.log('edit symptom log')
-      } else {
-        // Add new medication
-        asyncCreateMedicineEvents(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']),
-        new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'], event_id_count, event_details_id_count)
+    FileSystem.getInfoAsync(SURVEY_DIR, {}).then( e => {
+        if(!e.exists || !e.isDirectory){
+          console.log("making dir")
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+        }
       }
-    }
+    ).then( e => {
+      return FileSystem.getInfoAsync(SURVEY_DIR+"/"+FILE_NAME, {}).then( e => {
+          if(e.exists && !e.isDirectory){
+            console.log("append")
+              return FileSystem.readAsStringAsync(SURVEY_DIR + "/" + FILE_NAME)
+          } else {
+            console.log("new!")
+            return ""
+          }
+      })
+    }).then((content) => {
+      content += this.state_to_csv()
+      console.log("writing")
+      return FileSystem.writeAsStringAsync(SURVEY_DIR + "/" +FILE_NAME, content)
+    }).then(() => {
+      console.log("reading")
+      return FileSystem.readAsStringAsync(SURVEY_DIR + "/" + FILE_NAME)
+    }).then((content) => {
+      console.log(content)
+    }).catch(e => console.log(e))
+  }
+
+  state_to_csv () {
+    let content = 'Survey Name,' +this.state.surveyId + '\n'
+    let keys = Object.keys(this.state.submit_vals)
+    keys.forEach((k) => {
+      if(this.state.submit_vals[k] instanceof Object &&
+        !(this.state.submit_vals[k] instanceof Date)){
+          let checklist_key = Object.keys(this.state.submit_vals[k])
+          content += k
+          checklist_key.forEach((opt) => {
+            if(this.state.submit_vals[k][opt]){
+              content += ',' + opt
+            }
+          })
+          content += '\n'
+        } else {
+          content += k + ',' + this.state.submit_vals[k] + '\n'
+        }
+    })
+    return content
   }
 
   render () {
