@@ -98,6 +98,7 @@ class Card extends PureComponent {
     status: PropTypes.array,
     passed: PropTypes.bool
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -106,11 +107,11 @@ class Card extends PureComponent {
       animation: new Animated.Value(),
       status: this.props.status,
       arrow: 'expand',
-      backgroundColor: '#ecfaf7',
-      borderColor: '#7fdecb',
+      backgroundColor: this.props.passed == true ? '#fcf0f2' : '#ecfaf7' ,
+      borderColor: this.props.passed == true ? '#F8CED5' : '#7fdecb',
       textColor: '#000000',
       passed: this.props.passed
-    };
+      };
   }
 
   _handlePress = () => {
@@ -131,22 +132,13 @@ class Card extends PureComponent {
 
   _handleClick = () => {
 
-    if (this.state.backgroundColor == '#ecfaf7' ){
-      if (this.state.passed == true){
-        console.log("we made it bous")
-        this.setState({
-          backgroundColor: '#F8CED5',
-          borderColor: '#E85D75',
-          passed: false,
-        })
-      }
-      else {
+    if (this.state.backgroundColor == '#ecfaf7' || this.state.backgroundColor == '#fcf0f2' ){
+      console.log(this.state.passed)
       this.setState({
         backgroundColor: '#FFFFFF',
         borderColor:'#FFFFFF' ,
         textColor: '#DDDDDD',
       })
-      } 
     } else {
       this.setState({
         backgroundColor: '#ecfaf7',
