@@ -9,7 +9,6 @@ export const IMAGES = {
   birthday: require('../Resources/Images/birthday.png'),
   brain: require('../Resources/Images/brain.png'),
   calendar: require('../Resources/Images/calendarScreen.png'),
-  calendar2: require('../Resources/Images/calendarScreen2.png'),
   checkmark: require('../Resources/Images/checkmark.png'),
   default: require('../Resources/Images/default.png'),
   elbowPain: require('../Resources/Images/elbowPain.png'),
@@ -19,7 +18,6 @@ export const IMAGES = {
   headPain: require('../Resources/Images/headPain.png'),
   heartPain: require('../Resources/Images/heartPain.png'),
   homeIcon: require('../Resources/Images/homeScreen.png'),
-  homeIcon2: require('../Resources/Images/homeScreen2.png'),
   intensePain: require('../Resources/Images/intensePain.png'),
   kneePain: require('../Resources/Images/kneePain.png'),
   legPain: require('../Resources/Images/legPain.png'),
@@ -28,17 +26,12 @@ export const IMAGES = {
   neckPain: require('../Resources/Images/neckPain.png'),
   night: require('../Resources/Images/night.png'),
   pillBottle: require('../Resources/Images/medicationScreen.png'),
-  pillBottle2: require('../Resources/Images/medicationScreen2.png'),
   plusSign: require('../Resources/Images/plusSign.png'),
-  plusSign2: require('../Resources/Images/plusSign2.png'),
+  plusSignMinimal: require('../Resources/Images/icons8-plus-math-50.png'),
   profile: require('../Resources/Images/profile.png'),
   profilePic: require('../Resources/Images/profilePic.png'),
-  purpleCircle: require('../Resources/Images/purpleCircle.png'),
-  purpleGradient: require('../Resources/Images/purpleGradient.jpg'),
-  purpleGradient2: require('../Resources/Images/purpleGradient2.jpg'),
   scale: require('../Resources/Images/scale.png'),
   settings: require('../Resources/Images/settingsScreen.png'),
-  settings2: require('../Resources/Images/settingsScreen2.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
   expand: require('../Resources/Images/expand.png'),
   morningColor: require('../Resources/Images/morningC.png'),
@@ -70,16 +63,12 @@ export const IMAGES = {
   iconTurtle: require('../Resources/Images/icons8-turtle-100.png'),
   iconWhale: require('../Resources/Images/icons8-whale-100.png'),
   quickLog: require('../Resources/Images/quicklog.png'),
-  tealGradient: require('../Resources/Images/tealGradient.jpg'),
-  blueGradient: require('../Resources/Images/blueGradient.jpg'),
-  blueGradient2: require('../Resources/Images/blueGradient2.jpg'),
-  darkBlueGradient: require('../Resources/Images/darkBlueGradient.jpg'),
-  darkBlueGradient2: require('../Resources/Images/darkBlueGradient2.jpg'),
   security: require('../Resources/Images/icons8-protect-40.png'),
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
   hamburgerMenu: require('../Resources/Images/icons8-menu-26.png'),
-  body: require('../Resources/Images/bodyLarge.png')
+  body: require('../Resources/Images/bodyLarge.png'),
+  crying: require('../Resources/Images/crying.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -108,7 +97,9 @@ export const COLOR = {
   cardTitle: '#373737',
   cardTimestamp: '#a9a9a9',
   medicineCardChecked: '#e6ffe6',
-  medicineCardUnchecked: '#ffc2b3'
+  medicineCardUnchecked: '#ffc2b3',
+  lightGreen: '#9cff6880',
+  green: '#9cff68'
 };
 
 export const BODY_PARTS = {

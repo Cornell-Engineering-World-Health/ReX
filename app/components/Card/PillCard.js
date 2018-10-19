@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
-import constants from '../Resources/constants';
+import constants, { IMAGES } from '../Resources/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -217,9 +217,9 @@ class Card extends PureComponent {
                         style={styles.image_style}
                         source={() => {
                           if (this.state.arrow == 'expand') {
-                            return require('../Resources/icons8-expand-arrow-50.png');
+                            return IMAGES.expand;
                           } else {
-                            return require('../Resources/icons8-collapse-arrow-50.png');
+                            return IMAGES.collapse;
                           }
                         }}
                       />

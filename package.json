@@ -28,6 +28,7 @@
     "react-fontawesome": "^1.6.1",
     "react-native": "^0.52.3",
     "react-native-animatable": "^1.2.4",
+    "react-native-card-flip": "^1.0.4",
     "react-native-check-box": "^2.0.2",
     "react-native-checkbox": "^2.0.0",
     "react-native-dropdownalert": "^3.4.0",

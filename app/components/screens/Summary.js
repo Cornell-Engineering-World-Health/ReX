@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   dateText: {
-    fontStyle: 'bold',
+    fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',
     color: '#000000'

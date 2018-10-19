@@ -10,12 +10,15 @@ import {
   DatePickerIOS,
   Picker,
   Button,
-  Dimensions
+  Dimensions,
+  Animated
 } from 'react-native';
 import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
 import TextInputType from '../LogInputTypes/TextInputType';
+import ListInputType from '../LogInputTypes/ListInputType';
 import PickerInputType from '../LogInputTypes/PickerInputType';
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
+import Duration from '../LogInputTypes/Duration';
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
 import DatePicker from '../LogInputTypes/DatePicker';
 import TimePicker from '../LogInputTypes/TimePicker';
@@ -24,9 +27,11 @@ import Database from '../../Database';
 import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import moment from 'moment';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { COLOR } from '../Resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
+
 event_id_count = 600;
 event_details_id_count = 600;
 keyStart = 200;
@@ -100,12 +105,33 @@ export default class ChooseLogScreen extends React.Component {
     this.state = {
       input_type_array: input_types,
       nav: nav,
-      activeSlide: 0
+      activeSlide: 0,
+      overlayWidth: new Animated.Value(0),
+      reachedEnd: false
     };
   }
 
   valueChange(label, value) {
-    this.state.submit_vals[label] = value;
+    this.state.submit_vals[label] = value; //store updated value
+    if (!this.state.reachedEnd) {
+      this._carousel.snapToNext(); //if there is another slide, increment carousel
+    }
+    this._updateOverlay();
+  }
+
+  _updateOverlay() {
+    let newOverlayWidth =
+      viewportWidth *
+      (this.state.activeSlide + 1) /
+      this.state.input_type_array.length;
+    if (!this.state.reachedEnd) {
+      Animated.timing(this.state.overlayWidth, {
+        toValue: newOverlayWidth
+      }).start();
+    }
+    if (this.state.activeSlide == this.state.input_type_array.length - 1) {
+      this.setState({ reachedEnd: true });
+    }
   }
 
   submit() {
@@ -180,21 +206,7 @@ export default class ChooseLogScreen extends React.Component {
           />
         );
       } else if (prop == 'NumericalPickerInputType') {
-        return (
-          <NumericalPickerInputType
-            key={key}
-            input_style={styles.input_container_blue}
-            title_text_style={styles.title_text}
-            value={this.state.values[key]}
-            min={0}
-            max={60}
-            inc_scale={1}
-            unit={'minutes'}
-            title_text={this.state.value_labels[key]}
-            val_label={this.state.value_labels[key]}
-            valueChange={this.valueChange.bind(this)}
-          />
-        );
+        return <Duration valueChange={this.valueChange.bind(this)} />;
       } else if (prop == 'DosagePickerInputType') {
         return (
           <NumericalPickerInputType
@@ -213,16 +225,17 @@ export default class ChooseLogScreen extends React.Component {
         );
       } else if (prop == 'TextInputType') {
         return (
-          <TextInputType
-            key={key}
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            text={this.state.values[key]}
-            placeholder_text={'Type here...'}
-            title_text={this.state.value_labels[key]}
-            val_label={this.state.value_labels[key]}
-            valueChange={this.valueChange.bind(this)}
-          />
+          // <TextInputType
+          //   key={key}
+          //   input_style={styles.input_container_green}
+          //   title_text_style={styles.title_text}
+          //   text={this.state.values[key]}
+          //   placeholder_text={'Type here...'}
+          //   title_text={this.state.value_labels[key]}
+          //   val_label={this.state.value_labels[key]}
+          //   valueChange={this.valueChange.bind(this)}
+          // />
+          <ListInputType />
         );
       } else if (prop == 'DatePicker') {
         return (
@@ -316,9 +329,9 @@ export default class ChooseLogScreen extends React.Component {
         activeDotIndex={this.state.activeSlide}
         containerStyle={{ backgroundColor: 'transparent' }}
         dotStyle={{
-          width: viewportWidth * 0.3 / component_array.length,
-          height: 5,
-          borderRadius: 0,
+          width: 10,
+          height: 10,
+          borderRadius: 5,
           marginHorizontal: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.92)'
         }}
@@ -328,14 +341,14 @@ export default class ChooseLogScreen extends React.Component {
           }
         }
         inactiveDotOpacity={0.4}
-        inactiveDotScale={0.9}
+        inactiveDotScale={0.5}
       />
     );
 
     return (
       <View style={styles.container}>
         <View style={styles.headerView}>
-          <Text style={styles.headerTitle}>Headache</Text>
+          <Text style={styles.headerTitle}>{'hello'}</Text>
         </View>
         <Carousel
           ref={c => {
@@ -352,28 +365,26 @@ export default class ChooseLogScreen extends React.Component {
         />
         {pagination}
         <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={() => {
-              this._carousel.snapToPrev();
-            }}
-            style={[
-              styles.footerButton,
-              { backgroundColor: 'white', flex: 0.5 }
-            ]}
-          >
-            <Text style={styles.footerButtonText}>Skip</Text>
+          <Animated.View
+            accessible={false}
+            style={[styles.overlay, { width: this.state.overlayWidth }]}
+          />
+          <TouchableOpacity onPress={() => {}} style={[styles.footerButton]}>
+            <Text style={styles.footerButtonText}>
+              {!this.state.reachedEnd ? 'Quick \n' : ''} Submit
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this._carousel.snapToNext();
-            }}
-            style={[
-              styles.footerButton,
-              { backgroundColor: '#fffc71', flex: 1 }
-            ]}
-          >
-            <Text style={styles.footerButtonText}>Continue</Text>
-          </TouchableOpacity>
+          {!this.state.reachedEnd ? (
+            <TouchableOpacity
+              onPress={() => {
+                this._carousel.snapToNext();
+                this._updateOverlay();
+              }}
+              style={[styles.skipButton]}
+            >
+              <Text style={styles.footerButtonText}>{'Skip'}</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
     );
@@ -383,15 +394,48 @@ export default class ChooseLogScreen extends React.Component {
 const styles = StyleSheet.create({
   footerButtonText: {
     fontSize: 20,
-    fontWeight: '200',
+    fontWeight: '100',
     textAlign: 'center'
   },
-  footerButton: {
-    height: 50,
-    padding: 5,
+  skipButton: {
+    height: 75,
+    width: 75,
+    padding: 15,
+    borderRadius: 50,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.19,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'absolute',
+    left: 5,
+    backgroundColor: '#f9ff5b',
+    bottom: 3
+  },
+  footerButton: {
+    height: 78,
+    width: viewportWidth,
+    padding: 20,
+
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.19,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+
+    borderTopWidth: 1
+  },
+  overlay: {
+    height: 78,
+    marginBottom: 0,
+    flexDirection: 'row',
+    position: 'absolute',
+    backgroundColor: COLOR.lightGreen
   },
   subFooter: {
     flex: 0.1,
@@ -401,7 +445,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 0.2,
-    justifyContent: 'center',
+    width: viewportWidth,
+    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -413,12 +458,16 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingTop: 20,
-    alignItems: 'center'
+    paddingBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: viewportWidth
   },
   headerTitle: {
     fontSize: 30,
     textAlign: 'center',
-    fontWeight: '200'
+    fontWeight: '200',
+    color: 'black'
   },
   main_container: {
     marginTop: 50,

@@ -49,10 +49,6 @@ class Settings extends Component {
       touchID: false,
       quickLog: false
     };
-  }
-
-  render() {
-    var bgColor = '#DCE3F4';
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -64,6 +60,11 @@ class Settings extends Component {
         icon: data.icon
       });
     });
+  }
+
+  render() {
+    var bgColor = '#DCE3F4';
+
     return (
       <View style={styles.container}>
         <View
@@ -244,7 +245,8 @@ export default class settingsList extends React.Component {
     return (
       <NavigatorIOS
         initialRoute={{
-          component: Settings
+          component: Settings,
+          title: 'Settings'
         }}
         style={{ flex: 1, marginTop: 20 }}
         navigationBarHidden={true}

@@ -14,7 +14,7 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import ButtonSelector from '../MenuBar/ButtonSelector';
 import Moment from 'moment';
 import Card from '../Card/Card';
-import testData from '../Resources/CardTestData';
+
 import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 

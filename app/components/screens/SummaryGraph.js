@@ -567,7 +567,7 @@ styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignSelf: 'left',
+    alignSelf: 'flex-start',
     justifyContent: 'space-around',
     alignItems: 'flex-start'
   }
