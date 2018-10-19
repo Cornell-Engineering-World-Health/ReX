@@ -184,6 +184,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Dinonuggies'}
                       dosage={'500mg'}
                       data={this.state.data}
+                      passed={true}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -191,6 +192,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Detergent'}
                       dosage={'45mg'}
                       data={this.state.data}
+                      passed={true}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -198,6 +200,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Potato'}
                       dosage={'60mg'}
                       data={this.state.data}
+                      passed={true}
                     />
                     <DoseCard
                       status={this.state.meds[3]}
@@ -205,6 +208,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Groot'}
                       dosage={'400mg'}
                       data={this.state.data}
+                      passed={true}
                     />
                     <DoseCard
                       status={this.state.meds[0]}
@@ -212,6 +216,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Assortedpaints'}
                       dosage={'500mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -219,6 +224,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Mystery'}
                       dosage={'45mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -226,6 +232,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Charizard'}
                       dosage={'60mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[3]}
@@ -233,6 +240,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Navinramsaroop'}
                       dosage={'400mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[0]}
@@ -240,6 +248,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Runningoutofnames'}
                       dosage={'500mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -247,6 +256,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Ignore'}
                       dosage={'45mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -254,6 +264,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Slidingwheee'}
                       dosage={'60mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     <DoseCard
                       status={this.state.meds[3]}
@@ -261,6 +272,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Youfoundme'}
                       dosage={'400mg'}
                       data={this.state.data}
+                      passed={false}
                     />
                     
                   </View>
