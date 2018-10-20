@@ -1,20 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Animated
+} from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { COLOR } from '../Resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
 export default class Form extends React.Component {
   static propTypes = {
-    data: PropTypes.array //etc
+    data: PropTypes.array, //etc
+    valueChange: PropTypes.func,
+    submit: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
     //need to determine what values are state and which are passed into props
+    this.state = {
+      activeSlide: 0,
+      overlayWidth: new Animated.Value(0),
+      reachedEnd: false
+    };
+  }
+
+  valueChange(label, value){
+    if (!this.state.reachedEnd) {
+      this._carousel.snapToNext(); //if there is another slide, increment carousel
+    }
+    this._updateOverlay()
+    this.props.valueChange(label, value)
   }
 
   _renderItem({ item, index }) {
@@ -22,36 +45,56 @@ export default class Form extends React.Component {
   }
 
   /*
-    Update the overlay based on the proportion of questions completed (1/2 complete, 
+    Update the overlay based on the proportion of questions completed (1/2 complete,
     the bar should be half filled)
   */
   _updateOverlay() {
     let newOverlayWidth =
       viewportWidth *
       (this.state.activeSlide + 1) /
-      this.state.input_type_array.length;
+      this.props.data.length;
     if (!this.state.reachedEnd) {
       Animated.timing(this.state.overlayWidth, {
         toValue: newOverlayWidth
       }).start();
     }
-    if (this.state.activeSlide == this.state.input_type_array.length - 1) {
+    if (this.state.activeSlide == this.props.data.length - 1) {
       this.setState({ reachedEnd: true });
     }
   }
 
   render() {
+    let pagination = (
+      <Pagination
+        dotsLength={this.props.data.length}
+        activeDotIndex={this.state.activeSlide}
+        containerStyle={{ backgroundColor: 'transparent' }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.92)'
+        }}
+        inactiveDotStyle={
+          {
+            // Define styles for inactive dots here
+          }
+        }
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.5}
+      />
+    );
+
+
     return (
       <View style={styles.container}>
-        <View style={styles.headerView}>
-          <Text style={styles.headerTitle}>{'hello'}</Text>
-        </View>
         <Carousel
           ref={c => {
             this._carousel = c;
           }}
           layout={'default'}
-          data={component_array}
+          data={this.props.data}
           renderItem={this._renderItem}
           sliderWidth={viewportWidth}
           itemWidth={viewportWidth}
@@ -65,7 +108,7 @@ export default class Form extends React.Component {
             accessible={false}
             style={[styles.overlay, { width: this.state.overlayWidth }]}
           />
-          <TouchableOpacity onPress={() => {}} style={[styles.footerButton]}>
+          <TouchableOpacity onPress={this.props.submit} style={[styles.footerButton]}>
             <Text style={styles.footerButtonText}>
               {!this.state.reachedEnd ? 'Quick \n' : ''} Submit
             </Text>
@@ -164,5 +207,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '200',
     color: 'black'
+  },
+  componentWrapper: {
+    width: viewportWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
   }
 });
