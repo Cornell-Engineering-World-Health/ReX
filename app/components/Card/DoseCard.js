@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     overflow: 'hidden',
+    marginBottom: 100,
   },
   container: {
     flexDirection: 'column',
