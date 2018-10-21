@@ -81,7 +81,7 @@ export default class Duration extends React.Component {
         text={item}
         style={{
           backgroundColor:
-            index % 2 == 0 ? COLOR.green + '50' : COLOR.green + '90',
+            index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
           justifyContent: 'center'
         }}
       />
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     margin: 1,
     alignItems: 'center',
     height: 50,
-    backgroundColor: COLOR.green,
+    backgroundColor: COLOR.blue,
     width: viewportWidth * 0.8,
     flexDirection: 'row',
     justifyContent: 'center'

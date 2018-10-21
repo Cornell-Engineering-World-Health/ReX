@@ -7,12 +7,12 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native';
-import { IMAGES } from '../Resources/constants';
+import { IMAGES, COLOR } from '../Resources/constants';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
-const SELECTED_COLOR = 'yellow';
+const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';
 const imageChoices = [
   IMAGES.crying,
@@ -38,6 +38,7 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   change(value) {
+    console.log(value)
     this.setState(() => {
       return {
         value: parseFloat(value)
@@ -47,27 +48,24 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   _renderBodyImageType() {
-    let body = [];
-    for (var i = 0; i < imageChoices.length; i++) {
-      body.push(
-        <TouchableOpacity
-          key={i}
-          onPress={() => {
-            this.change(i);
-            this.setState({ selected: i });
-          }}
-          style={[
-            styles.button,
-            {
-              backgroundColor:
-                this.state.selected == i ? SELECTED_COLOR : 'transparent'
-            }
-          ]}
-        >
-          <Image source={imageChoices[i]} style={styles.imgStyle} />
-        </TouchableOpacity>
-      );
-    }
+    let body = imageChoices.map((option, i) => {
+      return (<TouchableOpacity
+        key={i}
+        onPress={() => {
+          this.change(i);
+          this.setState({ selected: i });
+        }}
+        style={[
+          styles.button,
+          {
+            backgroundColor:
+              this.state.selected == i ? SELECTED_COLOR : 'transparent'
+          }
+        ]}
+      >
+        <Image source={imageChoices[i]} style={styles.imgStyle} />
+      </TouchableOpacity>
+    )})
 
     return <View style={styles.body}>{body}</View>;
   }

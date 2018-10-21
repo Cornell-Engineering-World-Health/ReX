@@ -10,6 +10,7 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
+import { COLOR } from '../Resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -82,55 +83,34 @@ export default class Duration extends React.Component {
   }
 
   render() {
-    let buttonBody = [];
     //first put in the normal buttons
-    for (var x = 0; x < durationButtonTitles.length - 1; x++) {
-      let y = x;
-      buttonBody.push(
-        <View style={styles.buttonWrapper} key={x}>
-          <TouchableOpacity
-            onPress={() => {
-              this.handleChange(durationButtonTitles[x]);
-              this.setState({ selected: y });
-            }}
-            style={
-              this.state.selected == x ? styles.buttonSelected : styles.button
-            }
-          >
-            <Text
+    let buttonBody = durationButtonTitles.map((option, x) => {
+      return (<View style={styles.buttonWrapper} key={x}>
+            <TouchableOpacity
+              onPress={() => {
+                if(x == durationButtonTitles.length - 1){
+                  this.setState({ pickerModalOpen: true });
+                } else {
+                  this.handleChange(option);
+                  this.setState({ selected: x });
+                }
+              }}
               style={
-                this.state.selected == x
-                  ? styles.textSelected
-                  : styles.buttonText
+                this.state.selected == x ? styles.buttonSelected : styles.button
               }
             >
-              {durationButtonTitles[x]}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-    //put in the button with a modal
-    buttonBody.push(
-      <View style={styles.buttonWrapper} key={-1}>
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({ pickerModalOpen: true });
-          }}
-          style={
-            this.state.selected == 5 ? styles.buttonSelected : styles.button
-          }
-        >
-          <Text
-            style={
-              this.state.selected == 5 ? styles.textSelected : styles.buttonText
-            }
-          >
-            {durationButtonTitles[x]}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
+              <Text
+                style={
+                  this.state.selected == x
+                    ? styles.textSelected
+                    : styles.buttonText
+                }
+              >
+                {option}
+              </Text>
+            </TouchableOpacity>
+          </View>)
+    })
 
     return (
       <View style={styles.container}>
@@ -192,7 +172,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '100',
     textAlign: 'center',
-    color: '#fbffa0'
+    color: 'white'
   },
   modal: {
     justifyContent: 'flex-end',
@@ -212,7 +192,8 @@ const styles = StyleSheet.create({
     padding: 12
   },
   button: {
-    backgroundColor: '#fbffa0',
+    borderColor: COLOR.blue,
+    borderWidth: 2,
     padding: 5,
     justifyContent: 'center',
     height: 43,
@@ -222,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   buttonSelected: {
-    backgroundColor: 'black',
+    backgroundColor: COLOR.blue,
     padding: 5,
     justifyContent: 'center',
     height: 43,

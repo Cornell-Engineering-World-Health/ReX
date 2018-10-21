@@ -23,6 +23,7 @@ import { StackNavigator } from 'react-navigation'
 import Database from '../../Database'
 import {asyncCreateMedicineEvents} from '../../databaseUtil/databaseUtil'
 import moment from 'moment'
+import Form from '../LogInputTypes/Form'
 import survey from '../../survey/questions.json'
 
 const mapTypeToComponent = {
@@ -147,10 +148,7 @@ export default class SurveyScreen extends React.Component {
   }
 
   render () {
-    return (
-      <ScrollView>
-        <View style={styles.main_container}>
-          {this.state.input_type_array.map((prop, key) => {
+      let component_array = this.state.input_type_array.map((prop, key) => {
             if (prop == 'ScaleSlideInputType') {
               let numOfOptions = (this.state.valOptions[this.state.value_labels[key]]) ?
               (this.state.valOptions[this.state.value_labels[key]]).length : 1;
@@ -226,16 +224,19 @@ export default class SurveyScreen extends React.Component {
                 />
               )
             }
-          })}
-          <TouchableOpacity
-            style={styles.submit_button}
-            onPress={this.submit.bind(this)}
-          >
-            <Text style={styles.submit_text}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    )
+          })
+
+          return (
+            <Form
+              ref={ f => {
+                this._form = f;
+              }}
+              data={component_array}
+              valueChange={this.valueChange.bind(this)}
+              submit={this.submit.bind(this)}
+            >
+            </Form>
+          )
   }
 }
 

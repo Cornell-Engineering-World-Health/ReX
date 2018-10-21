@@ -104,13 +104,9 @@ export default class Form extends React.Component {
         />
         {pagination}
         <View style={styles.footer}>
-          <Animated.View
-            accessible={false}
-            style={[styles.overlay, { width: this.state.overlayWidth }]}
-          />
           <TouchableOpacity onPress={this.props.submit} style={[styles.footerButton]}>
             <Text style={styles.footerButtonText}>
-              {!this.state.reachedEnd ? 'Quick \n' : ''} Submit
+              {!this.state.reachedEnd ? 'Quick' : ''} Submit
             </Text>
           </TouchableOpacity>
           {!this.state.reachedEnd ? (
@@ -121,9 +117,13 @@ export default class Form extends React.Component {
               }}
               style={[styles.skipButton]}
             >
-              <Text style={styles.footerButtonText}>{'Skip'}</Text>
+              <Text style={styles.footerButtonSkipText}>{'Skip'}</Text>
             </TouchableOpacity>
           ) : null}
+          <Animated.View
+            accessible={false}
+            style={[styles.overlay, { width: this.state.overlayWidth }]}
+          />
         </View>
       </View>
     );
@@ -133,8 +133,14 @@ export default class Form extends React.Component {
 const styles = StyleSheet.create({
   footerButtonText: {
     fontSize: 20,
-    fontWeight: '100',
-    textAlign: 'center'
+    fontWeight: '300',
+    textAlign: 'center',
+  },
+  footerButtonSkipText: {
+    fontSize: 20,
+    fontWeight: '400',
+    textAlign: 'center',
+    color: 'white'
   },
   skipButton: {
     height: 75,
@@ -149,14 +155,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     left: 5,
-    backgroundColor: '#f9ff5b',
+    backgroundColor: COLOR.cyan,
     bottom: 3
   },
   footerButton: {
     height: 78,
     width: viewportWidth,
     padding: 20,
-
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.19,
@@ -170,11 +175,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1
   },
   overlay: {
-    height: 78,
-    marginBottom: 0,
+    height: 5,
+    borderRadius: 10,
+    marginBottom: 78,
     flexDirection: 'row',
-    position: 'absolute',
-    backgroundColor: COLOR.lightGreen
+    position: 'relative',
+    backgroundColor: COLOR.cyan
   },
   subFooter: {
     flex: 0.1,

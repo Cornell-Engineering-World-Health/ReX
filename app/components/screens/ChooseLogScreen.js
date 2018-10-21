@@ -78,11 +78,14 @@ export default class ChooseLogScreen extends React.Component {
                   <TouchableOpacity
                     key={key}
                     style={styles.log_button}
-                    onPress={() =>
+                    onPress={() => {
+                      console.log(this.state)
                       navigate('Form', {
+                        log_name: this.state.log_types[key],
                         onLog: this.returnToCal.bind(this),
                         log_type: this.state.event_ids[key]
                       })
+                    }
                     }
                   >
                     <Text style={styles.log_button_text}>{prop}</Text>

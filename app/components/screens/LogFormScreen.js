@@ -40,17 +40,20 @@ keyStart = 200;
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
     super(props);
+    var log_name = '';
     var log_type = 0;
     var nav = true;
     var timestamp = '1950-01-01 00:00:00';
     if (this.props.log_type) {
       log_type = this.props.log_type;
+      log_name = this.props.log_name;
       nav = false;
       if (this.props.timestamp) {
         timestamp = this.props.timestamp;
       }
     } else {
       log_type = this.props.navigation.state.params.log_type;
+      log_name = this.props.navigation.state.params.log_name;
     }
     console.log('log type----', log_type);
     var keysArray = [];
@@ -89,7 +92,8 @@ export default class ChooseLogScreen extends React.Component {
                         value_labels: keysArray,
                         values: valArray,
                         submit_vals: json_rows,
-                        event_type_id: log_type
+                        event_type_id: log_type,
+                        log_name: log_name
                       });
                     }
                   ),
@@ -307,10 +311,11 @@ export default class ChooseLogScreen extends React.Component {
     });
 
 
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <View style={styles.headerView}>
-          <Text style={styles.headerTitle}>{'hello'}</Text>
+          <Text style={styles.headerTitle}>{this.state.log_name}</Text>
         </View>
         <Form
           ref={ f => {
