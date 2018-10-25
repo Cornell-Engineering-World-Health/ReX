@@ -287,6 +287,7 @@ class CoolerMedicineView extends React.Component {
                   </View>
                 );
               }}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
         </View>

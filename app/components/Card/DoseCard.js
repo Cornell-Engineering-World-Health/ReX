@@ -103,7 +103,7 @@ class Card extends PureComponent {
     setParentState: PropTypes.func,
     data: PropTypes.array,
     status: PropTypes.array,
-    passed: PropTypes.bool,
+    passed: PropTypes.number,
   };
 
   /* Status:
@@ -274,7 +274,7 @@ class Card extends PureComponent {
                   >
                     <View flexDirection="row" marginTop={7}>
                       <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.mytext} </Text>
-                      <Image
+                      {/* <Image
                         style={styles.image_style}
                         source={() => {
                           if (this.state.arrow == 'expand') {
@@ -283,7 +283,7 @@ class Card extends PureComponent {
                             return require('../Resources/icons8-collapse-arrow-50.png');
                           }
                         }}
-                      />
+                      /> */}
                     </View>
                   </TouchableOpacity>
                 </View>
