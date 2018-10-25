@@ -3,26 +3,34 @@
 	"Times": ["1100", "1800"],
 	"Questions": [
 		{
-			"Title": "How old are you?",
-			"QuestionType": "numerical"
-		},
-    {
-      "Title": "How are you feeling?",
+      "Title": "A?",
       "QuestionType": "scale",
       "Values" : ["a","b", "c", "d"]
     },
     {
-      "Title": "Type Something",
-      "QuestionType": "text"
+      "Title": "B?",
+      "QuestionType": "scale",
+      "Values" : ["a","b", "c", "d"]
     },
-    {
-      "Title": "Which ones?",
-      "QuestionType": "checklist",
-      "Values": ["1", "2","TEST","4","6","7","8","9"]
-    },
-    {
-      "Title": "When?",
-      "QuestionType": "date"
+		{
+			"Title": "C?",
+			"QuestionType": "scale",
+			"Values" : ["a","b", "c", "d"]
+		},
+		{
+			"Title": "D?",
+			"QuestionType": "scale",
+			"Values" : ["a","b", "c", "d"]
+		},
+		{
+			"Title": "E?",
+			"QuestionType": "scale",
+			"Values" : ["a","b", "c", "d"]
+		},
+		{
+      "Title": "???",
+      "QuestionType": "scale",
+      "Values" : ["a","b", "c", "d"]
     }
 	]
 }

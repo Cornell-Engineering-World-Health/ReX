@@ -26,6 +26,7 @@ const intensityColors = []; //find 10 colors that show intensity
 export default class ScaleSlideInputType extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       title_text: props.title_text,
       value: props.value,
@@ -76,7 +77,7 @@ export default class ScaleSlideInputType extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>
-          <Text style={styles.questionText}>{TITLE}</Text>
+          <Text style={styles.questionText}>{this.props.question || TITLE}</Text>
         </View>
         {this._renderBodyImageType()}
       </View>

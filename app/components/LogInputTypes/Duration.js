@@ -10,18 +10,13 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { COLOR } from '../Resources/constants.js';
+import { COLOR, durationTitles } from '../Resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
-const durationButtonTitles = [
-  '< 1 Hour',
-  'Between 1 - 3 hours',
-  'Between 3-5 hours',
-  '> 5 hours',
-  'More Specific'
-];
+var durationButtonTitles = durationTitles
+
 
 export default class Duration extends React.Component {
   static propTypes = {
@@ -100,12 +95,16 @@ export default class Duration extends React.Component {
   render() {
     //first put in the normal buttons
     let buttonBody = durationButtonTitles.map((option, x) => {
+
       return (
         <View style={styles.buttonWrapper} key={x}>
           <TouchableOpacity
             onPress={() => {
               if (x == durationButtonTitles.length - 1) {
-                this.setState({ pickerModalOpen: true });
+                this.setState({
+                  selected : x,
+                  pickerModalOpen: true
+                });
               } else {
                 this.handleChange(option);
                 this.setState({ selected: x });
@@ -146,6 +145,7 @@ export default class Duration extends React.Component {
             }}
             style={styles.modal}
           >
+<<<<<<< HEAD
             <View
               style={{
                 flex: 0.35,
@@ -174,6 +174,36 @@ export default class Duration extends React.Component {
                 </TouchableOpacity>
               </View>
               {this._renderTimePicker()}
+=======
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
+                onPress={() => {
+                  this.setState({
+                    pickerModalOpen: false,
+                    selected: durationButtonTitles.length - 1
+                  });
+                  this.handleChange(this.state.hourChoice+
+                    ':'+
+                    this.state.minuteChoice);
+                }}
+                alignItems="center"
+              >
+                <Text style={styles.text}>Confirm</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalSubmitButton}
+                onPress={() => {
+                  this.setState({
+                    pickerModalOpen: false,
+                    selected: -1
+                  });
+                }}
+                alignItems="center"
+              >
+                <Text style={styles.text}>Cancel</Text>
+              </TouchableOpacity>
+>>>>>>> 73e0bc0d0ef58baa6e450da46907edf9ce0b06cd
             </View>
           </Modal>
         </View>

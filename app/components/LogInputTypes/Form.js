@@ -106,7 +106,8 @@ export default class Form extends React.Component {
           itemWidth={viewportWidth}
           slideStyle={{ width: viewportWidth }}
           inactiveSlideOpacity={1}
-          onSnapToItem={index => this.setState({ activeSlide: index })}
+          onSnapToItem={index => this.setState({ activeSlide: index },
+            () => {this._updateOverlay()})}
         />
         {pagination}
         <View style={styles.footer}>
@@ -197,7 +198,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     position: 'absolute',
-
     borderTopWidth: 1
   },
   overlay: {

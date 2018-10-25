@@ -66,7 +66,7 @@ class MenuBar extends React.Component {
     super(props);
     this.state = {
       selectedID: HOME_PAGE,
-      surveyModalVisible: false,
+      surveyModalVisible: true,
     };
   }
 

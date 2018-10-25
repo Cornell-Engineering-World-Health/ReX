@@ -328,8 +328,6 @@ export default class ChooseLogScreen extends React.Component {
         );
       }
     });
-
-    //console.log(this.props);
     return (
       <View style={styles.container}>
         <View style={styles.headerView}>
