@@ -276,3 +276,12 @@ export function getTranslucentColor(type) {
   }
   return constants.DEFAULT.translucentColor;
 }
+
+
+export const durationTitles = [
+  '< 1 Hour',
+  'Between 1 - 3 hours',
+  'Between 3-5 hours',
+  '> 5 hours',
+  'More Specific'
+];

@@ -94,7 +94,9 @@ export default class SurveyScreen extends React.Component {
   }
 
   valueChange (label, value) {
-    this.state.submit_vals[label] = value
+    let new_state = this.state.submit_vals
+    new_state[label] = value
+    this.setState({submit_vals: new_state});
   }
 
   submit () {

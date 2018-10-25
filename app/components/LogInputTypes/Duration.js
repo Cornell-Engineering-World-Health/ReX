@@ -10,18 +10,13 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { COLOR } from '../Resources/constants.js';
+import { COLOR, durationTitles } from '../Resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
-const durationButtonTitles = [
-  '< 1 Hour',
-  'Between 1 - 3 hours',
-  'Between 3-5 hours',
-  '> 5 hours',
-  'More Specific'
-];
+var durationButtonTitles = durationTitles
+
 
 export default class Duration extends React.Component {
   static propTypes = {
@@ -89,7 +84,10 @@ export default class Duration extends React.Component {
             <TouchableOpacity
               onPress={() => {
                 if(x == durationButtonTitles.length - 1){
-                  this.setState({ pickerModalOpen: true });
+                  this.setState({
+                    selected : x,
+                    pickerModalOpen: true
+                  });
                 } else {
                   this.handleChange(option);
                   this.setState({ selected: x });
@@ -135,8 +133,13 @@ export default class Duration extends React.Component {
               <TouchableOpacity
                 style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
                 onPress={() => {
-                  this.setState({ pickerModalOpen: false, selected: 5 });
-                  this.handleChange(this.state.moreSpecificChoice);
+                  this.setState({
+                    pickerModalOpen: false,
+                    selected: durationButtonTitles.length - 1
+                  });
+                  this.handleChange(this.state.hourChoice+
+                    ':'+
+                    this.state.minuteChoice);
                 }}
                 alignItems="center"
               >
@@ -145,7 +148,10 @@ export default class Duration extends React.Component {
               <TouchableOpacity
                 style={styles.modalSubmitButton}
                 onPress={() => {
-                  this.setState({ pickerModalOpen: false });
+                  this.setState({
+                    pickerModalOpen: false,
+                    selected: -1
+                  });
                 }}
                 alignItems="center"
               >

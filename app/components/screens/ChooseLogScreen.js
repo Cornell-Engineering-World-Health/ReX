@@ -79,7 +79,6 @@ export default class ChooseLogScreen extends React.Component {
                     key={key}
                     style={styles.log_button}
                     onPress={() => {
-                      console.log(this.state)
                       navigate('Form', {
                         log_name: this.state.log_types[key],
                         onLog: this.returnToCal.bind(this),
