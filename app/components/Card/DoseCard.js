@@ -12,12 +12,16 @@ import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
 import constants from '../Resources/constants';
 
+
+var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
+var border = ['#ffffff', '#7fdecb', '#f8ced5']
+var text = ['#dddddd', '#373737', '#373737']
+
 const styles = StyleSheet.create({
   wrapper: {
     padding: 5,
     borderRadius: 5,
     overflow: 'hidden',
-    marginBottom: 100,
   },
   container: {
     flexDirection: 'column',
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
   }
 });
 class Card extends PureComponent {
+  
   static propTypes = {
     time: PropTypes.string,
     dosage: PropTypes.string,
@@ -100,18 +105,26 @@ class Card extends PureComponent {
     passed: PropTypes.bool
   };
 
+  /* Status:
+     0 -> Taken (Grey)
+     1 -> Take Now (Green)
+     2 -> To take (Red)
+     3 -> Temp Taken (Grey, was Green)
+     4 -> Temp Taken (Grey, was Red) */
+    
   constructor(props) {
     super(props);
+
     this.state = {
       expanded: false,
       minHeight: 10,
       animation: new Animated.Value(),
       status: this.props.status,
       arrow: 'expand',
-      backgroundColor: this.props.passed == true ? '#fcf0f2' : '#ecfaf7' ,
-      borderColor: this.props.passed == true ? '#F8CED5' : '#7fdecb',
-      textColor: '#000000',
-      passed: this.props.passed
+      passed: this.props.passed,
+      backgroundColor: background[this.props.passed],
+      borderColor: border[this.props.passed],
+      textColor: text[this.props.passed],
       };
   }
 
@@ -133,30 +146,39 @@ class Card extends PureComponent {
 
   _handleClick = () => {
 
-    if (this.state.backgroundColor == '#ecfaf7' || this.state.backgroundColor == '#fcf0f2' ){
-      console.log(this.state.passed)
+    if (this.state.passed == 1){
       this.setState({
-        backgroundColor: '#FFFFFF',
-        borderColor:'#FFFFFF' ,
-        textColor: '#DDDDDD',
+        passed: 3,
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
       })
 
-    } else {
-      if (this.state.passed == 0){
+    } else if (this.state.passed == 2){
       this.setState({
-        backgroundColor: '#ecfaf7',
-        borderColor:'#7fdecb',
-        textColor: '#373737',
+        passed: 4,
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
       })
-    } else {
+    }
+    else if (this.state.passed == 3) {
         this.setState({
-          backgrounColor: '#fcf0f2',
-          borderColor: '#F8CED5',
-          textColor: '#373737',
+          passed: 1,
+          backgroundColor: background[1],
+          borderColor: border[1],
+          textColor: text[1],
+        })
+      }
+      else if (this.state.passed == 4) {
+        this.setState({
+        passed: 2,
+        backgroundColor: background[2],
+        borderColor: border[2],
+        textColor: text[2],
         })
       }
     } 
-  }
   // toggle() {
   //   let initialValue = this.state.expanded
   //       ? this.state.maxHeight + this.state.minHeight

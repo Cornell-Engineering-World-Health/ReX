@@ -158,11 +158,6 @@ class CoolerMedicineView extends React.Component {
   render() {
     const { navigate } = this.props.navigation
     return (
-      <GestureRecognizer
-        onSwipeLeft={(state) => this.onSwipeLeft(state)}
-        onSwipeRight={(state) => this.onSwipeRight(state)}
-        style = {{flex: 1, backgroundColor: 'white'}}
-      >
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           {/* <Circle
@@ -184,7 +179,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Dinonuggies'}
                       dosage={'500mg'}
                       data={this.state.data}
-                      passed={true}
+                      passed={2}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -192,7 +187,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Detergent'}
                       dosage={'45mg'}
                       data={this.state.data}
-                      passed={true}
+                      passed={2}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -200,15 +195,16 @@ class CoolerMedicineView extends React.Component {
                       time={'Potato'}
                       dosage={'60mg'}
                       data={this.state.data}
-                      passed={true}
+                      passed={2}
                     />
+                    <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#f8ced5" }} />
                     <DoseCard
                       status={this.state.meds[3]}
                       setParentState={index => this.updateMeds(3, index, 0)}
                       time={'Groot'}
                       dosage={'400mg'}
                       data={this.state.data}
-                      passed={true}
+                      passed={1}
                     />
                     <DoseCard
                       status={this.state.meds[0]}
@@ -216,7 +212,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Assortedpaints'}
                       dosage={'500mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={1}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -224,7 +220,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Mystery'}
                       dosage={'45mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={1}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -232,7 +228,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Charizard'}
                       dosage={'60mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={1}
                     />
                     <DoseCard
                       status={this.state.meds[3]}
@@ -240,15 +236,16 @@ class CoolerMedicineView extends React.Component {
                       time={'Navinramsaroop'}
                       dosage={'400mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={1}
                     />
+                    <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#7fdecb" }} />
                     <DoseCard
                       status={this.state.meds[0]}
                       setParentState={index => this.updateMeds(0, index, 1)}
                       time={'Runningoutofnames'}
                       dosage={'500mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={0}
                     />
                     <DoseCard
                       status={this.state.meds[1]}
@@ -256,7 +253,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Ignore'}
                       dosage={'45mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={0}
                     />
                     <DoseCard
                       status={this.state.meds[2]}
@@ -264,7 +261,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Slidingwheee'}
                       dosage={'60mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={0}
                     />
                     <DoseCard
                       status={this.state.meds[3]}
@@ -272,7 +269,7 @@ class CoolerMedicineView extends React.Component {
                       time={'Youfoundme'}
                       dosage={'400mg'}
                       data={this.state.data}
-                      passed={false}
+                      passed={0}
                     />
                     
                   </View>
@@ -282,7 +279,6 @@ class CoolerMedicineView extends React.Component {
           </View>
         </View>
       </View>
-      </GestureRecognizer>
     );
   }
 }
