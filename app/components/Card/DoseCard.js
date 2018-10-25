@@ -16,6 +16,7 @@ import constants from '../Resources/constants';
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#dddddd', '#373737', '#373737']
+var mytext = ["Take in 5 hours","Take Now",  "Past Due"]
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -102,7 +103,7 @@ class Card extends PureComponent {
     setParentState: PropTypes.func,
     data: PropTypes.array,
     status: PropTypes.array,
-    passed: PropTypes.bool
+    passed: PropTypes.bool,
   };
 
   /* Status:
@@ -125,6 +126,7 @@ class Card extends PureComponent {
       backgroundColor: background[this.props.passed],
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
+      mytext: mytext[this.props.passed],
       };
   }
 
@@ -152,6 +154,7 @@ class Card extends PureComponent {
         backgroundColor: background[0],
         borderColor: border[0],
         textColor: text[0],
+        mytext : mytext[0],
       })
 
     } else if (this.state.passed == 2){
@@ -160,6 +163,7 @@ class Card extends PureComponent {
         backgroundColor: background[0],
         borderColor: border[0],
         textColor: text[0],
+        mytext: mytext[0],
       })
     }
     else if (this.state.passed == 3) {
@@ -168,6 +172,7 @@ class Card extends PureComponent {
           backgroundColor: background[1],
           borderColor: border[1],
           textColor: text[1],
+          mytext: mytext[1],
         })
       }
       else if (this.state.passed == 4) {
@@ -176,6 +181,7 @@ class Card extends PureComponent {
         backgroundColor: background[2],
         borderColor: border[2],
         textColor: text[2],
+        mytext: mytext[2],
         })
       }
     } 
@@ -267,7 +273,7 @@ class Card extends PureComponent {
                     style={{ flex: 1, alignItems: 'flex-end' }}
                   >
                     <View flexDirection="row" marginTop={7}>
-                      <Text style = {{fontSize: 14, color: this.state.textColor}}> Take Now </Text>
+                      <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.mytext} </Text>
                       <Image
                         style={styles.image_style}
                         source={() => {
