@@ -168,6 +168,18 @@ class CoolerMedicineView extends React.Component {
             }}
             amData={this.state.amData} /> */}
           <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.titleText} >
+              My Day | 
+            </Text>
+            <Text style={styles.date} >
+              October 25, 2018 
+            </Text>
+          </View>
+
+            <TouchableOpacity>
+
+            </TouchableOpacity>
             <FlatList
               data={[0]}
               renderItem={({ item, index }) => {
@@ -282,6 +294,22 @@ class CoolerMedicineView extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  titleText: {
+    fontSize: 25,
+    fontWeight: '700',
+    padding: 10,
+    color: '#333333',
+  },
+  date: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
+    fontWeight: '500',
+    padding: 5,
+    marginTop: 10,
+    color: '#555555',
+  },
+});
 
 export default CoolerMedicineView;
