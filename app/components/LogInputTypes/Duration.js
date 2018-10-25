@@ -33,7 +33,6 @@ export default class Duration extends React.Component {
     super(props);
     this.state = {
       pickerModalOpen: false,
-      moreSpecificChoice: new Date(),
       hourChoice: 0,
       minuteChoice: 0,
       selected: -1
@@ -42,6 +41,22 @@ export default class Duration extends React.Component {
 
   handleChange(val) {
     this.props.valueChange(this.props.val_label, val);
+  }
+  handleMoreSpecificChange() {
+    let hour = this.state.hourChoice;
+    let minute = this.state.minuteChoice;
+
+    let hourSuffix = hour == 1 ? ' hour' : ' hours';
+    let minuteSuffix = minute == 1 ? ' minute' : ' minutes';
+
+    if (minute == 0) {
+      this.props.valueChange(this.props.val_label, hour + hourSuffix);
+    } else {
+      this.props.valueChange(
+        this.props.val_label,
+        hour + hourSuffix + ', ' + minute + minuteSuffix
+      );
+    }
   }
 
   _renderTimePicker() {
@@ -116,47 +131,52 @@ export default class Duration extends React.Component {
 
     return (
       <View style={styles.container}>
-        {buttonBody}
+        <View style={styles.header}>
+          <Text style={styles.questionText}>{'How long has it been?'}</Text>
+        </View>
+        <View style={styles.body}>
+          {buttonBody}
 
-        <Modal
-          isVisible={this.state.pickerModalOpen}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ pickerModalOpen: false });
-          }}
-          style={styles.modal}
-        >
-          <View
-            style={{
-              flex: 0.35,
-              backgroundColor: '#ffffff'
+          <Modal
+            isVisible={this.state.pickerModalOpen}
+            animationInTiming={500}
+            animationOutTiming={500}
+            onBackdropPress={() => {
+              this.setState({ pickerModalOpen: false });
             }}
+            style={styles.modal}
           >
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
-                onPress={() => {
-                  this.setState({ pickerModalOpen: false, selected: 5 });
-                  this.handleChange(this.state.moreSpecificChoice);
-                }}
-                alignItems="center"
-              >
-                <Text style={styles.text}>Confirm</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalSubmitButton}
-                onPress={() => {
-                  this.setState({ pickerModalOpen: false });
-                }}
-                alignItems="center"
-              >
-                <Text style={styles.text}>Cancel</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                flex: 0.35,
+                backgroundColor: '#ffffff'
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
+                  onPress={() => {
+                    this.setState({ pickerModalOpen: false, selected: 5 });
+                    this.handleMoreSpecificChange();
+                  }}
+                  alignItems="center"
+                >
+                  <Text style={styles.text}>Confirm</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.modalSubmitButton}
+                  onPress={() => {
+                    this.setState({ pickerModalOpen: false });
+                  }}
+                  alignItems="center"
+                >
+                  <Text style={styles.text}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+              {this._renderTimePicker()}
             </View>
-            {this._renderTimePicker()}
-          </View>
-        </Modal>
+          </Modal>
+        </View>
       </View>
     );
   }
@@ -175,6 +195,17 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     textAlign: 'center',
     color: 'white'
+  },
+  header: {
+    flex: 0.2
+  },
+  body: {
+    flex: 0.8
+  },
+  questionText: {
+    fontSize: 25,
+    fontWeight: '200',
+    textAlign: 'center'
   },
   modal: {
     justifyContent: 'flex-end',
@@ -202,7 +233,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.11,
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 6
   },
   buttonSelected: {
     backgroundColor: COLOR.blue,
@@ -212,11 +244,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.11,
-    borderRadius: 5
+    borderRadius: 5,
+    borderRadius: 5,
+    marginBottom: 6
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: '100',
+    fontWeight: '200',
     textAlign: 'center'
   },
   buttonWrapper: {
