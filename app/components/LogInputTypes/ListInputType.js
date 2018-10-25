@@ -34,9 +34,14 @@ const AddItem = props => (
         props.onSubmitEditing();
       }}
     />
-    <View style={styles.imageWrapper}>
+    <TouchableOpacity
+      style={styles.imageWrapper}
+      onPress={() => {
+        props.onSubmitEditing();
+      }}
+    >
       <Image style={styles.plusSignStyle} source={IMAGES.plusSignMinimal} />
-    </View>
+    </TouchableOpacity>
   </View>
 );
 
@@ -53,10 +58,6 @@ export default class Duration extends React.Component {
       symptoms: ['LAST_ELEMENT'],
       addText: ''
     };
-  }
-
-  handleChange(val) {
-    this.props.valueChange(this.props.val_label, val);
   }
 
   _keyExtractor = (item, index) => item.index;
@@ -89,21 +90,31 @@ export default class Duration extends React.Component {
   };
 
   _onSubmit() {
-    data = this.state.symptoms;
-    data.push(this.state.addText);
+    if (this.state.addText != '') {
+      data = this.state.symptoms;
+      data.splice(data.length - 1, 0, this.state.addText);
+      this.setState({ data: data, addText: '' });
 
-    this.setState({ data });
+      let formatSubmit = data.slice(0, data.length - 1).join(', ');
+      this.props.valueChange(this.props.val_label, formatSubmit);
+      console.log(formatSubmit, 'FORMAT_SUBMIT');
+    }
   }
 
   render() {
     return (
       <View style={styles.wrapper}>
-        <FlatList
-          data={this.state.symptoms}
-          extraData={this.state}
-          keyExtractor={(item, index) => index}
-          renderItem={this._renderItem}
-        />
+        <View style={styles.header}>
+          <Text style={styles.questionText}>{'Any other symptoms?'}</Text>
+        </View>
+        <View style={{ flex: 0.8 }}>
+          <FlatList
+            data={this.state.symptoms}
+            extraData={this.state}
+            keyExtractor={(item, index) => index}
+            renderItem={this._renderItem}
+          />
+        </View>
       </View>
     );
   }
@@ -117,6 +128,14 @@ const styles = StyleSheet.create({
     width: viewportWidth * 0.8,
     flexDirection: 'row',
     justifyContent: 'center'
+  },
+  header: {
+    flex: 0.2
+  },
+  questionText: {
+    fontSize: 25,
+    fontWeight: '100',
+    textAlign: 'center'
   },
   addItemWrapper: {
     justifyContent: 'space-between'

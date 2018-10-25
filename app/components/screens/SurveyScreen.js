@@ -42,6 +42,7 @@ const mapTypeToInitVal = {
   date: new Date(),
   time: new Date(),
 }
+
 const SURVEY_DIR = FileSystem.documentDirectory + "test11"
 const FILE_NAME = "survey.csv"
 
@@ -157,6 +158,7 @@ export default class SurveyScreen extends React.Component {
               return (
                 <ScaleSlideInputType
                   key={key}
+                  question={this.state.value_labels[key]}
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
                   max_val={numOfOptions - 1}
@@ -165,10 +167,8 @@ export default class SurveyScreen extends React.Component {
                   title_text={this.state.value_labels[key]}
                   val_label={this.state.value_labels[key]}
                   valueChange={(label, value) => {
-                    this.valueChange(label,
-                       this.state.valOptions[this.state.value_labels[key]][value])
-                     }
-                  }
+                    this._form.valueChange(label, value);
+                  }}
                 />
               )
             } else if (prop == 'NumericalPickerInputType') {

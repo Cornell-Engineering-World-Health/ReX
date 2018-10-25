@@ -109,19 +109,22 @@ export default class ChooseLogScreen extends React.Component {
 
     this.state = {
       input_type_array: input_types,
-      nav: nav,
+      nav: nav
     };
   }
 
   valueChange(label, value) {
-    console.log(label,value)
-    console.log(this.state.submit_vals)
-    this.state.submit_vals[label] = value; //store updated value
+    console.log(label, value);
+    let submit = this.state.submit_vals;
+    submit[label] = value;
+    this.setState({ submit_vals: submit }, () => {
+      console.log(this.state.submit_vals);
+    });
+    //this.state.submit_vals[label] = value; //store updated value
   }
 
-
   submit() {
-    console.log(this.state)
+    console.log(this.state);
     if (this.state.nav) {
       // Log new symptoms
       this.props.navigation.state.params.onLog();
@@ -169,7 +172,6 @@ export default class ChooseLogScreen extends React.Component {
     }
   }
 
-
   render() {
     var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible'];
     var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening'];
@@ -186,14 +188,20 @@ export default class ChooseLogScreen extends React.Component {
             scale_labels={SCALE_LABELS}
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
-            valueChange={(label, value) => {this._form.valueChange(label, value)}}
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
           />
         );
       } else if (prop == 'NumericalPickerInputType') {
-        return <Duration
-        val_label={this.state.value_labels[key]}
-        valueChange={(label, value) => {this._form.valueChange(label, value)}}
-         />;
+        return (
+          <Duration
+            val_label={this.state.value_labels[key]}
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
+          />
+        );
       } else if (prop == 'DosagePickerInputType') {
         return (
           <NumericalPickerInputType
@@ -207,7 +215,9 @@ export default class ChooseLogScreen extends React.Component {
             unit={'mg'}
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
-            valueChange={(label, value) => {this._form.valueChange(label, value)}}
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
           />
         );
       } else if (prop == 'TextInputType') {
@@ -222,7 +232,12 @@ export default class ChooseLogScreen extends React.Component {
           //   val_label={this.state.value_labels[key]}
           //   valueChange={this.valueChange.bind(this)}
           // />
-          <ListInputType />
+          <ListInputType
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
+            val_label={this.state.value_labels[key]}
+          />
         );
       } else if (prop == 'DatePicker') {
         return (
@@ -233,7 +248,9 @@ export default class ChooseLogScreen extends React.Component {
             value={this.state.values[key]}
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
-            valueChange={(label, value) => {this._form.valueChange(label, value)}}
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
           />
         );
       } else if (prop == 'DayChooserInputType') {
@@ -254,7 +271,9 @@ export default class ChooseLogScreen extends React.Component {
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
             value={this.state.values[key]}
-            valueChange={(label, value) => {this._form.valueChange(label, value)}}
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
           />
         );
       } else if (prop == 'TimeCategoryInputType') {
@@ -315,14 +334,13 @@ export default class ChooseLogScreen extends React.Component {
           <Text style={styles.headerTitle}>{this.state.log_name}</Text>
         </View>
         <Form
-          ref={ f => {
+          ref={f => {
             this._form = f;
           }}
           data={component_array}
           valueChange={this.valueChange.bind(this)}
           submit={this.submit.bind(this)}
-        >
-        </Form>
+        />
       </View>
     );
   }
@@ -403,7 +421,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 30,
     textAlign: 'center',
-    fontWeight: '200',
+    fontWeight: '400',
     color: 'black'
   },
   main_container: {

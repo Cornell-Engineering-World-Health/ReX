@@ -80,35 +80,38 @@ export default class Duration extends React.Component {
   render() {
     //first put in the normal buttons
     let buttonBody = durationButtonTitles.map((option, x) => {
-      return (<View style={styles.buttonWrapper} key={x}>
-            <TouchableOpacity
-              onPress={() => {
-                if(x == durationButtonTitles.length - 1){
-                  this.setState({
-                    selected : x,
-                    pickerModalOpen: true
-                  });
-                } else {
-                  this.handleChange(option);
-                  this.setState({ selected: x });
-                }
-              }}
+
+      return (
+        <View style={styles.buttonWrapper} key={x}>
+          <TouchableOpacity
+            onPress={() => {
+              if (x == durationButtonTitles.length - 1) {
+                this.setState({
+                  selected : x,
+                  pickerModalOpen: true
+                });
+              } else {
+                this.handleChange(option);
+                this.setState({ selected: x });
+              }
+            }}
+            style={
+              this.state.selected == x ? styles.buttonSelected : styles.button
+            }
+          >
+            <Text
               style={
-                this.state.selected == x ? styles.buttonSelected : styles.button
+                this.state.selected == x
+                  ? styles.textSelected
+                  : styles.buttonText
               }
             >
-              <Text
-                style={
-                  this.state.selected == x
-                    ? styles.textSelected
-                    : styles.buttonText
-                }
-              >
-                {option}
-              </Text>
-            </TouchableOpacity>
-          </View>)
-    })
+              {option}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    });
 
     return (
       <View style={styles.container}>

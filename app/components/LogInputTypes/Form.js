@@ -18,7 +18,7 @@ export default class Form extends React.Component {
   static propTypes = {
     data: PropTypes.array, //etc
     valueChange: PropTypes.func,
-    submit: PropTypes.func,
+    submit: PropTypes.func
   };
 
   constructor(props) {
@@ -28,16 +28,17 @@ export default class Form extends React.Component {
     this.state = {
       activeSlide: 0,
       overlayWidth: new Animated.Value(0),
+      overlayHeight: new Animated.Value(0),
       reachedEnd: false
     };
   }
 
-  valueChange(label, value){
+  valueChange(label, value) {
     if (!this.state.reachedEnd) {
       this._carousel.snapToNext(); //if there is another slide, increment carousel
     }
-    this._updateOverlay()
-    this.props.valueChange(label, value)
+    this._updateOverlay();
+    this.props.valueChange(label, value);
   }
 
   _renderItem({ item, index }) {
@@ -50,9 +51,7 @@ export default class Form extends React.Component {
   */
   _updateOverlay() {
     let newOverlayWidth =
-      viewportWidth *
-      (this.state.activeSlide + 1) /
-      this.props.data.length;
+      viewportWidth * (this.state.activeSlide + 1) / this.props.data.length;
     if (!this.state.reachedEnd) {
       Animated.timing(this.state.overlayWidth, {
         toValue: newOverlayWidth
@@ -60,7 +59,15 @@ export default class Form extends React.Component {
     }
     if (this.state.activeSlide == this.props.data.length - 1) {
       this.setState({ reachedEnd: true });
+      this._updateOverlayYAxis();
     }
+  }
+
+  _updateOverlayYAxis() {
+    let newHeight = 78;
+    Animated.timing(this.state.overlayHeight, {
+      toValue: newHeight
+    }).start();
   }
 
   render() {
@@ -86,7 +93,6 @@ export default class Form extends React.Component {
       />
     );
 
-
     return (
       <View style={styles.container}>
         <Carousel
@@ -105,7 +111,20 @@ export default class Form extends React.Component {
         />
         {pagination}
         <View style={styles.footer}>
-          <TouchableOpacity onPress={this.props.submit} style={[styles.footerButton]}>
+          <TouchableOpacity
+            onPress={this.props.submit}
+            style={[styles.footerButton]}
+          >
+            <Animated.View
+              accessible={false}
+              style={[
+                styles.overlayFill,
+                {
+                  height: this.state.overlayHeight,
+                  width: viewportWidth
+                }
+              ]}
+            />
             <Text style={styles.footerButtonText}>
               {!this.state.reachedEnd ? 'Quick' : ''} Submit
             </Text>
@@ -123,7 +142,14 @@ export default class Form extends React.Component {
           ) : null}
           <Animated.View
             accessible={false}
-            style={[styles.overlay, { width: this.state.overlayWidth }]}
+            style={[
+              styles.overlay,
+              {
+                width: this.state.overlayWidth,
+                height: 5,
+                marginBottom: 78
+              }
+            ]}
           />
         </View>
       </View>
@@ -135,7 +161,7 @@ const styles = StyleSheet.create({
   footerButtonText: {
     fontSize: 20,
     fontWeight: '300',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   footerButtonSkipText: {
     fontSize: 20,
@@ -175,11 +201,15 @@ const styles = StyleSheet.create({
     borderTopWidth: 1
   },
   overlay: {
-    height: 5,
     borderRadius: 10,
-    marginBottom: 78,
     flexDirection: 'row',
     position: 'relative',
+    backgroundColor: COLOR.cyan
+  },
+  overlayFill: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
     backgroundColor: COLOR.cyan
   },
   subFooter: {
