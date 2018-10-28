@@ -21,31 +21,31 @@ var dummy_data = [
   {
     title: 'Dinonuggies',
     dosage: 489,
-    time: [new Date("January 31 1980 10:30")],
+    time: ["January 31 1980 10:30"],
     status: [false]
   },
   {
     title: 'KT',
     dosage: 4344348,
-    time: [new Date("January 31 1980 9:30")],
+    time: ["January 31 1980 9:30"],
     status: [false]
   },
   {
     title: 'Beanz',
     dosage: 430,
-    time: [new Date("January 31 1980 12:30")],
+    time: ["January 31 1980 12:30"],
     status: [false]
   },
   {
     title: 'Oliviera',
     dosage: 233,
-    time: [new Date("January 31 1980 2:30")],
+    time: ["January 31 1980 2:30"],
     status: [false]
   },
   {
     title: 'Splash',
     dosage: 3,
-    time: [new Date("January 31 1980 1:45")],
+    time: ["January 31 1980 1:45"],
     status: [false]
   }
 ]
@@ -204,7 +204,6 @@ class CoolerMedicineView extends React.Component {
                     <DoseCard
                     title={item.title}
                     time={item.time}
-                    timeStamp={[(item.time[0].getHours()).toString() + (item.time[0].getMinutes()).toString()]}
                     dosage={item.dosage}
                     passed={item.status}
                     />
