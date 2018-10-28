@@ -124,7 +124,6 @@ class Card extends PureComponent {
   // determines new hours text
   _handleRenderText = () => {
     var today = new Date();
-    console.log(this.state.passed_index + "********************************")
     var current = new Date(this.state.time[this.state.passed_index])
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
