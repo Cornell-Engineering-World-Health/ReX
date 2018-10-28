@@ -154,11 +154,24 @@ class Card extends PureComponent {
         textColor: text[2],
       })
     }else{
-      var count = current.getHours() - today.getHours();
-      var numHours = "Take in " + count + " Hours";
-      if( count == 1){
-        numHours = "Take in " + count + " Hour";
+      var numHours;
+      if(current.getHours() >= 12){
+        if( current.getHours() == 13){
+          numHours = "Take at " + 1 + " PM";
+        }else{
+          console.log("ded")
+          numHours = "Take at "+ (current.getHours() - 12) + " PM";
+        }
+      }else{
+        if( current.getHours() == 1){
+          console.log("rip")
+          numHours = "Take at " + 1 + " AM";
+        }else{
+          console.log("help")
+          numHours = "Take at "+ (current.getHours() % 12) + " AM";
+        }
       }
+  
       this.setState({
         backgroundColor: background[0],
         borderColor: border[0],
