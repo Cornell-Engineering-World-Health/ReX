@@ -15,6 +15,7 @@ import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import Moment from 'moment';
 
 var dummy_data = [
@@ -50,6 +51,7 @@ var dummy_data = [
   }
 ]
 
+>>>>>>> 759a7a134008978309b34166a84abec093958a28
 
 var data1 = [
   {
@@ -117,7 +119,24 @@ class CoolerMedicineView extends React.Component {
 
   constructor(props) {
     super(props);
-
+    
+    var medicineData= []
+    //new Date() for current date
+    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
+        Object.keys(formattedData).forEach(function(med) {
+            console.log(med)
+            var medObj = formattedData[med]
+            medicineData.push({title: med, times:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
+            for(var i =0; i <medObj.timeCategory.length; i++){
+                //console.log(medObj.time[i])
+                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+            }
+        });
+        
+        console.log(data)
+    });
+    
     var arr1 = new Array(data1.length + 1)
       .join('0')
       .split('')
@@ -144,26 +163,40 @@ class CoolerMedicineView extends React.Component {
     this.state = {
       meds: meds,
       amData: [0, 100, 0, 100, 0, 100, 0, 100],
-      data: data1
+      data: medicineData
     };
   }
 
   updateMeds = (time, index) => {
-    newMeds = this.state.meds;
-    oldVal = this.state.meds[time][index];
-    newMeds[time][index] = !oldVal;
-    this.setState({ meds: newMeds });
-    this.updateArray(time);
+
   };
 
   updateArray = time => {
-    newData = this.state.amData;
-    meds_list = this.state.meds[time];
-    sum = meds_list.reduce((a, b) => a + b, 0);
-    len = this.state.meds[time].length;
-    newData[time * 2] = 100 * (sum / len);
-    newData[time * 2 + 1] = 100 - newData[time * 2];
-    this.setState({ amData: newData });
+
+  };
+
+  onSwipeLeft = gestureState => {
+    console.log("swiped left")
+    var meds_new = new Array(data2.length + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
+    this.setState({
+      data: data2, //TODO: this should pull from database for previous date
+      // meds: meds_new
+    })
+  };
+
+  onSwipeRight = gestureState => {
+    console.log("swiped right")
+    var meds_new = new Array(data3.length + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
+    this.setState({
+      data: data3,
+      // meds: meds_new
+    })
   };
 
   render() {

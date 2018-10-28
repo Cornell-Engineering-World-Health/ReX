@@ -11,7 +11,7 @@ import {
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
 import constants from '../Resources/constants';
-
+import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
@@ -163,7 +163,15 @@ class Card extends PureComponent {
   }
 
   _handleClick = () => {
-
+    //update datebase based on click
+    title = 'Tylenol'
+    dosage = '20 mg'
+    time = '09:00'
+    databaseTakeMedicine(new Date('2018-04-17'),title,dosage,time,!this.status)
+    this.setState({
+        status: !this.status,
+    })
+    
     if (this.state.passed == 1){
       this.setState({
         passed: 3,

@@ -325,18 +325,19 @@ export function asyncCreateMedicineEvents(name,dosage,startDate,endDate,timeArra
     }, err => console.log(err))
     
 }
+/*TODO: clean up updateMedicine functions*/
 function updateMedicineData(data,time,takenVal){
     data.forEach(function(med){
         var fields = JSON.parse(med.fields)
         console.log(med)
-        var idx = fields['Time Category'].indexOf(time);
-
+        var idx = fields.time.indexOf(time);
+        
         if (idx !=-1){
             console.log('updating')
-            let newTaken = fields['Taken'].slice()
+            let newTaken = fields.taken.slice()
             newTaken[idx] = takenVal
             console.log(newTaken)
-            fields['Taken']= newTaken
+            fields.taken = newTaken
             let newFields = JSON.stringify(fields)
             let queryArgs = [newFields, med.event_details_id]
             Database.transaction(tx => {
@@ -344,25 +345,39 @@ function updateMedicineData(data,time,takenVal){
             },err=>console.log(err))
         }
     })
-    /**
-    Database.transaction(tx => {
-        tx.executeSql('Select * from event_details_tbl where event_details_id = 55 OR event_details_id = 54',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));
-    */
 }
 
+function updateSingleMedicine(data,name,dosage,time,takenVal){
+    console.log('updating single medicine', data)
+    data.some(function(med){
+        var fields = JSON.parse(med.fields)
+        if(fields.pillName === name && fields.dosage === dosage){
+            var idx = fields.time.indexOf(time);
+            if(idx != -1){
+                let newTaken = fields.taken.slice()
+                newTaken[idx] = takenVal
+                fields.taken = newTaken
+                let newFields = JSON.stringify(fields)
+                let queryArgs = [newFields, med.event_details_id]
+                Database.transaction(tx => {
+                    tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs);
+                },err=>console.log(err))
+                
+                return true
+            }
+        }
+        return false
+    })
+}
 export function databaseTakeMedicines(date,timeIndex,takenVal){
   let timeArray = ['Morning','Afternoon','Evening','Night']
   let timeString = timeArray[timeIndex]
-  date.setTime(date.getTime() + date.getTimezoneOffset()*60*1000 )
   let day = date.toISOString().substr(0,10)
   dayArray  = [day]
-
+  
   console.log('date ', day)
   console.log('time ', timeString)
-
+  
   Database.transaction(tx => {
       tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
@@ -370,7 +385,22 @@ export function databaseTakeMedicines(date,timeIndex,takenVal){
       WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
       updateMedicineData(rows._array,timeString,takenVal));
   },err=>console.log(err))
+  
+}
 
+//pass in time as 24 hour time string
+export function databaseTakeMedicine(date,name,dosage,time,takenVal){
+    let day = date.toISOString().substr(0,10)
+    dayArray  = [day]
+    console.log(dayArray)
+    console.log('inside take medicine')
+    Database.transaction(tx => {
+    tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+      updateSingleMedicine(rows._array,name,dosage,time,takenVal), err => console.log(err));
+  },err=>console.log(err))
 }
 export function asyncSettingUpdate(name, value){
   inputArray = [name,value]
