@@ -129,9 +129,7 @@ class CoolerMedicineView extends React.Component {
     pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
         Object.keys(formattedData).forEach(function(med) {
             var medObj = formattedData[med]
-            console.log(medObj)
             var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-            console.log(formattedTimes)
             medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
             for(var i =0; i <medObj.timeCategory.length; i++){
                 //console.log(medObj.time[i])
