@@ -206,7 +206,7 @@ class CoolerMedicineView extends React.Component {
                     time={item.time}
                     timeStamp={[(item.time[0].getHours()).toString() + (item.time[0].getMinutes()).toString()]}
                     dosage={item.dosage}
-                    passed={item.passed}
+                    passed={item.status}
                     />
                     </View>
                   // <View>
