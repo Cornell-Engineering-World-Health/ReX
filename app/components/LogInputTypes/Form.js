@@ -106,8 +106,11 @@ export default class Form extends React.Component {
           itemWidth={viewportWidth}
           slideStyle={{ width: viewportWidth }}
           inactiveSlideOpacity={1}
-          onSnapToItem={index => this.setState({ activeSlide: index },
-            () => {this._updateOverlay()})}
+          onSnapToItem={index =>
+            this.setState({ activeSlide: index }, () => {
+              this._updateOverlay();
+            })
+          }
         />
         {pagination}
         <View style={styles.footer}>
@@ -219,11 +222,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   footer: {
-    flex: 0.2,
+    position: 'relative',
     width: viewportWidth,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    bottom: 0,
+    left: 0,
+    right: 0
   },
   container: {
     flex: 1,
