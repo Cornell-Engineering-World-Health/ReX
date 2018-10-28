@@ -150,7 +150,8 @@ class CoolerMedicineView extends React.Component {
     this.state = {
       meds: meds,
       amData: [0, 100, 0, 100, 0, 100, 0, 100],
-      data: []
+      data: [],
+      passed_index: 0
     };
   }
 
@@ -178,7 +179,19 @@ class CoolerMedicineView extends React.Component {
   }
 
   compareCards = (a,b) => {
-    if (parseInt((a.timeval[0]).replace(":","")) < parseInt((b.timeval[0]).replace(":",""))) {
+    var passed_index = 0
+    for (var i = 0; i < a.passed.length; i++){
+      if (a.passed[i] == false){
+        passed_index = i
+        break
+      }
+    }
+    for (var j = 0; j < b.passed.length; j++){
+      if (b.passed[j] == false){
+        passed_index2 = j
+      }
+    }
+    if (parseInt((a.timeval[i]).replace(":","")) < parseInt((b.timeval[j]).replace(":",""))) {
       return -1
     }
     else {

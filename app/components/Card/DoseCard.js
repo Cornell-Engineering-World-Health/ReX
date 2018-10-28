@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
   }
 });
 class Card extends PureComponent {
+
+  
   
   static propTypes = {
     time: PropTypes.array,
@@ -91,14 +93,15 @@ class Card extends PureComponent {
     passed: PropTypes.array,
   };
 
-  /* Status:
-     0 -> Taken (Grey)
-     1 -> Take Now (Green)
-     2 -> To take (Red)
-     3 -> Temp Taken (Grey, was Green)
-     4 -> Temp Taken (Grey, was Red) */
-    
   constructor(props) {
+    var passed_index = 0
+    for (var x = 0; x < this.props.passed; x++) {
+      if (this.props.passed[x] == false) {
+        passed_index = x
+        break
+      }
+    }
+
     super(props);
 
     this.state = {
@@ -109,7 +112,7 @@ class Card extends PureComponent {
       status: this.props.status,
       arrow: 'expand',
       passed: this.props.passed,
-      passed_index: 0,
+      passed_index: passed_index,
       backgroundColor: background[this.props.passed],
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
@@ -188,6 +191,7 @@ class Card extends PureComponent {
       })
     }
   };
+
 
   _setMaxHeight(event) {
     this.setState({
@@ -298,12 +302,7 @@ class Card extends PureComponent {
   }
 
   render() {
-    const imageContainerStyle = [styles.imageContainer];
-
-    var image = constants.DEFAULT.image;
-
     this._handleRenderText()
-
     return (
       <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
           <Swipeout
