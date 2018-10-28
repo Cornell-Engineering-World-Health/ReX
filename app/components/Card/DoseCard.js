@@ -140,7 +140,7 @@ class Card extends PureComponent {
         borderColor: border[1],
         textColor: text[1],
       })
-    }else if (!this.props.passed[this.props.passed_index]){
+    }else if (todayTimeSum > currentTimeSum){
       var numHours = 0;
       if (today.getHours() - current.getHours() == 1){
         numHours = "1 Hour Ago"
@@ -154,11 +154,16 @@ class Card extends PureComponent {
         textColor: text[2],
       })
     }else{
+      var count = current.getHours() - today.getHours();
+      var numHours = "Take in " + count + " Hours";
+      if( count == 1){
+        numHours = "Take in " + count + " Hour";
+      }
       this.setState({
         backgroundColor: background[0],
         borderColor: border[0],
         textColor: text[0],
-        newhours: "Take in " + current.getHours() - today.getHours(),
+        newhours: numHours,
       })
     }
   };
@@ -188,14 +193,23 @@ class Card extends PureComponent {
     this.setState({
         status: !this.status,
     })
+    var today = new Date();
+    var current = new Date(this.state.time[this.state.passed_index])
+    var todayTimeSum = today.getHours()*60 + today.getMinutes();
+    var currentTimeSum = current.getHours()*60 + current.getMinutes();
+
     var newPassed = this.state.passed;
-    if( newPassed[this.state.passed_index-1]){
+    console.log(todayTimeSum + "today time sum");
+    console.log(currentTimeSum + "current time sum");
+    // can click backward
+    if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
       newPassed[this.state.passed_index-1] = false;
       this.setState({
         passed_index: this.state.passed_index-1,
         passed: newPassed,
       })
-    }else {
+      //can click forward
+    }else if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       this.setState({
         passed_index: this.state.passed_index+1,
