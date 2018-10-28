@@ -168,7 +168,7 @@ class Card extends PureComponent {
         if( min != 0){
           numHours = numHours + ":" + min + " PM"
         }else{
-          numHours = numHours + " AM"
+          numHours = numHours + " PM"
         }
       }else{
         if( current.getHours() == 1){
@@ -211,20 +211,18 @@ class Card extends PureComponent {
     dosage = '20 mg'
     time = '09:00'
     temp = this.props.passed
-    console.log("wfwoef")
-    console.log(temp)
     passed_index = -1
-    iter = 0
     for (var i = 0; i < temp.length; i++){
-      if (temp[iter] == false){
-        passed_index = iter
+      if (temp[i] == false){
+        passed_index = i
         break
       }
     }
     if (passed_index == -1){
       passed_index = 0
     }
-    databaseTakeMedicine(new Date('2018-04-17'),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
+    this.state.passed_index = passed_index;
+    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[passed_index],!this.props.passed[passed_index])
     this.setState({
         status: !this.status,
     })

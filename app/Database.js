@@ -1,4 +1,4 @@
 import { SQLite } from 'expo'
 
-module.exports = SQLite.openDatabase('dbz79.db')
+module.exports = SQLite.openDatabase('dbzz79.db')
 
