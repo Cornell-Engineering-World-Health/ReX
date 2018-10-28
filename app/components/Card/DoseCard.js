@@ -160,7 +160,6 @@ class Card extends PureComponent {
         if( current.getHours() == 13){
           numHours = "Take at " + 1
         }else{
-          console.log("ded")
           numHours = "Take at "+ (current.getHours() - 12);
         }
         if( min != 0){
@@ -170,10 +169,8 @@ class Card extends PureComponent {
         }
       }else{
         if( current.getHours() == 1){
-          console.log("rip")
           numHours = "Take at " + 1;
         }else{
-          console.log("help")
           numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
         }
         if( min != 0){
@@ -190,10 +187,6 @@ class Card extends PureComponent {
         newhours: numHours,
       })
     }
-  };
-
-  _handlePress = () => {
-    console.log('button pressed. ');
   };
 
   _setMaxHeight(event) {
@@ -237,8 +230,6 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     var newPassed = this.state.passed;
-    console.log(todayTimeSum + "today time sum");
-    console.log(currentTimeSum + "current time sum");
     // can click backward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;

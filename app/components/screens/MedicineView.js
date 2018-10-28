@@ -22,9 +22,9 @@ var dummy_data = [
   {
     title: 'Dinonuggies',
     dosage: '489mg',
-    time: ["January 31 1980 12:00", "January 31 1980 16:30"],
-    timeval: [1030, 1130],
-    status: [false, false]
+    time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
+    timeval: [1030, 1130, 1200],
+    status: [true, false, false]
   },
   {
     title: 'KT',
