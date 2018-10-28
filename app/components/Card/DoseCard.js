@@ -119,14 +119,12 @@ class Card extends PureComponent {
 
   // determines new hours text
   _handleRenderText = () => {
-    console.log("rendering text");
     var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     if(this.state.passed_index >= this.state.passed.length){
-      console.log("done for day");
       this.setState({
         newhours: "Done for the day",
         backgroundColor: background[0],
@@ -145,7 +143,7 @@ class Card extends PureComponent {
       if (today.getHours() - current.getHours() == 1){
         numHours = "1 Hour Ago"
       } else if (today.getHours() == current.getHours()){
-        numHours = today.getMinutes() - current.getMinutes() + " Minutes ago"
+        numHours = today.getMinutes() - current.getMinutes() + " Minutes Ago"
       }else {
         numHours = today.getHours() - current.getHours() + " Hours Ago"
       }
