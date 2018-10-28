@@ -16,7 +16,7 @@ import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#dddddd', '#373737', '#373737']
-var mytext = ["Take in 5 hours","Take Now",  "Past Due"]
+var mytext = ["","Take Now",  "Past Due"]
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -85,25 +85,11 @@ const styles = StyleSheet.create({
 class Card extends PureComponent {
   
   static propTypes = {
-    time: PropTypes.string,
+    time: PropTypes.array,
     dosage: PropTypes.string,
     timeStamp: PropTypes.string,
-    note1: PropTypes.string,
-    note2: PropTypes.string,
-    image: PropTypes.number,
-    backgroundColor: PropTypes.string,
-    buttonActive: PropTypes.bool,
-    swiperActive: PropTypes.bool,
-    buttonsRight: PropTypes.array,
-    buttonsLeft: PropTypes.array,
-    onPress: PropTypes.func,
-    onCloseSwipeout: PropTypes.func,
-    onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.object,
-    setParentState: PropTypes.func,
-    data: PropTypes.array,
-    status: PropTypes.array,
-    passed: PropTypes.number,
+    title: PropTypes.string,
+    passed: PropTypes.array,
   };
 
   /* Status:
@@ -120,15 +106,45 @@ class Card extends PureComponent {
       expanded: false,
       minHeight: 10,
       animation: new Animated.Value(),
+      time: this.props.time,
       status: this.props.status,
       arrow: 'expand',
       passed: this.props.passed,
+      passed_index: 0,
       backgroundColor: background[this.props.passed],
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       mytext: mytext[this.props.passed],
+      newhours: "",
       };
   }
+
+  // determines new hours text
+  _handleRenderText = () => {
+    console.log("rendering text");
+    var today = new Date();
+    var current = this.state.time[this.state.passed_index]
+    var todayTimeSum = today.getHours()*60 + today.getMinutes;
+    var currentTimeSum = current.getHours*60 + current.getMinutes;
+
+    if(this.state.passed_index >= this.state.passed.length){
+      this.setState({
+        newhours: "Done for the day"
+      })
+    }else if( Math.abs(todayTimeSum - currentTimeSum) < 15){
+      this.setState({
+        newhours: "Take Now"
+      })
+    }else if (!this.state.passed[this.state.passed_index]){
+      this.setState({
+        newhours: today.getHours() - current.getHours() + "Past Due"
+      })
+    }else{
+      this.setState({
+        newhours: "Take in " + current.getHours() - today.getHours()
+      })
+    }
+  };
 
   _handlePress = () => {
     console.log('button pressed. ');
@@ -163,6 +179,7 @@ class Card extends PureComponent {
         borderColor: border[0],
         textColor: text[0],
         mytext : mytext[0],
+        passed_index : this.state.passed_index + 1,
       })
 
     } else if (this.state.passed == 2){
@@ -172,6 +189,7 @@ class Card extends PureComponent {
         borderColor: border[0],
         textColor: text[0],
         mytext: mytext[0],
+        passed_index : this.state.passed_index + 1,
       })
     }
     else if (this.state.passed == 3) {
@@ -181,6 +199,7 @@ class Card extends PureComponent {
           borderColor: border[1],
           textColor: text[1],
           mytext: mytext[1],
+          passed_index : this.state.passed_index - 1,
         })
       }
       else if (this.state.passed == 4) {
@@ -190,6 +209,7 @@ class Card extends PureComponent {
         borderColor: border[2],
         textColor: text[2],
         mytext: mytext[2],
+        passed_index : this.state.passed_index - 1,
         })
       }
     } 
@@ -248,6 +268,8 @@ class Card extends PureComponent {
     const imageContainerStyle = [styles.imageContainer];
 
     var image = constants.DEFAULT.image;
+
+    this._handleRenderText()
 
     return (
       <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
