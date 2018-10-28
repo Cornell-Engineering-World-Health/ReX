@@ -155,20 +155,31 @@ class Card extends PureComponent {
       })
     }else{
       var numHours;
+      var min = current.getMinutes();
       if(current.getHours() >= 12){
         if( current.getHours() == 13){
-          numHours = "Take at " + 1 + " PM";
+          numHours = "Take at " + 1
         }else{
           console.log("ded")
-          numHours = "Take at "+ (current.getHours() - 12) + " PM";
+          numHours = "Take at "+ (current.getHours() - 12);
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " PM"
+        }else{
+          numHours = numHours + " AM"
         }
       }else{
         if( current.getHours() == 1){
           console.log("rip")
-          numHours = "Take at " + 1 + " AM";
+          numHours = "Take at " + 1;
         }else{
           console.log("help")
-          numHours = "Take at "+ (current.getHours() % 12) + " AM";
+          numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " AM"
+        }else{
+          numHours = numHours + " AM"
         }
       }
   
