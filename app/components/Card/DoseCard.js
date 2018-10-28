@@ -144,7 +144,9 @@ class Card extends PureComponent {
       var numHours = 0;
       if (today.getHours() - current.getHours() == 1){
         numHours = "1 Hour Ago"
-      } else {
+      } else if (today.getHours() == current.getHours()){
+        numHours = today.getMinutes() - current.getMinutes() + " Minutes ago"
+      }else {
         numHours = today.getHours() - current.getHours() + " Hours Ago"
       }
       this.setState({
