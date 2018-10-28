@@ -211,19 +211,8 @@ class Card extends PureComponent {
     title = 'Tylenol'
     dosage = '20 mg'
     time = '09:00'
-    temp = this.props.passed
-    passed_index = -1
-    for (var i = 0; i < temp.length; i++){
-      if (temp[i] == false){
-        passed_index = i
-        break
-      }
-    }
-    if (passed_index == -1){
-      passed_index = 0
-    }
-    this.state.passed_index = passed_index;
-    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[passed_index],!this.props.passed[passed_index])
+  
+    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[this.state.passed_index],!this.props.passed[this.state.passed_index])
     this.setState({
         status: !this.status,
     })
@@ -233,15 +222,21 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     var newPassed = this.state.passed;
+    var newInd = 0;
+    console.log(this.state.passed_index)
     // can click backward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
+      newInd = this.state.passed_index + 1;
+      console.log(newInd)
       this.setState({
-        passed_index: this.state.passed_index+1,
+        passed_index: newInd,
         passed: newPassed,
-      })}
-    else if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
+      })
+      console.log("passsssssed" + this.state.passed_index)
+    }else if( newPassed.length > 0 && this.state.passed_index > 0 ){
       newPassed[this.state.passed_index-1] = false;
+      console.log("insideeeeeeee")
       this.setState({
         passed_index: this.state.passed_index-1,
         passed: newPassed,
@@ -333,6 +328,7 @@ class Card extends PureComponent {
                     onPress = {this._handleClick}
                     style={{ flex: 1, alignItems: 'flex-end' }}
                   >
+                  {console.log(this.state.passed_index)}
                     <View flexDirection="row" marginTop={7}>
                       <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
                       {/* <Image
