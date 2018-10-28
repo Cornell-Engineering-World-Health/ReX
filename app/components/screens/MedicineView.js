@@ -28,13 +28,13 @@ var dummy_data = [
   {
     title: 'KT',
     dosage: 4344348,
-    time: ["January 31 1980 9:30"],
+    time: ["January 31 1980 11:30"],
     status: [false]
   },
   {
     title: 'Beanz',
     dosage: 430,
-    time: ["January 31 1980 12:30"],
+    time: ["January 31 3000 11:30"],
     status: [false]
   },
   {
