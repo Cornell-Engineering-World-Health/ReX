@@ -178,7 +178,13 @@ export function databaseFakeData(){
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
               \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
           tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-10-28 09:00:00\', 57)')
-
+          
+          tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1800,\
+              \'{"Pill Name": "Crestor","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1800, 4,\'2018-10-28 12:00:00\', 1800)')
+          tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1801,\
+              \'{"Pill Name": "Advair ","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,\'2018-10-28 12:00:00\', 1801)')
 
         /* medication reminder fake data */
   }, err => console.log(err))
