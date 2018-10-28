@@ -16,6 +16,40 @@ import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
+var dummy_data = [
+  {
+    title: 'Dinonuggies',
+    dosage: 489,
+    time: [new Date("January 31 1980 10:30")],
+    status: [false]
+  },
+  {
+    title: 'KT',
+    dosage: 4344348,
+    time: [new Date("January 31 1980 9:30")],
+    status: [false]
+  },
+  {
+    title: 'Beanz',
+    dosage: 430,
+    time: [new Date("January 31 1980 12:30")],
+    status: [false]
+  },
+  {
+    title: 'Oliviera',
+    dosage: 233,
+    time: [new Date("January 31 1980 2:30")],
+    status: [false]
+  },
+  {
+    title: '',
+    dosage: 3,
+    time: [new Date("January 31 1980 1:45")],
+    status: [false]
+  }
+]
+
+
 var data1 = [
   {
     title: 'Tylenol 20mg',
@@ -131,30 +165,6 @@ class CoolerMedicineView extends React.Component {
     this.setState({ amData: newData });
   };
 
-  onSwipeLeft = gestureState => {
-    console.log("swiped left")
-    var meds_new = new Array(data2.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    this.setState({
-      data: data2,
-      // meds: meds_new
-    })
-  };
-
-  onSwipeRight = gestureState => {
-    console.log("swiped right")
-    var meds_new = new Array(data3.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    this.setState({
-      data: data3,
-      // meds: meds_new
-    })
-  };
-
   render() {
     const { navigate } = this.props.navigation
     return (
@@ -181,110 +191,119 @@ class CoolerMedicineView extends React.Component {
 
             </TouchableOpacity>
             <FlatList
-              data={[0]}
+              data={dummy_data}
               renderItem={({ item, index }) => {
                 return (
                   <View>
                     <DoseCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Dinonuggies'}
-                      dosage={'500mg'}
-                      data={this.state.data}
-                      passed={2}
+                    title={item.title}
+                    time={item.time}
+                    timeStamp={[(item.time[0].getHours()).toString() + (item.time[0].getMinutes()).toString()]}
+                    dosage={item.dosage}
+                    passed={item.passed}
                     />
-                    <DoseCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Detergent'}
-                      dosage={'45mg'}
-                      data={this.state.data}
-                      passed={2}
-                    />
-                    <DoseCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Potato'}
-                      dosage={'60mg'}
-                      data={this.state.data}
-                      passed={2}
-                    />
-                    <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#f8ced5" }} />
-                    <DoseCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Groot'}
-                      dosage={'400mg'}
-                      data={this.state.data}
-                      passed={1}
-                    />
-                    <DoseCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Assortedpaints'}
-                      dosage={'500mg'}
-                      data={this.state.data}
-                      passed={1}
-                    />
-                    <DoseCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Mystery'}
-                      dosage={'45mg'}
-                      data={this.state.data}
-                      passed={1}
-                    />
-                    <DoseCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Charizard'}
-                      dosage={'60mg'}
-                      data={this.state.data}
-                      passed={1}
-                    />
-                    <DoseCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Navinramsaroop'}
-                      dosage={'400mg'}
-                      data={this.state.data}
-                      passed={1}
-                    />
-                    <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#7fdecb" }} />
-                    <DoseCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Runningoutofnames'}
-                      dosage={'500mg'}
-                      data={this.state.data}
-                      passed={0}
-                    />
-                    <DoseCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Ignore'}
-                      dosage={'45mg'}
-                      data={this.state.data}
-                      passed={0}
-                    />
-                    <DoseCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Slidingwheee'}
-                      dosage={'60mg'}
-                      data={this.state.data}
-                      passed={0}
-                    />
-                    <DoseCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Youfoundme'}
-                      dosage={'400mg'}
-                      data={this.state.data}
-                      passed={0}
-                    />
+                    </View>
+                  // <View>
+                  //   <DoseCard
+                  //     status={this.state.meds[0]}
+                  //     setParentState={index => this.updateMeds(0, index, 1)}
+                  //     time={'Dinonuggies'}
+                  //     dosage={'500mg'}
+                  //     data={this.state.data}
+                  //     passed={2}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[1]}
+                  //     setParentState={index => this.updateMeds(1, index, 1)}
+                  //     time={'Detergent'}
+                  //     dosage={'45mg'}
+                  //     data={this.state.data}
+                  //     passed={2}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[2]}
+                  //     setParentState={index => this.updateMeds(2, index, 0)}
+                  //     time={'Potato'}
+                  //     dosage={'60mg'}
+                  //     data={this.state.data}
+                  //     passed={2}
+                  //   />
+                  //   <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#f8ced5" }} />
+                  //   <DoseCard
+                  //     status={this.state.meds[3]}
+                  //     setParentState={index => this.updateMeds(3, index, 0)}
+                  //     time={'Groot'}
+                  //     dosage={'400mg'}
+                  //     data={this.state.data}
+                  //     passed={1}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[0]}
+                  //     setParentState={index => this.updateMeds(0, index, 1)}
+                  //     time={'Assortedpaints'}
+                  //     dosage={'500mg'}
+                  //     data={this.state.data}
+                  //     passed={1}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[1]}
+                  //     setParentState={index => this.updateMeds(1, index, 1)}
+                  //     time={'Mystery'}
+                  //     dosage={'45mg'}
+                  //     data={this.state.data}
+                  //     passed={1}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[2]}
+                  //     setParentState={index => this.updateMeds(2, index, 0)}
+                  //     time={'Charizard'}
+                  //     dosage={'60mg'}
+                  //     data={this.state.data}
+                  //     passed={1}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[3]}
+                  //     setParentState={index => this.updateMeds(3, index, 0)}
+                  //     time={'Navinramsaroop'}
+                  //     dosage={'400mg'}
+                  //     data={this.state.data}
+                  //     passed={1}
+                  //   />
+                  //   <View style={{height: 2, width: "80%", margin: 5, alignSelf: "center", backgroundColor: "#7fdecb" }} />
+                  //   <DoseCard
+                  //     status={this.state.meds[0]}
+                  //     setParentState={index => this.updateMeds(0, index, 1)}
+                  //     time={'Runningoutofnames'}
+                  //     dosage={'500mg'}
+                  //     data={this.state.data}
+                  //     passed={0}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[1]}
+                  //     setParentState={index => this.updateMeds(1, index, 1)}
+                  //     time={'Ignore'}
+                  //     dosage={'45mg'}
+                  //     data={this.state.data}
+                  //     passed={0}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[2]}
+                  //     setParentState={index => this.updateMeds(2, index, 0)}
+                  //     time={'Slidingwheee'}
+                  //     dosage={'60mg'}
+                  //     data={this.state.data}
+                  //     passed={0}
+                  //   />
+                  //   <DoseCard
+                  //     status={this.state.meds[3]}
+                  //     setParentState={index => this.updateMeds(3, index, 0)}
+                  //     time={'Youfoundme'}
+                  //     dosage={'400mg'}
+                  //     data={this.state.data}
+                  //     passed={0}
+                  //   />
                     
-                  </View>
+                  // </View>
                 );
               }}
               keyExtractor={(item, index) => index.toString()}
