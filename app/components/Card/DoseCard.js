@@ -16,7 +16,7 @@ import constants from '../Resources/constants';
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#dddddd', '#373737', '#373737']
-var mytext = [this.state.newhours,"Take Now",  "Past Due"]
+var mytext = ["","Take Now",  "Past Due"]
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -115,7 +115,7 @@ class Card extends PureComponent {
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       mytext: mytext[this.props.passed],
-      newhours: this._handleRenderText,
+      newhours: "",
       };
   }
 
@@ -261,6 +261,8 @@ class Card extends PureComponent {
     const imageContainerStyle = [styles.imageContainer];
 
     var image = constants.DEFAULT.image;
+
+    this._handleRenderText()
 
     return (
       <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
