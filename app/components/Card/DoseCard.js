@@ -206,7 +206,18 @@ class Card extends PureComponent {
     title = 'Tylenol'
     dosage = '20 mg'
     time = '09:00'
-    databaseTakeMedicine(new Date('2018-04-17'),title,dosage,time,!this.status)
+    temp = this.props.passed
+    console.log("wfwoef")
+    console.log(temp)
+    passed_index = -1
+    iter = 0
+    while (passed_index == -1){
+      if (temp[iter] == false){
+        passed_index = iter
+      }
+      iter += 1
+    }
+    databaseTakeMedicine(new Date('2018-04-17'),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
     this.setState({
         status: !this.status,
     })
