@@ -15,6 +15,7 @@ import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import Moment from 'moment';
 
 var dummy_data = [
   {
@@ -167,6 +168,11 @@ class CoolerMedicineView extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    currentDate = new Date()
+    currentMonths = monthNames[currentDate.getMonth()]
+    currentYear = currentDate.getYear()
+    currentDay = currentDate.getDay()
     return (
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
@@ -183,7 +189,7 @@ class CoolerMedicineView extends React.Component {
               Today  |
             </Text>
             <Text style={styles.date} >
-              October 25, 2018 
+              {Moment().format('MMMM Do YYYY')}
             </Text>
           </View>
 
