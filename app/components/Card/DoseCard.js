@@ -123,7 +123,7 @@ class Card extends PureComponent {
   _handleRenderText = () => {
     console.log("rendering text");
     var today = new Date();
-    var current = this.state.time[this.state.passed_index]
+    var current = this.props.time[this.props.passed_index]
     var todayTimeSum = today.getHours()*60 + today.getMinutes;
     var currentTimeSum = current.getHours*60 + current.getMinutes;
 
@@ -135,7 +135,7 @@ class Card extends PureComponent {
       this.setState({
         newhours: "Take Now"
       })
-    }else if (!this.state.passed[this.state.passed_index]){
+    }else if (!this.props.passed[this.props.passed_index]){
       this.setState({
         newhours: today.getHours() - current.getHours() + "Past Due"
       })
