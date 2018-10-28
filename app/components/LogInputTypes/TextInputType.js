@@ -11,6 +11,7 @@ export default class TextInputType extends React.Component {
       title_text_style: props.title_text_style,
       text: props.text
     };
+    this.textInput;
   }
 
   render() {
@@ -18,13 +19,18 @@ export default class TextInputType extends React.Component {
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
         <TextInput
+          ref={(t) => {this.textInput = t}}
           style={styles.text}
           value={this.state.text == 'NONE' ? '' : this.state.text}
           onChangeText={text => {
             this.setState({ text: text });
             this.props.valueChange(this.props.val_label, text);
           }}
+          blurOnSubmit={this.props.blurOnSubmit}
+          returnKeyType = { this.props.returnKeyType }
+          onSubmitEditing={() => {this.props.onSubmitEditing()}}
           placeholder={this.state.placeholder_text}
+          keyboardType={this.props.keyboardType}
         />
       </View>
     );

@@ -29,7 +29,8 @@ export default class Form extends React.Component {
       activeSlide: 0,
       overlayWidth: new Animated.Value(0),
       overlayHeight: new Animated.Value(0),
-      reachedEnd: false
+      reachedEnd: false,
+      swipable: true
     };
   }
 
@@ -70,6 +71,15 @@ export default class Form extends React.Component {
     }).start();
   }
 
+  disable_swipe(){
+    this.setState({swipable: false})
+  }
+
+  enable_swipe(){
+    this.setState({swipable: true})
+  }
+
+
   render() {
     let pagination = (
       <Pagination
@@ -100,6 +110,7 @@ export default class Form extends React.Component {
             this._carousel = c;
           }}
           layout={'default'}
+          scrollEnabled={this.state.swipable}
           data={this.props.data}
           renderItem={this._renderItem}
           sliderWidth={viewportWidth}

@@ -170,6 +170,8 @@ export default class SurveyForm extends React.Component {
                   valueChange={(label, value) => {
                     this._form.valueChange(label, value);
                   }}
+                  onStart={() => {this._form.disable_swipe()}}
+                  onComplete={() => {this._form.enable_swipe()}}
                 />
               )
             } else if (prop == 'NumericalPickerInputType') {

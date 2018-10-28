@@ -17,6 +17,7 @@ import Calendar from '../screens/Calendar';
 import ChooseLogScreen from '../screens/Log';
 import PushController from '../PushController/PushController';
 import SurveyModal from '../screens/SurveyModal'
+import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js'
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -83,8 +84,7 @@ class MenuBar extends React.Component {
         return <Calendar />;
         break;
       case MEDICINE_PAGE:
-        return null;
-        return <MedicineView />;
+        return <MedicineAddForm />;
         break;
       case SETTINGS_PAGE:
         return <Settings />;

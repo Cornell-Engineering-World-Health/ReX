@@ -70,6 +70,13 @@ export const IMAGES = {
   body: require('../Resources/Images/bodyLarge.png'),
   crying: require('../Resources/Images/crying.png'),
   close: require('../Resources/Images/close.png'),
+  zero: require('../Resources/Images/0.png'),
+  one: require('../Resources/Images/1.png'),
+  two: require('../Resources/Images/2.png'),
+  three: require('../Resources/Images/3.png'),
+  four: require('../Resources/Images/4.png'),
+  five: require('../Resources/Images/5.png'),
+  six: require('../Resources/Images/6.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,

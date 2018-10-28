@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native';
+import Slider from "react-native-slider";
 import { IMAGES, COLOR } from '../Resources/constants';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
@@ -15,11 +16,13 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
 const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';
 const imageChoices = [
-  IMAGES.crying,
-  IMAGES.crying,
-  IMAGES.crying,
-  IMAGES.crying,
-  IMAGES.crying
+  IMAGES.zero,
+  IMAGES.one,
+  IMAGES.two,
+  IMAGES.three,
+  IMAGES.four,
+  IMAGES.five,
+  IMAGES.six
 ];
 const intensityColors = []; //find 10 colors that show intensity
 //INTENSITY PAGE
@@ -45,7 +48,6 @@ export default class ScaleSlideInputType extends React.Component {
         value: parseFloat(value)
       };
     });
-    this.props.valueChange(this.props.val_label, value);
   }
 
   _renderBodyImageType() {
@@ -81,6 +83,7 @@ export default class ScaleSlideInputType extends React.Component {
         </View>
         {this._renderBodyImageType()}
       </View>
+
     );
   }
 }
@@ -103,8 +106,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   imgStyle: {
-    width: 65,
-    height: 65,
+    width: 40,
+    height: 40,
     resizeMode: 'contain'
   },
   body: {
@@ -124,6 +127,32 @@ const styles = StyleSheet.create({
     maximumValue={this.state.max_val}
     onValueChange={this.change.bind(this)}
     value={this.state.value}
+  />
+</View>
+
+<View style={styles.wrapper}>
+  <View style={styles.header}>
+    <Text style={styles.questionText}>{this.props.question || TITLE}</Text>
+  </View>
+  {this._renderBodyImageType()}
+</View>
+
+<View style={this.state.input_style}>
+  <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+  <Text style={styles.text}>{String(this.state.scale_labels[this.state.value])}</Text>
+  <Slider
+    step={1}
+    maximumValue={this.state.max_val}
+    onValueChange={this.change.bind(this)}
+    value={this.state.value}
+    onSlidingStart={() => {
+      this.props.onStart();
+    }}
+    onSlidingComplete={() =>
+      {
+        this.props.valueChange(this.props.val_label, this.state.value);
+        this.props.onComplete()
+      }}
   />
 </View>
 
