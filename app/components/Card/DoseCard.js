@@ -218,11 +218,14 @@ class Card extends PureComponent {
     console.log(temp)
     passed_index = -1
     iter = 0
-    while (passed_index == -1){
+    for (var i = 0; i < temp.length; i++){
       if (temp[iter] == false){
         passed_index = iter
+        break
       }
-      iter += 1
+    }
+    if (passed_index == -1){
+      passed_index = 0
     }
     databaseTakeMedicine(new Date('2018-04-17'),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
     this.setState({
