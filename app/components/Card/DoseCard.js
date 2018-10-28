@@ -128,20 +128,37 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     if(this.state.passed_index >= this.state.passed.length){
+      console.log("done for day");
       this.setState({
-        newhours: "Done for the day"
+        newhours: "Done for the day",
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
+        mytext : mytext[0],
       })
     }else if( Math.abs(todayTimeSum - currentTimeSum) < 15){
       this.setState({
-        newhours: "Take Now"
+        newhours: "Take Now",
+        backgroundColor: background[1],
+        borderColor: border[1],
+        textColor: text[1],
+        mytext: mytext[1],
       })
     }else if (!this.props.passed[this.props.passed_index]){
       this.setState({
-        newhours: today.getHours() - current.getHours() + "Past Due"
+        newhours: today.getHours() - current.getHours() + "Past Due",
+        backgroundColor: background[2],
+        borderColor: border[2],
+        textColor: text[2],
+        mytext: mytext[2],
       })
     }else{
       this.setState({
-        newhours: "Take in " + current.getHours() - today.getHours()
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
+        mytext : mytext[0],
+        newhours: "Take in " + current.getHours() - today.getHours(),
       })
     }
   };
@@ -212,6 +229,7 @@ class Card extends PureComponent {
         passed_index : this.state.passed_index - 1,
         })
       }
+      this._handleRenderText
     } 
   // toggle() {
   //   let initialValue = this.state.expanded
