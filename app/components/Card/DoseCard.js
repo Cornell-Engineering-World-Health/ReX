@@ -115,7 +115,7 @@ class Card extends PureComponent {
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       mytext: mytext[this.props.passed],
-      newhours: "",
+      newhours: "hello",
       };
   }
 

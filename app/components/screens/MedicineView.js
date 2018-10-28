@@ -21,32 +21,37 @@ import Moment from 'moment';
 var dummy_data = [
   {
     title: 'Dinonuggies',
-    dosage: 489,
-    time: ["January 31 1980 10:30"],
-    status: [false]
+    dosage: '489mg',
+    time: ["January 31 1980 10:30", "January 31 1980 11:30"],
+    timeval: [1030, 1130],
+    status: [false, false]
   },
   {
     title: 'KT',
-    dosage: 4344348,
+    dosage: '4344348mg',
     time: ["January 31 1980 9:30"],
+    timeval: 930,
     status: [false]
   },
   {
     title: 'Beanz',
-    dosage: 430,
+    dosage: '430mg',
     time: ["January 31 1980 12:30"],
+    timeval: 1230,
     status: [false]
   },
   {
     title: 'Oliviera',
-    dosage: 233,
-    time: ["January 31 1980 2:30"],
+    dosage: '233mg',
+    time: ["January 31 1980 13:30"],
+    timeval: 1330,
     status: [false]
   },
   {
     title: 'Splash',
-    dosage: 3,
-    time: ["January 31 1980 1:45"],
+    dosage: '3mg',
+    time: ["January 31 1980 14:45"],
+    timeval: 1445,
     status: [false]
   }
 ]
@@ -166,6 +171,15 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
+  compareCards = (a,b) => {
+    if (a.timeval < b.timeval) {
+      return -1
+    }
+    else {
+      return 1
+    }
+  }
+
   updateMeds = (time, index) => {
 
   };
@@ -229,7 +243,7 @@ class CoolerMedicineView extends React.Component {
 
             </TouchableOpacity>
             <FlatList
-              data={dummy_data}
+              data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 return (
                   <View>
