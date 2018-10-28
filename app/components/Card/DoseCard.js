@@ -188,47 +188,20 @@ class Card extends PureComponent {
     this.setState({
         status: !this.status,
     })
-    
-    if (this.state.passed == 1){
+    var newPassed = this.state.passed;
+    if( newPassed[this.state.passed_index-1]){
+      newPassed[this.state.passed_index-1] = false;
       this.setState({
-        passed: 3,
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-        mytext : mytext[0],
-        passed_index : this.state.passed_index + 1,
+        passed_index: this.state.passed_index-1,
+        passed: newPassed,
       })
-
-    } else if (this.state.passed == 2){
+    }else {
+      newPassed[this.state.passed_index] = true;
       this.setState({
-        passed: 4,
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-        mytext: mytext[0],
-        passed_index : this.state.passed_index + 1,
+        passed_index: this.state.passed_index+1,
+        passed: newPassed,
       })
     }
-    else if (this.state.passed == 3) {
-        this.setState({
-          passed: 1,
-          backgroundColor: background[1],
-          borderColor: border[1],
-          textColor: text[1],
-          mytext: mytext[1],
-          passed_index : this.state.passed_index - 1,
-        })
-      }
-      else if (this.state.passed == 4) {
-        this.setState({
-        passed: 2,
-        backgroundColor: background[2],
-        borderColor: border[2],
-        textColor: text[2],
-        mytext: mytext[2],
-        passed_index : this.state.passed_index - 1,
-        })
-      }
       this._handleRenderText
     } 
   // toggle() {
