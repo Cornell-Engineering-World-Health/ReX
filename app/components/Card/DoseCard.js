@@ -16,7 +16,6 @@ import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#dddddd', '#373737', '#373737']
-var mytext = ["","Take Now",  "Past Due"]
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -115,7 +114,7 @@ class Card extends PureComponent {
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       mytext: mytext[this.props.passed],
-      newhours: "",
+      newhours: "hello",
       };
   }
 
@@ -128,20 +127,39 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     if(this.state.passed_index >= this.state.passed.length){
+      console.log("done for day");
       this.setState({
-        newhours: "Done for the day"
+        newhours: "Done for the day",
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
       })
     }else if( Math.abs(todayTimeSum - currentTimeSum) < 15){
       this.setState({
-        newhours: "Take Now"
+        newhours: "Take Now",
+        backgroundColor: background[1],
+        borderColor: border[1],
+        textColor: text[1],
       })
-    }else if (!this.state.passed[this.state.passed_index]){
+    }else if (!this.props.passed[this.props.passed_index]){
+      var numHours = 0;
+      if (today.getHours() - current.getHours() == 1){
+        numHours = "1 Hour Ago"
+      } else {
+        numHours = today.getHours() - current.getHours() + " Hours Ago"
+      }
       this.setState({
-        newhours: today.getHours() - current.getHours() + "Past Due"
+        newhours: numHours,
+        backgroundColor: background[2],
+        borderColor: border[2],
+        textColor: text[2],
       })
     }else{
       this.setState({
-        newhours: "Take in " + current.getHours() - today.getHours()
+        backgroundColor: background[0],
+        borderColor: border[0],
+        textColor: text[0],
+        newhours: "Take in " + current.getHours() - today.getHours(),
       })
     }
   };
@@ -171,47 +189,21 @@ class Card extends PureComponent {
     this.setState({
         status: !this.status,
     })
-    
-    if (this.state.passed == 1){
+    var newPassed = this.state.passed;
+    if( newPassed[this.state.passed_index-1]){
+      newPassed[this.state.passed_index-1] = false;
       this.setState({
-        passed: 3,
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-        mytext : mytext[0],
-        passed_index : this.state.passed_index + 1,
+        passed_index: this.state.passed_index-1,
+        passed: newPassed,
       })
-
-    } else if (this.state.passed == 2){
+    }else {
+      newPassed[this.state.passed_index] = true;
       this.setState({
-        passed: 4,
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-        mytext: mytext[0],
-        passed_index : this.state.passed_index + 1,
+        passed_index: this.state.passed_index+1,
+        passed: newPassed,
       })
     }
-    else if (this.state.passed == 3) {
-        this.setState({
-          passed: 1,
-          backgroundColor: background[1],
-          borderColor: border[1],
-          textColor: text[1],
-          mytext: mytext[1],
-          passed_index : this.state.passed_index - 1,
-        })
-      }
-      else if (this.state.passed == 4) {
-        this.setState({
-        passed: 2,
-        backgroundColor: background[2],
-        borderColor: border[2],
-        textColor: text[2],
-        mytext: mytext[2],
-        passed_index : this.state.passed_index - 1,
-        })
-      }
+      this._handleRenderText
     } 
   // toggle() {
   //   let initialValue = this.state.expanded
@@ -303,7 +295,7 @@ class Card extends PureComponent {
                     style={{ flex: 1, alignItems: 'flex-end' }}
                   >
                     <View flexDirection="row" marginTop={7}>
-                      <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.mytext} </Text>
+                      <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
                       {/* <Image
                         style={styles.image_style}
                         source={() => {
