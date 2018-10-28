@@ -221,7 +221,7 @@ class Card extends PureComponent {
     if (passed_index == -1){
       passed_index = 0
     }
-    databaseTakeMedicine(new Date('2018-04-17'),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
+    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
     this.setState({
         status: !this.status,
     })
