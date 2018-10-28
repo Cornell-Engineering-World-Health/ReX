@@ -16,8 +16,7 @@ import Settings from '../screens/Settings';
 import Calendar from '../screens/Calendar';
 import ChooseLogScreen from '../screens/Log';
 import PushController from '../PushController/PushController';
-import SurveyScreen from '../screens/SurveyScreen'
-import Modal from 'react-native-modal'
+import SurveyModal from '../screens/SurveyModal'
 
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
@@ -66,13 +65,9 @@ class MenuBar extends React.Component {
     super(props);
     this.state = {
       selectedID: HOME_PAGE,
-      surveyModalVisible: true,
     };
   }
 
-  _toggleSurveyModal() {
-   this.setState({surveyModalVisible: !this.state.surveyModalVisible});
-  }
 
   onLog() {
     this.setState({
@@ -187,14 +182,7 @@ class MenuBar extends React.Component {
           />
         </View>
         <PushController />
-        <Modal isVisible={this.state.surveyModalVisible}>
-          <View style={{ flex: 1 }}>
-            <SurveyScreen />
-            <TouchableHighlight onPress={() => {this._toggleSurveyModal()}}>
-              <Text>Hide me!</Text>
-            </TouchableHighlight>
-          </View>
-        </Modal>
+        <SurveyModal/>
       </View>
     );
   }

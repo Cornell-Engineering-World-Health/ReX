@@ -46,7 +46,7 @@ const mapTypeToInitVal = {
 const SURVEY_DIR = FileSystem.documentDirectory + "test11"
 const FILE_NAME = "survey.csv"
 
-export default class SurveyScreen extends React.Component {
+export default class SurveyForm extends React.Component {
   constructor (props) {
     super(props)
     let keysArray = survey["Questions"].map((q) => q["QuestionType"])
@@ -101,6 +101,7 @@ export default class SurveyScreen extends React.Component {
   }
 
   submit () {
+    this.props.onSubmit();
     FileSystem.getInfoAsync(SURVEY_DIR, {}).then( e => {
         if(!e.exists || !e.isDirectory){
           console.log("making dir")

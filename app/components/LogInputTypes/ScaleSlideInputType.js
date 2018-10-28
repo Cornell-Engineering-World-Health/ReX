@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   questionText: {
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: '100',
     textAlign: 'center'
   },
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
   body: {
     width: viewportWidth,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: 40
   }
 });
 
