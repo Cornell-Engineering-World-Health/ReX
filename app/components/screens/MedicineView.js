@@ -51,7 +51,6 @@ var dummy_data = [
   }
 ]
 
->>>>>>> 759a7a134008978309b34166a84abec093958a28
 
 var data1 = [
   {
