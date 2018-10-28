@@ -258,7 +258,7 @@ class Card extends PureComponent {
             checked={this.state.status[index]}
             containerStyle={styles.check}
             size="25"
-            title={i.title}
+            title={this.state.title}
             checkedColor="#63f3c9"
             textStyle={styles.noteText}
           />
@@ -301,7 +301,7 @@ class Card extends PureComponent {
                   onLayout={this._setMinHeight.bind(this)}
                 >
                   <View style = {{ flexDirection: 'column'}} >
-                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.time}</Text>
+                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
                     <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
                   </View>
                   <TouchableOpacity
