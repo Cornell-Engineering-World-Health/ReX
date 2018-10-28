@@ -118,6 +118,7 @@ class Card extends PureComponent {
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       newhours: "hello",
+      init_passed : passed_index,
       };
   }
 
@@ -223,25 +224,26 @@ class Card extends PureComponent {
 
     var newPassed = this.state.passed;
     var newInd = 0;
-    console.log(this.state.passed_index)
     // can click backward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
-      console.log(newInd)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
-      })
-      console.log("passsssssed" + this.state.passed_index)
-    }else if( newPassed.length > 0 && this.state.passed_index > 0 ){
+      }) 
+    }else if( newPassed.length > 0 && this.state.passed_index > 0  && this.state.init_passed == this.state.passed_index-1){
       newPassed[this.state.passed_index-1] = false;
-      console.log("insideeeeeeee")
       this.setState({
         passed_index: this.state.passed_index-1,
         passed: newPassed,
       })
+      console.log("asdkfhaso incefa")
     }
+    console.log( newPassed.length > 0)
+    console.log(this.state.passed_index > 0 )
+    console.log(this.props.passed);
+    console.log(!this.props.passed[this.state.passed_index-1] + "wtd")
       this._handleRenderText
     } 
   // toggle() {
