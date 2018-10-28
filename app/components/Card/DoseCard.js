@@ -202,17 +202,16 @@ class Card extends PureComponent {
     console.log(todayTimeSum + "today time sum");
     console.log(currentTimeSum + "current time sum");
     // can click backward
-    if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
-      newPassed[this.state.passed_index-1] = false;
-      this.setState({
-        passed_index: this.state.passed_index-1,
-        passed: newPassed,
-      })
-      //can click forward
-    }else if( currentTimeSum - 15 < todayTimeSum ){
+    if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       this.setState({
         passed_index: this.state.passed_index+1,
+        passed: newPassed,
+      })}
+    else if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
+      newPassed[this.state.passed_index-1] = false;
+      this.setState({
+        passed_index: this.state.passed_index-1,
         passed: newPassed,
       })
     }
