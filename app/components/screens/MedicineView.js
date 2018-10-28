@@ -186,7 +186,7 @@ class CoolerMedicineView extends React.Component {
           <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row' }}>
           <Text style={styles.titleText} >
-              My Day | 
+              Today  |
             </Text>
             <Text style={styles.date} >
               {Moment().format('MMMM Do YYYY')}
