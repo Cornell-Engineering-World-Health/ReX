@@ -15,7 +15,7 @@ import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
-var text = ['#dddddd', '#373737', '#373737']
+var text = ['#aaaaaa', '#373737', '#373737']
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -125,7 +125,6 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     if(this.state.passed_index >= this.state.passed.length){
-      console.log("done for day");
       this.setState({
         newhours: "Done for the day",
         backgroundColor: background[0],
@@ -144,7 +143,7 @@ class Card extends PureComponent {
       if (today.getHours() - current.getHours() == 1){
         numHours = "1 Hour Ago"
       } else if (today.getHours() == current.getHours()){
-        numHours = today.getMinutes() - current.getMinutes() + " Minutes ago"
+        numHours = today.getMinutes() - current.getMinutes() + " Minutes Ago"
       }else {
         numHours = today.getHours() - current.getHours() + " Hours Ago"
       }
@@ -155,11 +154,35 @@ class Card extends PureComponent {
         textColor: text[2],
       })
     }else{
-      var count = current.getHours() - today.getHours();
-      var numHours = "Take in " + count + " Hours";
-      if( count == 1){
-        numHours = "Take in " + count + " Hour";
+      var numHours;
+      var min = current.getMinutes();
+      if(current.getHours() >= 12){
+        if( current.getHours() == 13){
+          numHours = "Take at " + 1
+        }else{
+          console.log("ded")
+          numHours = "Take at "+ (current.getHours() - 12);
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " PM"
+        }else{
+          numHours = numHours + " AM"
+        }
+      }else{
+        if( current.getHours() == 1){
+          console.log("rip")
+          numHours = "Take at " + 1;
+        }else{
+          console.log("help")
+          numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " AM"
+        }else{
+          numHours = numHours + " AM"
+        }
       }
+  
       this.setState({
         backgroundColor: background[0],
         borderColor: border[0],
