@@ -30,28 +30,28 @@ var dummy_data = [
     title: 'KT',
     dosage: '4344348mg',
     time: ["January 31 1980 9:30"],
-    timeval: 930,
+    timeval: [930],
     status: [false]
   },
   {
     title: 'Beanz',
     dosage: '430mg',
     time: ["January 31 1980 12:30"],
-    timeval: 1230,
+    timeval: [1230],
     status: [false]
   },
   {
     title: 'Oliviera',
     dosage: '233mg',
     time: ["January 31 1980 13:30"],
-    timeval: 1330,
+    timeval: [1330],
     status: [false]
   },
   {
     title: 'Splash',
     dosage: '3mg',
     time: ["January 31 1980 14:45"],
-    timeval: 1445,
+    timeval: [1445],
     status: [false]
   }
 ]
@@ -172,7 +172,7 @@ class CoolerMedicineView extends React.Component {
   }
 
   compareCards = (a,b) => {
-    if (a.timeval < b.timeval) {
+    if (a.timeval[0] < b.timeval[0]) {
       return -1
     }
     else {
