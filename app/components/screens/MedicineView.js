@@ -42,7 +42,7 @@ var dummy_data = [
     status: [false]
   },
   {
-    title: '',
+    title: 'Splash',
     dosage: 3,
     time: [new Date("January 31 1980 1:45")],
     status: [false]
