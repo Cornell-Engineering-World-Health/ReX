@@ -125,7 +125,7 @@ class Card extends PureComponent {
     var today = new Date();
     var current = this.state.time[this.state.passed_index]
     var todayTimeSum = today.getHours()*60 + today.getMinutes;
-    var currentTimeSum = current.getHours 60 + current.getMinutes;
+    var currentTimeSum = current.getHours*60 + current.getMinutes;
 
     if(this.state.passed_index >= this.state.passed.length){
       this.setState({
@@ -143,7 +143,6 @@ class Card extends PureComponent {
       this.setState({
         newhours: "Take in " + current.getHours() - today.getHours()
       })
-    }
     }
   };
 
