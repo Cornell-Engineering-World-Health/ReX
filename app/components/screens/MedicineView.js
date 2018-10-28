@@ -22,9 +22,9 @@ var dummy_data = [
   {
     title: 'Dinonuggies',
     dosage: '489mg',
-    time: ["January 31 1980 12:00", "January 31 1980 16:30"],
-    timeval: [1030, 1130],
-    status: [false, false]
+    time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
+    timeval: [1030, 1130, 1200],
+    status: [true, false, false]
   },
   {
     title: 'KT',
@@ -123,24 +123,7 @@ class CoolerMedicineView extends React.Component {
 
   constructor(props) {
     super(props);
-    
-    var medicineData= []
-    //new Date() for current date
-    pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
-        Object.keys(formattedData).forEach(function(med) {
-            var medObj = formattedData[med]
-            var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-            medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
-            for(var i =0; i <medObj.timeCategory.length; i++){
-                //console.log(medObj.time[i])
-                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-            }
-        });
         
-        console.log(data)
-    });
-    
     var arr1 = new Array(data1.length + 1)
       .join('0')
       .split('')
@@ -167,12 +150,35 @@ class CoolerMedicineView extends React.Component {
     this.state = {
       meds: meds,
       amData: [0, 100, 0, 100, 0, 100, 0, 100],
-      data: medicineData
+      data: []
     };
   }
 
+  componentWillMount = () => {
+    var medicineData= []
+    //new Date() for current date
+      pullMedicineFromDatabase(new Date('2018-04-17'), function(formattedData) {
+        Object.keys(formattedData).forEach(function(med) {
+            var medObj = formattedData[med]
+            var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
+            medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
+            for(var i =0; i <medObj.timeCategory.length; i++){
+                //console.log(medObj.time[i])
+                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+            }
+        });
+        
+        console.log(medicineData)
+    });
+
+  this.setState ({
+    data: medicineData
+  })
+  }
+
   compareCards = (a,b) => {
-    if (a.timeval[0] < b.timeval[0]) {
+    if (parseInt((a.timeval[0]).replace(":","")) < parseInt((b.timeval[0]).replace(":",""))) {
       return -1
     }
     else {
@@ -214,6 +220,7 @@ class CoolerMedicineView extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation
+    console.log(this.state.data)
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     currentDate = new Date()
     currentMonths = monthNames[currentDate.getMonth()]
@@ -243,7 +250,7 @@ class CoolerMedicineView extends React.Component {
 
             </TouchableOpacity>
             <FlatList
-              data={dummy_data.sort(this.compareCards)}
+              data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 return (
                   <View>
@@ -251,7 +258,7 @@ class CoolerMedicineView extends React.Component {
                     title={item.title}
                     time={item.time}
                     dosage={item.dosage}
-                    passed={item.status}
+                    passed={item.statuses}
                     />
                     </View>
                   // <View>

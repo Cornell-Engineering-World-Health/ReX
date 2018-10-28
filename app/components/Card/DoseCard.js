@@ -15,7 +15,7 @@ import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
-var text = ['#dddddd', '#373737', '#373737']
+var text = ['#aaaaaa', '#373737', '#373737']
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -119,14 +119,12 @@ class Card extends PureComponent {
 
   // determines new hours text
   _handleRenderText = () => {
-    console.log("rendering text");
     var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     if(this.state.passed_index >= this.state.passed.length){
-      console.log("done for day");
       this.setState({
         newhours: "Done for the day",
         backgroundColor: background[0],
@@ -144,7 +142,9 @@ class Card extends PureComponent {
       var numHours = 0;
       if (today.getHours() - current.getHours() == 1){
         numHours = "1 Hour Ago"
-      } else {
+      } else if (today.getHours() == current.getHours()){
+        numHours = today.getMinutes() - current.getMinutes() + " Minutes Ago"
+      }else {
         numHours = today.getHours() - current.getHours() + " Hours Ago"
       }
       this.setState({
@@ -154,11 +154,32 @@ class Card extends PureComponent {
         textColor: text[2],
       })
     }else{
-      var count = current.getHours() - today.getHours();
-      var numHours = "Take in " + count + " Hours";
-      if( count == 1){
-        numHours = "Take in " + count + " Hour";
+      var numHours;
+      var min = current.getMinutes();
+      if(current.getHours() >= 12){
+        if( current.getHours() == 13){
+          numHours = "Take at " + 1
+        }else{
+          numHours = "Take at "+ (current.getHours() - 12);
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " PM"
+        }else{
+          numHours = numHours + " AM"
+        }
+      }else{
+        if( current.getHours() == 1){
+          numHours = "Take at " + 1;
+        }else{
+          numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
+        }
+        if( min != 0){
+          numHours = numHours + ":" + min + " AM"
+        }else{
+          numHours = numHours + " AM"
+        }
       }
+  
       this.setState({
         backgroundColor: background[0],
         borderColor: border[0],
@@ -166,10 +187,6 @@ class Card extends PureComponent {
         newhours: numHours,
       })
     }
-  };
-
-  _handlePress = () => {
-    console.log('button pressed. ');
   };
 
   _setMaxHeight(event) {
@@ -189,7 +206,21 @@ class Card extends PureComponent {
     title = 'Tylenol'
     dosage = '20 mg'
     time = '09:00'
-    databaseTakeMedicine(new Date('2018-04-17'),title,dosage,time,!this.status)
+    temp = this.props.passed
+    console.log("wfwoef")
+    console.log(temp)
+    passed_index = -1
+    iter = 0
+    for (var i = 0; i < temp.length; i++){
+      if (temp[iter] == false){
+        passed_index = iter
+        break
+      }
+    }
+    if (passed_index == -1){
+      passed_index = 0
+    }
+    databaseTakeMedicine(new Date('2018-04-17'),this.props.title,this.props.dosage,this.props.time,!this.props.passed[passed_index])
     this.setState({
         status: !this.status,
     })
@@ -199,20 +230,17 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     var newPassed = this.state.passed;
-    console.log(todayTimeSum + "today time sum");
-    console.log(currentTimeSum + "current time sum");
     // can click backward
-    if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
-      newPassed[this.state.passed_index-1] = false;
-      this.setState({
-        passed_index: this.state.passed_index-1,
-        passed: newPassed,
-      })
-      //can click forward
-    }else if( currentTimeSum - 15 < todayTimeSum ){
+    if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       this.setState({
         passed_index: this.state.passed_index+1,
+        passed: newPassed,
+      })}
+    else if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
+      newPassed[this.state.passed_index-1] = false;
+      this.setState({
+        passed_index: this.state.passed_index-1,
         passed: newPassed,
       })
     }
@@ -257,7 +285,7 @@ class Card extends PureComponent {
             checked={this.state.status[index]}
             containerStyle={styles.check}
             size="25"
-            title={i.title}
+            title={this.state.title}
             checkedColor="#63f3c9"
             textStyle={styles.noteText}
           />
@@ -300,7 +328,7 @@ class Card extends PureComponent {
                   onLayout={this._setMinHeight.bind(this)}
                 >
                   <View style = {{ flexDirection: 'column'}} >
-                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.time}</Text>
+                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
                     <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
                   </View>
                   <TouchableOpacity
