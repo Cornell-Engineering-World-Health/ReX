@@ -8,9 +8,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { IMAGES, COLOR } from '../Resources/constants';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
-);
 
 const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';
@@ -39,7 +36,7 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   change(value) {
-    console.log(value)
+    console.log(value);
     this.setState(() => {
       return {
         value: parseFloat(value)
@@ -50,23 +47,25 @@ export default class ScaleSlideInputType extends React.Component {
 
   _renderBodyImageType() {
     let body = imageChoices.map((option, i) => {
-      return (<TouchableOpacity
-        key={i}
-        onPress={() => {
-          this.change(i);
-          this.setState({ selected: i });
-        }}
-        style={[
-          styles.button,
-          {
-            backgroundColor:
-              this.state.selected == i ? SELECTED_COLOR : 'transparent'
-          }
-        ]}
-      >
-        <Image source={imageChoices[i]} style={styles.imgStyle} />
-      </TouchableOpacity>
-    )})
+      return (
+        <TouchableOpacity
+          key={i}
+          onPress={() => {
+            this.change(i);
+            this.setState({ selected: i });
+          }}
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                this.state.selected == i ? SELECTED_COLOR : 'transparent'
+            }
+          ]}
+        >
+          <Image source={imageChoices[i]} style={styles.imgStyle} />
+        </TouchableOpacity>
+      );
+    });
 
     return <View style={styles.body}>{body}</View>;
   }
@@ -77,7 +76,9 @@ export default class ScaleSlideInputType extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>
-          <Text style={styles.questionText}>{this.props.question || TITLE}</Text>
+          <Text style={styles.questionText}>
+            {this.props.question || TITLE}
+          </Text>
         </View>
         {this._renderBodyImageType()}
       </View>
@@ -89,12 +90,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'stretch',
     padding: 15
   },
   button: {
     padding: 5,
-
     borderRadius: 50
   },
   questionText: {
@@ -103,12 +103,11 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   imgStyle: {
-    width: 65,
-    height: 65,
+    width: 50,
+    height: 50,
     resizeMode: 'contain'
   },
   body: {
-    width: viewportWidth,
     flexDirection: 'row',
     justifyContent: 'center',
     paddingBottom: 40
