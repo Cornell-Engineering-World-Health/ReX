@@ -94,15 +94,16 @@ class Card extends PureComponent {
   };
 
   constructor(props) {
+
+
+    super(props);
     var passed_index = 0
-    for (var x = 0; x < this.props.passed; x++) {
+    for (var x = 0; x < this.props.passed.length; x++) {
       if (this.props.passed[x] == false) {
         passed_index = x
         break
       }
     }
-
-    super(props);
 
     this.state = {
       expanded: false,
@@ -123,6 +124,7 @@ class Card extends PureComponent {
   // determines new hours text
   _handleRenderText = () => {
     var today = new Date();
+    console.log(this.state.passed_index + "********************************")
     var current = new Date(this.state.time[this.state.passed_index])
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
