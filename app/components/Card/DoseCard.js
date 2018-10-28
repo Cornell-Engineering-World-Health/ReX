@@ -217,6 +217,7 @@ class Card extends PureComponent {
         break
       }
     }
+    this.state.passed_index = passed_index;
     if (passed_index == -1){
       passed_index = 0
     }
