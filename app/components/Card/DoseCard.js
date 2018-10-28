@@ -15,7 +15,7 @@ import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
-var text = ['#dddddd', '#373737', '#373737']
+var text = ['#aaaaaa', '#373737', '#373737']
 
 const styles = StyleSheet.create({
   wrapper: {
