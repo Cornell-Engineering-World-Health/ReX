@@ -68,8 +68,7 @@ export default class SurveyForm extends React.Component {
     let submit_vals = {};
     survey["Questions"].forEach((q, i) => {
       if(q["QuestionType"] == "scale" && q["Values"]){
-        submit_vals[q["Title"]] =
-          q["Values"][Math.floor((q["Values"].length-1) / 2)]
+        submit_vals[q["Title"]] = 'N/A'
       } else if(q["QuestionType"] == "checklist" && q["Values"]){
         let submit_map = {}
         q["Values"].forEach(e => {
@@ -101,6 +100,7 @@ export default class SurveyForm extends React.Component {
   }
 
   submit () {
+    console.log(this.state.submit_vals)
     this.props.onSubmit();
     FileSystem.getInfoAsync(SURVEY_DIR, {}).then( e => {
         if(!e.exists || !e.isDirectory){
@@ -159,6 +159,7 @@ export default class SurveyForm extends React.Component {
               return (
                 <ScaleSlideInputType
                   key={key}
+                  isSlider={false}
                   question={this.state.value_labels[key]}
                   input_style={styles.input_container_blue}
                   title_text_style={styles.title_text}
@@ -170,6 +171,8 @@ export default class SurveyForm extends React.Component {
                   valueChange={(label, value) => {
                     this._form.valueChange(label, value);
                   }}
+                  label_left={'Fully Disagree'}
+                  label_right={'Fully Agree'}
                   onStart={() => {this._form.disable_swipe()}}
                   onComplete={() => {this._form.enable_swipe()}}
                 />

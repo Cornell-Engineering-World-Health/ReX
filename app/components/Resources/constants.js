@@ -76,7 +76,11 @@ export const IMAGES = {
   three: require('../Resources/Images/3.png'),
   four: require('../Resources/Images/4.png'),
   five: require('../Resources/Images/5.png'),
-  six: require('../Resources/Images/6.png')
+  six: require('../Resources/Images/6.png'),
+  seven: require('../Resources/Images/7.png'),
+  eight: require('../Resources/Images/8.png'),
+  nine: require('../Resources/Images/9.png'),
+  ten: require('../Resources/Images/10.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,

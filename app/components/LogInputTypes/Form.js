@@ -10,9 +10,6 @@ import {
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { COLOR } from '../Resources/constants.js';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
-);
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -30,7 +27,9 @@ export default class Form extends React.Component {
       overlayWidth: new Animated.Value(0),
       overlayHeight: new Animated.Value(0),
       reachedEnd: false,
-      swipable: true
+      swipable: true,
+      viewportWidth: 1,
+      viewportHeight: 1
     };
   }
 
@@ -42,8 +41,8 @@ export default class Form extends React.Component {
     this.props.valueChange(label, value);
   }
 
-  _renderItem({ item, index }) {
-    return <View style={styles.componentWrapper}>{item}</View>;
+  _renderItem(component) {
+    return <View style={[styles.componentWrapper]}>{component.item}</View>;
   }
 
   /*
@@ -52,7 +51,9 @@ export default class Form extends React.Component {
   */
   _updateOverlay() {
     let newOverlayWidth =
-      viewportWidth * (this.state.activeSlide + 1) / this.props.data.length;
+      this.state.viewportWidth *
+      (this.state.activeSlide + 1) /
+      this.props.data.length;
     if (!this.state.reachedEnd) {
       Animated.timing(this.state.overlayWidth, {
         toValue: newOverlayWidth
@@ -80,6 +81,17 @@ export default class Form extends React.Component {
   }
 
 
+  /*
+Take in a native event (part of the object passed in from onLayout)
+
+Sets global variables viewportWidth and viewportHeight according to the size
+of the screen
+*/
+  _setGlobalHeightAndWidth(nativeEvent) {
+    this.setState({ viewportHeight: nativeEvent.layout.height });
+    this.setState({ viewportWidth: nativeEvent.layout.width });
+  }
+
   render() {
     let pagination = (
       <Pagination
@@ -104,7 +116,12 @@ export default class Form extends React.Component {
     );
 
     return (
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+        onLayout={({ nativeEvent }) => {
+          this._setGlobalHeightAndWidth(nativeEvent);
+        }}
+      >
         <Carousel
           ref={c => {
             this._carousel = c;
@@ -113,9 +130,9 @@ export default class Form extends React.Component {
           scrollEnabled={this.state.swipable}
           data={this.props.data}
           renderItem={this._renderItem}
-          sliderWidth={viewportWidth}
-          itemWidth={viewportWidth}
-          slideStyle={{ width: viewportWidth }}
+          sliderWidth={this.state.viewportWidth}
+          itemWidth={this.state.viewportWidth}
+          slideStyle={{ width: this.state.viewportWidth }}
           inactiveSlideOpacity={1}
           onSnapToItem={index =>
             this.setState({ activeSlide: index }, () => {
@@ -127,15 +144,14 @@ export default class Form extends React.Component {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={this.props.submit}
-            style={[styles.footerButton]}
+            style={styles.footerButton}
           >
             <Animated.View
               accessible={false}
               style={[
                 styles.overlayFill,
                 {
-                  height: this.state.overlayHeight,
-                  width: viewportWidth
+                  height: this.state.overlayHeight
                 }
               ]}
             />
@@ -159,9 +175,7 @@ export default class Form extends React.Component {
             style={[
               styles.overlay,
               {
-                width: this.state.overlayWidth,
-                height: 5,
-                marginBottom: 78
+                width: this.state.overlayWidth
               }
             ]}
           />
@@ -188,10 +202,8 @@ const styles = StyleSheet.create({
     width: 75,
     padding: 15,
     borderRadius: 50,
-    shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.19,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -201,70 +213,53 @@ const styles = StyleSheet.create({
   },
   footerButton: {
     height: 78,
-    width: viewportWidth,
     padding: 20,
-    shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.19,
-    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
     backgroundColor: 'transparent',
+    borderTopWidth: 1,
     position: 'absolute',
-    borderTopWidth: 1
+    bottom: 0,
+    left: 0,
+    right: 0
   },
   overlay: {
     borderRadius: 10,
     flexDirection: 'row',
-    position: 'relative',
-    backgroundColor: COLOR.cyan
+    backgroundColor: COLOR.cyan,
+    position: 'absolute',
+    bottom: 75,
+    height: 5,
+    left: 0,
+    right: 0
   },
   overlayFill: {
     flexDirection: 'row',
     position: 'absolute',
     bottom: 0,
-    backgroundColor: COLOR.cyan
-  },
-  subFooter: {
-    flex: 0.1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center'
+    left: 0,
+    right: 0,
+    backgroundColor: COLOR.cyan,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
   footer: {
-    position: 'relative',
-    width: viewportWidth,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    bottom: 0,
-    left: 0,
-    right: 0
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    flex: 0.2
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: 'white',
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15
   },
-  headerView: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: viewportWidth
-  },
-  headerTitle: {
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: '200',
-    color: 'black'
-  },
+
   componentWrapper: {
-    width: viewportWidth,
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1
