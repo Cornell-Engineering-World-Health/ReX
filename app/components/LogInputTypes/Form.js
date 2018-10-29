@@ -51,7 +51,7 @@ export default class Form extends React.Component {
   _updateOverlay() {
     let newOverlayWidth =
       this.state.viewportWidth *
-      (this.state.activeSlide + 1) /
+      this.state.activeSlide /
       this.props.data.length;
     if (!this.state.reachedEnd) {
       Animated.timing(this.state.overlayWidth, {

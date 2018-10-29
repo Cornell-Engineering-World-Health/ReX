@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   imgStyle: {
-    width: 50,
-    height: 50,
+    width: 65,
+    height: 65,
     resizeMode: 'contain'
   },
   body: {
