@@ -27,6 +27,7 @@ export default class Form extends React.Component {
       overlayWidth: new Animated.Value(0),
       overlayHeight: new Animated.Value(0),
       reachedEnd: false,
+      swipable: true,
       viewportWidth: 1,
       viewportHeight: 1
     };
@@ -70,6 +71,15 @@ export default class Form extends React.Component {
       toValue: newHeight
     }).start();
   }
+
+  disable_swipe(){
+    this.setState({swipable: false})
+  }
+
+  enable_swipe(){
+    this.setState({swipable: true})
+  }
+
 
   /*
 Take in a native event (part of the object passed in from onLayout)
@@ -117,6 +127,7 @@ of the screen
             this._carousel = c;
           }}
           layout={'default'}
+          scrollEnabled={this.state.swipable}
           data={this.props.data}
           renderItem={this._renderItem}
           sliderWidth={this.state.viewportWidth}
@@ -218,7 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLOR.cyan,
     position: 'absolute',
-    bottom: 78,
+    bottom: 75,
     height: 5,
     left: 0,
     right: 0
@@ -229,7 +240,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: COLOR.cyan
+    backgroundColor: COLOR.cyan,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
   footer: {
     flexDirection: 'column',

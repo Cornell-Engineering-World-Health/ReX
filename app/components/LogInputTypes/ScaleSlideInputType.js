@@ -7,12 +7,28 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native';
+import Slider from 'react-native-slider';
 import { IMAGES, COLOR } from '../Resources/constants';
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  'window'
+);
 
 const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';
+const numericImageChoices = [
+  IMAGES.zero,
+  IMAGES.one,
+  IMAGES.two,
+  IMAGES.three,
+  IMAGES.four,
+  IMAGES.five,
+  IMAGES.six,
+  IMAGES.seven,
+  IMAGES.eight,
+  IMAGES.nine,
+  IMAGES.ten
+];
 const imageChoices = [
-  IMAGES.crying,
   IMAGES.crying,
   IMAGES.crying,
   IMAGES.crying,
@@ -42,11 +58,11 @@ export default class ScaleSlideInputType extends React.Component {
         value: parseFloat(value)
       };
     });
-    this.props.valueChange(this.props.val_label, value);
+    this.props.valueChange(this.props.val_label, this.state.value);
   }
 
   _renderBodyImageType() {
-    let body = imageChoices.map((option, i) => {
+    let body = this.props.scale_labels.map((option, i, arr) => {
       return (
         <TouchableOpacity
           key={i}
@@ -62,7 +78,16 @@ export default class ScaleSlideInputType extends React.Component {
             }
           ]}
         >
-          <Image source={imageChoices[i]} style={styles.imgStyle} />
+          <Image
+            source={numericImageChoices[i]}
+            style={[
+              styles.imgStyle,
+              {
+                width: viewportWidth / (arr.length + 2),
+                height: viewportWidth / (arr.length + 2)
+              }
+            ]}
+          />
         </TouchableOpacity>
       );
     });
@@ -72,6 +97,28 @@ export default class ScaleSlideInputType extends React.Component {
 
   _renderBodyColorType() {}
 
+  /**
+   * Based on this.props.isSlider, will return a slider or a button scale input
+   */
+  _renderBody() {
+    let scale;
+    if (this.props.isSlider) {
+      scale = null;
+    } else {
+      scale = this._renderBodyImageType();
+    }
+
+    return (
+      <View>
+        <View style={styles.label_view}>
+          <Text style={styles.label_text}>{this.props.label_left}</Text>
+          <Text style={styles.label_text}>{this.props.label_right}</Text>
+        </View>
+        {scale}
+      </View>
+    );
+  }
+
   render() {
     return (
       <View style={styles.wrapper}>
@@ -80,7 +127,7 @@ export default class ScaleSlideInputType extends React.Component {
             {this.props.question || TITLE}
           </Text>
         </View>
-        {this._renderBodyImageType()}
+        {this._renderBody()}
       </View>
     );
   }
@@ -94,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 15
   },
   button: {
-    padding: 5,
+    padding: 0,
     borderRadius: 50
   },
   questionText: {
@@ -103,14 +150,20 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   imgStyle: {
-    width: 65,
-    height: 65,
     resizeMode: 'contain'
   },
   body: {
     flexDirection: 'row',
     justifyContent: 'center',
     paddingBottom: 40
+  },
+  label_view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10
+  },
+  label_text: {
+    fontSize: 15
   }
 });
 
@@ -123,6 +176,32 @@ const styles = StyleSheet.create({
     maximumValue={this.state.max_val}
     onValueChange={this.change.bind(this)}
     value={this.state.value}
+  />
+</View>
+
+<View style={styles.wrapper}>
+  <View style={styles.header}>
+    <Text style={styles.questionText}>{this.props.question || TITLE}</Text>
+  </View>
+  {this._renderBodyImageType()}
+</View>
+
+<View style={this.state.input_style}>
+  <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+  <Text style={styles.text}>{String(this.state.scale_labels[this.state.value])}</Text>
+  <Slider
+    step={1}
+    maximumValue={this.state.max_val}
+    onValueChange={this.change.bind(this)}
+    value={this.state.value}
+    onSlidingStart={() => {
+      this.props.onStart();
+    }}
+    onSlidingComplete={() =>
+      {
+        this.props.valueChange(this.props.val_label, this.state.value);
+        this.props.onComplete()
+      }}
   />
 </View>
 

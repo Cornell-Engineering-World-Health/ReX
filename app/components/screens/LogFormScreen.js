@@ -406,7 +406,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
     backgroundColor: 'white'
