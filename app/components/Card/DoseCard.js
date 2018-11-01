@@ -94,15 +94,17 @@ class Card extends PureComponent {
   };
 
   constructor(props) {
+
+    super(props);
+
     var passed_index = 0
-    for (var x = 0; x < this.props.passed; x++) {
+    for (var x = 0; x < this.props.passed.length; x++) {
       if (this.props.passed[x] == false) {
         passed_index = x
         break
       }
     }
 
-    super(props);
 
     this.state = {
       expanded: false,

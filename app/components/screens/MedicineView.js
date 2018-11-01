@@ -155,6 +155,30 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
+  compareCards = (a,b) => {
+    var passed_index = 0
+    for (var i = 0; i < a.status.length; i++){
+      if (a.status[i] == false){
+        passed_index = i
+        break
+      }
+    }
+    var passed_index2 = 0
+    for (var j = 0; j < b.status.length; j++){
+      if (b.status[j] == false){
+        passed_index2 = j
+        break
+      }
+    }
+    if (a.timeval[passed_index] < b.timeval[passed_index2]) {
+      return -1
+    }
+    else {
+      return 1
+    }
+  }
+
+  
   componentWillMount = () => {
     var medicineData= []
     //new Date() for current date
@@ -169,8 +193,6 @@ class CoolerMedicineView extends React.Component {
                 //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
             }
         });
-        
-        console.log(medicineData)
     });
 
   this.setState ({
@@ -178,62 +200,9 @@ class CoolerMedicineView extends React.Component {
   })
   }
 
-  compareCards = (a,b) => {
-    var passed_index = 0
-    for (var i = 0; i < a.passed.length; i++){
-      if (a.passed[i] == false){
-        passed_index = i
-        break
-      }
-    }
-    for (var j = 0; j < b.passed.length; j++){
-      if (b.passed[j] == false){
-        passed_index2 = j
-      }
-    }
-    if (parseInt((a.timeval[i]).replace(":","")) < parseInt((b.timeval[j]).replace(":",""))) {
-      return -1
-    }
-    else {
-      return 1
-    }
-  }
-
-  updateMeds = (time, index) => {
-
-  };
-
-  updateArray = time => {
-
-  };
-
-  onSwipeLeft = gestureState => {
-    console.log("swiped left")
-    var meds_new = new Array(data2.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    this.setState({
-      data: data2, //TODO: this should pull from database for previous date
-      // meds: meds_new
-    })
-  };
-
-  onSwipeRight = gestureState => {
-    console.log("swiped right")
-    var meds_new = new Array(data3.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    this.setState({
-      data: data3,
-      // meds: meds_new
-    })
-  };
 
   render() {
     const { navigate } = this.props.navigation
-    console.log(this.state.data)
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     currentDate = new Date()
     currentMonths = monthNames[currentDate.getMonth()]
@@ -260,18 +229,20 @@ class CoolerMedicineView extends React.Component {
           </View>
 
             <TouchableOpacity>
-
             </TouchableOpacity>
+            {console.log("print")}
+            {console.log(this.state.data.sort(this.compareCards))}
             <FlatList
-              data={this.state.data.sort(this.compareCards)}
+              data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
+                // console.log(this.state.data.sort(this.compareCards))
                 return (
                   <View>
                     <DoseCard
                     title={item.title}
                     time={item.time}
                     dosage={item.dosage}
-                    passed={item.statuses}
+                    passed={item.status}
                     />
                     </View>
                   // <View>
@@ -377,7 +348,7 @@ class CoolerMedicineView extends React.Component {
                   // </View>
                 );
               }}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(_, index) => index.toString()}
             />
           </View>
         </View>
