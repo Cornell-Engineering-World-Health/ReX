@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
   }
 });
 class Card extends PureComponent {
+
+  
   
   static propTypes = {
     time: PropTypes.array,
@@ -91,15 +93,17 @@ class Card extends PureComponent {
     passed: PropTypes.array,
   };
 
-  /* Status:
-     0 -> Taken (Grey)
-     1 -> Take Now (Green)
-     2 -> To take (Red)
-     3 -> Temp Taken (Grey, was Green)
-     4 -> Temp Taken (Grey, was Red) */
-    
   constructor(props) {
+
     super(props);
+
+    var passed_index = 0
+    for (var x = 0; x < this.props.passed.length; x++) {
+      if (this.props.passed[x] == false) {
+        passed_index = x
+        break
+      }
+    }
 
     this.state = {
       expanded: false,
@@ -109,11 +113,12 @@ class Card extends PureComponent {
       status: this.props.status,
       arrow: 'expand',
       passed: this.props.passed,
-      passed_index: 0,
+      passed_index: passed_index,
       backgroundColor: background[this.props.passed],
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
       newhours: "hello",
+      init_passed : passed_index,
       };
   }
 
@@ -159,6 +164,8 @@ class Card extends PureComponent {
       if(current.getHours() >= 12){
         if( current.getHours() == 13){
           numHours = "Take at " + 1
+        }else if(current.getHours() == 12){
+          numHours = "Take at " + 12
         }else{
           numHours = "Take at "+ (current.getHours() - 12);
         }
@@ -171,7 +178,7 @@ class Card extends PureComponent {
         if( current.getHours() == 1){
           numHours = "Take at " + 1;
         }else{
-          numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
+          numHours = "Take at "+ (current.getHours() % 12);
         }
         if( min != 0){
           numHours = numHours + ":" + min + " AM"
@@ -188,6 +195,7 @@ class Card extends PureComponent {
       })
     }
   };
+
 
   _setMaxHeight(event) {
     this.setState({
@@ -206,19 +214,8 @@ class Card extends PureComponent {
     title = 'Tylenol'
     dosage = '20 mg'
     time = '09:00'
-    temp = this.props.passed
-    passed_index = -1
-    for (var i = 0; i < temp.length; i++){
-      if (temp[i] == false){
-        passed_index = i
-        break
-      }
-    }
-    if (passed_index == -1){
-      passed_index = 0
-    }
-    this.state.passed_index = passed_index;
-    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[passed_index],!this.props.passed[passed_index])
+  
+    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[this.state.passed_index],!this.props.passed[this.state.passed_index])
     this.setState({
         status: !this.status,
     })
@@ -228,20 +225,27 @@ class Card extends PureComponent {
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
 
     var newPassed = this.state.passed;
+    var newInd = 0;
     // can click backward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
+      newInd = this.state.passed_index + 1;
       this.setState({
-        passed_index: this.state.passed_index+1,
+        passed_index: newInd,
         passed: newPassed,
-      })}
-    else if( newPassed.length > 0 && newPassed[this.state.passed_index-1]){
+      }) 
+    }else if( newPassed.length > 0 && this.state.passed_index > 0  && this.state.init_passed == this.state.passed_index-1){
       newPassed[this.state.passed_index-1] = false;
       this.setState({
         passed_index: this.state.passed_index-1,
         passed: newPassed,
       })
+      console.log("asdkfhaso incefa")
     }
+    console.log( newPassed.length > 0)
+    console.log(this.state.passed_index > 0 )
+    console.log(this.props.passed);
+    console.log(!this.props.passed[this.state.passed_index-1] + "wtd")
       this._handleRenderText
     } 
   // toggle() {
@@ -296,12 +300,7 @@ class Card extends PureComponent {
   }
 
   render() {
-    const imageContainerStyle = [styles.imageContainer];
-
-    var image = constants.DEFAULT.image;
-
     this._handleRenderText()
-
     return (
       <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
           <Swipeout
@@ -333,6 +332,7 @@ class Card extends PureComponent {
                     onPress = {this._handleClick}
                     style={{ flex: 1, alignItems: 'flex-end' }}
                   >
+                  {console.log(this.state.passed_index)}
                     <View flexDirection="row" marginTop={7}>
                       <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
                       {/* <Image
