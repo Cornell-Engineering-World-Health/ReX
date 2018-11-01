@@ -164,6 +164,8 @@ class Card extends PureComponent {
       if(current.getHours() >= 12){
         if( current.getHours() == 13){
           numHours = "Take at " + 1
+        }else if(current.getHours() == 12){
+          numHours = "Take at " + 12
         }else{
           numHours = "Take at "+ (current.getHours() - 12);
         }
@@ -176,7 +178,7 @@ class Card extends PureComponent {
         if( current.getHours() == 1){
           numHours = "Take at " + 1;
         }else{
-          numHours = "Take at "+ (current.getHours() % 12) + ":" + current.getMinutes();
+          numHours = "Take at "+ (current.getHours() % 12);
         }
         if( min != 0){
           numHours = numHours + ":" + min + " AM"
