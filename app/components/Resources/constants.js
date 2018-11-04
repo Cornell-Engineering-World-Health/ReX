@@ -70,6 +70,7 @@ export const IMAGES = {
   body: require('../Resources/Images/bodyLarge.png'),
   crying: require('../Resources/Images/crying.png'),
   close: require('../Resources/Images/close.png'),
+  close_white: require('../Resources/Images/close-white.png'),
   zero: require('../Resources/Images/0.png'),
   one: require('../Resources/Images/1.png'),
   two: require('../Resources/Images/2.png'),

@@ -9,6 +9,7 @@ export default class TextInputType extends React.Component {
       placeholder_text: props.placeholder_text,
       input_style: props.input_style,
       title_text_style: props.title_text_style,
+      input_text_style: props.input_text_style,
       text: props.text
     };
     this.textInput;
@@ -20,7 +21,7 @@ export default class TextInputType extends React.Component {
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
         <TextInput
           ref={(t) => {this.textInput = t}}
-          style={styles.text}
+          style={[styles.text, this.state.input_text_style]}
           value={this.state.text == 'NONE' ? '' : this.state.text}
           onChangeText={text => {
             this.setState({ text: text });

@@ -32,7 +32,10 @@ class Button extends Component {
     shadowOpacity: PropTypes.number,
     horizontal: PropTypes.bool,
     styles: PropTypes.object,
-    innerComponent: PropTypes.object
+    width: PropTypes.number,
+    height: PropTypes.number,
+    innerComponent: PropTypes.object,
+    borderColor: PropTypes.string
   };
 
   constructor(props) {
@@ -60,9 +63,25 @@ class Button extends Component {
         borderRadius: 15
       });
     }
+    if (this.props.width) {
+      containerStyle.push({
+        width: this.props.width
+      });
+    }
+    if (this.props.height) {
+      containerStyle.push({
+        height: this.props.height
+      });
+    }
     if (this.props.shadowOpacity) {
       shadowStyle.push({
         shadowOpacity: this.props.shadowOpacity
+      });
+    }
+    if (this.props.borderColor) {
+      containerStyle.push({
+        borderWidth: 2,
+        borderColor: this.props.borderColor
       });
     }
 

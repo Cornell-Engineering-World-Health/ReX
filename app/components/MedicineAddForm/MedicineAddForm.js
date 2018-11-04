@@ -75,7 +75,7 @@ export default class MedicineAddForm extends React.Component {
       asyncCreateMedicineEvents(
         this.state.submit_vals['Pill Name'],
         this.state.submit_vals['Dosage'],
-        new Date(this.state.submit_vals['Start Date']),
+         new Date(this.state.submit_vals['Start Date']),
         new Date(this.state.submit_vals['End Date']),
         this.state.submit_vals['Time'],
         this.state.submit_vals['Time Category'],
@@ -130,7 +130,8 @@ export default class MedicineAddForm extends React.Component {
       this.valueChange('Start Date', this.state.startDate)
       this.valueChange('End Date', this.state.endDate)
     } else if(this.state.modalID == TIME_ID){
-      this.valueChange('Time', this.state.timeArray)
+      this.setState({ timeArray: this.state.timeArray.sort()})
+      this.valueChange('Time', this.state.timeArray.sort())
     }
   }
 
@@ -192,9 +193,9 @@ export default class MedicineAddForm extends React.Component {
     let modalHeight = (this.state.modalID == CALENDAR_ID) ? .65 : .6
     let dateText = ''
     if(this.state.submit_vals['Start Date']){
-      dateText = this.state.submit_vals['Start Date'] +
+      dateText = moment(this.state.submit_vals['Start Date']).format('MM/DD/YYYY') +
       ' ~ '
-      + this.state.submit_vals['End Date']
+      + moment(this.state.submit_vals['End Date']).format('MM/DD/YYYY')
     } else {
       dateText = 'Enter Your Prescription Schedule'
     }
@@ -219,6 +220,7 @@ export default class MedicineAddForm extends React.Component {
             ref={(t) => {this.name = t}}
             input_style={styles.name_input}
             title_text_style={styles.title_text}
+            input_text_style={styles.input_text}
             text={''}
             placeholder_text={'Tap to type'}
             title_text={'Medicine Name'}
@@ -232,6 +234,7 @@ export default class MedicineAddForm extends React.Component {
             ref={(t) => {this.dosage = t}}
             input_style={styles.dosage_input}
             title_text_style={styles.title_text}
+            input_text_style={styles.input_text}
             text={''}
             placeholder_text={'Tap to type'}
             title_text={'Dosage (mg)'}
@@ -244,20 +247,23 @@ export default class MedicineAddForm extends React.Component {
           />
           <Button
             text={dateText}
-            backgroundColor={COLOR.blue}
             rounded={true}
+            width={viewportWidth - 30}
+            borderColor={COLOR.purple}
             onPress={() => {this.setState({ modalID: CALENDAR_ID })}}
           />
           <Button
             text={timeText}
-            backgroundColor={COLOR.blue}
             rounded={true}
+            width={viewportWidth - 30}
+            borderColor={COLOR.purple}
             onPress={() => {this.setState({ modalID: TIME_ID })}}
             innerComponent={timeContent}
           />
           <Button
             text={'Submit'}
-            backgroundColor={COLOR.cyan}
+            backgroundColor={COLOR.purple}
+            color={'white'}
             rounded={true}
             onPress={() => {this.submit()}}
           />
@@ -307,7 +313,7 @@ export default class MedicineAddForm extends React.Component {
           <DropdownAlert
             ref={ref => this.dropdown = ref}
             closeInterval={4000}
-            imageSrc={IMAGES.close}
+            imageSrc={IMAGES.close_white}
             containerStyle={{
               backgroundColor: COLOR.red,
             }}
@@ -336,7 +342,7 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingTop: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
     width: viewportWidth
@@ -349,26 +355,27 @@ const styles = StyleSheet.create({
   },
   title_text: {
     fontSize: 20,
-    color: '#e5e5e5',
+    color: '#404040',
     paddingBottom: 10
   },
+  input_text: {
+    color: '#404040'
+  },
   name_input: {
-    width: 320,
+    width: viewportWidth - 30,
     padding: 10,
     marginBottom: 10,
-    backgroundColor: '#2D8464',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D8464'
+    borderColor: COLOR.purple
   },
   dosage_input: {
-    width: 100,
+    width: viewportWidth - 30,
     padding: 10,
     marginBottom: 10,
-    backgroundColor: '#2D8464',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D8464'
+    borderColor: COLOR.purple
   },
   modal: {
     justifyContent: 'flex-end',
