@@ -24,28 +24,28 @@ var dummy_data = [
     dosage: '489mg',
     time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
     timeval: [1030, 1130, 1200],
-    status: [true, false, false]
+    statuses: [true, false, false]
   },
   {
     title: 'KT',
     dosage: '4344348mg',
     time: ["January 31 1980 9:30"],
     timeval: [930],
-    status: [false]
+    statuses: [false]
   },
   {
     title: 'Beanz',
     dosage: '430mg',
     time: ["January 31 1980 12:30"],
     timeval: [1230],
-    status: [false]
+    statuses: [false]
   },
   {
     title: 'Oliviera',
     dosage: '233mg',
     time: ["January 31 1980 13:30"],
     timeval: [1330],
-    status: [false]
+    statuses: [false]
   },
   {
     title: 'Splash',
@@ -140,7 +140,7 @@ class CoolerMedicineView extends React.Component {
             </TouchableOpacity>
             {console.log(this.state.data.sort(this.compareCards))}
             <FlatList
-              data={dummy_data.sort(this.compareCards)}
+              data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 //console.log(this.state.data.sort(this.compareCards))
                 //console.log(item)
@@ -151,7 +151,7 @@ class CoolerMedicineView extends React.Component {
                     title={item.title}
                     time={item.time}
                     dosage={item.dosage}
-                    passed={item.status}
+                    passed={item.statuses}
                     />
                     </View>
                 );
