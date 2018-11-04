@@ -242,6 +242,7 @@ export default class SurveyForm extends React.Component {
               data={component_array}
               valueChange={this.valueChange.bind(this)}
               submit={this.submit.bind(this)}
+              isModal={true}
             >
             </Form>
           )

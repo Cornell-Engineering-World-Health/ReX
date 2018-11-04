@@ -24,7 +24,7 @@ class SurveyModal extends Component {
     super(props);
 
     this.state = {
-      surveyModalVisible: true,
+      surveyModalVisible: false,
     };
   }
 

@@ -15,7 +15,8 @@ export default class Form extends React.Component {
   static propTypes = {
     data: PropTypes.array, //etc
     valueChange: PropTypes.func,
-    submit: PropTypes.func
+    submit: PropTypes.func,
+    isModal: PropTypes.bool
   };
 
   constructor(props) {
@@ -50,23 +51,27 @@ export default class Form extends React.Component {
     the bar should be half filled)
   */
   _updateOverlay() {
-    let newOverlayWidth =
-      this.state.viewportWidth *
-      this.state.activeSlide /
-      this.props.data.length;
-    if (!this.state.reachedEnd) {
-      Animated.timing(this.state.overlayWidth, {
-        toValue: newOverlayWidth
-      }).start();
-    }
     if (this.state.activeSlide == this.props.data.length - 1) {
       this.setState({ reachedEnd: true });
+      Animated.timing(this.state.overlayWidth, {
+        toValue: this.state.viewportWidth
+      }).start();
       this._updateOverlayYAxis();
+    } else {
+        if(!this.state.reachedEnd){
+          let newOverlayWidth =
+            this.state.viewportWidth *
+            this.state.activeSlide /
+            this.props.data.length;
+          Animated.timing(this.state.overlayWidth, {
+            toValue: newOverlayWidth
+          }).start();
+        }
     }
   }
 
   _updateOverlayYAxis() {
-    let newHeight = 78;
+    let newHeight = 80;
     Animated.timing(this.state.overlayHeight, {
       toValue: newHeight
     }).start();
@@ -115,9 +120,14 @@ of the screen
       />
     );
 
+    let modalStyle = (this.props.isModal) ? {
+      borderBottomLeftRadius: 15,
+      borderBottomRightRadius: 15
+    }:{}
+
     return (
       <View
-        style={styles.container}
+        style={[styles.container, modalStyle]}
         onLayout={({ nativeEvent }) => {
           this._setGlobalHeightAndWidth(nativeEvent);
         }}
@@ -152,7 +162,8 @@ of the screen
                 styles.overlayFill,
                 {
                   height: this.state.overlayHeight
-                }
+                },
+                modalStyle
               ]}
             />
             <Text style={styles.footerButtonText}>
@@ -240,9 +251,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: COLOR.cyan,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15
+    backgroundColor: COLOR.cyan
   },
   footer: {
     flexDirection: 'column',
@@ -254,9 +263,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: 'white',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15
+    backgroundColor: 'white'
   },
 
   componentWrapper: {
