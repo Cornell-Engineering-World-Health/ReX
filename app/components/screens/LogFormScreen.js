@@ -55,7 +55,7 @@ export default class ChooseLogScreen extends React.Component {
       log_type = this.props.navigation.state.params.log_type;
       log_name = this.props.navigation.state.params.log_name;
     }
-    console.log('log type----', log_type);
+    //console.log('log type----', log_type);
     var keysArray = [];
 
     Database.transaction(
@@ -86,7 +86,7 @@ export default class ChooseLogScreen extends React.Component {
                     [keysArray[i]],
                     (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name;
-                      console.log(input_types[i]);
+                      //console.log(input_types[i]);
                       this.setState({
                         input_type_array: input_types,
                         value_labels: keysArray,
@@ -114,17 +114,17 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   valueChange(label, value) {
-    console.log(label, value);
+    //console.log(label, value);
     let submit = this.state.submit_vals;
     submit[label] = value;
     this.setState({ submit_vals: submit }, () => {
-      console.log(this.state.submit_vals);
+      //console.log(this.state.submit_vals);
     });
     //this.state.submit_vals[label] = value; //store updated value
   }
 
   submit() {
-    console.log(this.state);
+    //console.log(this.state);
     if (this.state.nav) {
       // Log new symptoms
       this.props.navigation.state.params.onLog();
@@ -155,7 +155,7 @@ export default class ChooseLogScreen extends React.Component {
       this.props.on_finish();
       if (this.props.timestamp) {
         // Edit symptom log
-        console.log('edit symptom log');
+        //console.log('edit symptom log');
       } else {
         // Add new medication
         asyncCreateMedicineEvents(
@@ -173,7 +173,7 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   render() {
-    var SCALE_LABELS = ['None', 'A Little', 'Medium', 'A Lot', 'Horrible'];
+    var SCALE_LABELS = ['', '', '', '', '', '', '', '', '', ''];
     var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening'];
 
     let component_array = this.state.input_type_array.map((prop, key) => {
@@ -181,9 +181,8 @@ export default class ChooseLogScreen extends React.Component {
         return (
           <ScaleSlideInputType
             key={key}
-            input_style={styles.input_container_blue}
-            title_text_style={styles.title_text}
-            max_val={4}
+            label_left={'No Pain'}
+            label_right={'Severe'}
             value={parseInt(this.state.values[key]) - 1}
             scale_labels={SCALE_LABELS}
             title_text={this.state.value_labels[key]}
@@ -191,6 +190,7 @@ export default class ChooseLogScreen extends React.Component {
             valueChange={(label, value) => {
               this._form.valueChange(label, value);
             }}
+            isIntensitySlider={true}
           />
         );
       } else if (prop == 'NumericalPickerInputType') {

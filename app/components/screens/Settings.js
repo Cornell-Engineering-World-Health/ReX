@@ -108,44 +108,7 @@ class Settings extends Component {
                 this.props.navigator.push(ProfileRoute);
               }}
             />
-
             <SettingsList.Header headerStyle={{ marginTop: 15 }} />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={50}
-                  resizeMode="contain"
-                  source={IMAGES.quickLog}
-                />
-              }
-              title="Quick Log"
-              hasSwitch={true}
-              hasNavArrow={false}
-              switchState={this.state.quickLog}
-              switchOnValueChange={() => {
-                this.setState({ quickLog: !this.state.quickLog });
-              }}
-              titleInfoStyle={styles.titleInfoStyle}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={50}
-                  resizeMode="contain"
-                  source={IMAGES.security}
-                />
-              }
-              title="Use Touch ID"
-              hasSwitch={true}
-              hasNavArrow={false}
-              switchState={this.state.touchID}
-              switchOnValueChange={() => {
-                this.setState({ touchID: !this.state.touchID });
-              }}
-              titleInfoStyle={styles.titleInfoStyle}
-            />
             <SettingsList.Item
               icon={
                 <Image
@@ -157,12 +120,10 @@ class Settings extends Component {
               }
               title="View History"
               hasNavArrow={true}
-              onPress={() => {
-                this.props.navigator.push(SummaryGraphPage);
-              }}
+              onPress={() => {}}
               titleInfoStyle={styles.titleInfoStyle}
             />
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+
             <SettingsList.Item
               title="Contact"
               onPress={() => {
@@ -237,9 +198,7 @@ const ProfileRoute = {
 const SummaryPage = {
   component: Summary
 };
-const SummaryGraphPage = {
-  component: SummaryGraph
-};
+
 export default class settingsList extends React.Component {
   render() {
     return (

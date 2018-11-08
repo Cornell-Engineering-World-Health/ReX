@@ -112,24 +112,23 @@ export default class Profile extends Component {
               horizontal={true}
               data={profile_icons}
               keyExtractor={item => {
-                item.index;
+                return item.index;
               }}
-              renderItem={item => {
-                var ind = item.index;
+              renderItem={({ item, index }) => {
                 return (
                   <TouchableOpacity
-                    key={item.index}
+                    key={index}
                     onPress={() => {
-                      this.handle_icon_press(ind);
+                      this.handle_icon_press(index);
                       this.setState({
                         choosingAvatar: false,
-                        icon: ind
+                        icon: index
                       });
                     }}
                   >
                     <Image
                       style={styles.profileImageStyle}
-                      source={profile_icons[item.index]}
+                      source={profile_icons[index]}
                     />
                   </TouchableOpacity>
                 );

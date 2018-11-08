@@ -52,7 +52,7 @@ export default class Form extends React.Component {
   _updateOverlay() {
     let newOverlayWidth =
       this.state.viewportWidth *
-      this.state.activeSlide /
+      (this.state.activeSlide + 1) /
       this.props.data.length;
     if (!this.state.reachedEnd) {
       Animated.timing(this.state.overlayWidth, {
@@ -72,14 +72,13 @@ export default class Form extends React.Component {
     }).start();
   }
 
-  disable_swipe(){
-    this.setState({swipable: false})
+  disable_swipe() {
+    this.setState({ swipable: false });
   }
 
-  enable_swipe(){
-    this.setState({swipable: true})
+  enable_swipe() {
+    this.setState({ swipable: true });
   }
-
 
   /*
 Take in a native event (part of the object passed in from onLayout)
@@ -134,11 +133,9 @@ of the screen
           itemWidth={this.state.viewportWidth}
           slideStyle={{ width: this.state.viewportWidth }}
           inactiveSlideOpacity={1}
-          onSnapToItem={index =>
-            this.setState({ activeSlide: index }, () => {
-              this._updateOverlay();
-            })
-          }
+          onSnapToItem={index => {
+            this.setState({ activeSlide: index }, () => this._updateOverlay());
+          }}
         />
         {pagination}
         <View style={styles.footer}>
@@ -260,8 +257,7 @@ const styles = StyleSheet.create({
   },
 
   componentWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1
+    flex: 1,
+    padding: 5
   }
 });

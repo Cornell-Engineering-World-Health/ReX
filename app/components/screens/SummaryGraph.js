@@ -11,15 +11,6 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Modal from 'react-native-modal';
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col,
-  Cols,
-  Cell
-} from 'react-native-table-component';
 import constants, { IMAGES } from '../Resources/constants';
 import { sendMail } from '../Mail/MailController';
 import { takeSnapshotAsync } from 'expo';
@@ -33,40 +24,10 @@ import {
 } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import SideMenu from 'react-native-side-menu';
-import ButtonSelector from '../MenuBar/ButtonSelector';
 import { Dropdown } from 'react-native-material-dropdown';
 import GestureRecognizer, {
   swipeDirections
 } from 'react-native-swipe-gestures';
-//AVG DURATION IN MINUTES
-//-----------------------------FOR YEAR VIEW----------------------------------//
-const januaryData = { avgFrequency: 25, avgIntensity: 5, avgDuration: 10 }; //averages over the course of only the month
-const februaryData = { avgFrequency: 1, avgIntensity: 4, avgDuration: 10 };
-const marchData = { avgFrequency: 3, avgIntensity: 2, avgDuration: 9 };
-const aprilData = { avgFrequency: 25, avgIntensity: 4, avgDuration: 1 };
-const mayData = { avgFrequency: 4, avgIntensity: 2, avgDuration: 4 };
-const juneData = {};
-const julyData = {};
-const augustData = {};
-const septemberData = {};
-const octoberData = {};
-const novemberData = {};
-const decemberData = {};
-const yearData = [
-  januaryData,
-  februaryData,
-  marchData,
-  aprilData,
-  mayData,
-  juneData,
-  julyData,
-  augustData,
-  septemberData,
-  octoberData,
-  novemberData,
-  decemberData
-];
-//----------------------------------------------------------------------------//
 
 const monthInitials = [
   'JAN',
@@ -99,21 +60,18 @@ export default class SummaryGraph extends React.Component {
   constructor(props) {
     super(props);
 
-    let DEFAULT_VIEW = YEAR_VIEW; //original duration to be displayed
-
     let currentMonth = new Date().getMonth();
     let w = Dimensions.get('window').width * 0.95;
-    let xAxis = this._getMonthAndLabels(DEFAULT_VIEW, currentMonth);
 
     this.state = {
       width: w,
-      yAxisType: MODES[1],
-      xAxisData: xAxis.xAxisData,
-      xAxisLabels: xAxis.xAxisLabels,
+      yAxisType: MODES[1], //frequency
+      xAxisData: [], // need to change
+      xAxisLabels: [], //need to change
       isOpen: false,
-      type: 'Headache',
-      durationView: DEFAULT_VIEW,
-      lastViewedMonth: 3
+      type: 'Default',
+      durationView: YEAR_VIEW, //start out in year view
+      lastViewedMonth: 10
     };
   }
 
@@ -121,126 +79,50 @@ export default class SummaryGraph extends React.Component {
     Used when duration changes between three month, six month, and year view
     Pass in the constant that corresponds to the duration you want.
   */
-  _updateMonthAndLabels(tempDurationView) {
-    let xAxis = this._getMonthAndLabels(
-      tempDurationView,
-      this.state.lastViewedMonth
-    );
-    this.setState({
-      durationView: tempDurationView,
-      xAxisData: xAxis.xAxisData,
-      xAxisLabels: xAxis.xAxisLabels
-    });
-  }
+  _updateMonthAndLabels(tempDurationView) {}
 
-  /**
-    Returns an object containing two arrays -- one for the xAxis data and the other
-    with the x axis labels
+  /*
+    Returns what the x axis labels should be given that the endIndex will be
+    the the last element viewed in the graph. For example, given durationView = THREE_MONTH_VIEW,
+    there are clearly only 3 x axis values. The values are in chronological order, the 2 months before
+    and the month of the endIndex.
 
-    {
+    Note: 0 < endIndex <  len(<duration-initials>)
 
-    xAxisData: _____
-    xAxisLabels:____
-
-    }
+    endIndex correspond to a valid index within an array of potential duration initials.
   */
-  _getMonthAndLabels(durationView, endMonth) {
-    let labels = [];
-    let data = [];
-    let data_length = 0;
-
-    switch (durationView) {
-      case THREE_MONTH_VIEW:
-        data_length = 3;
-        break;
-      case SIX_MONTH_VIEW:
-        data_length = 6;
-        break;
-      case YEAR_VIEW:
-        data_length = 12;
-        endMonth = 11;
-        break;
-    }
-
-    let startMonth = endMonth + 1 - data_length;
-
-    if (startMonth < 0) startMonth = 12 + startMonth;
-
-    if (startMonth < endMonth) {
-      for (var x = startMonth; x < endMonth + 1; x++) {
-        data.push(yearData[x]);
-        labels.push(monthInitials[x]);
-      }
-    } else {
-      for (var x = startMonth; x < 12; x++) {
-        data.push(yearData[x]);
-        labels.push(monthInitials[x]);
-      }
-      for (var x = 0; x < endMonth + 1; x++) {
-        data.push(yearData[x]);
-        labels.push(monthInitials[x]);
-      }
-    }
-    return {
-      xAxisData: data,
-      xAxisLabels: labels
-    };
-  }
-  _renderPrevious() {
-    console.log('rendering previous');
-    let lastViewedMonth =
-      this.state.lastViewedMonth -
-      VIEWS_DURATION_TRANSLATOR[this.state.durationView];
-
-    if (lastViewedMonth < 0) {
-      lastViewedMonth = 12 + lastViewedMonth;
-    }
-    let xAxis = this._getMonthAndLabels(
-      this.state.durationView,
-      lastViewedMonth
-    );
-    this.setState({
-      lastViewedMonth: lastViewedMonth,
-      xAxisData: xAxis.xAxisData,
-      xAxisLabels: xAxis.xAxisLabels
-    });
+  _getXAxisLabels(durationView, endIndex) {
+    return monthInitials; //dummy data
   }
 
-  _renderAfter() {
-    let lastViewedMonth =
-      this.state.lastViewedMonth +
-      VIEWS_DURATION_TRANSLATOR[this.state.durationView];
-    if (lastViewedMonth >= 12) {
-      lastViewedMonth = lastViewedMonth - 12;
-    }
-    let xAxis = this._getMonthAndLabels(
-      this.state.durationView,
-      lastViewedMonth
-    );
-    this.setState({
-      lastViewedMonth: lastViewedMonth,
-      xAxisData: xAxis.xAxisData,
-      xAxisLabels: xAxis.xAxisLabels
-    });
-  }
+  /*
+    Render the previous group of data. The new page will be based on what duration
+    is being shown (3 month view, 6 month, year, etc). The previous group of data
+    is the data up to but not including the first item of data that is
+    *currently* being rendered.
+  */
+  _renderPrevious() {}
+
+  /*
+    Render the next group of data. The new page will be based on what duration
+    is being shown (3 month view, 6 month, year, etc). The next group of data
+    is the data after the *last* element currently being rendered.
+  */
+  _renderAfter() {}
+
+  /*
+  Given an intensity, and a base RBGA value, a color is rendered to reflect the
+  intensity. The color given back is (intensity * 10) % opaque.
+
+  0 < intensity <= 10
+  */
   _getColor(intensity, currentRGB) {
     var index = currentRGB.lastIndexOf(',');
     var firstHalf = currentRGB.slice(0, index + 1);
-    let alpha = intensity / 5;
+    let alpha = intensity / 10;
     return firstHalf + alpha + ')';
   }
 
-  _formatData(data, baseRGB) {
-    for (let x = 0; x < data.length; x++) {
-      if (!data[x].avgIntensity) data[x].avgIntensity = 0;
-      if (!data[x].avgDuration) data[x].avgDuration = 0;
-      if (!data[x].avgFrequency) data[x].avgFrequency = 0;
-      let color = this._getColor(data[x].avgIntensity, baseRGB);
-      data[x].svg = { fill: color };
-    }
-
-    return data;
-  }
   _renderXAxis() {
     let axis = [];
     let length = this.state.xAxisLabels.length;
@@ -248,7 +130,7 @@ export default class SummaryGraph extends React.Component {
 
     for (var x = 0; x < length; x++) {
       axis.push(
-        <View style={{ width: w, alignItems: 'center' }}>
+        <View key={x} style={{ width: w, alignItems: 'center' }}>
           <Text style={{ fontSize: 10, fontWeight: 'bold' }}>
             {this.state.xAxisLabels[x]}
           </Text>
@@ -266,85 +148,22 @@ export default class SummaryGraph extends React.Component {
       </View>
     );
   }
-  _renderYAxis(minVal, maxVal, height) {
-    //for simplicity, this function changes maxVal to be an even number (would be above the maxVal)
-    //want a maximum of 10 labels on the screen at one time
-    let interval = 1; //assume rendering every label (interval 1 means render everything)
-    if (maxVal - minVal > 10) {
-      //there are more than 10 labels, need to only render some of them
-      interval = Math.round((maxVal - minVal) / 10.0);
-    }
-    let axis = [];
-    let h = height;
-    let length = maxVal - minVal;
-    for (var x = maxVal; x > minVal; x = x - interval) {
-      axis.push(
-        <View
-          style={{
-            height: h / length * interval
-          }}
-        >
-          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{x}</Text>
-        </View>
-      );
-    }
-    return (
-      <View
-        style={{
-          height: height
-        }}
-      >
-        {axis}
-      </View>
+
+  /*
+Build actual y axis that will be put next to the chart
+*/
+  _renderYAxis() {
+    let axis = null; //change to render an actual axis
+  }
+
+  _handleMenuPress() {
+    this.setState({ isOpen: false }, () =>
+      setTimeout(() => {
+        this._exportScreen();
+      }, 200)
     );
   }
-  _getStats() {
-    var total = 0;
-    var length = this.state.xAxisData.length;
-    var counter = 0; //number of occurances
-    var mostFrequentMonth = []; //array of most frequent months
-    var greatestFrequency = 0; //holds the greatest number of times the thing occurred
-    var greatestIntensity = 0;
-    var greatestDuration = 0;
-    var avgLength = 0; // average duration
 
-    for (var x = 0; x < length; x++) {
-      let avgIntensity = this.state.xAxisData[x].avgIntensity;
-      let avgFrequency = this.state.xAxisData[x].avgFrequency;
-      let avgDuration = this.state.xAxisData[x].avgDuration;
-
-      if (!avgFrequency) continue;
-
-      counter += avgFrequency;
-      if (avgIntensity) {
-        total += avgIntensity * avgFrequency;
-      }
-      if (avgDuration) {
-        avgLength += avgDuration * avgFrequency;
-      }
-      if (avgFrequency > greatestFrequency) {
-        greatestFrequency = avgFrequency;
-        mostFrequentMonth = [constants.MONTH[x]];
-      } else if (avgFrequency == greatestFrequency) {
-        mostFrequentMonth.push(constants.MONTH[x]);
-      }
-
-      if (avgDuration > greatestDuration) greatestDuration = avgDuration;
-      if (avgIntensity > greatestIntensity) greatestIntensity = avgIntensity;
-    }
-
-    return {
-      avgIntensity: Math.round(total / counter), //average intensity over the course of the entire dataset
-      greatestIntensity: greatestIntensity,
-
-      avgDuration: Math.round(avgLength / counter), //average duration over the entire dataset
-      greatestDuration: greatestDuration,
-
-      greatestFrequency: greatestFrequency,
-
-      mostFrequentMonth: mostFrequentMonth
-    };
-  }
   async _exportScreen(body) {
     uri = await takeSnapshotAsync(this, {
       format: 'jpg',
@@ -374,15 +193,9 @@ export default class SummaryGraph extends React.Component {
       <View style={styles.menuWrapper}>
         <TouchableOpacity
           style={styles.exportButton}
-          onPress={() => {
-            this.setState({ isOpen: false }, () =>
-              setTimeout(() => {
-                this._exportScreen();
-              }, 200)
-            );
-          }}
+          onPress={() => this._handleMenuPress()}
         >
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Export Data</Text>
+          <Text style={{ fontSize: 20, fontWeight: '100' }}>Export Data</Text>
         </TouchableOpacity>
         <View style={{ padding: 10 }} />
         <Dropdown
@@ -409,17 +222,8 @@ export default class SummaryGraph extends React.Component {
       </View>
     );
 
-    let formattedData = this._formatData(
-      this.state.xAxisData,
-      'rgba(0, 175, 255, 0)'
-    );
-    let stats = this._getStats();
     let xAxis = this._renderXAxis();
-    let yAxis = this._renderYAxis(
-      0,
-      stats['greatest' + this.state.yAxisType],
-      200
-    );
+    let yAxis = this._renderYAxis();
 
     return (
       <View style={styles.wrapper}>
@@ -450,7 +254,11 @@ export default class SummaryGraph extends React.Component {
                 onSwipeRight={state => this._renderPrevious()}
                 onSwipeLeft={state => this._renderAfter()}
               >
-                <BarChart
+                {/*
+                  obsolete, kept for reference. Uses the old formattedData object
+                  for rendering the BarChart, while done properly should render differently
+
+                  <BarChart
                   animate={true}
                   style={{ height: 200, width: this.state.width }}
                   data={formattedData}
@@ -463,7 +271,7 @@ export default class SummaryGraph extends React.Component {
                   contentInset={{ top: 0, bottom: 0 }}
                   gridMin={0}
                   spacingInner={0}
-                />
+                />*/}
               </GestureRecognizer>
               {xAxis}
               <View style={{ alignItems: 'center' }}>
@@ -476,7 +284,7 @@ export default class SummaryGraph extends React.Component {
               <Text style={styles.bodyText}>
                 Average Headache Intensity:{'  '}
               </Text>
-              <Text style={styles.bodySubText}>{stats.avgIntensity} / 5</Text>
+              <Text style={styles.bodySubText}>{stats.avgIntensity} / 10</Text>
             </View>
             <View style={styles.subBodyView}>
               <Text style={styles.bodyText}>Average Duration:{'  '}</Text>

@@ -16,9 +16,8 @@ import Settings from '../screens/Settings';
 import Calendar from '../screens/Calendar';
 import ChooseLogScreen from '../screens/Log';
 import PushController from '../PushController/PushController';
-import SurveyModal from '../screens/SurveyModal'
-import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js'
-
+import SurveyModal from '../screens/SurveyModal';
+import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
 const HOME_PAGE = 'home';
@@ -65,10 +64,9 @@ class MenuBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedID: HOME_PAGE,
+      selectedID: HOME_PAGE
     };
   }
-
 
   onLog() {
     this.setState({
@@ -182,7 +180,7 @@ class MenuBar extends React.Component {
           />
         </View>
         <PushController />
-        <SurveyModal/>
+        <SurveyModal />
       </View>
     );
   }
