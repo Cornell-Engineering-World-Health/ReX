@@ -152,6 +152,27 @@ class CoolerMedicineView extends React.Component {
                     time={item.time}
                     dosage={item.dosage}
                     passed={item.statuses}
+                    buttonsRight={[
+                      {
+                        text: 'Edit',
+                        type: 'edit',
+                        onPress: () => {
+                          var timestamp = moment(this.props.date + ' ' + item.timeStamp, 'MM/DD/YYYY hh:mm A').format('YYYY-MM-DD HH:mm:ss')
+                          console.log('NAME IS:::: ' + item.cardData.title)
+    
+                          Database.transaction(tx =>
+                            tx.executeSql(
+                              'SELECT event_type_id FROM event_type_tbl \
+                              WHERE event_type_name = ?;',
+                              [item.cardData.title],
+                              (tx, {rows}) => {
+                                var eventType = JSON.parse(rows._array[0].event_type_id)
+                                this.props.toggleModal(timestamp, eventType)
+                              }),err => console.log(err))
+    
+                          /*force a render with new changes  */
+                        }
+                      }]}
                     />
                     </View>
                 );

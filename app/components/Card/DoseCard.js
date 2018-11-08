@@ -83,14 +83,13 @@ const styles = StyleSheet.create({
 });
 class Card extends PureComponent {
 
-  
-  
   static propTypes = {
     time: PropTypes.array,
     dosage: PropTypes.string,
     timeStamp: PropTypes.string,
     title: PropTypes.string,
     passed: PropTypes.array,
+    buttonsRight: PropTypes.array
   };
 
   constructor(props) {
@@ -304,13 +303,13 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText()
     return (
-      <Animated.View style={[styles.wrapper, { width: this.state.animation }]}>
+      <View style={styles.wrapper}>
           <Swipeout
             right={this.props.buttonsRight}
             left={this.props.buttonsLeft}
             autoClose={true}
             style={styles.swipe}
-            disabled={this.props.swiperActive}
+            disabled={false}
             onClose={this.props.onCloseSwipeout}
             onOpen={this.props.onOpenSwipeout}
           >
@@ -354,7 +353,7 @@ class Card extends PureComponent {
             </TouchableOpacity>
             </View>
           </Swipeout>
-      </Animated.View>
+      </View>
     );
   }
 }
