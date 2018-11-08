@@ -240,6 +240,33 @@ class Card extends PureComponent {
     }
   };
 
+  // if (this.state.passed[i]) {
+      //   {console.log("shit")}
+      //   return (
+      //     <View style = {{flexDirection: 'row'}}>
+      //     <View style = {{ justifyContent: 'center', alignItems: 'center'}}>
+      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
+      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "green"}} />   
+      //     </View>
+      //     <Text>{this.props.title}</Text>
+      //     <Text>{this.state.time}</Text>
+      //     </View>
+      //     )
+      // }
+      // else {
+      //   return (
+      //     <View style = {{flexDirection: 'row'}}>
+      //     <View style = {{justifyContent: 'center', alignItems: 'center'}}>
+      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
+      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "white"}} />   
+      //     </View>
+      //     <Text>{this.props.title}</Text>
+      //     <Text>{this.state.time}</Text>
+      //     </View>
+      //     )
+      // }
+      
+
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -353,44 +380,34 @@ class Card extends PureComponent {
         min_string = "0" + min_string
       }
       var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
-      
-      return (
-        <View>
-        <View style = {{flexDirection: 'row'}}>
-        <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-        <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
-        <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
-        </View>
-        <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
-        </View>
-        </View>
-      )
+      if (this.state.passed[i] == true){
+        return (
+          <View>
+          <View style = {{flexDirection: 'row'}}>
+          <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
+          <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
+          </View>
+          <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
+          </View>
+          </View>
+        )
+      }
+      else {
+        return (
+          <View>
+          <View style = {{flexDirection: 'row'}}>
+          <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <View style = {{height: 20, width: 20, borderRadius: 10, borderColor: '#7fdecb', borderWidth: 3, backgroundColor: "white"}} />
+          <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
+          </View>
+          <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
+          </View>
+          </View>
+        )
+      }
 
-      // if (this.state.passed[i]) {
-      //   {console.log("shit")}
-      //   return (
-      //     <View style = {{flexDirection: 'row'}}>
-      //     <View style = {{ justifyContent: 'center', alignItems: 'center'}}>
-      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
-      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "green"}} />   
-      //     </View>
-      //     <Text>{this.props.title}</Text>
-      //     <Text>{this.state.time}</Text>
-      //     </View>
-      //     )
-      // }
-      // else {
-      //   return (
-      //     <View style = {{flexDirection: 'row'}}>
-      //     <View style = {{justifyContent: 'center', alignItems: 'center'}}>
-      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
-      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "white"}} />   
-      //     </View>
-      //     <Text>{this.props.title}</Text>
-      //     <Text>{this.state.time}</Text>
-      //     </View>
-      //     )
-      // }
+
       
   })
 }
@@ -461,16 +478,6 @@ class Card extends PureComponent {
                   {console.log(this.state.passed_index)}
                     <View flexDirection="row" marginTop={7}>
                       <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
-                      {/* <Image
-                        style={styles.image_style}
-                        source={() => {
-                          if (this.state.arrow == 'expand') {
-                            return require('../Resources/icons8-expand-arrow-50.png');
-                          } else {
-                            return require('../Resources/icons8-collapse-arrow-50.png');
-                          }
-                        }}
-                      /> */}
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -485,7 +492,7 @@ class Card extends PureComponent {
             </View>
           </Swipeout>
       </Animated.View>
-      // </View>
+       </View>
     );
   }
 }
