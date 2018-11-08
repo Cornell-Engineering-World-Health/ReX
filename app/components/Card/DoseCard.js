@@ -310,7 +310,7 @@ class Card extends PureComponent {
             left={this.props.buttonsLeft}
             autoClose={true}
             style={styles.swipe}
-            disabled={!this.props.swiperActive}
+            disabled={this.props.swiperActive}
             onClose={this.props.onCloseSwipeout}
             onOpen={this.props.onOpenSwipeout}
           >

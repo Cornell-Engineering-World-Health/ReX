@@ -23,7 +23,7 @@ var dummy_data = [
     title: 'Dinonuggies',
     dosage: '489mg',
     time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
-    timeval: [1030, 1130, 1200],
+    timeval: [1200, 1310, 2030],
     statuses: [true, false, false]
   },
   {
@@ -52,7 +52,7 @@ var dummy_data = [
     dosage: '3mg',
     time: ["January 31 1980 14:45"],
     timeval: [1445],
-    status: [false]
+    statuses: [false]
   }
 ]
 
@@ -72,15 +72,15 @@ class CoolerMedicineView extends React.Component {
 
   compareCards = (a,b) => {
     var passed_index = 0
-    for (var i = 0; i < a.status.length; i++){
-      if (a.status[i] == false){
+    for (var i = 0; i < a.statuses.length; i++){
+      if (a.statuses[i] == false){
         passed_index = i
         break
       }
     }
     var passed_index2 = 0
-    for (var j = 0; j < b.status.length; j++){
-      if (b.status[j] == false){
+    for (var j = 0; j < b.statuses.length; j++){
+      if (b.statuses[j] == false){
         passed_index2 = j
         break
       }
@@ -138,9 +138,9 @@ class CoolerMedicineView extends React.Component {
 
             <TouchableOpacity>
             </TouchableOpacity>
-            {console.log(this.state.data.sort(this.compareCards))}
+            {console.log(dummy_data.sort(this.compareCards))}
             <FlatList
-              data={this.state.data.sort(this.compareCards)}
+              data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 //console.log(this.state.data.sort(this.compareCards))
                 //console.log(item)
