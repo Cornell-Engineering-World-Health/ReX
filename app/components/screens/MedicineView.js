@@ -17,6 +17,7 @@ import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import Moment from 'moment';
+import LogFormScreen from "../screens/LogFormScreen";
 
 var dummy_data = [
   {
@@ -127,13 +128,19 @@ class CoolerMedicineView extends React.Component {
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row'}}>
           <Text style={styles.titleText} >
               Today  |
             </Text>
             <Text style={styles.date} >
               {Moment().format('MMMM Do YYYY')}
             </Text>
+            <TouchableOpacity style={{flexDirection:'flex-end'}} onPress = {() => navigate('Form', {log_type :4})}>
+              <Image
+                style={{width: 50, height: 50, marginLeft: 30}}
+                source= {require('../Resources/Images/eashanplus.png')}
+              />
+            </TouchableOpacity>
           </View>
 
             <TouchableOpacity>
@@ -142,9 +149,6 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
-                //console.log(this.state.data.sort(this.compareCards))
-                //console.log(item)
-                //console.log(index)
                 return (
                   <View>
                     <DoseCard

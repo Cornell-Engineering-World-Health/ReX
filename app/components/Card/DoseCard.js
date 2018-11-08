@@ -227,7 +227,7 @@ class Card extends PureComponent {
 
     var newPassed = this.state.passed;
     var newInd = 0;
-    // can click backward
+    // can click forward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
@@ -235,7 +235,8 @@ class Card extends PureComponent {
         passed_index: newInd,
         passed: newPassed,
       }) 
-    }else if( newPassed.length > 0 && this.state.passed_index > 0  && this.state.init_passed == this.state.passed_index-1){
+      // can click backward
+    }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){ 
       newPassed[this.state.passed_index-1] = false;
       this.setState({
         passed_index: this.state.passed_index-1,
