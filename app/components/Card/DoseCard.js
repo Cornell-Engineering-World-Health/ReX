@@ -313,7 +313,20 @@ class Card extends PureComponent {
     return (
       <View style={styles.wrapper}>
           <Swipeout
-            right={this.props.buttonsRight}
+            right={[
+              {
+                text: 'Edit',
+                type: 'edit',
+                onPress: () => {
+                  this.setState ({
+                    modalVisible: true
+                  })
+                  console.log("modalallala")
+                  console.log(this.state.modalVisible)
+
+                  /*force a render with new changes  */
+                }
+              }]}
             left={this.props.buttonsLeft}
             autoClose={true}
             style={styles.swipe}
