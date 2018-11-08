@@ -398,23 +398,23 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText()
     return (
-      // <View style = {{flex:1}}>
-      // <Modal 
-      // animationType = {'slide'}
-      // visible={this.state.modalVisible} 
-      // backdropOpacity = {0.9}
-      // transparent = {true}>
-      // <View style = {{flex: 1, padding: 20, height: 100, width: 300}}>
-      // {/* <TouchableHighlight
-      //     onPress={() => {
-      //     this.setModalVisible(!this.state.modalVisible);
-      //     }}> */}
-      // {/* <View style = {{flex: 1, flexDirection: 'column'}}> */}
-      // {this.render_modal()}
-      // {/* </View> */}
-      // {/* </TouchableHighlight> */}
-      // </View>
-      // </Modal>
+      <View style = {{flex:1}}>
+      <Modal 
+      animationType = {'slide'}
+      visible={this.state.modalVisible} 
+      backdropOpacity = {0.9}
+      transparent = {true}>
+      <View style = {{flex: 1, padding: 20, height: 100, width: 300}}>
+      {/* <TouchableHighlight
+          onPress={() => {
+          this.setModalVisible(!this.state.modalVisible);
+          }}> */}
+      {/* <View style = {{flex: 1, flexDirection: 'column'}}> */}
+      {this.render_modal()}
+      {/* </View> */}
+      {/* </TouchableHighlight> */}
+      </View>
+      </Modal>
       <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
       
           <Swipeout
