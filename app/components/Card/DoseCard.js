@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   Animated,
+  Dimensions,
   Modal
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
@@ -116,7 +117,7 @@ class Card extends PureComponent {
 
     this.state = {
       expanded: false,
-      minHeight: 10,
+      minHeight: 2,
       animation: new Animated.Value(),
       time: this.props.time,
       status: this.props.status,
@@ -130,6 +131,39 @@ class Card extends PureComponent {
       init_passed : passed_index,
       modalVisible: false,
       };
+  }
+
+  _setMaxHeight(event) {
+    this.setState({
+      maxHeight: event.nativeEvent.layout.height
+    });
+  }
+
+  _setMinHeight(event) {
+    this.setState({
+      minHeight: event.nativeEvent.layout.height + 25
+    });
+  }
+
+  toggle() {
+    let initialValue = this.state.expanded
+        ? this.state.maxHeight + this.state.minHeight
+        : this.state.minHeight,
+      finalValue = this.state.expanded
+        ? this.state.minHeight
+        : this.state.maxHeight + this.state.minHeight;
+
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+
+    console.log("expanded")
+    console.log(this.state.expanded)
+
+    this.state.animation.setValue(initialValue);
+    Animated.spring(this.state.animation, {
+      toValue: finalValue
+    }).start();
   }
 
   // determines new hours text
@@ -206,18 +240,6 @@ class Card extends PureComponent {
     }
   };
 
-
-  _setMaxHeight(event) {
-    this.setState({
-      maxHeight: event.nativeEvent.layout.height
-    });
-  }
-
-  _setMinHeight(event) {
-    this.setState({
-      minHeight: event.nativeEvent.layout.height + 25
-    });
-  }
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -314,28 +336,86 @@ class Card extends PureComponent {
     });
   }
 
+  render_modal = () => {
+    return this.state.time.map ((val, i) => {
+      var current = new Date(val)
+      var current_hours = current.getHours() + 1
+      var current_mins = current.getMinutes()
+      var am_pm = "AM"
+      var min_string = current_mins.toString()
+      if (current_hours >= 12 && current_hours != 24){
+        am_pm = "PM"
+        if (current_hours != 12){
+          current_hours = current_hours - 12
+        }
+      }
+      if (current_mins <= 9){
+        min_string = "0" + min_string
+      }
+      var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
+      
+      return (
+        <View>
+        <View style = {{flexDirection: 'row'}}>
+        <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
+        <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
+        </View>
+        <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
+        </View>
+        </View>
+      )
+
+      // if (this.state.passed[i]) {
+      //   {console.log("shit")}
+      //   return (
+      //     <View style = {{flexDirection: 'row'}}>
+      //     <View style = {{ justifyContent: 'center', alignItems: 'center'}}>
+      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
+      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "green"}} />   
+      //     </View>
+      //     <Text>{this.props.title}</Text>
+      //     <Text>{this.state.time}</Text>
+      //     </View>
+      //     )
+      // }
+      // else {
+      //   return (
+      //     <View style = {{flexDirection: 'row'}}>
+      //     <View style = {{justifyContent: 'center', alignItems: 'center'}}>
+      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
+      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "white"}} />   
+      //     </View>
+      //     <Text>{this.props.title}</Text>
+      //     <Text>{this.state.time}</Text>
+      //     </View>
+      //     )
+      // }
+      
+  })
+}
+
   render() {
     this._handleRenderText()
     return (
-      <View style = {{flex:1}}>
-      <Modal
-                    animationType = {'slide'}
-                    style={{ flex: 1}}
-                    visible={this.state.modalVisible} 
-                    backdropOpacity = {0.9}
-                    >
-                    <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <View style = {{width: 200, height: 200, backgroundColor: "yellow"}} />
-                    <TouchableHighlight
-                        onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible);
-                        }}>
-                    <Text>Hello</Text>
-                    </TouchableHighlight>
-                    </View>
-
-                </Modal>
-      <View style={styles.wrapper}>
+      // <View style = {{flex:1}}>
+      // <Modal 
+      // animationType = {'slide'}
+      // visible={this.state.modalVisible} 
+      // backdropOpacity = {0.9}
+      // transparent = {true}>
+      // <View style = {{flex: 1, padding: 20, height: 100, width: 300}}>
+      // {/* <TouchableHighlight
+      //     onPress={() => {
+      //     this.setModalVisible(!this.state.modalVisible);
+      //     }}> */}
+      // {/* <View style = {{flex: 1, flexDirection: 'column'}}> */}
+      // {this.render_modal()}
+      // {/* </View> */}
+      // {/* </TouchableHighlight> */}
+      // </View>
+      // </Modal>
+      <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
       
           <Swipeout
             right={[
@@ -343,6 +423,7 @@ class Card extends PureComponent {
                 text: 'Expand',
                 type: 'edit',
                 onPress: () => {
+                  // this.toggle.bind(this)
                   this.setState ({
                     modalVisible: true
                   })
@@ -359,9 +440,7 @@ class Card extends PureComponent {
             onClose={this.props.onCloseSwipeout}
             onOpen={this.props.onOpenSwipeout}
           >
-           <View
-                  onLayout={this._setMaxHeight.bind(this)}
-                >
+           <View>
             <TouchableOpacity
               disabled={!this.props.buttonActive}
               onPress={() => this.props.onPress(time)}
@@ -395,12 +474,18 @@ class Card extends PureComponent {
                     </View>
                   </TouchableOpacity>
                 </View>
-                              </View>
+                <View
+                  style={{ marginTop: 15 }}
+                  onLayout={this._setMaxHeight.bind(this)}
+                >
+                <Text> WASsup </Text>
+                </View>
+                </View>
             </TouchableOpacity>
             </View>
           </Swipeout>
-      </View>
-      </View>
+      </Animated.View>
+      // </View>
     );
   }
 }
