@@ -4,9 +4,11 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   Image,
   StyleSheet,
-  Animated
+  Animated,
+  Modal
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
@@ -120,6 +122,7 @@ class Card extends PureComponent {
       textColor: text[this.props.passed],
       newhours: "hello",
       init_passed : passed_index,
+      modalVisible: false,
       };
   }
 
@@ -208,6 +211,10 @@ class Card extends PureComponent {
     this.setState({
       minHeight: event.nativeEvent.layout.height + 25
     });
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   _handleClick = () => {
@@ -350,6 +357,17 @@ class Card extends PureComponent {
                     </View>
                   </TouchableOpacity>
                 </View>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible} >
+                    <TouchableHighlight
+                        onPress={() => {
+                        this.setModalVisible(!this.state.modalVisible);
+                        }}>
+                    <Text>Hide Modal</Text>
+                    </TouchableHighlight>
+                </Modal>
               </View>
             </TouchableOpacity>
             </View>
