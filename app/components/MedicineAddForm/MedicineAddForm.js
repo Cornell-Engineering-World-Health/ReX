@@ -72,6 +72,8 @@ export default class MedicineAddForm extends React.Component {
       this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
        'Please add any missing information')
     } else {
+      this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
+      'New Medicine Added!', '')
       asyncCreateMedicineEvents(
         this.state.submit_vals['Pill Name'],
         this.state.submit_vals['Dosage'],
@@ -130,8 +132,13 @@ export default class MedicineAddForm extends React.Component {
       this.valueChange('Start Date', this.state.startDate)
       this.valueChange('End Date', this.state.endDate)
     } else if(this.state.modalID == TIME_ID){
+      let ta = this.state.timeArray.sort()
+      let time_category = ta.map((v) => {
+        return "Morning"
+      })
       this.setState({ timeArray: this.state.timeArray.sort()})
       this.valueChange('Time', this.state.timeArray.sort())
+      this.valueChange('Time Category', time_category)
     }
   }
 
@@ -316,6 +323,14 @@ export default class MedicineAddForm extends React.Component {
             imageSrc={IMAGES.close_white}
             containerStyle={{
               backgroundColor: COLOR.red,
+            }}
+          />
+          <DropdownAlert
+            ref={ref => this.dropdown_success = ref}
+            closeInterval={4000}
+            imageSrc={IMAGES.checkmark}
+            containerStyle={{
+              backgroundColor: COLOR.cyan,
             }}
           />
         </View>
