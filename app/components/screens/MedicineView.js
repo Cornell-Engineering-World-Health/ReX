@@ -17,7 +17,6 @@ import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import Moment from 'moment';
-import LogFormScreen from "../screens/LogFormScreen";
 
 var dummy_data = [
   {
@@ -67,7 +66,7 @@ class CoolerMedicineView extends React.Component {
 
     this.state = {
       data: [],
-      passed_index: 0
+      passed_index: 0,
     };
   }
 
@@ -128,19 +127,13 @@ class CoolerMedicineView extends React.Component {
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
           <Text style={styles.titleText} >
               Today  |
             </Text>
             <Text style={styles.date} >
               {Moment().format('MMMM Do YYYY')}
             </Text>
-            <TouchableOpacity style={{flexDirection:'flex-end'}} onPress = {() => navigate('Form', {log_type :4})}>
-              <Image
-                style={{width: 50, height: 50, marginLeft: 30}}
-                source= {require('../Resources/Images/eashanplus.png')}
-              />
-            </TouchableOpacity>
           </View>
 
             <TouchableOpacity>
@@ -149,6 +142,9 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
+                //console.log(this.state.data.sort(this.compareCards))
+                //console.log(item)
+                //console.log(index)
                 return (
                   <View>
                     <DoseCard
@@ -161,18 +157,11 @@ class CoolerMedicineView extends React.Component {
                         text: 'Edit',
                         type: 'edit',
                         onPress: () => {
-                          var timestamp = moment(this.props.date + ' ' + item.timeStamp, 'MM/DD/YYYY hh:mm A').format('YYYY-MM-DD HH:mm:ss')
-                          console.log('NAME IS:::: ' + item.cardData.title)
-    
-                          Database.transaction(tx =>
-                            tx.executeSql(
-                              'SELECT event_type_id FROM event_type_tbl \
-                              WHERE event_type_name = ?;',
-                              [item.cardData.title],
-                              (tx, {rows}) => {
-                                var eventType = JSON.parse(rows._array[0].event_type_id)
-                                this.props.toggleModal(timestamp, eventType)
-                              }),err => console.log(err))
+                          this.setState ({
+                            modalVisible: true
+                          })
+                          console.log("modalallala")
+                          console.log(this.state.modalVisible)
     
                           /*force a render with new changes  */
                         }
