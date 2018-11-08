@@ -81,7 +81,13 @@ const styles = StyleSheet.create({
   },
   swipe: {
     borderRadius: 10
-  }
+  },
+  modalButton: {
+    backgroundColor: '#A0A0A0',
+    fontSize: 20,
+    marginLeft: 30,
+    marginRight: 30,
+  },
 });
 class Card extends PureComponent {
 
@@ -311,11 +317,30 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText()
     return (
+      <View style = {{flex:1}}>
+      <Modal
+                    animationType = {'slide'}
+                    style={{ flex: 1}}
+                    visible={this.state.modalVisible} 
+                    backdropOpacity = {0.9}
+                    >
+                    <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style = {{width: 200, height: 200, backgroundColor: "yellow"}} />
+                    <TouchableHighlight
+                        onPress={() => {
+                        this.setModalVisible(!this.state.modalVisible);
+                        }}>
+                    <Text>Hello</Text>
+                    </TouchableHighlight>
+                    </View>
+
+                </Modal>
       <View style={styles.wrapper}>
+      
           <Swipeout
             right={[
               {
-                text: 'Edit',
+                text: 'Expand',
                 type: 'edit',
                 onPress: () => {
                   this.setState ({
@@ -370,21 +395,11 @@ class Card extends PureComponent {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <Modal
-                    animationType="slide"
-                    transparent={false}
-                    visible={this.state.modalVisible} >
-                    <TouchableHighlight
-                        onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible);
-                        }}>
-                    <Text>Hide Modal</Text>
-                    </TouchableHighlight>
-                </Modal>
-              </View>
+                              </View>
             </TouchableOpacity>
             </View>
           </Swipeout>
+      </View>
       </View>
     );
   }
