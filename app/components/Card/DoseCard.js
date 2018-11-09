@@ -116,6 +116,13 @@ class Card extends PureComponent {
   constructor(props) {
 
     super(props);
+    this.data = this.render_timeline();
+    //   {time: '09:00',circleColor:'#49D2B7'},
+    //   {time: '10:45',circleColor:'#49D2B7'},
+    //   {time: '12:00',circleColor:'#fc9395'},
+    //   {time: '14:00',circleColor:'#cccccc'},
+    //   {time: '16:30',circleColor:'#cccccc'}
+    // 
 
     var passed_index = 0
     if(this.props.passed){
@@ -252,34 +259,6 @@ class Card extends PureComponent {
     }
   };
 
-  // if (this.state.passed[i]) {
-      //   {console.log("shit")}
-      //   return (
-      //     <View style = {{flexDirection: 'row'}}>
-      //     <View style = {{ justifyContent: 'center', alignItems: 'center'}}>
-      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
-      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "green"}} />   
-      //     </View>
-      //     <Text>{this.props.title}</Text>
-      //     <Text>{this.state.time}</Text>
-      //     </View>
-      //     )
-      // }
-      // else {
-      //   return (
-      //     <View style = {{flexDirection: 'row'}}>
-      //     <View style = {{justifyContent: 'center', alignItems: 'center'}}>
-      //     <View style = {{height: 30, width: 30, borderWidth: 2, backgroundColor: "white", borderColor: 'green', borderRadius: 15}} />
-      //     <View style ={{position: 'absolute', height: 20, width: 20, borderRadius: 10, backgroundColor: "white"}} />   
-      //     </View>
-      //     <Text>{this.props.title}</Text>
-      //     <Text>{this.state.time}</Text>
-      //     </View>
-      //     )
-      // }
-      
-
-
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -324,31 +303,6 @@ class Card extends PureComponent {
     console.log(!this.props.passed[this.state.passed_index-1] + "wtd")
       this._handleRenderText
     } 
-  // toggle() {
-  //   let initialValue = this.state.expanded
-  //       ? this.state.maxHeight + this.state.minHeight
-  //       : this.state.minHeight,
-  //     finalValue = this.state.expanded
-  //       ? this.state.minHeight
-  //       : this.state.maxHeight + this.state.minHeight;
-
-  //   var currentArrow = this.state.expanded ? 'collapse' : 'expand';
-
-  //   this.setState({
-  //     expanded: !this.state.expanded,
-  //     arrow: currentArrow
-  //   });
-
-  //   this.state.animation.setValue(initialValue);
-  //   Animated.spring(this.state.animation, {
-  //     toValue: finalValue
-  //   }).start();
-  // }
-
-  // _onCheck = index => {
-  //   this.props.setParentState(index);
-  //   this.forceUpdate();
-  // };
 
   makePills(data) {
     return data.map((i, index) => {
@@ -376,7 +330,8 @@ class Card extends PureComponent {
   }
 
   render_timeline = () => {
-    return this.state.time.map ((val, i) => {
+    console.log("hi")
+    return this.props.time.map ((val, i) => {
       var current = new Date(val)
       var current_hours = current.getHours() + 1
       var current_mins = current.getMinutes()
@@ -392,59 +347,64 @@ class Card extends PureComponent {
         min_string = "0" + min_string
       }
       var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
-
-      return {time: hour_string, title: this.prop};
-      });
+      var circol;
+      if(this.props.passed[i]){
+        circol = "#49D2B7"
+      }else{
+        circol = "#cccccc"
+      }
+      return {time: hour_string, circleColor : circol};
+      })
   }
 
-  render_modal = () => {
-    return this.state.time.map ((val, i) => {
-      var current = new Date(val)
-      var current_hours = current.getHours() + 1
-      var current_mins = current.getMinutes()
-      var am_pm = "AM"
-      var min_string = current_mins.toString()
-      if (current_hours >= 12 && current_hours != 24){
-        am_pm = "PM"
-        if (current_hours != 12){
-          current_hours = current_hours - 12
-        }
-      }
-      if (current_mins <= 9){
-        min_string = "0" + min_string
-      }
-      var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
-      if (this.state.passed[i] == true){
-        return (
-          <View>
-          <View style = {{flexDirection: 'row'}}>
-          <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
-          <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
-          </View>
-          <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
-          </View>
-          </View>
-        )
-      }
-      else {
-        return (
-          <View>
-          <View style = {{flexDirection: 'row'}}>
-          <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <View style = {{height: 20, width: 20, borderRadius: 10, borderColor: '#7fdecb', borderWidth: 3, backgroundColor: "white"}} />
-          <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
-          </View>
-          <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
-          </View>
-          </View>
-        )
-      }
+//   render_modal = () => {
+//     return this.state.time.map ((val, i) => {
+//       var current = new Date(val)
+//       var current_hours = current.getHours() + 1
+//       var current_mins = current.getMinutes()
+//       var am_pm = "AM"
+//       var min_string = current_mins.toString()
+//       if (current_hours >= 12 && current_hours != 24){
+//         am_pm = "PM"
+//         if (current_hours != 12){
+//           current_hours = current_hours - 12
+//         }
+//       }
+//       if (current_mins <= 9){
+//         min_string = "0" + min_string
+//       }
+//       var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
+//       if (this.state.passed[i] == true){
+//         return (
+//           <View>
+//           <View style = {{flexDirection: 'row'}}>
+//           <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+//           <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
+//           <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
+//           </View>
+//           <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
+//           </View>
+//           </View>
+//         )
+//       }
+//       else {
+//         return (
+//           <View>
+//           <View style = {{flexDirection: 'row'}}>
+//           <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+//           <View style = {{height: 20, width: 20, borderRadius: 10, borderColor: '#7fdecb', borderWidth: 3, backgroundColor: "white"}} />
+//           <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
+//           </View>
+//           <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
+//           </View>
+//           </View>
+//         )
+//       }
 
 
       
-  })
-}
+//   })
+// }
 
   render() {
     this._handleRenderText()
@@ -462,7 +422,6 @@ class Card extends PureComponent {
                   this.setState ({
                     modalVisible: true
                   })
-                  console.log("modalallala")
                   console.log(this.state.modalVisible)
 
                   /*force a render with new changes  */
@@ -514,12 +473,15 @@ class Card extends PureComponent {
       style={styles.modalWrapper}
       onBackdropPress={() => {this.setState({modalVisible: false})}}
       >
-        <View style={{backgroundColor: 'white', borderRadius: 5, flex: 0.3}} >
-        </View>
-        <Text style={{color: 'white', textAlign: 'center'}}>Hello</Text> 
+        <View style={{backgroundColor: 'white', borderRadius: 5, flex: 0.3, padding:40}} >
+        <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>
         <Timeline
-          data = {this.render_timeline}
+        lineColor='#575757'
+        data = {this.data}
+        lineWidth = {1}
+        circleSize = {18}
         />
+        </View>
 
       </Modal>
        </View>
