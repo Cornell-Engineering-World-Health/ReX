@@ -17,6 +17,7 @@ import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import Moment from 'moment';
+import LogFormScreen from "../screens/LogFormScreen"
 
 var dummy_data = [
   {
@@ -134,6 +135,11 @@ class CoolerMedicineView extends React.Component {
             <Text style={styles.date} >
               {Moment().format('MMMM Do YYYY')}
             </Text>
+            <Image style = {{marginLeft:10, height:50, width:50}}
+              onPress = {this.props.log}
+              source ={require('../Resources/Images/eashanplus.png')}
+              >
+            </Image>
           </View>
 
             <TouchableOpacity>

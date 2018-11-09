@@ -9,12 +9,13 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
-  Modal
 } from 'react-native';
+import Modal from 'react-native-modal'
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
 import constants from '../Resources/constants';
 import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
+import Timeline from 'react-native-timeline-listview'
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
@@ -43,6 +44,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 18,
     color: '#373737',
+  },
+  modaltitleText: {
+    fontWeight: '600',
+    fontSize: 22,
+    color: '#373737',
+    marginBottom: 10,
   },
   timeContainer: {
     marginTop: 1.5,
@@ -89,6 +96,11 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
   },
+  modalWrapper: { 
+    flex: 1.0, 
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  }
 });
 class Card extends PureComponent {
 
@@ -363,6 +375,28 @@ class Card extends PureComponent {
     });
   }
 
+  render_timeline = () => {
+    return this.state.time.map ((val, i) => {
+      var current = new Date(val)
+      var current_hours = current.getHours() + 1
+      var current_mins = current.getMinutes()
+      var am_pm = "AM"
+      var min_string = current_mins.toString()
+      if (current_hours >= 12 && current_hours != 24){
+        am_pm = "PM"
+        if (current_hours != 12){
+          current_hours = current_hours - 12
+        }
+      }
+      if (current_mins <= 9){
+        min_string = "0" + min_string
+      }
+      var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
+
+      return {time: hour_string, title: this.prop};
+      });
+  }
+
   render_modal = () => {
     return this.state.time.map ((val, i) => {
       var current = new Date(val)
@@ -415,23 +449,7 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText()
     return (
-      <View style = {{flex:1}}>
-      <Modal 
-      animationType = {'slide'}
-      visible={this.state.modalVisible} 
-      backdropOpacity = {0.9}
-      transparent = {true}>
-      <View style = {{flex: 1, padding: 20, height: 100, width: 300}}>
-      {/* <TouchableHighlight
-          onPress={() => {
-          this.setModalVisible(!this.state.modalVisible);
-          }}> */}
-      {/* <View style = {{flex: 1, flexDirection: 'column'}}> */}
-      {this.render_modal()}
-      {/* </View> */}
-      {/* </TouchableHighlight> */}
-      </View>
-      </Modal>
+      <View style = {{flex:1}} >
       <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
       
           <Swipeout
@@ -485,13 +503,25 @@ class Card extends PureComponent {
                   style={{ marginTop: 15 }}
                   onLayout={this._setMaxHeight.bind(this)}
                 >
-                <Text> WASsup </Text>
                 </View>
                 </View>
             </TouchableOpacity>
             </View>
           </Swipeout>
       </Animated.View>
+      <Modal 
+      isVisible={this.state.modalVisible} 
+      style={styles.modalWrapper}
+      onBackdropPress={() => {this.setState({modalVisible: false})}}
+      >
+        <View style={{backgroundColor: 'white', borderRadius: 5, flex: 0.3}} >
+        </View>
+        <Text style={{color: 'white', textAlign: 'center'}}>Hello</Text> 
+        <Timeline
+          data = {this.render_timeline}
+        />
+
+      </Modal>
        </View>
     );
   }

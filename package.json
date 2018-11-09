@@ -43,6 +43,7 @@
     "react-native-swipeout": "^2.3.3",
     "react-native-swiper": "^1.5.13",
     "react-native-table-component": "^1.1.8",
+    "react-native-timeline-listview": "^0.2.3",
     "react-navigation": "^1.2.1"
   }
 }
