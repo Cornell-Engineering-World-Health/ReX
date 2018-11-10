@@ -140,6 +140,20 @@ export default (constants = {
     'November',
     'December'
   ],
+  SHORTENED_MONTH: [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC'
+  ],
   DAY: [
     'Sunday',
     'Monday',
@@ -288,7 +302,6 @@ export function getTranslucentColor(type) {
   }
   return constants.DEFAULT.translucentColor;
 }
-
 
 export const durationTitles = [
   '< 1 Hour',

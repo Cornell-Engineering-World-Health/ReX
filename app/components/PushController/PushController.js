@@ -24,7 +24,7 @@ export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
 
-/*a
+/*
 Cancels all notifications listed in the given array of notification IDS
 
 Precondition: notificationIDS is an array with every element being a notificationID given

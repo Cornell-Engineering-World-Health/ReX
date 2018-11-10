@@ -20,7 +20,7 @@ import moment from 'moment';
 import { StackNavigator } from 'react-navigation';
 import Profile from './EditProfile';
 import Summary from './Summary';
-import SummaryGraph from './SummaryGraph';
+
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
