@@ -99,6 +99,7 @@ export const profile_icons = [
 ];
 
 export const COLOR = {
+  black: '#404040',
   PrimaryGray: '#b8b8b8',
   blue: '#79ADDC',
   purple: '#ab87b8',

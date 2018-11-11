@@ -24,8 +24,8 @@ import { Calendar } from 'react-native-calendars';
 import { COLOR, IMAGES} from '../Resources/constants';
 
 
-event_id_count = 600;
-event_details_id_count = 600;
+event_id_count = 601;
+event_details_id_count = 601;
 const CALENDAR_ID = 'CALENDAR'
 const TIME_ID = 'TIME'
 
@@ -74,16 +74,20 @@ export default class MedicineAddForm extends React.Component {
     } else {
       this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
       'New Medicine Added!', '')
+      this.e
       asyncCreateMedicineEvents(
         this.state.submit_vals['Pill Name'],
         this.state.submit_vals['Dosage'],
-         new Date(this.state.submit_vals['Start Date']),
+        new Date(this.state.submit_vals['Start Date']),
         new Date(this.state.submit_vals['End Date']),
         this.state.submit_vals['Time'],
         this.state.submit_vals['Time Category'],
         event_id_count,
         event_details_id_count
       );
+      event_id_count++
+      event_details_id_count++
+      console.log(event_id_count, event_details_id_count)
     }
   }
   nextFocus(){
@@ -153,6 +157,20 @@ export default class MedicineAddForm extends React.Component {
           else if (parseInt(h) == 0) return ('12:'+m+' AM')
           else return (v+' AM')
         })}
+        backgroundColor={COLOR.cyan}
+      />
+    )
+    let timeViewerGray = (
+      <ListViewer
+        list={this.state.timeArray.map((v) => {
+          let time_split = v.split(':')
+          let h = time_split[0]
+          let m = time_split[1]
+          if(parseInt(h) > 12) return ((parseInt(h)-12)+':'+m+' PM')
+          else if (parseInt(h) == 0) return ('12:'+m+' AM')
+          else return (v+' AM')
+        })}
+        backgroundColor={COLOR.PrimaryGray}
       />
     )
 
@@ -164,7 +182,7 @@ export default class MedicineAddForm extends React.Component {
         style={{width: viewportWidth}}
       />) : (
         <View
-          style={{ flex: 1, width: viewportWidth}}
+          style={{ flex: 1, width: viewportWidth, paddingTop: 10}}
         >
         {timeViewer}
         <TimePicker
@@ -209,7 +227,7 @@ export default class MedicineAddForm extends React.Component {
     let timeText = ''
     let timeContent = null
     if(this.state.submit_vals['Time']){
-      timeContent = timeViewer
+      timeContent = timeViewerGray
     } else {
       timeText = 'Enter Your Prescription Time'
     }
@@ -257,14 +275,20 @@ export default class MedicineAddForm extends React.Component {
             rounded={true}
             width={viewportWidth - 30}
             borderColor={COLOR.purple}
-            onPress={() => {this.setState({ modalID: CALENDAR_ID })}}
+            onPress={() => {
+              Keyboard.dismiss()
+              this.setState({ modalID: CALENDAR_ID })
+            }}
           />
           <Button
             text={timeText}
             rounded={true}
             width={viewportWidth - 30}
             borderColor={COLOR.purple}
-            onPress={() => {this.setState({ modalID: TIME_ID })}}
+            onPress={() => {
+              Keyboard.dismiss()
+              this.setState({ modalID: TIME_ID })
+            }}
             innerComponent={timeContent}
           />
           <Button
@@ -366,15 +390,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     fontWeight: '300',
-    color: 'black'
+    color: COLOR.black
   },
   title_text: {
     fontSize: 20,
-    color: '#404040',
+    color: COLOR.black,
     paddingBottom: 10
   },
   input_text: {
-    color: '#404040'
+    color: COLOR.black
   },
   name_input: {
     width: viewportWidth - 30,
@@ -411,7 +435,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',
-    color: 'black',
+    color: COLOR.black,
     fontSize: 15
   },
   innerWrapper: {

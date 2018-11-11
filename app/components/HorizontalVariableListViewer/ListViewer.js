@@ -26,11 +26,11 @@ import { COLOR } from '../Resources/constants';
 /**
 ListViewer is a horizontal scrollview of items of a list.
 */
-const ListViewer = ({list}) => {
+const ListViewer = ({list, backgroundColor}) => {
   let contents = list.map((v, i) => {
     return (
       <View
-        style={styles.item}
+        style={[styles.item, {backgroundColor: backgroundColor}]}
         key={i}
       >
         <Text style={styles.itemText}>{v}</Text>
@@ -49,7 +49,7 @@ const ListViewer = ({list}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50
+    height: 30
   },
   bar: {
     flex: 1,
@@ -58,11 +58,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   item: {
-    backgroundColor: COLOR.cyan,
     padding: 5,
     height: 30,
     borderRadius: 10,
-    marginTop: 10,
     marginRight: 5,
     marginLeft: 5
   },
@@ -74,9 +72,7 @@ const styles = StyleSheet.create({
 
 ListViewer.propTypes = {
   list: PropTypes.array,
-  allowEdit: PropTypes.bool,
-  onAdd: PropTypes.func,
-  onRemoveRecent: PropTypes.func
+  color: PropTypes.string
 }
 
 export default ListViewer

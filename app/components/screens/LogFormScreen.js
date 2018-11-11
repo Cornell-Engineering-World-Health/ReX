@@ -148,9 +148,6 @@ export default class ChooseLogScreen extends React.Component {
         },
         err => console.log(err)
       );
-
-      event_id_count++;
-      event_details_id_count++;
     } else {
       this.props.on_finish();
       if (this.props.timestamp) {
