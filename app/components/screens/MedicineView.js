@@ -71,6 +71,28 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
+    
+  componentWillMount = () => {
+    var medicineData= []
+  //new Date() for current date
+    pullMedicineFromDatabase(new Date(), function(formattedData) {
+      Object.keys(formattedData).forEach(function(med) {
+          var medObj = formattedData[med]
+          var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
+          medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
+          for(var i =0; i <medObj.timeCategory.length; i++){
+              //console.log(medObj.time[i])
+              //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+              //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+          }
+      });
+  });
+
+  this.setState ({
+      data: medicineData
+  })
+}
+
   compareCards = (a,b) => {
     var passed_index = 0
     for (var i = 0; i < a.statuses.length; i++){
@@ -94,29 +116,6 @@ class CoolerMedicineView extends React.Component {
     }
   }
 
-  
-  componentWillMount = () => {
-      var medicineData= []
-    //new Date() for current date
-      pullMedicineFromDatabase(new Date(), function(formattedData) {
-        Object.keys(formattedData).forEach(function(med) {
-            var medObj = formattedData[med]
-            var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-            medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
-            for(var i =0; i <medObj.timeCategory.length; i++){
-                //console.log(medObj.time[i])
-                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-            }
-        });
-    });
-
-    this.setState ({
-        data: medicineData
-    })
-  }
-
-
   render() {
     const { navigate } = this.props.navigation
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -135,11 +134,14 @@ class CoolerMedicineView extends React.Component {
             <Text style={styles.date} >
               {Moment().format('MMMM Do YYYY')}
             </Text>
+            <TouchableOpacity onPress = {() => navigate('Form', {
+              log_type: 4
+            })}>
             <Image style = {{marginLeft:10, height:50, width:50}}
-              onPress = {this.props.log}
               source ={require('../Resources/Images/eashanplus.png')}
               >
             </Image>
+            </TouchableOpacity>
           </View>
 
             <TouchableOpacity>
