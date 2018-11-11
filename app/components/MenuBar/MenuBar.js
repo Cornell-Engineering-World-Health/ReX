@@ -84,7 +84,7 @@ class MenuBar extends React.Component {
         return <Calendar />;
         break;
       case MEDICINE_PAGE:
-        return <MedicineAddForm />;
+        return <MedicineView />;
         break;
       case SETTINGS_PAGE:
         return <Settings />;

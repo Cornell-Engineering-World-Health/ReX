@@ -81,7 +81,8 @@ export const IMAGES = {
   seven: require('../Resources/Images/7.png'),
   eight: require('../Resources/Images/8.png'),
   nine: require('../Resources/Images/9.png'),
-  ten: require('../Resources/Images/10.png')
+  ten: require('../Resources/Images/10.png'),
+  checkmarkWhite: require('../Resources/Images/checkmarkWhite.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,

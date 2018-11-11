@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import Modal from 'react-native-modal'
-import DropdownAlert from 'react-native-dropdownalert';
 import TextInputType from '../LogInputTypes/TextInputType'
 import TimePicker from '../LogInputTypes/TimePicker'
 import Button from '../Button/Button'
@@ -69,12 +68,8 @@ export default class MedicineAddForm extends React.Component {
 
   submit (){
     if(this.checkIfIncomplete()){
-      this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
-       'Please add any missing information')
+        this.props.screenProps.errorOnSubmit()
     } else {
-      this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
-      'New Medicine Added!', '')
-      this.e
       asyncCreateMedicineEvents(
         this.state.submit_vals['Pill Name'],
         this.state.submit_vals['Dosage'],
@@ -85,6 +80,8 @@ export default class MedicineAddForm extends React.Component {
         event_id_count,
         event_details_id_count
       );
+      this.props.screenProps.successOnSubmit()
+      this.props.navigation.goBack()
       event_id_count++
       event_details_id_count++
       console.log(event_id_count, event_details_id_count)
@@ -131,6 +128,14 @@ export default class MedicineAddForm extends React.Component {
     }
   }
 
+  timeToTimeCategory(time){
+    let tc = ['10:00', '15:00', '19:00', '23:00'] //temp boundaries
+    if(time < tc[0]) return 'Morning'
+    if(time < tc[1]) return 'Afternoon'
+    if(time < tc[2]) return 'Evening'
+    return 'Night'
+  }
+
   confirmSubmit(){
     if(this.state.modalID == CALENDAR_ID){
       this.valueChange('Start Date', this.state.startDate)
@@ -138,7 +143,7 @@ export default class MedicineAddForm extends React.Component {
     } else if(this.state.modalID == TIME_ID){
       let ta = this.state.timeArray.sort()
       let time_category = ta.map((v) => {
-        return "Morning"
+        return this.timeToTimeCategory(v)
       })
       this.setState({ timeArray: this.state.timeArray.sort()})
       this.valueChange('Time', this.state.timeArray.sort())
@@ -296,7 +301,9 @@ export default class MedicineAddForm extends React.Component {
             backgroundColor={COLOR.purple}
             color={'white'}
             rounded={true}
-            onPress={() => {this.submit()}}
+            onPress={() => {
+              this.submit()
+            }}
           />
           <Modal
             isVisible={this.state.modalID != ''}
@@ -341,22 +348,6 @@ export default class MedicineAddForm extends React.Component {
               </View>
             </View>
           </Modal>
-          <DropdownAlert
-            ref={ref => this.dropdown = ref}
-            closeInterval={4000}
-            imageSrc={IMAGES.close_white}
-            containerStyle={{
-              backgroundColor: COLOR.red,
-            }}
-          />
-          <DropdownAlert
-            ref={ref => this.dropdown_success = ref}
-            closeInterval={4000}
-            imageSrc={IMAGES.checkmark}
-            containerStyle={{
-              backgroundColor: COLOR.cyan,
-            }}
-          />
         </View>
       </TouchableWithoutFeedback>
     )
@@ -380,8 +371,8 @@ const styles = StyleSheet.create({
     height: 350
   },
   headerView: {
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 0,
+    paddingBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
     width: viewportWidth

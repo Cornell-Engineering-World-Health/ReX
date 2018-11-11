@@ -11,68 +11,51 @@ import {
   Dimensions
 } from 'react-native';
 import Circle from '../MedicineComponents/Circle.js';
-import PillCard from '../Card/PillCard';
+import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator } from 'react-navigation';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
+import Moment from 'moment';
+import LogFormScreen from "../screens/LogFormScreen"
 
-var data1 = [
+var dummy_data = [
   {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false },
-  { title: 'Ibuprofen 80mg', time: '2:50PM', status: false },
-  { title: 'Mucinex 3410mg', time: '1:25PM', status: false },
-  { title: 'Aspirin 20mg', time: '2:50PM', status: false },
-  { title: 'Mucinex 4410mg', time: '12:50PM', status: false }
-];
-var data2 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false },
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
+    title: 'Dinonuggies',
+    dosage: '489mg',
+    time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
+    timeval: [1200, 1310, 2030],
+    statuses: [true, false, false]
   },
   {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
+    title: 'KT',
+    dosage: '4344348mg',
+    time: ["January 31 1980 9:30"],
+    timeval: [930],
+    statuses: [false]
   },
   {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
+    title: 'Beanz',
+    dosage: '430mg',
+    time: ["January 31 1980 12:30"],
+    timeval: [1230],
+    statuses: [false]
   },
   {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
+    title: 'Oliviera',
+    dosage: '233mg',
+    time: ["January 31 1980 13:30"],
+    timeval: [1330],
+    statuses: [false]
+  },
+  {
+    title: 'Splash',
+    dosage: '3mg',
+    time: ["January 31 1980 14:45"],
+    timeval: [1445],
+    statuses: [false]
   }
-];
-var data3 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false }
-];
-var data4 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Advil 30mg', time: '12:50PM', status: false },
-  { title: 'Mucinex 100mg', time: '1:25PM', status: false },
-  { title: 'Aspirin 30mg', time: '2:50PM', status: false }
-];
+]
 
 class CoolerMedicineView extends React.Component {
   static propTypes = {
@@ -82,98 +65,123 @@ class CoolerMedicineView extends React.Component {
   constructor(props) {
     super(props);
 
-    var arr1 = new Array(data1.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr2 = new Array(data2.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr3 = new Array(data3.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr4 = new Array(data4.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-
-    var meds = [[], [], [], []];
-    meds[0] = arr1;
-    meds[1] = arr2;
-    meds[2] = arr3;
-    meds[3] = arr4;
-
     this.state = {
-      meds: meds,
-      amData: [0, 100, 0, 100, 0, 100, 0, 100]
+      data: [],
+      passed_index: 0,
     };
   }
 
-  updateMeds = (time, index) => {
-    newMeds = this.state.meds;
-    oldVal = this.state.meds[time][index];
-    newMeds[time][index] = !oldVal;
-    this.setState({ meds: newMeds });
-    this.updateArray(time);
-  };
+  compareCards = (a,b) => {
+    var passed_index = 0
+    for (var i = 0; i < a.statuses.length; i++){
+      if (a.statuses[i] == false){
+        passed_index = i
+        break
+      }
+    }
+    var passed_index2 = 0
+    for (var j = 0; j < b.statuses.length; j++){
+      if (b.statuses[j] == false){
+        passed_index2 = j
+        break
+      }
+    }
+    if (a.timeval[passed_index] < b.timeval[passed_index2]) {
+      return -1
+    }
+    else {
+      return 1
+    }
+  }
 
-  updateArray = time => {
-    newData = this.state.amData;
-    meds_list = this.state.meds[time];
-    sum = meds_list.reduce((a, b) => a + b, 0);
-    len = this.state.meds[time].length;
-    newData[time * 2] = 100 * (sum / len);
-    newData[time * 2 + 1] = 100 - newData[time * 2];
-    this.setState({ amData: newData });
-  };
+
+  componentWillMount = () => {
+      var medicineData= []
+    //new Date() for current date
+      pullMedicineFromDatabase(new Date(), function(formattedData) {
+        Object.keys(formattedData).forEach(function(med) {
+            var medObj = formattedData[med]
+            var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
+            medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
+            for(var i =0; i <medObj.timeCategory.length; i++){
+                //console.log(medObj.time[i])
+                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+            }
+        });
+    });
+
+    this.setState ({
+        data: medicineData
+    })
+  }
+
 
   render() {
     const { navigate } = this.props.navigation
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    currentDate = new Date()
+    currentMonths = monthNames[currentDate.getMonth()]
+    currentYear = currentDate.getYear()
+    currentDay = currentDate.getDay()
     return (
-      <View style={{ flex: 1, backgroundColor: 'white'}}>
+      <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
-          <Circle
-            log={()=>{
-              {navigate('Form', {
-                log_type: 4
-              })}
-            }}
-            amData={this.state.amData} />
-          <View style={{ flex: 0.75 }}>
+          <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.titleText} >
+              Today  |
+            </Text>
+            <Text style={styles.date} >
+              {Moment().format('MMMM Do YYYY')}
+            </Text>
+            <TouchableOpacity
+              onPress = {() => {
+                navigate('Add', {});
+              }}
+            >
+              <Image style = {{marginLeft:10, height:50, width:50}}
+                source ={require('../Resources/Images/eashanplus.png')}
+                >
+              </Image>
+            </TouchableOpacity>
+          </View>
+
+            <TouchableOpacity>
+            </TouchableOpacity>
+            {console.log(dummy_data.sort(this.compareCards))}
             <FlatList
-              data={[0]}
+              data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
+                //console.log(this.state.data.sort(this.compareCards))
+                //console.log(item)
+                //console.log(index)
                 return (
                   <View>
-                    <PillCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Morning'}
-                      data={data1}
+                    <DoseCard
+                    title={item.title}
+                    time={item.time}
+                    dosage={item.dosage}
+                    passed={item.statuses}
+                    buttonsRight={[
+                      {
+                        text: 'Edit',
+                        type: 'edit',
+                        onPress: () => {
+                          this.setState ({
+                            modalVisible: true
+                          })
+                          console.log("modalallala")
+                          console.log(this.state.modalVisible)
+
+                          /*force a render with new changes  */
+                        }
+                      }]}
                     />
-                    <PillCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Afternoon'}
-                      data={data2}
-                    />
-                    <PillCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Evening'}
-                      data={data3}
-                    />
-                    <PillCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Night'}
-                      data={data4}
-                    />
-                  </View>
+                    </View>
                 );
               }}
+              keyExtractor={(_, index) => index.toString()}
             />
           </View>
         </View>
@@ -181,6 +189,22 @@ class CoolerMedicineView extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  titleText: {
+    fontSize: 25,
+    fontWeight: '700',
+    padding: 10,
+    color: '#333333',
+  },
+  date: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
+    fontWeight: '500',
+    padding: 5,
+    marginTop: 10,
+    color: '#555555',
+  },
+});
 
 export default CoolerMedicineView;

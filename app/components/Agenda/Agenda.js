@@ -106,7 +106,6 @@ class Agenda extends Component {
                         this.setState({ changeToForceRender: this.state.changeToForceRender +1})
                         this.setState({ state: this.state });
                         this.setState({ agendaInfo: a_info })
-
                     }
                   }
                 ]}
