@@ -20,7 +20,7 @@ import moment from 'moment';
 import { StackNavigator } from 'react-navigation';
 import Profile from './EditProfile';
 import Summary from './Summary';
-
+import Trends from './Trends';
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
@@ -122,6 +122,9 @@ class Settings extends Component {
               hasNavArrow={true}
               onPress={() => {}}
               titleInfoStyle={styles.titleInfoStyle}
+              onPress={() => {
+                this.props.navigator.push(TrendsRoute);
+              }}
             />
 
             <SettingsList.Item
@@ -198,7 +201,9 @@ const ProfileRoute = {
 const SummaryPage = {
   component: Summary
 };
-
+const TrendsRoute = {
+  component: Trends
+};
 export default class settingsList extends React.Component {
   render() {
     return (
