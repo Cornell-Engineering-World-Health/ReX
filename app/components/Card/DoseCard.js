@@ -115,6 +115,7 @@ class Card extends PureComponent {
 
   static propTypes = {
     time: PropTypes.array,
+    takenTime: PropTypes.array,
     dosage: PropTypes.string,
     timeStamp: PropTypes.string,
     title: PropTypes.string,
@@ -142,6 +143,7 @@ class Card extends PureComponent {
       minHeight: 2,
       animation: new Animated.Value(),
       time: this.props.time,
+      takenTime: this.props.takenTime,
       status: this.props.status,
       arrow: 'expand',
       passed: this.props.passed,
@@ -152,6 +154,7 @@ class Card extends PureComponent {
       newhours: "hello",
       init_passed : passed_index,
       modalVisible: false,
+      data: this.render_timeline()
       };
   }
 
@@ -186,6 +189,11 @@ class Card extends PureComponent {
     Animated.spring(this.state.animation, {
       toValue: finalValue
     }).start();
+  }
+
+  modalCallback = () => {
+    this.forceUpdate()
+    this.setState({modalVisible: false})
   }
 
   // determines new hours text
@@ -287,16 +295,68 @@ class Card extends PureComponent {
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
+      var tempData = this.state.data
+      var circleColor = "#49D2B7"
+      if (this.state.data[this.state.passed_index].circleColor == "#49D2B7") {
+        circleColor = "#cccccc"
+      }
+      var taken_string = ""
+      var tempData = this.state.data
+      var circleColor = "#49D2B7"
+      var taken_hours = today.getHours()
+        var taken_mins = today.getMinutes()
+        var am_pm = "AM"
+        var min_string = taken_mins.toString()
+      if (taken_hours >= 12 && taken_hours != 24){
+        am_pm = "PM"
+        if (taken_hours != 12){
+          taken_hours = taken_hours - 12
+        }
+      }
+      if (taken_mins <= 9){
+        min_string = "0" + min_string
+      }
+      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      // if (this.state.data[this.state.passed_index].circleColor == "#49D2B7") {
+      //   var taken_string = "Not taken"
+      // }
+      tempData[this.state.passed_index].title = taken_string
+      tempData[this.state.passed_index].circleColor = circleColor
       this.setState({
         passed_index: newInd,
         passed: newPassed,
+        data: tempData
       }) 
       // can click backward
     }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){ 
       newPassed[this.state.passed_index-1] = false;
+      var tempData = this.state.data
+      var circleColor = "#49D2B7"
+      if (this.state.data[this.state.passed_index - 1].circleColor == "#49D2B7") {
+        circleColor = "#cccccc"
+      }
+      var taken_string = "Not taken"
+      var tempData = this.state.data
+      var circleColor = "#49D2B7"
+      var taken_hours = today.getHours()
+        var taken_mins = today.getMinutes()
+        var am_pm = "AM"
+        var min_string = taken_mins.toString()
+      if (taken_hours >= 12 && taken_hours != 24){
+        am_pm = "PM"
+        if (taken_hours != 12){
+          taken_hours = taken_hours - 12
+        }
+      }
+      if (taken_mins <= 9){
+        min_string = "0" + min_string
+      }
+      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      tempData[this.state.passed_index - 1].circleColor = circleColor
       this.setState({
         passed_index: this.state.passed_index-1,
         passed: newPassed,
+        data: tempData
       })
       console.log("asdkfhaso incefa")
     }
@@ -332,6 +392,57 @@ class Card extends PureComponent {
     });
   }
 
+  _handleModalPress = (data) => {
+    var index = data.index
+
+    var today = new Date();
+    var current = new Date(this.state.time[index])
+    var todayTimeSum = today.getHours()*60 + today.getMinutes();
+    var currentTimeSum = current.getHours()*60 + current.getMinutes();
+    
+    if (currentTimeSum <= todayTimeSum + 15) {
+      var taken_string = "Not taken"
+      var tempData = this.state.data
+      var circleColor = "#49D2B7"
+      var taken_hours = today.getHours()
+        var taken_mins = today.getMinutes()
+        var am_pm = "AM"
+        var min_string = taken_mins.toString()
+      if (taken_hours >= 12 && taken_hours != 24){
+        am_pm = "PM"
+        if (taken_hours != 12){
+          taken_hours = taken_hours - 12
+        }
+      }
+      if (taken_mins <= 9){
+        min_string = "0" + min_string
+      }
+      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      if (this.state.data[index].circleColor == "#49D2B7") {
+        circleColor = "#cccccc"
+        var taken_string = "Not taken"
+      }
+      tempData[index].circleColor = circleColor
+      tempData[index].title = taken_string
+      this.setState({
+        data: tempData,
+      })
+      // this._handleClick()
+      this.forceUpdate()
+    }
+    
+  }
+
+  rerender_detail = (rowData, sectionID, rowID) => {
+    return (
+      <View style = {{flex: 1}}>
+      <View style = {{flexDirection: 'row', paddingRight: 50}}>
+      <Text style = {{marginLeft: 10, color: 'gray'}}>{rowData.title}</Text>
+      </View>
+      </View>
+    )
+  }
+
   render_timeline = () => {
     console.log("hi")
     return this.props.time.map ((val, i) => {
@@ -356,7 +467,25 @@ class Card extends PureComponent {
       }else{
         circol = "#cccccc"
       }
-      return {time: hour_string, circleColor : circol};
+      var taken_string = "Not taken"
+      if (this.props.takenTime[i] != ""){
+        var takenTime = new Date(this.props.takenTime[i])
+        var taken_hours = takenTime.getHours() + 1
+        var taken_mins = takenTime.getMinutes()
+        var am_pm = "AM"
+        var min_string = taken_mins.toString()
+        if (taken_hours >= 12 && taken_hours != 24){
+          am_pm = "PM"
+          if (taken_hours != 12){
+            taken_hours = taken_hours - 12
+          }
+        }
+        if (taken_mins <= 9){
+          min_string = "0" + min_string
+        }
+        taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      }
+      return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
       })
   }
 
@@ -410,15 +539,23 @@ class Card extends PureComponent {
         <Modal 
         isVisible={this.state.modalVisible} 
         style={styles.modalWrapper}
-        onBackdropPress={() => {this.setState({modalVisible: false})}}
+        onBackdropPress={() => {this.modalCallback}}
         >
-          <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:.2, alignItems:'center', justifyContext:'center'}} >
+          <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:this.state.passed.length * 0.15}} >
               <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>
               <Timeline
               lineColor='#575757'
-              data = {this.data}
+              data = {this.state.data}
               lineWidth = {1}
               circleSize = {18}
+              circleColor='#575757'
+              showTime = {false}
+              // columnFormat = 'single-column-format'
+              // descriptionStyle = {{color: 'gray'}}
+              titleStyle = {{color: '#aaaaaa', fontSize: 12}}
+              detailContainerStyle = {{paddingTop: 0}}
+              onEventPress = {this._handleModalPress}
+              // renderDetail = {() => this.rerender_detail}
               />
           </View>
 

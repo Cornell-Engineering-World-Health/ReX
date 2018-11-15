@@ -24,6 +24,7 @@ var dummy_data = [
     title: 'Dinonuggies',
     dosage: '489mg',
     time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
+    takenTime: ["January 31 1980 12:10", "", ""],
     timeval: [1200, 1310, 2030],
     statuses: [true, false, false]
   },
@@ -31,6 +32,7 @@ var dummy_data = [
     title: 'KT',
     dosage: '4344348mg',
     time: ["January 31 1980 9:30"],
+    takenTime: [""],
     timeval: [930],
     statuses: [false]
   },
@@ -38,6 +40,7 @@ var dummy_data = [
     title: 'Beanz',
     dosage: '430mg',
     time: ["January 31 1980 12:30"],
+    takenTime: [""],
     timeval: [1230],
     statuses: [false]
   },
@@ -45,14 +48,16 @@ var dummy_data = [
     title: 'Oliviera',
     dosage: '233mg',
     time: ["January 31 1980 13:30"],
+    takenTime: [""],
     timeval: [1330],
     statuses: [false]
   },
   {
     title: 'Splash',
     dosage: '3mg',
-    time: ["January 31 1980 14:45"],
-    timeval: [1445],
+    time: ["January 31 1980 15:10"],
+    takenTime: [""],
+    timeval: [1510],
     statuses: [false]
   }
 ]
@@ -158,6 +163,7 @@ class CoolerMedicineView extends React.Component {
                     <DoseCard
                     title={item.title}
                     time={item.time}
+                    takenTime={item.takenTime}
                     dosage={item.dosage}
                     passed={item.statuses}
                     buttonsRight={[
