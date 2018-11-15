@@ -22,6 +22,11 @@ var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#aaaaaa', '#373737', '#373737']
 
 const styles = StyleSheet.create({
+  wrapper: {
+    padding: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
   modalwrapper:{
     flexDirection:'row',
   },
@@ -53,6 +58,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     marginTop: 1.5,
     paddingTop: 15,
+    flex: 0.6,
     marginRight: 10,
     alignItems: 'flex-end',
     backgroundColor: 'transparent'
@@ -354,11 +360,12 @@ class Card extends PureComponent {
       })
   }
 
+
   render() {
     this._handleRenderText()
     return (
       <View style = {{flex:1}} >
-            <View>
+            <View style={styles.wrapper}>
               <TouchableOpacity
                 disabled={!this.props.buttonActive}
                 onPress={() => this.props.onPress(time)}
@@ -388,13 +395,13 @@ class Card extends PureComponent {
                                       </Image>
                                   </TouchableOpacity>
                               </View>
+                              <View
+                                style={{ marginTop: 15 }}
+                                onLayout={this._setMaxHeight.bind(this)}
+                              >
+                              </View>
                             </TouchableOpacity>
         
-                      </View>
-                      <View
-                        style={{ marginTop: 15 }}
-                        onLayout={this._setMaxHeight.bind(this)}
-                      >
                       </View>
                 </View>
               </TouchableOpacity>
