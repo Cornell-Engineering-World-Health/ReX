@@ -410,8 +410,8 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' and ORDER BY timestamp",
-        arrayFormattedMonth, (tx, { rows }) => callback(rows._array)
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+      (tx, { rows }) => callback(rows._array)
      ),
     err => console.log(err)
   );

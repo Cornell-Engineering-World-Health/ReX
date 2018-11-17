@@ -21,6 +21,8 @@ import { StackNavigator } from 'react-navigation';
 import Profile from './EditProfile';
 import Summary from './Summary';
 import SummaryGraph from './SummaryGraph';
+import {_mailFunc} from  '../../mailUtil/mailUtil.js'
+import {pullAllSymptoms} from '../../databaseUtil/databaseUtil.js'
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
@@ -194,8 +196,13 @@ class Settings extends Component {
               }
               title="Quick Log"
               title="FAQ"
-              onPress={() =>
-                Alert.alert('Question: Is this app awesome?\n Answer: yes ')
+              onPress={() => {
+                pullAllSymptoms((e) => {
+                    console.log("***********"+ e)
+                    _mailFunc([{price: "500$"}])
+                })
+                
+              }
               }
             />
           </SettingsList>
