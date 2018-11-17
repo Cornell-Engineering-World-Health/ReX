@@ -202,7 +202,7 @@ export function formatData(data) {
         intensity) /
       dataTemp[symptom].count[day];
   });
-  // console.log(dataTemp)
+  //console.log(dataTemp)
   return dataTemp;
 }
 
@@ -427,6 +427,7 @@ export function databaseFakeData() {
     },err=> console.log(err)); 
 }
 
+/* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
   console.log('pulling from database');
 
@@ -446,6 +447,23 @@ export function pullFromDataBase(month, day, callback) {
     err => console.log(err)
   );
 }
+
+/* gets all Symptoms from database and calls callback with array */
+export function pullAllSymptoms(callback) {
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' and ORDER BY timestamp",
+        arrayFormattedMonth, (tx, { rows }) => callback(rows._array)
+     ),
+    err => console.log(err)
+  );
+}
+
+
 
 function sameDay(d1, d2) {
   return (
