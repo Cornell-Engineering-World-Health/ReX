@@ -1,186 +1,118 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Dimensions
-} from 'react-native';
-import Circle from '../MedicineComponents/Circle.js';
-import PillCard from '../Card/PillCard';
-import { LinearGradient } from 'expo';
-import { StackNavigator } from 'react-navigation'
-
-var data1 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false },
-  { title: 'Ibuprofen 80mg', time: '2:50PM', status: false },
-  { title: 'Mucinex 3410mg', time: '1:25PM', status: false },
-  { title: 'Aspirin 20mg', time: '2:50PM', status: false },
-  { title: 'Mucinex 4410mg', time: '12:50PM', status: false }
-];
-var data2 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false },
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  }
-];
-var data3 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Motrin 30mg', time: '12:50PM', status: false }
-];
-var data4 = [
-  {
-    title: 'Tylenol 20mg',
-    time: '12:20PM',
-    status: false
-  },
-  { title: 'Advil 30mg', time: '12:50PM', status: false },
-  { title: 'Mucinex 100mg', time: '1:25PM', status: false },
-  { title: 'Aspirin 30mg', time: '2:50PM', status: false }
-];
-
-class CoolerMedicineView extends React.Component {
-  static propTypes = {
-    onPress: PropTypes.func
-  };
-
-  constructor(props) {
-    super(props);
-
-    var arr1 = new Array(data1.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr2 = new Array(data2.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr3 = new Array(data3.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-    var arr4 = new Array(data4.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
-
-    var meds = [[], [], [], []];
-    meds[0] = arr1;
-    meds[1] = arr2;
-    meds[2] = arr3;
-    meds[3] = arr4;
-
-    this.state = {
-      meds: meds,
-      amData: [0, 100, 0, 100, 0, 100, 0, 100]
+import React from 'react'
+import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native'
+import {MailComposer, FileSystem} from 'expo'
+import Line from '../screens/LineChart.js'
+class CoolerMedicineView extends React.Component{
+    
+    static propTypes = {
     };
-  }
+    constructor (props){
+        super(props)
 
-  updateMeds = (time, index) => {
-    newMeds = this.state.meds;
-    oldVal = this.state.meds[time][index];
-    newMeds[time][index] = !oldVal;
-    this.setState({ meds: newMeds });
-    this.updateArray(time);
-  };
+        this.state = {
+          color: '#ff00ff',
+          stockData: [  
+            {
+                Symbol: "AAPL",
+                Company: "Apple Inc.",
+                Price: 132.54
+            },
+            {
+                Symbol: "INTC",
+                Company: "Intel Corporation",
+                Price: 33.45
+            },
+            {
+                Symbol: "GOOG",
+                Company: "Google Inc",
+                Price: 554.52
+            },
+        ]
+        }
+    }
 
-  updateArray = time => {
-    newData = this.state.amData;
-    meds_list = this.state.meds[time];
-    sum = meds_list.reduce((a, b) => a + b, 0);
-    len = this.state.meds[time].length;
-    newData[time * 2] = 100 * (sum / len);
-    newData[time * 2 + 1] = 100 - newData[time * 2];
-    this.setState({ amData: newData });
-  };
+    convertArrayOfObjectsToCSV(args) {  
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
-  render() {
-    const { navigate } = this.props.navigation
-    return (
-      <View style={{ flex: 1, backgroundColor: 'white'}}>
-        <View style={{ flex: 1 }}>
-          <Circle
-            log={()=>{
-              {navigate('Form', {
-                log_type: 4
-              })}
-            }}
-            amData={this.state.amData} />
-          <View style={{ flex: 0.75 }}>
-            <FlatList
-              data={[0]}
-              renderItem={({ item, index }) => {
-                return (
-                  <View>
-                    <PillCard
-                      status={this.state.meds[0]}
-                      setParentState={index => this.updateMeds(0, index, 1)}
-                      time={'Morning'}
-                      data={data1}
-                    />
-                    <PillCard
-                      status={this.state.meds[1]}
-                      setParentState={index => this.updateMeds(1, index, 1)}
-                      time={'Afternoon'}
-                      data={data2}
-                    />
-                    <PillCard
-                      status={this.state.meds[2]}
-                      setParentState={index => this.updateMeds(2, index, 0)}
-                      time={'Evening'}
-                      data={data3}
-                    />
-                    <PillCard
-                      status={this.state.meds[3]}
-                      setParentState={index => this.updateMeds(3, index, 0)}
-                      time={'Night'}
-                      data={data4}
-                    />
-                  </View>
-                );
-              }}
-            />
-          </View>
-        </View>
-      </View>
-    );
-  }
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function(item) {
+            ctr = 0;
+            keys.forEach(function(key) {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+
+        return result;
+    }
+
+    //arrow automatically binds stuff to the constructor
+    _handleClick = () => {
+        var csv = this.convertArrayOfObjectsToCSV({
+            data: this.state.stockData,
+            //lineDelimiter: "%0",
+            //columnDelimiter: "%20",
+
+        });
+        //csv = 'https://data:text/csv;charset=utf-8,' + csv;
+        var data = encodeURI(csv)
+
+        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `doctor_data`).catch(e => {
+            console.log(e, 'Directory exists')
+          })
+        FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}doctor_data/data.txt`, csv)
+        
+        //console.log("-----------")
+        //console.log(FileSystem.readAsStringAsync(FileSystem.cacheDirectory+"test1_file.txt"))
+        MailComposer.composeAsync({
+            recipients:['cyr7@cornell.edu'],
+            subject: "attachment test",
+            body: "hello", 
+            attachments:[`${FileSystem.documentDirectory}doctor_data/data.txt`]
+        })
+        //https://docs.expo.io/versions/latest/sdk/mail-composer
+    }
+
+    render(){
+
+        const data = [1,2,3,4,5,13,2,3,4,5,1,1,2,2,23,1,7]
+        fill = '#afeeee'
+        return(
+            <View style = {styles.wrapper}>
+                <TouchableOpacity onPress={null}>{/*this._handleClick}>*/}
+                    <Line/>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }
-const styles = StyleSheet.create({});
 
-export default CoolerMedicineView;
+const styles = StyleSheet.create({
+    titlestyle: {
+      fontSize: 20,
+      fontWeight: '600',
+      color: 'green'
+    },
+    wrapper: {
+        marginTop: 200,
+        justifyContent: 'center',
+    }
+})
+
+export default CoolerMedicineView
