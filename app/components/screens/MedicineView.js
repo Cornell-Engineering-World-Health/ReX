@@ -148,10 +148,8 @@ class CoolerMedicineView extends React.Component {
             </Image>
             </TouchableOpacity>
           </View>
-
             <TouchableOpacity>
             </TouchableOpacity>
-            {console.log(dummy_data.sort(this.compareCards))}
             <FlatList
               data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
@@ -171,10 +169,6 @@ class CoolerMedicineView extends React.Component {
                           this.setState ({
                             modalVisible: true
                           })
-                          console.log("modalallala")
-                          console.log(this.state.modalVisible)
-    
-                          /*force a render with new changes  */
                         }
                       }]}
                     />

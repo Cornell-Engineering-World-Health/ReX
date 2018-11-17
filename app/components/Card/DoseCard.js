@@ -156,8 +156,11 @@ class Card extends PureComponent {
   _handleRenderText = () => {
     var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
+    var curHour = current.getHours()
+    var curMin  = current.getMinutes()
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
-    var currentTimeSum = current.getHours()*60 + current.getMinutes();
+    var currentTimeSum = curHour*60 + curMin;
+    var numHours;
 
     if(this.state.passed_index >= this.state.passed.length){
       this.setState({
@@ -174,13 +177,12 @@ class Card extends PureComponent {
         textColor: text[1],
       })
     }else if (todayTimeSum > currentTimeSum){
-      var numHours = 0;
-      if (today.getHours() - current.getHours() == 1){
+      if (today.getHours() - curHour == 1){
         numHours = "1 Hour Ago"
-      } else if (today.getHours() == current.getHours()){
-        numHours = today.getMinutes() - current.getMinutes() + " Minutes Ago"
+      } else if (today.getHours() == curHour){
+        numHours = today.getMinutes() - curMin + " Minutes Ago"
       }else {
-        numHours = today.getHours() - current.getHours() + " Hours Ago"
+        numHours = today.getHours() - curHour + " Hours Ago"
       }
       this.setState({
         newhours: numHours,
@@ -189,29 +191,25 @@ class Card extends PureComponent {
         textColor: text[2],
       })
     }else{
-      var numHours;
-      var min = current.getMinutes();
-      if(current.getHours() >= 12){
-        if( current.getHours() == 13){
-          numHours = "Take at " + 1
-        }else if(current.getHours() == 12){
+      if(curHour >= 12){
+        if(curHour == 12){
           numHours = "Take at " + 12
         }else{
-          numHours = "Take at "+ (current.getHours() - 12);
+          numHours = "Take at "+ (curHour - 12);
         }
-        if( min != 0){
-          numHours = numHours + ":" + min + " PM"
+        if( curMin != 0){
+          numHours = numHours + ":" + curMin + " PM"
         }else{
           numHours = numHours + " PM"
         }
       }else{
-        if( current.getHours() == 1){
+        if( curHour == 1){
           numHours = "Take at " + 1;
         }else{
-          numHours = "Take at "+ (current.getHours() % 12);
+          numHours = "Take at "+ (curHour % 12);
         }
-        if( min != 0){
-          numHours = numHours + ":" + min + " AM"
+        if( curMin != 0){
+          numHours = numHours + ":" + curMin + " AM"
         }else{
           numHours = numHours + " AM"
         }
@@ -243,26 +241,22 @@ class Card extends PureComponent {
     var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
     var todayTimeSum = today.getHours()*60 + today.getMinutes();
+    var todayHour = today.getHours()
+    var todayMin = today.getMinutes()
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
-
     var newPassed = this.state.passed;
     var newInd = 0;
+
     // can click forward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
-      var tempData = this.state.data
-      var circleColor = "#49D2B7"
-      if (this.state.data[this.state.passed_index].circleColor == "#49D2B7") {
-        circleColor = "#cccccc"
-      }
       var taken_string = ""
-      var tempData = this.state.data
-      var circleColor = "#49D2B7"
-      var taken_hours = today.getHours()
-        var taken_mins = today.getMinutes()
-        var am_pm = "AM"
-        var min_string = taken_mins.toString()
+      var taken_hours = todayHour
+      var taken_mins = todayMin
+      var am_pm = "AM"
+      var min_string = taken_mins.toString()
+
       if (taken_hours >= 12 && taken_hours != 24){
         am_pm = "PM"
         if (taken_hours != 12){
@@ -272,9 +266,10 @@ class Card extends PureComponent {
       if (taken_mins <= 9){
         min_string = "0" + min_string
       }
+      var tempData = this.state.data
       taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
       tempData[this.state.passed_index].title = taken_string
-      tempData[this.state.passed_index].circleColor = circleColor
+      tempData[this.state.passed_index].circleColor = '#7fdecb'
       this.setState({
         passed_index: newInd,
         passed: newPassed,
@@ -291,8 +286,8 @@ class Card extends PureComponent {
       var taken_string = "Not taken"
       var tempData = this.state.data
       var circleColor = "#49D2B7"
-      var taken_hours = today.getHours()
-        var taken_mins = today.getMinutes()
+      var taken_hours = todayHour
+        var taken_mins = todayMin
         var am_pm = "AM"
         var min_string = taken_mins.toString()
       if (taken_hours >= 12 && taken_hours != 24){
@@ -317,7 +312,6 @@ class Card extends PureComponent {
 
   _handleModalPress = (data) => {
     var index = data.index
-
     var now = new Date();
     var current = new Date(this.state.time[index])
     var NowTimeSum = now.getHours()*60 + now.getMinutes();
