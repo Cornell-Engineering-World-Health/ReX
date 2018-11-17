@@ -95,7 +95,7 @@ class CoolerMedicineView extends React.Component{
         fill = '#afeeee'
         return(
             <View style = {styles.wrapper}>
-                <TouchableOpacity onPress={null}>{/*this._handleClick}>*/}
+                <TouchableOpacity onPress={this._handleClick}>
                     <Line/>
                 </TouchableOpacity>
             </View>

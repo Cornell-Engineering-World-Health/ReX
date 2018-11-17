@@ -1,5 +1,4 @@
 
-import {LineChart} from 'react-native-chart-kit'
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native'
 import {BarChart, Grid} from 'react-native-svg-charts'
