@@ -126,7 +126,6 @@ class Card extends PureComponent {
   constructor(props) {
 
     super(props);
-    this.data = this.render_timeline();
 
     var passed_index = 0
     if(this.props.passed){
@@ -137,15 +136,10 @@ class Card extends PureComponent {
           }
         }
     }
-
     this.state = {
-      expanded: false,
-      minHeight: 2,
-      animation: new Animated.Value(),
       time: this.props.time,
       takenTime: this.props.takenTime,
       status: this.props.status,
-      arrow: 'expand',
       passed: this.props.passed,
       passed_index: passed_index,
       backgroundColor: background[this.props.passed],
@@ -156,44 +150,6 @@ class Card extends PureComponent {
       modalVisible: false,
       data: this.render_timeline()
       };
-  }
-
-  _setMaxHeight(event) {
-    this.setState({
-      maxHeight: event.nativeEvent.layout.height
-    });
-  }
-
-  _setMinHeight(event) {
-    this.setState({
-      minHeight: event.nativeEvent.layout.height + 25
-    });
-  }
-
-  toggle() {
-    let initialValue = this.state.expanded
-        ? this.state.maxHeight + this.state.minHeight
-        : this.state.minHeight,
-      finalValue = this.state.expanded
-        ? this.state.minHeight
-        : this.state.maxHeight + this.state.minHeight;
-
-    this.setState({
-      expanded: !this.state.expanded,
-    });
-
-    console.log("expanded")
-    console.log(this.state.expanded)
-
-    this.state.animation.setValue(initialValue);
-    Animated.spring(this.state.animation, {
-      toValue: finalValue
-    }).start();
-  }
-
-  modalCallback = () => {
-    this.forceUpdate()
-    this.setState({modalVisible: false})
   }
 
   // determines new hours text
@@ -317,9 +273,6 @@ class Card extends PureComponent {
         min_string = "0" + min_string
       }
       taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
-      // if (this.state.data[this.state.passed_index].circleColor == "#49D2B7") {
-      //   var taken_string = "Not taken"
-      // }
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = circleColor
       this.setState({
@@ -358,54 +311,24 @@ class Card extends PureComponent {
         passed: newPassed,
         data: tempData
       })
-      console.log("asdkfhaso incefa")
     }
-    console.log( newPassed.length > 0)
-    console.log(this.state.passed_index > 0 )
-    console.log(this.props.passed);
-    console.log(!this.props.passed[this.state.passed_index-1] + "wtd")
       this._handleRenderText
     } 
-
-  makePills(data) {
-    return data.map((i, index) => {
-      return (
-        <View style={styles.note}>
-          <CheckBox
-            onPress={() => {
-              this._onCheck(index);
-            }}
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={this.state.status[index]}
-            containerStyle={styles.check}
-            size="25"
-            title={this.state.title}
-            checkedColor="#63f3c9"
-            textStyle={styles.noteText}
-          />
-          <View flex={1} alignItems="flex-end">
-            <Text style={styles.noteText}>{i.time}</Text>
-          </View>
-        </View>
-      );
-    });
-  }
 
   _handleModalPress = (data) => {
     var index = data.index
 
-    var today = new Date();
+    var now = new Date();
     var current = new Date(this.state.time[index])
-    var todayTimeSum = today.getHours()*60 + today.getMinutes();
+    var NowTimeSum = now.getHours()*60 + now.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
     
-    if (currentTimeSum <= todayTimeSum + 15) {
+    if (currentTimeSum <= NowTimeSum + 15) {
       var taken_string = "Not taken"
       var tempData = this.state.data
-      var circleColor = "#49D2B7"
-      var taken_hours = today.getHours()
-        var taken_mins = today.getMinutes()
+      var circleColor = "#49D2B7" //should be red
+      var taken_hours = now.getHours()
+        var taken_mins = now.getMinutes()
         var am_pm = "AM"
         var min_string = taken_mins.toString()
       if (taken_hours >= 12 && taken_hours != 24){
@@ -417,6 +340,7 @@ class Card extends PureComponent {
       if (taken_mins <= 9){
         min_string = "0" + min_string
       }
+
       taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
       if (this.state.data[index].circleColor == "#49D2B7") {
         circleColor = "#cccccc"
@@ -424,27 +348,28 @@ class Card extends PureComponent {
       }
       tempData[index].circleColor = circleColor
       tempData[index].title = taken_string
+      var tempPassed = this.state.passed
+      tempPassed[index] = !tempPassed[index]
       this.setState({
         data: tempData,
+        passed: tempPassed,
       })
-      // this._handleClick()
-      this.forceUpdate()
+      this._handleClick()
     }
     
   }
 
-  rerender_detail = (rowData, sectionID, rowID) => {
-    return (
-      <View style = {{flex: 1}}>
-      <View style = {{flexDirection: 'row', paddingRight: 50}}>
-      <Text style = {{marginLeft: 10, color: 'gray'}}>{rowData.title}</Text>
-      </View>
-      </View>
-    )
-  }
+  // rerender_detail = (rowData, sectionID, rowID) => {
+  //   return (
+  //     <View style = {{flex: 1}}>
+  //     <View style = {{flexDirection: 'row', paddingRight: 50}}>
+  //     <Text style = {{marginLeft: 10, color: 'gray'}}>{rowData.title}</Text>
+  //     </View>
+  //     </View>
+  //   )
+  // }
 
   render_timeline = () => {
-    console.log("hi")
     return this.props.time.map ((val, i) => {
       var current = new Date(val)
       var current_hours = current.getHours() + 1
@@ -500,11 +425,7 @@ class Card extends PureComponent {
                 onPress={() => this.props.onPress(time)}
               >
                 <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor, flex:1}]}>
-                      <View
-                        style={styles.descriptionContainer}
-                        onLayout={this._setMinHeight.bind(this)}
-                      >
-                    
+                      <View style={styles.descriptionContainer}>
                           <View style = {{ flexDirection: 'column'}} >
                               <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
                               <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
@@ -524,13 +445,9 @@ class Card extends PureComponent {
                                       </Image>
                                   </TouchableOpacity>
                               </View>
-                              <View
-                                style={{ marginTop: 15 }}
-                                onLayout={this._setMaxHeight.bind(this)}
-                              >
+                              <View style={{ marginTop: 15 }} >
                               </View>
                             </TouchableOpacity>
-        
                       </View>
                 </View>
               </TouchableOpacity>
@@ -539,7 +456,7 @@ class Card extends PureComponent {
         <Modal 
         isVisible={this.state.modalVisible} 
         style={styles.modalWrapper}
-        onBackdropPress={() => {this.modalCallback}}
+        onBackdropPress= {() => {this.setState({modalVisible: false})}}
         >
           <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:this.state.passed.length * 0.15}} >
               <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>

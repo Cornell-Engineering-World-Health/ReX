@@ -155,9 +155,6 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
-                //console.log(this.state.data.sort(this.compareCards))
-                //console.log(item)
-                //console.log(index)
                 return (
                   <View>
                     <DoseCard
