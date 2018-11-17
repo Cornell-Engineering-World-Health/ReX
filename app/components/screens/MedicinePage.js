@@ -35,7 +35,8 @@ export default class MedicinePage extends React.Component {
       Add: {
         screen: MedicineAddForm,
         navigationOptions: {
-          title: 'Add a New Medication'
+          title: 'Add a New Medication',
+          header: false,
         }
       }
     });

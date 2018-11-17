@@ -71,6 +71,28 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
+
+  componentWillMount = () => {
+    var medicineData= []
+  //new Date() for current date
+    pullMedicineFromDatabase(new Date(), function(formattedData) {
+      Object.keys(formattedData).forEach(function(med) {
+          var medObj = formattedData[med]
+          var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
+          medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
+          for(var i =0; i <medObj.timeCategory.length; i++){
+              //console.log(medObj.time[i])
+              //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+              //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+          }
+      });
+  });
+
+  this.setState ({
+      data: medicineData
+  })
+}
+
   compareCards = (a,b) => {
     var passed_index = 0
     for (var i = 0; i < a.statuses.length; i++){
@@ -93,29 +115,6 @@ class CoolerMedicineView extends React.Component {
       return 1
     }
   }
-
-
-  componentWillMount = () => {
-      var medicineData= []
-    //new Date() for current date
-      pullMedicineFromDatabase(new Date(), function(formattedData) {
-        Object.keys(formattedData).forEach(function(med) {
-            var medObj = formattedData[med]
-            var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-            medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
-            for(var i =0; i <medObj.timeCategory.length; i++){
-                //console.log(medObj.time[i])
-                //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-                //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-            }
-        });
-    });
-
-    this.setState ({
-        data: medicineData
-    })
-  }
-
 
   render() {
     const { navigate } = this.props.navigation

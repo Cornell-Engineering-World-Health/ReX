@@ -27,8 +27,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
   },
+  modalwrapper:{
+    flexDirection:'row',
+  },
   container: {
     flexDirection: 'column',
+    flex:1,
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#ecfaf7',
@@ -54,9 +58,9 @@ const styles = StyleSheet.create({
   timeContainer: {
     marginTop: 1.5,
     paddingTop: 15,
+    flex: 0.6,
     marginRight: 10,
     alignItems: 'flex-end',
-    flex: 0.6,
     backgroundColor: 'transparent'
   },
   timeStamp: {
@@ -100,6 +104,11 @@ const styles = StyleSheet.create({
     flex: 1.0, 
     alignItems: 'stretch',
     justifyContent: 'center',
+  },
+  more:{
+    width:30,
+    padding: 0,
+    margin:0,
   }
 });
 class Card extends PureComponent {
@@ -117,12 +126,6 @@ class Card extends PureComponent {
 
     super(props);
     this.data = this.render_timeline();
-    //   {time: '09:00',circleColor:'#49D2B7'},
-    //   {time: '10:45',circleColor:'#49D2B7'},
-    //   {time: '12:00',circleColor:'#fc9395'},
-    //   {time: '14:00',circleColor:'#cccccc'},
-    //   {time: '16:30',circleColor:'#cccccc'}
-    // 
 
     var passed_index = 0
     if(this.props.passed){
@@ -357,134 +360,70 @@ class Card extends PureComponent {
       })
   }
 
-//   render_modal = () => {
-//     return this.state.time.map ((val, i) => {
-//       var current = new Date(val)
-//       var current_hours = current.getHours() + 1
-//       var current_mins = current.getMinutes()
-//       var am_pm = "AM"
-//       var min_string = current_mins.toString()
-//       if (current_hours >= 12 && current_hours != 24){
-//         am_pm = "PM"
-//         if (current_hours != 12){
-//           current_hours = current_hours - 12
-//         }
-//       }
-//       if (current_mins <= 9){
-//         min_string = "0" + min_string
-//       }
-//       var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
-//       if (this.state.passed[i] == true){
-//         return (
-//           <View>
-//           <View style = {{flexDirection: 'row'}}>
-//           <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-//           <View style = {{height: 20, width: 20, borderRadius: 10, backgroundColor: "#7fdecb"}} />
-//           <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
-//           </View>
-//           <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
-//           </View>
-//           </View>
-//         )
-//       }
-//       else {
-//         return (
-//           <View>
-//           <View style = {{flexDirection: 'row'}}>
-//           <View style = {{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-//           <View style = {{height: 20, width: 20, borderRadius: 10, borderColor: '#7fdecb', borderWidth: 3, backgroundColor: "white"}} />
-//           <View style = {{height: 30, width: 5, backgroundColor: "#7fdecb"}} />
-//           </View>
-//           <Text style = {{marginLeft: 10, fontWeight: '500', fontSize: 16}}>{hour_string}</Text>
-//           </View>
-//           </View>
-//         )
-//       }
-
-
-      
-//   })
-// }
 
   render() {
     this._handleRenderText()
     return (
       <View style = {{flex:1}} >
-      <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
-      
-          <Swipeout
-            right={[
-              {
-                text: 'Expand',
-                type: 'edit',
-                onPress: () => {
-                  // this.toggle.bind(this)
-                  this.setState ({
-                    modalVisible: true
-                  })
-                  console.log(this.state.modalVisible)
-
-                  /*force a render with new changes  */
-                }
-              }]}
-            left={this.props.buttonsLeft}
-            autoClose={true}
-            style={styles.swipe}
-            disabled={false}
-            onClose={this.props.onCloseSwipeout}
-            onOpen={this.props.onOpenSwipeout}
-          >
-           <View>
-            <TouchableOpacity
-              disabled={!this.props.buttonActive}
-              onPress={() => this.props.onPress(time)}
-            >
-              <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor}]}>
-                <View
-                  style={styles.descriptionContainer}
-                  onLayout={this._setMinHeight.bind(this)}
-                >
-                  <View style = {{ flexDirection: 'column'}} >
-                    <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
-                    <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress = {this._handleClick}
-                    style={{ flex: 1, alignItems: 'flex-end' }}
-                  >
-                  {console.log(this.state.passed_index)}
-                    <View flexDirection="row" marginTop={7}>
-                      <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
-                    </View>
-                  </TouchableOpacity>
+            <View style={styles.wrapper}>
+              <TouchableOpacity
+                disabled={!this.props.buttonActive}
+                onPress={() => this.props.onPress(time)}
+              >
+                <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor, flex:1}]}>
+                      <View
+                        style={styles.descriptionContainer}
+                        onLayout={this._setMinHeight.bind(this)}
+                      >
+                    
+                          <View style = {{ flexDirection: 'column'}} >
+                              <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
+                              <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
+                          </View>
+                            <TouchableOpacity
+                              onPress = {this._handleClick}
+                              style={{ flex: 1, alignItems: 'flex-end' }}
+                            >
+                              <View flexDirection="row" marginTop={7}>
+                                <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
+                                <TouchableOpacity  style = {styles.more} 
+                                      onPress = {() => { this.setState ({
+                                      modalVisible: true })}}>
+                                      <Image
+                                      source = {require('../Resources/Images/smalldot.png')}
+                                      resizeMode = 'contain'>
+                                      </Image>
+                                  </TouchableOpacity>
+                              </View>
+                              <View
+                                style={{ marginTop: 15 }}
+                                onLayout={this._setMaxHeight.bind(this)}
+                              >
+                              </View>
+                            </TouchableOpacity>
+        
+                      </View>
                 </View>
-                <View
-                  style={{ marginTop: 15 }}
-                  onLayout={this._setMaxHeight.bind(this)}
-                >
-                </View>
-                </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-          </Swipeout>
-      </Animated.View>
-      <Modal 
-      isVisible={this.state.modalVisible} 
-      style={styles.modalWrapper}
-      onBackdropPress={() => {this.setState({modalVisible: false})}}
-      >
-        <View style={{backgroundColor: 'white', borderRadius: 5, flex: 0.3, padding:40}} >
-        <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>
-        <Timeline
-        lineColor='#575757'
-        data = {this.data}
-        lineWidth = {1}
-        circleSize = {18}
-        />
-        </View>
 
-      </Modal>
-       </View>
+        <Modal 
+        isVisible={this.state.modalVisible} 
+        style={styles.modalWrapper}
+        onBackdropPress={() => {this.setState({modalVisible: false})}}
+        >
+          <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:.2, alignItems:'center', justifyContext:'center'}} >
+              <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>
+              <Timeline
+              lineColor='#575757'
+              data = {this.data}
+              lineWidth = {1}
+              circleSize = {18}
+              />
+          </View>
+
+        </Modal>
+    </View>
     );
   }
 }

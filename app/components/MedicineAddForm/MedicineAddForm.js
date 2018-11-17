@@ -15,6 +15,7 @@ import TextInputType from '../LogInputTypes/TextInputType'
 import TimePicker from '../LogInputTypes/TimePicker'
 import Button from '../Button/Button'
 import ListViewer from '../HorizontalVariableListViewer/ListViewer'
+import NavigationHeader from '../NavigationHeader/NavigationHeader'
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -242,112 +243,117 @@ export default class MedicineAddForm extends React.Component {
         onPress={Keyboard.dismiss}
         accessible={false}
       >
-        <View style={styles.container}>
-          <View style={styles.headerView}>
-            <Text style={styles.headerTitle}>{'Add a New Medicine!'}</Text>
-          </View>
-          <TextInputType
-            ref={(t) => {this.name = t}}
-            input_style={styles.name_input}
-            title_text_style={styles.title_text}
-            input_text_style={styles.input_text}
-            text={''}
-            placeholder_text={'Tap to type'}
-            title_text={'Medicine Name'}
-            val_label={'Pill Name'}
-            valueChange={this.valueChange.bind(this)}
-            blurOnSubmit={false}
-            returnKeyType = { 'next' }
-            onSubmitEditing={() => {this.nextFocus()}}
+        <View style={styles.outerContainer}>
+          <NavigationHeader
+            onPressBack={() => {this.props.navigation.goBack()}}
           />
-          <TextInputType
-            ref={(t) => {this.dosage = t}}
-            input_style={styles.dosage_input}
-            title_text_style={styles.title_text}
-            input_text_style={styles.input_text}
-            text={''}
-            placeholder_text={'Tap to type'}
-            title_text={'Dosage (mg)'}
-            val_label={'Dosage'}
-            valueChange={this.valueChange.bind(this)}
-            blurOnSubmit={false}
-            returnKeyType = { 'next' }
-            onSubmitEditing={() => {Keyboard.dismiss()}}
-            keyboardType={'number-pad'}
-          />
-          <Button
-            text={dateText}
-            rounded={true}
-            width={viewportWidth - 30}
-            borderColor={COLOR.purple}
-            onPress={() => {
-              Keyboard.dismiss()
-              this.setState({ modalID: CALENDAR_ID })
-            }}
-          />
-          <Button
-            text={timeText}
-            rounded={true}
-            width={viewportWidth - 30}
-            borderColor={COLOR.purple}
-            onPress={() => {
-              Keyboard.dismiss()
-              this.setState({ modalID: TIME_ID })
-            }}
-            innerComponent={timeContent}
-          />
-          <Button
-            text={'Submit'}
-            backgroundColor={COLOR.purple}
-            color={'white'}
-            rounded={true}
-            onPress={() => {
-              this.submit()
-            }}
-          />
-          <Modal
-            isVisible={this.state.modalID != ''}
-            animationInTiming={500}
-            animationOutTiming={500}
-            onBackdropPress={() => {
-              this.setState({ modalID: '' });
-            }}
-            onSwipe={() => {
-              this.setState({ modalID: '' });
-            }}
-            swipDirection={'down'}
-            style={styles.modal}
-          >
-            <View style={[styles.modalWrapper, {flex: modalHeight}]}>
-              <View
-                style={styles.modalTitle}
-              >
-                <Text>{modalTitle}</Text>
+          <View style={styles.container}>
+            <View style={styles.headerView}>
+              <Text style={styles.headerTitle}>{'Add a New Medicine!'}</Text>
+            </View>
+            <TextInputType
+              ref={(t) => {this.name = t}}
+              input_style={styles.name_input}
+              title_text_style={styles.title_text}
+              input_text_style={styles.input_text}
+              text={''}
+              placeholder_text={'Tap to type'}
+              title_text={'Medicine Name'}
+              val_label={'Pill Name'}
+              valueChange={this.valueChange.bind(this)}
+              blurOnSubmit={false}
+              returnKeyType = { 'next' }
+              onSubmitEditing={() => {this.nextFocus()}}
+            />
+            <TextInputType
+              ref={(t) => {this.dosage = t}}
+              input_style={styles.dosage_input}
+              title_text_style={styles.title_text}
+              input_text_style={styles.input_text}
+              text={''}
+              placeholder_text={'Tap to type'}
+              title_text={'Dosage (mg)'}
+              val_label={'Dosage'}
+              valueChange={this.valueChange.bind(this)}
+              blurOnSubmit={false}
+              returnKeyType = { 'next' }
+              onSubmitEditing={() => {Keyboard.dismiss()}}
+              keyboardType={'number-pad'}
+            />
+            <Button
+              text={dateText}
+              rounded={true}
+              width={viewportWidth - 30}
+              borderColor={COLOR.purple}
+              onPress={() => {
+                Keyboard.dismiss()
+                this.setState({ modalID: CALENDAR_ID })
+              }}
+            />
+            <Button
+              text={timeText}
+              rounded={true}
+              width={viewportWidth - 30}
+              borderColor={COLOR.purple}
+              onPress={() => {
+                Keyboard.dismiss()
+                this.setState({ modalID: TIME_ID })
+              }}
+              innerComponent={timeContent}
+            />
+            <Button
+              text={'Submit'}
+              backgroundColor={COLOR.purple}
+              color={'white'}
+              rounded={true}
+              onPress={() => {
+                this.submit()
+              }}
+            />
+            <Modal
+              isVisible={this.state.modalID != ''}
+              animationInTiming={500}
+              animationOutTiming={500}
+              onBackdropPress={() => {
+                this.setState({ modalID: '' });
+              }}
+              onSwipe={() => {
+                this.setState({ modalID: '' });
+              }}
+              swipDirection={'down'}
+              style={styles.modal}
+            >
+              <View style={[styles.modalWrapper, {flex: modalHeight}]}>
                 <View
-                  style={styles.modalTitleButtons}
+                  style={styles.modalTitle}
                 >
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.confirmSubmit();
-                      this.setState({ modalID: '' });
-                    }}
+                  <Text>{modalTitle}</Text>
+                  <View
+                    style={styles.modalTitleButtons}
                   >
-                    <Text style={styles.modalButtonText}>Confirm</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ modalID: '' });
-                    }}
-                  >
-                    <Text style={styles.modalButtonText}>Cancel</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.confirmSubmit();
+                        this.setState({ modalID: '' });
+                      }}
+                    >
+                      <Text style={styles.modalButtonText}>Confirm</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ modalID: '' });
+                      }}
+                    >
+                      <Text style={styles.modalButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.innerWrapper}>
+                  {modalContent}
                 </View>
               </View>
-              <View style={styles.innerWrapper}>
-                {modalContent}
-              </View>
-            </View>
-          </Modal>
+            </Modal>
+          </View>
         </View>
       </TouchableWithoutFeedback>
     )
@@ -356,12 +362,16 @@ export default class MedicineAddForm extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    paddingTop: 30
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingTop: 10
   },
   calendar: {
     borderTopWidth: 1,
