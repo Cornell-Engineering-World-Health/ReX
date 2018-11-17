@@ -317,14 +317,16 @@ class Card extends PureComponent {
     var NowTimeSum = now.getHours()*60 + now.getMinutes();
     var currentTimeSum = current.getHours()*60 + current.getMinutes();
     
+    // if green or red 
     if (currentTimeSum <= NowTimeSum + 15) {
       var taken_string = "Not taken"
       var tempData = this.state.data
-      var circleColor = "#49D2B7" //should be red
+      // checks green for taken
+      var circleColor = '#49D2B7'
       var taken_hours = now.getHours()
-        var taken_mins = now.getMinutes()
-        var am_pm = "AM"
-        var min_string = taken_mins.toString()
+      var taken_mins = now.getMinutes()
+      var am_pm = "AM"
+      var min_string = taken_mins.toString()
       if (taken_hours >= 12 && taken_hours != 24){
         am_pm = "PM"
         if (taken_hours != 12){
@@ -334,10 +336,11 @@ class Card extends PureComponent {
       if (taken_mins <= 9){
         min_string = "0" + min_string
       }
-
+      console.log("handleModalPRees")
       taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
       if (this.state.data[index].circleColor == "#49D2B7") {
         circleColor = "#cccccc"
+        console.log("heppp")
         var taken_string = "Not taken"
       }
       tempData[index].circleColor = circleColor
@@ -348,7 +351,8 @@ class Card extends PureComponent {
         data: tempData,
         passed: tempPassed,
       })
-      this._handleClick()
+      
+     this._handleClick()
     }
     
   }
@@ -365,9 +369,12 @@ class Card extends PureComponent {
 
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
+      var medTime = new Date()
+      var medTimeSum = medTime.getHours()*60 + medTime.getMinutes();
       var current = new Date(val)
-      var current_hours = current.getHours() + 1
+      var current_hours = current.getHours() 
       var current_mins = current.getMinutes()
+      var curTimeSum = current_hours * 60 + current_mins
       var am_pm = "AM"
       var min_string = current_mins.toString()
       if (current_hours >= 12 && current_hours != 24){
@@ -381,12 +388,15 @@ class Card extends PureComponent {
       }
       var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
       var circol;
+      var taken_string = "Not taken"
       if(this.props.passed[i]){
         circol = "#49D2B7"
+      }else if(!this.props.passed[i] &&  curTimeSum <= medTimeSum + 15){
+        circol = "#fa8b89"
+        taken_string = "Missed"
       }else{
         circol = "#cccccc"
       }
-      var taken_string = "Not taken"
       if (this.props.takenTime[i] != ""){
         var takenTime = new Date(this.props.takenTime[i])
         var taken_hours = takenTime.getHours() + 1
@@ -407,7 +417,6 @@ class Card extends PureComponent {
       return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
       })
   }
-
 
   render() {
     this._handleRenderText()
@@ -431,8 +440,10 @@ class Card extends PureComponent {
                               <View flexDirection="row" marginTop={7}>
                                 <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
                                 <TouchableOpacity  style = {styles.more} 
-                                      onPress = {() => { this.setState ({
-                                      modalVisible: true })}}>
+                                      onPress = {() => {
+                                         this.setState ({
+                                          modalVisible: true 
+                                          })}}>
                                       <Image
                                       source = {require('../Resources/Images/smalldot.png')}
                                       resizeMode = 'contain'>
