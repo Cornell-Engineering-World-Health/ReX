@@ -58,7 +58,7 @@ class Home extends React.Component {
     let doneAmount = this.state.doneAmount;
     let thisRef = this;
     pullMedicineFromDatabase(new Date(), function(formattedData){
-      console.log("FORMATTED DATA ",formattedData)
+      console.log("NEW PULLED MEDICINE:", formattedData)
       Object.keys(formattedData).forEach(function(med){
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time) {

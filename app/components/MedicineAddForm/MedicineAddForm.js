@@ -23,9 +23,6 @@ import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import { Calendar } from 'react-native-calendars';
 import { COLOR, IMAGES} from '../Resources/constants';
 
-
-event_id_count = 601;
-event_details_id_count = 601;
 const CALENDAR_ID = 'CALENDAR'
 const TIME_ID = 'TIME'
 
@@ -77,15 +74,10 @@ export default class MedicineAddForm extends React.Component {
         new Date(this.state.submit_vals['Start Date']),
         new Date(this.state.submit_vals['End Date']),
         this.state.submit_vals['Time'],
-        this.state.submit_vals['Time Category'],
-        event_id_count,
-        event_details_id_count
+        this.state.submit_vals['Time Category']
       );
       this.props.screenProps.successOnSubmit()
       this.props.navigation.goBack()
-      event_id_count++
-      event_details_id_count++
-      console.log(event_id_count, event_details_id_count)
     }
   }
   nextFocus(){
