@@ -33,8 +33,8 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
-event_id_count = 600;
-event_details_id_count = 600;
+event_id_count = 30000;
+event_details_id_count = 30000;
 keyStart = 200;
 
 export default class ChooseLogScreen extends React.Component {
