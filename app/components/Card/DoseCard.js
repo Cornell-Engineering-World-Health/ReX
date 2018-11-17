@@ -154,6 +154,7 @@ class Card extends PureComponent {
 
   // determines new hours text
   _handleRenderText = () => {
+    console.log("inside handle render text")
     var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
     var curHour = current.getHours()
@@ -229,6 +230,7 @@ class Card extends PureComponent {
   }
 
   _handleClick = () => {
+    console.log("inside handle click")
     //update datebase based on click
     title = 'Tylenol'
     dosage = '20 mg'
@@ -247,7 +249,8 @@ class Card extends PureComponent {
     var newPassed = this.state.passed;
     var newInd = 0;
 
-    // can click forward
+
+    // can click forward, it you are clicking a red time that you need to take, must go forward
     if( currentTimeSum - 15 < todayTimeSum ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
@@ -270,6 +273,7 @@ class Card extends PureComponent {
       taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = '#7fdecb'
+      console.log("The index we are changing to green:" + this.state.passed_index)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
@@ -277,29 +281,41 @@ class Card extends PureComponent {
       }) 
       // can click backward
     }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){ 
+      console.log("can click backward")
+      var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
+      var current = new Date(this.state.time[this.state.passed_index-1])
+      var currentTimeSum = current.getHours()*60 + current.getMinutes();
       var tempData = this.state.data
       var circleColor = "#49D2B7"
       if (this.state.data[this.state.passed_index - 1].circleColor == "#49D2B7") {
-        circleColor = "#cccccc"
-      }
-      var taken_string = "Not taken"
-      var tempData = this.state.data
-      var circleColor = "#49D2B7"
-      var taken_hours = todayHour
-        var taken_mins = todayMin
-        var am_pm = "AM"
-        var min_string = taken_mins.toString()
-      if (taken_hours >= 12 && taken_hours != 24){
-        am_pm = "PM"
-        if (taken_hours != 12){
-          taken_hours = taken_hours - 12
+        console.log("currenttime sum" + currentTimeSum)
+        console.log("todaysum" + todayTimeSum)
+        if(currentTimeSum <= todayTimeSum + 15){
+          console.log("inside red here")
+          circleColor = "#fa8b89"
+          taken_string = "Missed"
+        }else{
+          console.log("inside gray here")
+          circleColor = "#cccccc"
         }
       }
-      if (taken_mins <= 9){
-        min_string = "0" + min_string
-      }
-      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      var taken_string = "Not taken"
+      // var taken_hours = todayHour
+      // var taken_mins = todayMin
+      // var am_pm = "AM"
+      // var min_string = taken_mins.toString()
+      // if (taken_hours >= 12 && taken_hours != 24){
+      //   am_pm = "PM"
+      //   if (taken_hours != 12){
+      //     taken_hours = taken_hours - 12
+      //   }
+      // }
+      // if (taken_mins <= 9){
+      //   min_string = "0" + min_string
+      // }
+      // taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+      tempData[this.state.passed_index - 1].title = taken_string
       tempData[this.state.passed_index - 1].circleColor = circleColor
       this.setState({
         passed_index: this.state.passed_index-1,
@@ -307,6 +323,7 @@ class Card extends PureComponent {
         data: tempData
       })
     }
+      console.log("this is the passed index" + this.state.passed_index)
       this._handleRenderText
     } 
 
@@ -351,10 +368,9 @@ class Card extends PureComponent {
         data: tempData,
         passed: tempPassed,
       })
-      
-     this._handleClick()
+      // this._handleRenderText()
+      this._handleClick()
     }
-    
   }
 
   // rerender_detail = (rowData, sectionID, rowID) => {
