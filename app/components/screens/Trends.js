@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Picker } from 'react-native';
 import Modal from 'react-native-modal';
+import BarChart from '../Charts/BarChart';
 import constants from '../Resources/constants.js';
 
 //MONTHS allows for indices to map to month values
@@ -300,6 +301,7 @@ export default class Trends extends React.Component {
         </View>
         <View style={styles.graphContainer}>
           <Text>Insert Graph Here..</Text>
+          {<BarChart />}
         </View>
         <View style={styles.extraInfo}>
           <Info title={'Average Duration'} body={2 + ''} footer={'Hours'} />
