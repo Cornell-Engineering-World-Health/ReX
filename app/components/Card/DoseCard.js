@@ -120,7 +120,8 @@ class Card extends PureComponent {
     timeStamp: PropTypes.string,
     title: PropTypes.string,
     passed: PropTypes.array,
-    buttonsRight: PropTypes.array
+    buttonsRight: PropTypes.array,
+    updateData: PropTypes.func
   };
 
   constructor(props) {
@@ -156,26 +157,26 @@ class Card extends PureComponent {
   _handleRenderText = () => {
     console.log("inside handle render text")
     var current = new Date(this.state.time[this.state.passed_index])
-    var numHours;
+    var timeString;
 
     if(this.state.passed_index >= this.state.passed.length){
       ind = 0
-      numHours = "Done for the day"
+      timeString = "Done for the day"
     }else if( this.shouldBeTakenNow(current)){
-      numHours = "Take Now"
+      timeString = "Take Now"
       ind = 1
     }else if (this.shouldBeTaken(current, new Date())){
-      numHours = this.createAgoString(current)
+      timeString = this.createAgoString(current)
       ind = 2
     }else{
-      numHours = this.createTakeAtString(current)
+      timeString = this.createTakeAtString(current)
       ind = 0
     } 
     this.setState({
       backgroundColor: background[ind],
       borderColor: border[ind],
       textColor: text[ind],
-      newhours: numHours,
+      newhours: timeString,
     })
   }
   
@@ -208,6 +209,7 @@ class Card extends PureComponent {
       var taken_string = this.createTakenString(new Date())
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = '#7fdecb'
+    
       this.setState({
         passed_index: newInd,
         passed: newPassed,
@@ -219,15 +221,13 @@ class Card extends PureComponent {
       var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
       var circleColor = "#49D2B7"
-      if (this.state.data[this.state.passed_index - 1].circleColor == "#49D2B7") {
-        if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
+      if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
           console.log("inside red here")
           circleColor = "#fa8b89"
           taken_string = "Missed"
-        }else{
+      }else{
           console.log("inside gray here")
           circleColor = "#cccccc"
-        }
       }
       tempData[this.state.passed_index - 1].title = taken_string
       tempData[this.state.passed_index - 1].circleColor = circleColor
@@ -237,38 +237,59 @@ class Card extends PureComponent {
         data: tempData
       })
     }
-      console.log("this is the passed index" + this.state.passed_index)
       this._handleRenderText
     } 
 
   _handleModalPress = (data) => {
     var index = data.index
-    
     // if green or red 
     if (this.shouldBeTaken(new Date(this.state.time[index]), new Date())) {
-      var taken_string = "Not taken"
+      console.log("inside should be taken")
       var tempData = this.state.data
       // checks green for taken
       var circleColor = '#49D2B7'
-   
-      taken_string = this.createTakenString(new Date())
+      var taken_string = this.createTakenString(new Date())
 
       tempData[index].circleColor = circleColor
       tempData[index].title = taken_string
       var tempPassed = this.state.passed
+      var tempPassedIndex = this.state.passed_index
       tempPassed[index] = !tempPassed[index]
+      if (index == this.state.passed_index){
+        tempPassedIndex = this.state.passed_index +1
+      }
+
+      // record that you took this medicine in the database
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[index],!this.props.passed[index])
+      
       this.setState({
         data: tempData,
         passed: tempPassed,
+        passed_index: tempPassedIndex
       })
-      // this._handleRenderText()
-      this._handleClick()
+      this._handleRenderText()
     }
   }
 
+  createTimeString = (Date) => {
+    var taken_hours = Date.getHours() 
+    var taken_mins = Date.getMinutes()
+    var am_pm = "AM"
+    var min_string = taken_mins.toString()
+    if (taken_hours >= 12 && taken_hours != 24){
+      am_pm = "PM"
+      if (taken_hours != 12){
+        taken_hours = taken_hours - 12
+      }
+    }
+    if (taken_mins <= 9){
+      min_string = "0" + min_string
+    }
+    return taken_hours.toString() + ":" + min_string + " " + am_pm
+  }
 
   createTakenString = (Date) => {
-    var taken_hours = Date.getHours() + 1
+    var taken_hours = Date.getHours()
     var taken_mins = Date.getMinutes()
     var am_pm = "AM"
     var min_string = taken_mins.toString()
@@ -310,8 +331,8 @@ class Card extends PureComponent {
       }else{
         numHours = numHours + " AM"
       }
-      return numHours
   }
+  return numHours
   }
 
   createAgoString = (Date1) => {
@@ -340,22 +361,24 @@ class Card extends PureComponent {
     var Date2 = new Date()
     var Date2Sum = Date2.getHours()*60 + Date2.getMinutes();
     var now = (Math.abs(Date1Sum - Date2Sum) < 15)
-    console.log(now)
+    return now
   }
 
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
 
-      var hour_string = this.createTakenString(new Date(new Date(val)))
+      var hour_string = this.createTimeString((new Date(val)))
       var circol;
       var taken_string = "Not taken"
       if(this.props.passed[i]){
         circol = "#49D2B7"
+        taken_string = this.props.takenTime[i]
       }else if(!this.props.passed[i] &&  this.shouldBeTaken(new Date(val), new Date())){
         circol = "#fa8b89"
         taken_string = "Missed"
       }else{
         circol = "#cccccc"
+        taken_string = "Not taken"
       }
       if (this.props.takenTime[i] != ""){
         taken_string = this.createTakenString(new Date(this.props.takenTime[i]))

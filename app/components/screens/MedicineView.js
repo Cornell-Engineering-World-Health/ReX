@@ -70,6 +70,12 @@ class CoolerMedicineView extends React.Component {
   constructor(props) {
     super(props);
 
+    upadteData = (newData) => {
+      this.setState({
+        data: newData
+      })
+    }
+
     this.state = {
       data: [],
       passed_index: 0,
@@ -160,6 +166,7 @@ class CoolerMedicineView extends React.Component {
                     takenTime={item.takenTime}
                     dosage={item.dosage}
                     passed={item.statuses}
+                    updateData = {this.updateData}
                     buttonsRight={[
                       {
                         text: 'Edit',
