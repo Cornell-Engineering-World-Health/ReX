@@ -155,75 +155,30 @@ class Card extends PureComponent {
   // determines new hours text
   _handleRenderText = () => {
     console.log("inside handle render text")
-    var today = new Date();
     var current = new Date(this.state.time[this.state.passed_index])
-    var curHour = current.getHours()
-    var curMin  = current.getMinutes()
-    var todayTimeSum = today.getHours()*60 + today.getMinutes();
-    var currentTimeSum = curHour*60 + curMin;
     var numHours;
 
     if(this.state.passed_index >= this.state.passed.length){
-      this.setState({
-        newhours: "Done for the day",
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-      })
-    }else if( Math.abs(todayTimeSum - currentTimeSum) < 15){
-      this.setState({
-        newhours: "Take Now",
-        backgroundColor: background[1],
-        borderColor: border[1],
-        textColor: text[1],
-      })
-    }else if (todayTimeSum > currentTimeSum){
-      if (today.getHours() - curHour == 1){
-        numHours = "1 Hour Ago"
-      } else if (today.getHours() == curHour){
-        numHours = today.getMinutes() - curMin + " Minutes Ago"
-      }else {
-        numHours = today.getHours() - curHour + " Hours Ago"
-      }
-      this.setState({
-        newhours: numHours,
-        backgroundColor: background[2],
-        borderColor: border[2],
-        textColor: text[2],
-      })
+      ind = 0
+      numHours = "Done for the day"
+    }else if( this.shouldBeTakenNow(current)){
+      numHours = "Take Now"
+      ind = 1
+    }else if (this.shouldBeTaken(current, new Date())){
+      numHours = this.createAgoString(current)
+      ind = 2
     }else{
-      if(curHour >= 12){
-        if(curHour == 12){
-          numHours = "Take at " + 12
-        }else{
-          numHours = "Take at "+ (curHour - 12);
-        }
-        if( curMin != 0){
-          numHours = numHours + ":" + curMin + " PM"
-        }else{
-          numHours = numHours + " PM"
-        }
-      }else{
-        if( curHour == 1){
-          numHours = "Take at " + 1;
-        }else{
-          numHours = "Take at "+ (curHour % 12);
-        }
-        if( curMin != 0){
-          numHours = numHours + ":" + curMin + " AM"
-        }else{
-          numHours = numHours + " AM"
-        }
-      }
+      numHours = this.createTakeAtString(current)
+      ind = 0
+    } 
+    this.setState({
+      backgroundColor: background[ind],
+      borderColor: border[ind],
+      textColor: text[ind],
+      newhours: numHours,
+    })
+  }
   
-      this.setState({
-        backgroundColor: background[0],
-        borderColor: border[0],
-        textColor: text[0],
-        newhours: numHours,
-      })
-    }
-  };
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -240,40 +195,19 @@ class Card extends PureComponent {
     this.setState({
         status: !this.status,
     })
-    var today = new Date();
-    var current = new Date(this.state.time[this.state.passed_index])
-    var todayTimeSum = today.getHours()*60 + today.getMinutes();
-    var todayHour = today.getHours()
-    var todayMin = today.getMinutes()
-    var currentTimeSum = current.getHours()*60 + current.getMinutes();
+    var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
     var newInd = 0;
-
+    var tempData = this.state.data
 
     // can click forward, it you are clicking a red time that you need to take, must go forward
-    if( currentTimeSum - 15 < todayTimeSum ){
+    if( this.shouldBeTaken(thisMed, new Date () ) ){
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
-      var taken_string = ""
-      var taken_hours = todayHour
-      var taken_mins = todayMin
-      var am_pm = "AM"
-      var min_string = taken_mins.toString()
-
-      if (taken_hours >= 12 && taken_hours != 24){
-        am_pm = "PM"
-        if (taken_hours != 12){
-          taken_hours = taken_hours - 12
-        }
-      }
-      if (taken_mins <= 9){
-        min_string = "0" + min_string
-      }
-      var tempData = this.state.data
-      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+  
+      var taken_string = this.createTakenString(new Date())
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = '#7fdecb'
-      console.log("The index we are changing to green:" + this.state.passed_index)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
@@ -284,14 +218,9 @@ class Card extends PureComponent {
       console.log("can click backward")
       var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
-      var current = new Date(this.state.time[this.state.passed_index-1])
-      var currentTimeSum = current.getHours()*60 + current.getMinutes();
-      var tempData = this.state.data
       var circleColor = "#49D2B7"
       if (this.state.data[this.state.passed_index - 1].circleColor == "#49D2B7") {
-        console.log("currenttime sum" + currentTimeSum)
-        console.log("todaysum" + todayTimeSum)
-        if(currentTimeSum <= todayTimeSum + 15){
+        if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
           console.log("inside red here")
           circleColor = "#fa8b89"
           taken_string = "Missed"
@@ -300,21 +229,6 @@ class Card extends PureComponent {
           circleColor = "#cccccc"
         }
       }
-      var taken_string = "Not taken"
-      // var taken_hours = todayHour
-      // var taken_mins = todayMin
-      // var am_pm = "AM"
-      // var min_string = taken_mins.toString()
-      // if (taken_hours >= 12 && taken_hours != 24){
-      //   am_pm = "PM"
-      //   if (taken_hours != 12){
-      //     taken_hours = taken_hours - 12
-      //   }
-      // }
-      // if (taken_mins <= 9){
-      //   min_string = "0" + min_string
-      // }
-      // taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
       tempData[this.state.passed_index - 1].title = taken_string
       tempData[this.state.passed_index - 1].circleColor = circleColor
       this.setState({
@@ -329,37 +243,16 @@ class Card extends PureComponent {
 
   _handleModalPress = (data) => {
     var index = data.index
-    var now = new Date();
-    var current = new Date(this.state.time[index])
-    var NowTimeSum = now.getHours()*60 + now.getMinutes();
-    var currentTimeSum = current.getHours()*60 + current.getMinutes();
     
     // if green or red 
-    if (currentTimeSum <= NowTimeSum + 15) {
+    if (this.shouldBeTaken(new Date(this.state.time[index]), new Date())) {
       var taken_string = "Not taken"
       var tempData = this.state.data
       // checks green for taken
       var circleColor = '#49D2B7'
-      var taken_hours = now.getHours()
-      var taken_mins = now.getMinutes()
-      var am_pm = "AM"
-      var min_string = taken_mins.toString()
-      if (taken_hours >= 12 && taken_hours != 24){
-        am_pm = "PM"
-        if (taken_hours != 12){
-          taken_hours = taken_hours - 12
-        }
-      }
-      if (taken_mins <= 9){
-        min_string = "0" + min_string
-      }
-      console.log("handleModalPRees")
-      taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
-      if (this.state.data[index].circleColor == "#49D2B7") {
-        circleColor = "#cccccc"
-        console.log("heppp")
-        var taken_string = "Not taken"
-      }
+   
+      taken_string = this.createTakenString(new Date())
+
       tempData[index].circleColor = circleColor
       tempData[index].title = taken_string
       var tempPassed = this.state.passed
@@ -373,62 +266,99 @@ class Card extends PureComponent {
     }
   }
 
-  // rerender_detail = (rowData, sectionID, rowID) => {
-  //   return (
-  //     <View style = {{flex: 1}}>
-  //     <View style = {{flexDirection: 'row', paddingRight: 50}}>
-  //     <Text style = {{marginLeft: 10, color: 'gray'}}>{rowData.title}</Text>
-  //     </View>
-  //     </View>
-  //   )
-  // }
+
+  createTakenString = (Date) => {
+    var taken_hours = Date.getHours() + 1
+    var taken_mins = Date.getMinutes()
+    var am_pm = "AM"
+    var min_string = taken_mins.toString()
+    if (taken_hours >= 12 && taken_hours != 24){
+      am_pm = "PM"
+      if (taken_hours != 12){
+        taken_hours = taken_hours - 12
+      }
+    }
+    if (taken_mins <= 9){
+      min_string = "0" + min_string
+    }
+    return "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+  }
+
+  createTakeAtString = (Date) => {
+    var curHour = Date.getHours()
+    var curMin = Date.getMinutes()
+    var numHours
+    if(curHour >= 12){
+      if(curHour == 12){
+        numHours = "Take at " + 12
+      }else{
+        numHours = "Take at "+ (curHour - 12);
+      }
+      if( curMin != 0){
+        numHours = numHours + ":" + curMin + " PM"
+      }else{
+        numHours = numHours + " PM"
+      }
+    }else{
+      if( curHour == 1){
+        numHours = "Take at " + 1;
+      }else{
+        numHours = "Take at "+ (curHour % 12);
+      }
+      if( curMin != 0){
+        numHours = numHours + ":" + curMin + " AM"
+      }else{
+        numHours = numHours + " AM"
+      }
+      return numHours
+  }
+  }
+
+  createAgoString = (Date1) => {
+
+    var curHour = Date1.getHours()
+    var curMin = Date1.getMinutes()
+    var today = new Date()
+    if (today.getHours() - curHour == 1){
+      numHours = "1 Hour Ago"
+    } else if (today.getHours() == curHour){
+      numHours = today.getMinutes() - curMin + " Minutes Ago"
+    }else {
+      numHours = today.getHours() - curHour + " Hours Ago"
+    }
+    return numHours
+  }
+
+  shouldBeTaken = (Date1, Date2) => {
+    var Date1Sum = Date1.getHours()*60 + Date1.getMinutes();
+    var Date2Sum = Date2.getHours()*60 + Date2.getMinutes();
+    return Date1Sum < Date2Sum + 15
+  }
+
+  shouldBeTakenNow = (Date1) => {
+    var Date1Sum = Date1.getHours()*60 + Date1.getMinutes();
+    var Date2 = new Date()
+    var Date2Sum = Date2.getHours()*60 + Date2.getMinutes();
+    var now = (Math.abs(Date1Sum - Date2Sum) < 15)
+    console.log(now)
+  }
 
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
-      var medTime = new Date()
-      var medTimeSum = medTime.getHours()*60 + medTime.getMinutes();
-      var current = new Date(val)
-      var current_hours = current.getHours() 
-      var current_mins = current.getMinutes()
-      var curTimeSum = current_hours * 60 + current_mins
-      var am_pm = "AM"
-      var min_string = current_mins.toString()
-      if (current_hours >= 12 && current_hours != 24){
-        am_pm = "PM"
-        if (current_hours != 12){
-          current_hours = current_hours - 12
-        }
-      }
-      if (current_mins <= 9){
-        min_string = "0" + min_string
-      }
-      var hour_string = current_hours.toString() + ":" + min_string + " " + am_pm
+
+      var hour_string = this.createTakenString(new Date(new Date(val)))
       var circol;
       var taken_string = "Not taken"
       if(this.props.passed[i]){
         circol = "#49D2B7"
-      }else if(!this.props.passed[i] &&  curTimeSum <= medTimeSum + 15){
+      }else if(!this.props.passed[i] &&  this.shouldBeTaken(new Date(val), new Date())){
         circol = "#fa8b89"
         taken_string = "Missed"
       }else{
         circol = "#cccccc"
       }
       if (this.props.takenTime[i] != ""){
-        var takenTime = new Date(this.props.takenTime[i])
-        var taken_hours = takenTime.getHours() + 1
-        var taken_mins = takenTime.getMinutes()
-        var am_pm = "AM"
-        var min_string = taken_mins.toString()
-        if (taken_hours >= 12 && taken_hours != 24){
-          am_pm = "PM"
-          if (taken_hours != 12){
-            taken_hours = taken_hours - 12
-          }
-        }
-        if (taken_mins <= 9){
-          min_string = "0" + min_string
-        }
-        taken_string = "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
+        taken_string = this.createTakenString(new Date(this.props.takenTime[i]))
       }
       return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
       })

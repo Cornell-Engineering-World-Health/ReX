@@ -75,7 +75,6 @@ class CoolerMedicineView extends React.Component {
       passed_index: 0,
     };
   }
-
     
   componentWillMount = () => {
     var medicineData= []
