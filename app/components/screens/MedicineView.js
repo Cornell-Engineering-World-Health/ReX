@@ -4,13 +4,10 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   FlatList,
   TouchableOpacity,
   Image,
-  Dimensions
 } from 'react-native';
-import Circle from '../MedicineComponents/Circle.js';
 import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
@@ -70,11 +67,11 @@ class CoolerMedicineView extends React.Component {
   constructor(props) {
     super(props);
 
-    upadteData = (newData) => {
-      this.setState({
-        data: newData
-      })
-    }
+    // updateData = (newData) => {
+    //   this.setState({
+    //     data: newData
+    //   })
+    // }
 
     this.state = {
       data: [],
@@ -91,9 +88,9 @@ class CoolerMedicineView extends React.Component {
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
           for(var i =0; i <medObj.timeCategory.length; i++){
-              //console.log(medObj.time[i])
-              //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-              //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+              console.log(medObj.time[i])
+              var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+              data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
           }
       });
   });
@@ -137,17 +134,20 @@ class CoolerMedicineView extends React.Component {
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.titleText} >
-              Today  |
-            </Text>
-            <Text style={styles.date} >
-              {Moment().format('MMMM Do YYYY')}
-            </Text>
+          <View style={{ flexDirection: 'row' , padding:15, justifyContent:'space-between', alignItems:'center'}}>
+              <Text style={styles.titleText} >
+                Today
+              </Text>
+              <Text style={styles.titleText} >
+                |
+              </Text>
+              <Text style={styles.date} >
+                {Moment().format('MMMM DD, YYYY')}
+              </Text>
             <TouchableOpacity onPress = {() => navigate('Form', {
               log_type: 4
             })}>
-            <Image style = {{marginLeft:10, height:50, width:50}}
+            <Image style = {{padding:10, height:50, width:50, }}
               source ={require('../Resources/Images/eashanplus.png')}
               >
             </Image>
@@ -156,7 +156,7 @@ class CoolerMedicineView extends React.Component {
             <TouchableOpacity>
             </TouchableOpacity>
             <FlatList
-              data={dummy_data.sort(this.compareCards)}
+              data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 return (
                   <View>
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     padding: 5,
-    marginTop: 10,
     color: '#555555',
   },
 });

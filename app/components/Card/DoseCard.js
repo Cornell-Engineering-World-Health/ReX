@@ -258,7 +258,6 @@ class Card extends PureComponent {
       if (index == this.state.passed_index){
         tempPassedIndex = this.state.passed_index +1
       }
-
       // record that you took this medicine in the database
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,this.props.time[index],!this.props.passed[index])
       
