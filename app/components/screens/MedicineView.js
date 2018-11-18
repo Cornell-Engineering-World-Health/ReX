@@ -156,7 +156,7 @@ class CoolerMedicineView extends React.Component {
             <TouchableOpacity>
             </TouchableOpacity>
             <FlatList
-              data={this.state.data.sort(this.compareCards)}
+              data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
                 return (
                   <View>

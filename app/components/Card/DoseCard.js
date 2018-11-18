@@ -21,96 +21,6 @@ var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
 var border = ['#ffffff', '#7fdecb', '#f8ced5']
 var text = ['#aaaaaa', '#373737', '#373737']
 
-const styles = StyleSheet.create({
-  wrapper: {
-    padding: 5,
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  modalwrapper:{
-    flexDirection:'row',
-  },
-  container: {
-    flexDirection: 'column',
-    flex:1,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#ecfaf7',
-    borderColor: '#7fdecb',
-    borderWidth: 2,
-  },
-  descriptionContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent'
-  },
-  titleText: {
-    fontWeight: '600',
-    fontSize: 18,
-    color: '#373737',
-  },
-  modaltitleText: {
-    fontWeight: '600',
-    fontSize: 22,
-    color: '#373737',
-    marginBottom: 10,
-  },
-  timeContainer: {
-    marginTop: 1.5,
-    paddingTop: 15,
-    flex: 0.6,
-    marginRight: 10,
-    alignItems: 'flex-end',
-    backgroundColor: 'transparent'
-  },
-  timeStamp: {
-    fontSize: 16,
-    color: '#373737',
-    fontWeight: '600',
-    letterSpacing: 0.6
-  },
-  image_style: {
-    height: 20,
-    width: 20
-  },
-  note: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  noteText: {
-    color: '#373737',
-    fontSize: 16,
-    fontWeight: '400',
-    letterSpacing: 1.0
-  },
-  check: {
-    backgroundColor: '#00000000',
-    borderRadius: 0,
-    borderColor: 'white',
-    marginLeft: 0,
-    marginRight: 0,
-    padding: 0
-  },
-  swipe: {
-    borderRadius: 10
-  },
-  modalButton: {
-    backgroundColor: '#A0A0A0',
-    fontSize: 20,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  modalWrapper: { 
-    flex: 1.0, 
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  more:{
-    width:30,
-    padding: 0,
-    margin:0,
-  }
-});
 class Card extends PureComponent {
 
   static propTypes = {
@@ -208,7 +118,7 @@ class Card extends PureComponent {
   
       var taken_string = this.createTakenString(new Date())
       tempData[this.state.passed_index].title = taken_string
-      tempData[this.state.passed_index].circleColor = '#7fdecb'
+      tempData[this.state.passed_index].circleColor = border[1]
     
       this.setState({
         passed_index: newInd,
@@ -220,7 +130,7 @@ class Card extends PureComponent {
       console.log("can click backward")
       var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
-      var circleColor = "#49D2B7"
+      var circleColor = border[1]
       if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
           console.log("inside red here")
           circleColor = "#fa8b89"
@@ -247,7 +157,7 @@ class Card extends PureComponent {
       console.log("inside should be taken")
       var tempData = this.state.data
       // checks green for taken
-      var circleColor = '#49D2B7'
+      var circleColor = border[1]
       var taken_string = this.createTakenString(new Date())
 
       tempData[index].circleColor = circleColor
@@ -370,7 +280,7 @@ class Card extends PureComponent {
       var circol;
       var taken_string = "Not taken"
       if(this.props.passed[i]){
-        circol = "#49D2B7"
+        circol = border[1]
         taken_string = this.props.takenTime[i]
       }else if(!this.props.passed[i] &&  this.shouldBeTaken(new Date(val), new Date())){
         circol = "#fa8b89"
@@ -432,7 +342,7 @@ class Card extends PureComponent {
         onBackdropPress= {() => {this.setState({modalVisible: false})}}
         >
           <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:this.state.passed.length * 0.15}} >
-              <Text style={[styles.titleText,{color: this.state.textColor, paddingBottom: 15}]}>{this.props.title}</Text>
+              <Text style={[styles.titleText,{color: text[2], paddingBottom: 15}]}>{this.props.title}</Text>
               <Timeline
               lineColor='#575757'
               data = {this.state.data}
@@ -456,3 +366,94 @@ class Card extends PureComponent {
 }
 
 export default Card;
+
+const styles = StyleSheet.create({
+  wrapper: {
+    padding: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  modalwrapper:{
+    flexDirection:'row',
+  },
+  container: {
+    flexDirection: 'column',
+    flex:1,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ecfaf7',
+    borderColor: '#7fdecb',
+    borderWidth: 2,
+  },
+  descriptionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent'
+  },
+  titleText: {
+    fontWeight: '600',
+    fontSize: 18,
+    color: '#373737',
+  },
+  modaltitleText: {
+    fontWeight: '600',
+    fontSize: 22,
+    color: '#373737',
+    marginBottom: 10,
+  },
+  timeContainer: {
+    marginTop: 1.5,
+    paddingTop: 15,
+    flex: 0.6,
+    marginRight: 10,
+    alignItems: 'flex-end',
+    backgroundColor: 'transparent'
+  },
+  timeStamp: {
+    fontSize: 16,
+    color: '#373737',
+    fontWeight: '600',
+    letterSpacing: 0.6
+  },
+  image_style: {
+    height: 20,
+    width: 20
+  },
+  note: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  noteText: {
+    color: '#373737',
+    fontSize: 16,
+    fontWeight: '400',
+    letterSpacing: 1.0
+  },
+  check: {
+    backgroundColor: '#00000000',
+    borderRadius: 0,
+    borderColor: 'white',
+    marginLeft: 0,
+    marginRight: 0,
+    padding: 0
+  },
+  swipe: {
+    borderRadius: 10
+  },
+  modalButton: {
+    backgroundColor: '#A0A0A0',
+    fontSize: 20,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  modalWrapper: { 
+    flex: 1.0, 
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  more:{
+    width:30,
+    padding: 0,
+    margin:0,
+  }
+});
