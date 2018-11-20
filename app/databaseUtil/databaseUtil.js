@@ -453,7 +453,12 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+<<<<<<< HEAD
       WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp", (_, { rows }) => callback(rows)
+=======
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+      (tx, { rows }) => callback(rows._array)
+>>>>>>> 98f9608d19c33027cc8aca6076e65b124399ccb2
      ),
     err => console.log(err)
   );
@@ -709,12 +714,15 @@ function updateMedicineData(data,time,takenVal){
             let newFields = JSON.stringify(fields)
 
             console.log("\n\nnew fields", newFields)
-            let queryArgs = [newFields, med.event_details_id]
-            console.log("\n\nqueryargs", queryArgs)
+            let queryArgs = [med.event_details_id, newFields]
+            //console.log("\n\nqueryargs", queryArgs)
             Database.transaction(tx => {
 
-                tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ', queryArgs,
-                  (  (_, { rows }) => { console.log(rows) } ))
+              tx.executeSql(
+                'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
+                queryArgs,
+                (  (_, { rows }) => { console.log(rows) } )
+              );
 
             },err=>console.log(err))
         }
