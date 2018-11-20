@@ -402,6 +402,49 @@ export function pullFromDataBase(month, day, callback) {
   );
 }
 
+function formatDataForGraphs (data){
+    dataTemp = {};
+    //console.log('data for graphs ', data)
+    data.forEach(function(ev) {
+        var d = new Date(ev.timestamp.replace(' ', 'T'));
+        d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000)
+        var monthString = d.toISOString().substr(0,10) // year-month-day
+        var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+        
+        console.log(intensity)
+        if(!dataTemp[monthString]){
+            dataTemp[monthString] = {
+                frequency: 1,
+                total_intensity: intensity
+            };
+        }
+        else{
+            dataTemp[monthString].frequency += 1
+            dataTemp[monthString].total_intensity += intensity
+        }
+    });
+    return dataTemp; 
+}
+
+/*month is a date object where only the month and year are used, symptom is a string */
+export function pullSymptomForGraphs(month,symptom,callback) {
+  formattedMonth = month.toISOString().substr(0, 7);
+  var params = [symptom, formattedMonth];
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT event_id,event_type_name, timestamp, fields, strftime('%Y-%m',timestamp) FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = ? and \
+      strftime('%Y-%m',timestamp) = ? ORDER BY timestamp",
+        params,
+        (tx, { rows }) => callback(formatDataForGraphs(rows._array))
+      ),
+    err => console.log(err)
+  );
+}
+
 /* gets all Symptoms from database and calls callback with array */
 export function pullAllSymptoms(callback) {
   Database.transaction(
@@ -410,8 +453,7 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' and ORDER BY timestamp",
-        arrayFormattedMonth, (tx, { rows }) => callback(rows._array)
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp", (_, { rows }) => callback(rows)
      ),
     err => console.log(err)
   );

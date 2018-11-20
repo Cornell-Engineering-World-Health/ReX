@@ -23,7 +23,9 @@ import Summary from './Summary';
 import SummaryGraph from './SummaryGraph';
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  pullSymptomForGraphs,
+  pullAllSymptoms
 } from '../../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
 
@@ -49,6 +51,9 @@ class Settings extends Component {
       touchID: false,
       quickLog: false
     };
+    
+    //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
+    
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
