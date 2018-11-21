@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Picker } from 'react-native';
 import Modal from 'react-native-modal';
 import BarChart from '../Charts/BarChart';
-import constants from '../Resources/constants.js';
-
+import constants, { symptoms } from '../Resources/constants.js';
+import moment from 'moment';
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -11,9 +11,10 @@ const MONTHS = constants.MONTH;
 const SHORTENED_MONTHS = constants.SHORTENED_MONTH;
 
 /*
-List of potential symptoms. For TESTING PURPOSES, will only use Headache and Back Pain.
+List of potential symptoms. symptoms is an object with keys of image,
+background color, and title
 */
-const SYMPTOMS = ['Headache', 'Back Pain'];
+const SYMPTOMS = symptoms;
 
 /*
 List of potential modes.
@@ -46,14 +47,19 @@ export default class Trends extends React.Component {
     let currYear = currDate.getFullYear();
 
     this.state = {
-      selectedMonth: currMonth /*index of the current month where -1 corresponds to no selected month.
-                                 [int where -1 <= selectedMonth < 12] */,
+      selectedMonth: currMonth /*index of the current month where 0 corresponds to January.
+                                 [int where 0 <= selectedMonth < 12] */,
       selectedYear: currYear,
       selectedSymptom: this.getSymptoms()[0], //start with first symptom
       selectedMode: MODES[0], // start with 'Frequency'
       modalVisible: '', //string
-      selectedView: VIEWS[0] // string corresponding to which view to use (month / year)
+      selectedView: VIEWS[0], // string corresponding to which view to use (month / year)
+      formattedData: [0] //array of int
     };
+  }
+
+  componentDidMount() {
+    this._setData();
   }
 
   /*
@@ -100,24 +106,64 @@ export default class Trends extends React.Component {
   /*
     Returns an array of symptoms that the user has logged in the past month.
     Returns 'None' if no symptoms were ever logged.
+
+    FOR TESTING PURPOSES
+      Returns all symptoms in the constants file
+
   */
   getSymptoms() {
-    return SYMPTOMS;
+    let s = [];
+    for (var x = 0; x < SYMPTOMS.length; x++) {
+      s.push(SYMPTOMS[x].title);
+    }
+
+    return s;
   }
 
   _exitModal() {
     this.setState({ modalVisible: '' });
+    this._setData();
   }
   _enterModal(chosenModal) {
     this.setState({ modalVisible: chosenModal });
   }
+
+  _setData() {
+    if (this.state.selectedView == VIEWS[0]) {
+      //VIEWS[0] = month view
+      //get data from database based on selected year / month
+
+      //TEMPORARY TEST
+      let daysInMonth = moment(
+        this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
+        'YYYY-MM'
+      ).daysInMonth();
+      let d = [];
+      for (var x = 0; x < daysInMonth; x++) {
+        d.push(Math.random() * 100);
+      }
+      this.setState({ formattedData: d });
+
+      //END OF TEMPORARY TEST
+    } else if (this.state.selectedView == VIEWS[1]) {
+      //VIEWS[1] == year view
+      //get data from database based on selected year
+
+      let d = [];
+      for (var x = 0; x < 12; x++) {
+        d.push(Math.random() * 100);
+      }
+      this.setState({ formattedData: d });
+    }
+  }
+
   /*
   Renders the body for the date picker
   */
   _renderDateModalBody() {
     //generate year picker items
     let pickerItems = [];
-    for (var x = 1970; x < 2075; x++) {
+    for (var x = 1970; x < 2100; x++) {
       pickerItems.push(<Picker.Item label={x + ''} value={x} key={x} />);
     }
 
@@ -300,8 +346,14 @@ export default class Trends extends React.Component {
           </ModalPicker>
         </View>
         <View style={styles.graphContainer}>
-          <Text>Insert Graph Here..</Text>
-          {<BarChart />}
+          {
+            <BarChart
+              view={this.state.selectedView}
+              month={this.state.selectedMonth}
+              year={this.state.selectedYear}
+              data={this.state.formattedData}
+            />
+          }
         </View>
         <View style={styles.extraInfo}>
           <Info title={'Average Duration'} body={2 + ''} footer={'Hours'} />
@@ -390,13 +442,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   header: {
-    flex: 0.2,
-    backgroundColor: 'pink', //temporary
+    flex: 0.1,
+
     justifyContent: 'center'
   },
   graphContainer: {
-    flex: 0.4,
-    backgroundColor: 'cyan' //temporary
+    flex: 0.5
   },
   extraInfo: {
     flex: 0.25,
@@ -409,7 +460,8 @@ const styles = StyleSheet.create({
   headerText: {
     textAlign: 'center',
     fontSize: 35,
-    fontWeight: '100'
+    fontWeight: '100',
+    color: '#000'
   },
   headerDateText: {
     textAlign: 'center',
@@ -417,7 +469,7 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   },
   infoCardWrapper: {
-    padding: 5,
+    padding: 12,
     flex: 1
   },
   infoCardContainer: {
@@ -445,14 +497,15 @@ const styles = StyleSheet.create({
   pickerButtonWrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'stretch',
-    padding: 2
+    alignItems: 'stretch'
   },
   pickerButtonContainer: {
     justifyContent: 'center',
-    borderRadius: 5,
+    borderTopWidth: 1,
+    borderColor: '#e8e8e8',
     padding: 15,
-    flex: 0.5
+    flex: 0.5,
+    backgroundColor: '#ffffff'
   },
   pickerButtonText: {
     textAlign: 'center',

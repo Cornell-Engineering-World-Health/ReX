@@ -125,6 +125,9 @@ export const BODY_PARTS = {
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
 const defaultColor = '#ffffff';
 
+/**
+When adding a new sypmtom, you MUST add it to the constant below called "symptoms"
+*/
 export default (constants = {
   MONTH: [
     'January',
@@ -243,9 +246,12 @@ export default (constants = {
     translucentColor: '#ffffff80'
   }
 });
-let types = [
+
+/*
+allows for iteration access to all of the symptoms
+*/
+export const symptoms = [
   constants.BLURRED_VISION,
-  constants.PILL,
   constants.HEADACHE,
   constants.DIZZINESS,
   constants.NECKPAIN,
@@ -268,36 +274,36 @@ Available titles are found in the constants variable of this file.
 */
 
 export function getCardData(title) {
-  for (var x = 0; x < types.length; x++) {
-    if (title == types[x].title) {
-      return types[x];
+  for (var x = 0; x < symptoms.length; x++) {
+    if (title == symptoms[x].title) {
+      return symptoms[x];
     }
   }
   return constants.DEFAULT;
 }
 
 export function getSource(title) {
-  for (var x = 0; x < types.length; x++) {
-    if (title == types[x].title) {
-      return types[x].image;
+  for (var x = 0; x < symptoms.length; x++) {
+    if (title == symptoms[x].title) {
+      return symptoms[x].image;
     }
   }
   return constants.DEFAULT.image;
 }
 
 export function getColor(type) {
-  for (var x = 0; x < types.length; x++) {
-    if (type == types[x].title) {
-      return types[x].backgroundColor;
+  for (var x = 0; x < symptoms.length; x++) {
+    if (type == symptoms[x].title) {
+      return symptoms[x].backgroundColor;
     }
   }
   return constants.DEFAULT.backgroundColor;
 }
 
 export function getTranslucentColor(type) {
-  for (var x = 0; x < types.length; x++) {
-    if (type == types[x].title) {
-      return types[x].translucentColor;
+  for (var x = 0; x < symptoms.length; x++) {
+    if (type == symptoms[x].title) {
+      return symptoms[x].translucentColor;
     }
   }
   return constants.DEFAULT.translucentColor;
