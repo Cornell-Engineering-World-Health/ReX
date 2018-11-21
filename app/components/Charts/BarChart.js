@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet
 } from 'react-native';
-import { BarChart, YAxis, Grid, XAxis } from 'react-native-svg-charts';
+import { BarChart, YAxis, Grid } from 'react-native-svg-charts';
 import moment from 'moment';
 import constants, { COLOR } from '../Resources/constants.js';
 //Gives months in the form 'JAN', 'FEB' etc
@@ -101,7 +101,9 @@ export default class Bar extends React.Component {
               fill: '#474747'
             }}
             contentInset={contentInset}
-          />
+          >
+            <Grid />
+          </BarChart>
         </View>
         <View style={styles.xAxis}>{this._renderXAxis()}</View>
       </View>
