@@ -21,6 +21,9 @@ export function createTables() {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS `settings_tbl` (`setting_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `setting_value` TEXT NOT NULL);'
       );
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS `id_tbl` (`id_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `id_value` INTEGER NOT NULL);'
+      );
       /* tx.executeSql(
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
@@ -137,18 +140,25 @@ export function intializeDatabase() {
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('icon','0')"
       );
+      /* necessary default ids */
+      tx.executeSql(
+        "INSERT OR IGNORE INTO id_tbl (id_name,id_value) VALUES ('event_id','2000')"
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO id_tbl (id_name,id_value) VALUES ('event_details_id','2000')"
+      );
 
       /* medication reminder examples */
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-04-01","End Date": "2018-04-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true]}\' )'
+    \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true]}\' )'
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
-    \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-20","Days Of Week": [1,1,1,1,1,1,1],"Time": ["09:00"],"Time Category": ["Morning"],"Taken": [true]}\' )'
+    \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,1,1],"Time": ["09:00"],"Time Category": ["Morning"],"Taken": [true]}\' )'
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
@@ -191,7 +201,7 @@ export function formatData(data) {
         intensity) /
       dataTemp[symptom].count[day];
   });
-  // console.log(dataTemp)
+  //console.log(dataTemp)
   return dataTemp;
 }
 
@@ -325,6 +335,79 @@ export function databaseFakeData() {
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (25, 3,'2018-04-27 06:01:00', 25)"
       );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (26, 1,'2018-04-15 06:01:00', 26)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (26,\'{"Intensity": "5","Duration": "60"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (27, 1,'2018-04-14 06:01:00', 27)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (27,\'{"Intensity": "4","Duration": "60"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (28, 1,'2018-04-09 06:01:00', 28)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (28,\'{"Intensity": "4","Duration": "60"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (29, 5,'2018-04-21 06:01:00', 29)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (29,\'{"Intensity": "4","Duration": "60"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (30, 5,'2018-04-06 06:01:00', 30)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (30,\'{"Intensity": "4","Duration": "60"}\' )'
+      );
+      /* medication reminder fake data */
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
+               \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false,false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,'2018-04-17 09:00:00', 52)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
+              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,'2018-04-17 09:00:00', 53)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (54,\
+              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false,false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (54, 4,'2018-04-18 09:00:00', 54)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (55,\
+              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,'2018-04-18 09:00:00', 55)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
+              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-11-01","End Date": "2018-11-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false,false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,'2018-11-11 09:00:00', 56)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
+              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-11-01","End Date": "2018-11-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,'2018-11-11 09:00:00', 57)"
+      );
 
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (26, 1,'2018-04-15 06:01:00', 26)"
@@ -387,17 +470,33 @@ export function databaseFakeData() {
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
-              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false,false]}\' )'
+              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [true,false]}\' )'
       );
+
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,'2018-05-05 09:00:00', 56)"
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,'2018-11-04 09:00:00', 56)"
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
-              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )'
+              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )'
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,'2018-05-05 09:00:00', 57)"
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,'2018-11-04 09:00:00', 57)"
+      );
+
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1800,\
+              \'{"Pill Name": "Crestor","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["12:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1800, 4,'2018-11-18 12:00:00', 1800)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1801,\
+              \'{"Pill Name": "Advair","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["18:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,'2018-11-17 08:00:00', 1801)"
       );
 
       /* medication reminder fake data */
@@ -408,14 +507,18 @@ export function databaseFakeData() {
         tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
           console.log(JSON.stringify(rows))
         )
-    },err=> console.log(err));
-    Database.transaction(tx => {
-        tx.executeSql('Select * from event_details_tbl',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err)); */
+    },err=> console.log(err));*/
+  Database.transaction(
+    tx => {
+      tx.executeSql('Select * from id_tbl', [], (_, { rows }) =>
+        console.log('id table', JSON.stringify(rows))
+      );
+    },
+    err => console.log(err)
+  );
 }
 
+/* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
   console.log('pulling from database');
 
@@ -431,6 +534,63 @@ export function pullFromDataBase(month, day, callback) {
       strftime('%Y-%m',timestamp) = ? ORDER BY timestamp",
         arrayFormattedMonth,
         (tx, { rows }) => callback(formatData(rows._array))
+      ),
+    err => console.log(err)
+  );
+}
+
+function formatDataForGraphs(data) {
+  dataTemp = {};
+  //console.log('data for graphs ', data)
+  data.forEach(function(ev) {
+    var d = new Date(ev.timestamp.replace(' ', 'T'));
+    d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+    var monthString = d.toISOString().substr(0, 10); // year-month-day
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+
+    console.log(intensity);
+    if (!dataTemp[monthString]) {
+      dataTemp[monthString] = {
+        frequency: 1,
+        total_intensity: intensity
+      };
+    } else {
+      dataTemp[monthString].frequency += 1;
+      dataTemp[monthString].total_intensity += intensity;
+    }
+  });
+  return dataTemp;
+}
+
+/*month is a date object where only the month and year are used, symptom is a string */
+export function pullSymptomForGraphs(month, symptom, callback) {
+  formattedMonth = month.toISOString().substr(0, 7);
+  var params = [symptom, formattedMonth];
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT event_id,event_type_name, timestamp, fields, strftime('%Y-%m',timestamp) FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = ? and \
+      strftime('%Y-%m',timestamp) = ? ORDER BY timestamp",
+        params,
+        (tx, { rows }) => callback(formatDataForGraphs(rows._array))
+      ),
+    err => console.log(err)
+  );
+}
+
+/* gets all Symptoms from database and calls callback with array */
+export function pullAllSymptoms(callback) {
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+        (tx, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
   );
@@ -494,7 +654,6 @@ function formatAgenda(data) {
 }
 export function pullAgendaFromDatabase(callback) {
   // Agenda query
-  console.log('reached pullAgendaFromDatabase');
   Database.transaction(
     tx =>
       tx.executeSql(
@@ -511,7 +670,6 @@ export function pullAgendaFromDatabase(callback) {
 
 export function asyncDeleteEvent(id) {
   inputArray = [id];
-  console.log('trying to delete event with id :', id);
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -549,7 +707,7 @@ export function pullMedicineFromDatabase(date, callback) {
   dayArray = [day];
   Database.transaction(tx => {
     tx.executeSql(
-      "SELECT event_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
+      "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
@@ -560,8 +718,53 @@ export function pullMedicineFromDatabase(date, callback) {
   });
 }
 
-/*startDate and endDate should be javascript dates*/
+export function getIds(rows, callback) {
+  event_details_id = -1;
+  event_id = -1;
+  for (var i = 0; i < rows._array.length; i++) {
+    if (rows._array[i]['id_name'] === 'event_id') {
+      event_id = rows._array[i]['id_value'];
+      //console.log('inside getIds event_id:', event_id);
+    }
+    if (rows._array[i]['id_name'] === 'event_details_id') {
+      event_details_id = rows._array[i]['id_value'];
+      //console.log('inside getIds event_id:', event_details_id);
+    }
+  }
+  console.log('before wrapper call');
+  callback(event_id, event_details_id);
+}
+
 export function asyncCreateMedicineEvents(
+  name,
+  dosage,
+  startDate,
+  endDate,
+  timeArray,
+  timeCategories
+) {
+  Database.transaction(
+    tx => {
+      tx.executeSql('SELECT * from id_tbl', [], (_, { rows }) =>
+        getIds(rows, (event_id, event_details_id) =>
+          asyncCreateMedicineEventsWrapper(
+            name,
+            dosage,
+            startDate,
+            endDate,
+            timeArray,
+            timeCategories,
+            event_id,
+            event_details_id
+          )
+        )
+      );
+    },
+    err => console.log(err)
+  );
+}
+/*startDate and endDate should be javascript dates*/
+export function asyncCreateMedicineEventsWrapper(
   name,
   dosage,
   startDate,
@@ -614,51 +817,91 @@ export function asyncCreateMedicineEvents(
           'INSERT OR REPLACE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?,?,?)',
           inputArray
         );
+        //console.log('incrementing id and details_id')
         event_id += 1;
         event_details_id += 1;
       }
+      inputArray = ['event_id', event_id];
+      /*update event_id and event_details_id */
+      tx.executeSql(
+        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
+        inputArray
+      );
+      inputArray = ['event_details_id', event_details_id];
+      tx.executeSql(
+        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
+        inputArray
+      );
     },
     err => console.log(err)
   );
 }
+/*TODO: clean up updateMedicine functions*/
 function updateMedicineData(data, time, takenVal) {
   data.forEach(function(med) {
     var fields = JSON.parse(med.fields);
-    console.log(med);
+    console.log('\n\nprevious med', med);
+    console.log('\n\ntime', time);
     var idx = fields['Time Category'].indexOf(time);
 
     if (idx != -1) {
       console.log('updating');
       let newTaken = fields['Taken'].slice();
       newTaken[idx] = takenVal;
-      console.log(newTaken);
+      console.log('\n\nnewTaken', newTaken);
       fields['Taken'] = newTaken;
       let newFields = JSON.stringify(fields);
-      let queryArgs = [newFields, med.event_details_id];
+
+      console.log('\n\nnew fields', newFields);
+      let queryArgs = [med.event_details_id, newFields];
+      //console.log("\n\nqueryargs", queryArgs)
       Database.transaction(
         tx => {
           tx.executeSql(
-            'Update event_details_tbl SET fields =? where event_details_id= ? ',
-            queryArgs
+            'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
+            queryArgs,
+            (_, { rows }) => {
+              console.log(rows);
+            }
           );
         },
         err => console.log(err)
       );
     }
   });
-  /**
-    Database.transaction(tx => {
-        tx.executeSql('Select * from event_details_tbl where event_details_id = 55 OR event_details_id = 54',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));
-    */
 }
 
+function updateSingleMedicine(data, name, dosage, time, takenVal) {
+  console.log('updating single medicine', data);
+  data.some(function(med) {
+    var fields = JSON.parse(med.fields);
+    if (fields.pillName === name && fields.dosage === dosage) {
+      var idx = fields.time.indexOf(time);
+      if (idx != -1) {
+        let newTaken = fields.taken.slice();
+        newTaken[idx] = takenVal;
+        fields.taken = newTaken;
+        let newFields = JSON.stringify(fields);
+        let queryArgs = [newFields, med.event_details_id];
+        Database.transaction(
+          tx => {
+            tx.executeSql(
+              'Update event_details_tbl SET fields =? where event_details_id= ? ',
+              queryArgs
+            );
+          },
+          err => console.log(err)
+        );
+
+        return true;
+      }
+    }
+    return false;
+  });
+}
 export function databaseTakeMedicines(date, timeIndex, takenVal) {
   let timeArray = ['Morning', 'Afternoon', 'Evening', 'Night'];
   let timeString = timeArray[timeIndex];
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
 
@@ -674,6 +917,29 @@ export function databaseTakeMedicines(date, timeIndex, takenVal) {
       WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
         dayArray,
         (_, { rows }) => updateMedicineData(rows._array, timeString, takenVal)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+//pass in time as 24 hour time string
+export function databaseTakeMedicine(date, name, dosage, time, takenVal) {
+  let day = date.toISOString().substr(0, 10);
+  dayArray = [day];
+  console.log(dayArray);
+  console.log('inside take medicine');
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
+        dayArray,
+        (_, { rows }) =>
+          updateSingleMedicine(rows._array, name, dosage, time, takenVal),
+        err => console.log(err)
       );
     },
     err => console.log(err)

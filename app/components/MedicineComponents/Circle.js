@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { PieChart } from 'react-native-svg-charts';
+//import { PieChart } from 'react-native-svg-charts';
 import {
   StyleSheet,
   View,
@@ -150,32 +150,34 @@ class Circle extends Component {
             }}
           >
             <View style={styles.pie} />
-            <PieChart
-              // paddingBottom = {150}
-              sort={(a, b) => 0}
-              padAngle={0}
-              innerRadius={'83%'}
-              // style = {{ alignItems: 'center' }}
-              style={{
-                position: 'absolute',
-                width: Dimensions.get('window').width / 1.5,
-                height: Dimensions.get('window').width / 1.5
-              }}
-              data={pieData}
-            />
-            <PieChart
-              // paddingBottom = {150}
-              sort={(a, b) => 0}
-              padAngle={0}
-              innerRadius={'88%'}
-              style={{
-                position: 'absolute',
-                width: Dimensions.get('window').width / 1.75,
-                height: Dimensions.get('window').width / 1.75
-              }}
-              data={innerPieData}
-            />
-            {/* <View style = {styles.hourHand} />
+
+            {/* 
+              <PieChart
+                // paddingBottom = {150}
+                sort={(a, b) => 0}
+                padAngle={0}
+                innerRadius={'83%'}
+                // style = {{ alignItems: 'center' }}
+                style={{
+                  position: 'absolute',
+                  width: Dimensions.get('window').width / 1.5,
+                  height: Dimensions.get('window').width / 1.5
+                }}
+                data={pieData}
+              />
+              <PieChart
+                // paddingBottom = {150}
+                sort={(a, b) => 0}
+                padAngle={0}
+                innerRadius={'88%'}
+                style={{
+                  position: 'absolute',
+                  width: Dimensions.get('window').width / 1.75,
+                  height: Dimensions.get('window').width / 1.75
+                }}
+                data={innerPieData}
+              />
+              <View style = {styles.hourHand} />
         <View style = {styles.minuteHand} />
         <View style = {styles.circleHand} /> */}
           </View>

@@ -140,7 +140,7 @@ export default class Trends extends React.Component {
       ).daysInMonth();
       let d = [];
       for (var x = 0; x < daysInMonth; x++) {
-        d.push(Math.random() * 100);
+        d.push(Math.random() * 10);
       }
       this.setState({ formattedData: d });
 
@@ -151,7 +151,7 @@ export default class Trends extends React.Component {
 
       let d = [];
       for (var x = 0; x < 12; x++) {
-        d.push(Math.random() * 100);
+        d.push(Math.floor(Math.random() * 10));
       }
       this.setState({ formattedData: d });
     }

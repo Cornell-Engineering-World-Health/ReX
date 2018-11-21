@@ -88,7 +88,6 @@ export default class Bar extends React.Component {
               fontSize: 10
             }}
             numberOfTicks={10}
-            style={{ width: screenWidth * 0.05, marginBottom: 12 }}
           />
           <BarChart
             animate
@@ -117,9 +116,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   container: {
-    width: screenWidth * 0.95,
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   xAxis: {
     flexDirection: 'row',

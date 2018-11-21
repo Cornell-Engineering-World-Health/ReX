@@ -19,7 +19,6 @@ import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
 import DatePicker from '../LogInputTypes/DatePicker';
 import TimePicker from '../LogInputTypes/TimePicker';
-import { StackNavigator } from 'react-navigation';
 import Database from '../../Database';
 import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import moment from 'moment';
@@ -265,6 +264,7 @@ export default class SurveyForm extends React.Component {
         data={component_array}
         valueChange={this.valueChange.bind(this)}
         submit={this.submit.bind(this)}
+        isModal={true}
       />
     );
   }

@@ -70,6 +70,7 @@ export const IMAGES = {
   body: require('../Resources/Images/bodyLarge.png'),
   crying: require('../Resources/Images/crying.png'),
   close: require('../Resources/Images/close.png'),
+  close_white: require('../Resources/Images/close-white.png'),
   zero: require('../Resources/Images/0.png'),
   one: require('../Resources/Images/1.png'),
   two: require('../Resources/Images/2.png'),
@@ -80,7 +81,9 @@ export const IMAGES = {
   seven: require('../Resources/Images/7.png'),
   eight: require('../Resources/Images/8.png'),
   nine: require('../Resources/Images/9.png'),
-  ten: require('../Resources/Images/10.png')
+  ten: require('../Resources/Images/10.png'),
+  checkmarkWhite: require('../Resources/Images/checkmarkWhite.png'),
+  headerBack: require('../Resources/Images/header-back.png'),
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -98,6 +101,7 @@ export const profile_icons = [
 ];
 
 export const COLOR = {
+  black: '#404040',
   PrimaryGray: '#b8b8b8',
   blue: '#79ADDC',
   purple: '#ab87b8',

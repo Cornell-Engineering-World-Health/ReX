@@ -29,16 +29,24 @@ export default class TimePicker extends React.Component {
     this.props.deletePressed()
   }
 
+  handleAdd(val){
+    this.props.addPressed()
+  }
+
   render () {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <TouchableOpacity onPress={this.handleDelete.bind(this)}>
-          <Text style={styles.delete}>Delete</Text>
-        </TouchableOpacity>
+        <View style={{flex: 1, flexDirection: 'row', marginBottom: 30}}>
+          <TouchableOpacity onPress={this.handleAdd.bind(this)}>
+            <Text style={styles.add}>Add Another</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.handleDelete.bind(this)}>
+            <Text style={styles.delete}>Delete</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.picker_container}>
           <DatePickerIOS
-            style={styles.picker}
             date={this.state.chosen_date}
             mode={'time'}
             onDateChange={this.handleChange.bind(this)} />
@@ -56,7 +64,13 @@ const styles = StyleSheet.create({
   picker: {
     color: 'white'
   },
+  add: {
+    color: 'green',
+    fontSize: 16,
+    marginRight: 10
+  },
   delete: {
-    color: 'red'
+    color: 'red',
+    fontSize: 16
   }
 })
