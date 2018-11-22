@@ -4,13 +4,10 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   FlatList,
   TouchableOpacity,
   Image,
-  Dimensions
 } from 'react-native';
-import Circle from '../MedicineComponents/Circle.js';
 import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
@@ -24,6 +21,7 @@ var dummy_data = [
     title: 'Dinonuggies',
     dosage: '489mg',
     time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
+    takenTime: ["January 31 1980 12:10", "", ""],
     timeval: [1200, 1310, 2030],
     statuses: [true, false, false]
   },
@@ -31,6 +29,7 @@ var dummy_data = [
     title: 'KT',
     dosage: '4344348mg',
     time: ["January 31 1980 9:30"],
+    takenTime: [""],
     timeval: [930],
     statuses: [false]
   },
@@ -38,6 +37,7 @@ var dummy_data = [
     title: 'Beanz',
     dosage: '430mg',
     time: ["January 31 1980 12:30"],
+    takenTime: [""],
     timeval: [1230],
     statuses: [false]
   },
@@ -45,14 +45,16 @@ var dummy_data = [
     title: 'Oliviera',
     dosage: '233mg',
     time: ["January 31 1980 13:30"],
+    takenTime: [""],
     timeval: [1330],
     statuses: [false]
   },
   {
     title: 'Splash',
     dosage: '3mg',
-    time: ["January 31 1980 14:45"],
-    timeval: [1445],
+    time: ["January 31 1980 15:10"],
+    takenTime: [""],
+    timeval: [1510],
     statuses: [false]
   }
 ]
@@ -65,12 +67,17 @@ class CoolerMedicineView extends React.Component {
   constructor(props) {
     super(props);
 
+    // updateData = (newData) => {
+    //   this.setState({
+    //     data: newData
+    //   })
+    // }
+
     this.state = {
       data: [],
       passed_index: 0,
     };
   }
-
 
   componentWillMount = () => {
     var medicineData= []
@@ -81,9 +88,9 @@ class CoolerMedicineView extends React.Component {
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
           for(var i =0; i <medObj.timeCategory.length; i++){
-              //console.log(medObj.time[i])
-              //var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-              //data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+              console.log(medObj.time[i])
+              var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+              data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
           }
       });
   });
@@ -127,28 +134,27 @@ class CoolerMedicineView extends React.Component {
       <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.titleText} >
-              Today  |
-            </Text>
-            <Text style={styles.date} >
-              {Moment().format('MMMM Do YYYY')}
-            </Text>
-            <TouchableOpacity
-              onPress = {() => {
-                navigate('Add', {});
-              }}
-            >
-              <Image style = {{marginLeft:10, height:50, width:50}}
-                source ={require('../Resources/Images/eashanplus.png')}
-                >
-              </Image>
+          <View style={{ flexDirection: 'row' , padding:15, justifyContent:'space-between', alignItems:'center'}}>
+              <Text style={styles.titleText} >
+                Today
+              </Text>
+              <Text style={styles.titleText} >
+                |
+              </Text>
+              <Text style={styles.date} >
+                {Moment().format('MMMM DD, YYYY')}
+              </Text>
+            <TouchableOpacity onPress = {() => navigate('Form', {
+              log_type: 4
+            })}>
+            <Image style = {{padding:10, height:50, width:50, }}
+              source ={require('../Resources/Images/eashanplus.png')}
+              >
+            </Image>
             </TouchableOpacity>
           </View>
-
             <TouchableOpacity>
             </TouchableOpacity>
-            {console.log(dummy_data.sort(this.compareCards))}
             <FlatList
               data={dummy_data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
@@ -160,8 +166,10 @@ class CoolerMedicineView extends React.Component {
                     <DoseCard
                     title={item.title}
                     time={item.time}
+                    takenTime={item.takenTime}
                     dosage={item.dosage}
                     passed={item.statuses}
+                    updateData = {this.updateData}
                     buttonsRight={[
                       {
                         text: 'Edit',
@@ -170,10 +178,6 @@ class CoolerMedicineView extends React.Component {
                           this.setState ({
                             modalVisible: true
                           })
-                          console.log("modalallala")
-                          console.log(this.state.modalVisible)
-
-                          /*force a render with new changes  */
                         }
                       }]}
                     />
@@ -201,7 +205,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     padding: 5,
-    marginTop: 10,
     color: '#555555',
   },
 });
