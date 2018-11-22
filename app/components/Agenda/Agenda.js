@@ -12,7 +12,6 @@ import {
 import Card from '../Card/Card.js';
 import { COLOR, IMAGES } from '../../resources/constants';
 import Modal from 'react-native-modal';
-import ButtonWithImage from '../Button/ButtonWithImage';
 import GestureRecognizer, {
   swipeDirections
 } from 'react-native-swipe-gestures';
@@ -181,8 +180,8 @@ class Agenda extends Component {
           isVisible={this.state.expandVisible}
           style={styles.modalStyle}
           backdropOpacity={0.8}
-          animationOutTiming={600}
-          animationInTiming={600}
+          animationOutTiming={300}
+          animationInTiming={300}
         >
           <View
             style={{
@@ -198,17 +197,22 @@ class Agenda extends Component {
               <Text style={styles.summaryText}>{this.props.date}</Text>
             </View>
           </View>
-          <View style={{ flex: 1 }}>{modalPage}</View>
-          <View style={{ height: 75 }}>
-            <ButtonWithImage
-              onPress={() => this.setState({ expandVisible: false })}
-              width={50}
-              height={50}
-              imageSource={IMAGES.back}
-              rounded={true}
-              backgroundColor={'white'}
+          <View style={{ flex: 1, alignItems: 'stretch' }}>{modalPage}</View>
+          <TouchableOpacity
+            onPress={() => this.setState({ expandVisible: false })}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 50,
+              padding: 5,
+              alignSelf: 'center',
+              transform: [{ rotate: '-90deg' }]
+            }}
+          >
+            <Image
+              source={IMAGES.headerBack}
+              style={{ width: 50, height: 50 }}
             />
-          </View>
+          </TouchableOpacity>
         </Modal>
       </View>
     );

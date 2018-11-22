@@ -158,7 +158,14 @@ class CoolerMedicineView extends React.Component {
     currentYear = currentDate.getYear();
     currentDay = currentDate.getDay();
     return (
-      <View style={{ padding: 10, top: 20, flex: 1, backgroundColor: 'white' }}>
+      <View
+        style={{
+          padding: 10,
+          paddingTop: 20,
+          flex: 1,
+          backgroundColor: 'white'
+        }}
+      >
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
             <View

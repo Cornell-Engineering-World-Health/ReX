@@ -41,7 +41,7 @@ export default class Profile extends Component {
     this.state = { choosingAvatar: false, modalID: '' };
   }
   handle_icon_press = index => {
-    asyncSettingUpdate('icon', index.toString());
+    this.props.settingsUpdate('icon', index.toString());
   };
 
   _renderHeader() {
