@@ -40,37 +40,8 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.onValueChange = this.onValueChange.bind(this);
-    this.state = {
-      switchValue: false,
-      birthday: new Date(),
-      name: 'Navin',
-      weight: '',
-      height_feet: '5',
-      height_inches: '8',
-      height: '',
-      modalID: '',
-      icon: 0,
-      email: 'navin@gmail.com',
-      choosingAvatar: false
-    };
-    this.setDate = this.setDate.bind(this);
 
-    pullSettingsFromDatabase(data => {
-      this.setState({
-        birthday: new Date(data.birthday),
-        weight: data.weight,
-        name: data.name,
-        height_feet: data.height_feet,
-        height_inches: data.height_inches,
-        height: data.height_feet + "' " + data.height_inches + '" ',
-        icon: data.icon
-      });
-    });
-  }
-
-  setDate(newDate) {
-    asyncSettingUpdate('birthday', newDate);
-    this.setState({ birthday: newDate });
+    this.state = { choosingAvatar: false, modalID: '' };
   }
   handle_icon_press = index => {
     asyncSettingUpdate('icon', index.toString());
@@ -87,7 +58,7 @@ export default class Profile extends Component {
           >
             <Image
               style={styles.profileImageStyle}
-              source={profile_icons[this.state.icon]}
+              source={profile_icons[this.props.icon]}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -103,38 +74,33 @@ export default class Profile extends Component {
       return (
         <View
           style={{
-            height: 150,
             alignItems: 'center'
           }}
         >
-          <View style={styles.profileHeader}>
-            <FlatList
-              horizontal={true}
-              data={profile_icons}
-              keyExtractor={item => {
-                return item.index;
-              }}
-              renderItem={({ item, index }) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      this.handle_icon_press(index);
-                      this.setState({
-                        choosingAvatar: false,
-                        icon: index
-                      });
-                    }}
-                  >
-                    <Image
-                      style={styles.profileImageStyle}
-                      source={profile_icons[index]}
-                    />
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
+          <FlatList
+            style={{ height: 100, overflow: 'hidden' }}
+            horizontal={true}
+            data={profile_icons}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handle_icon_press(index);
+                    this.setState({
+                      choosingAvatar: false
+                    });
+                  }}
+                  style={{ height: 100 }}
+                >
+                  <Image
+                    style={styles.profileImageStyle}
+                    source={profile_icons[index]}
+                  />
+                </TouchableOpacity>
+              );
+            }}
+          />
           <Text style={styles.profileHeaderSubText}>Pick your Avatar!</Text>
         </View>
       );
@@ -142,28 +108,39 @@ export default class Profile extends Component {
   }
 
   render() {
-    var bgColor = '#DCE3F4';
-
     let header = this._renderHeader();
     return (
       <View style={styles.container}>
-        <View style={styles.modal}>
+        <View style={styles.headerWrapper}>
+          {!this.state.choosingAvatar ? (
+            <TouchableOpacity
+              style={styles.menuButtonWrapper}
+              onPress={this.props.exitModal}
+            >
+              <Image
+                source={IMAGES.headerBack}
+                style={styles.menuImageStyle}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
+          ) : null}
+          {header}
+        </View>
+        <View style={styles.form}>
           <ScrollView>
-            {header}
             <View style={styles.profileBody}>
               <TextField
                 label={'Name'}
-                value={this.state.name}
+                value={this.props.name}
                 onChangeText={name => {
-                  asyncSettingUpdate('name', name);
-                  this.setState({ name });
+                  this.props.settingsUpdate('name', name);
                 }}
               />
               <TextField
                 label={'Email'}
-                value={this.state.email}
+                value={this.props.email}
                 onChangeText={email => {
-                  this.setState({ email: email });
+                  this.props.settingsUpdate('email', email);
                 }}
               />
               <TouchableOpacity
@@ -175,7 +152,7 @@ export default class Profile extends Component {
                   editable={false}
                   pointerEvents={'none'}
                   label={'Birthday'}
-                  value={this.state.birthday.toLocaleDateString()}
+                  value={this.props.birthday.toLocaleDateString()}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -188,9 +165,9 @@ export default class Profile extends Component {
                   pointerEvents={'none'}
                   label={'Height'}
                   value={
-                    this.state.height_feet +
+                    this.props.height_feet +
                     ' ft ' +
-                    this.state.height_inches +
+                    this.props.height_inches +
                     ' in'
                   }
                 />
@@ -204,19 +181,19 @@ export default class Profile extends Component {
                   editable={false}
                   pointerEvents={'none'}
                   label={'Weight'}
-                  value={this.state.weight}
+                  value={this.props.weight}
                 />
               </TouchableOpacity>
-              <View style={{ padding: 20, alignItems: 'center' }}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.props.navigator.pop()}
-                >
-                  <Text style={styles.text}>Submit</Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </ScrollView>
+        </View>
+        <View style={styles.submitWrapper}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.props.exitModal}
+          >
+            <Text style={styles.text}>Submit</Text>
+          </TouchableOpacity>
         </View>
         <Modal
           isVisible={this.state.modalID == HEIGHT_ID}
@@ -243,10 +220,9 @@ export default class Profile extends Component {
             <View style={styles.pickerWrapper}>
               <Picker
                 style={styles.picker}
-                selectedValue={this.state.height_feet}
+                selectedValue={this.props.height_feet}
                 onValueChange={itemValue => {
-                  asyncSettingUpdate('height_feet', itemValue);
-                  this.setState({ height_feet: itemValue });
+                  this.props.settingsUpdate('height_feet', itemValue);
                 }}
               >
                 <Picker.Item label="4" value="4" />
@@ -258,10 +234,9 @@ export default class Profile extends Component {
               <View style={{ marginLeft: 40 }} />
               <Picker
                 style={styles.picker}
-                selectedValue={this.state.height_inches}
+                selectedValue={this.props.height_inches}
                 onValueChange={itemValue => {
-                  asyncSettingUpdate('height_inches', itemValue);
-                  this.setState({ height_inches: itemValue });
+                  this.props.settingsUpdate('height_inches', itemValue);
                 }}
               >
                 <Picker.Item label="1" value="1" />
@@ -317,8 +292,7 @@ export default class Profile extends Component {
               style={{ height: 75, fontSize: 35 }}
               placeholder="Enter Weight in lbs"
               onChangeText={weight => {
-                asyncSettingUpdate('weight', weight);
-                this.setState({ weight: weight + ' lbs' });
+                this.props.settingsUpdate('weight', weight);
               }}
             />
           </KeyboardAvoidingView>
@@ -355,8 +329,10 @@ export default class Profile extends Component {
               style={{ height: 44 }}
               itemStyle={{ height: 44 }}
               mode="date"
-              date={this.state.birthday}
-              onDateChange={this.setDate}
+              date={this.props.birthday}
+              onDateChange={value => {
+                this.props.settingsUpdate('birthday', value);
+              }}
             />
           </View>
         </Modal>
@@ -369,13 +345,16 @@ export default class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
+  form: {
+    flex: 0.75
+  },
+  headerWrapper: {
+    flex: 0.25,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   pickerLabel: {
     fontSize: 23
-  },
-  profileHeader: {
-    marginTop: 20,
-    backgroundColor: '#ffffff',
-    alignItems: 'center'
   },
   profileHeaderSubText: {
     fontSize: 15,
@@ -387,7 +366,10 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    borderRadius: 20
   },
   avatar: {
     height: 100,
@@ -456,5 +438,18 @@ const styles = StyleSheet.create({
   profileContainerStyles: {
     alignItems: 'center',
     justifyContent: 'space-between'
+  },
+  submitWrapper: {
+    padding: 20,
+    alignItems: 'center'
+  },
+  menuImageStyle: {
+    width: 30,
+    height: 30
+  },
+  menuButtonWrapper: {
+    padding: 15,
+    position: 'absolute',
+    left: 0
   }
 });

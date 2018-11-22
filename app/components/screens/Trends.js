@@ -330,9 +330,14 @@ export default class Trends extends React.Component {
         />
         <View style={styles.header}>
           <Text style={styles.headerText}>{this.getTitle()}</Text>
-          <TouchableOpacity style={styles.menuButtonWrapper} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.menuButtonWrapper}
+            onPress={() => {
+              this.props.navigator.pop();
+            }}
+          >
             <Image
-              source={IMAGES.export}
+              source={IMAGES.headerBack}
               style={styles.menuImageStyle}
               resizeMode={'contain'}
             />
@@ -709,6 +714,6 @@ const styles = StyleSheet.create({
   menuButtonWrapper: {
     padding: 10,
     position: 'absolute',
-    right: 0
+    left: 0
   }
 });

@@ -13,18 +13,18 @@ import {
   Picker,
   NavigatorIOS
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { sendMail } from '../Mail/MailController';
 import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
-import { StackNavigator } from 'react-navigation';
+
 import Profile from './EditProfile';
 import Trends from './Trends';
 import { _mailFunc } from '../../mailUtil/mailUtil.js';
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase,
-  pullSymptomForGraphs,
   pullAllSymptoms
 } from '../../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
@@ -44,16 +44,49 @@ class Settings extends Component {
       weight: '',
       height_feet: '5',
       height_inches: '8',
-      height: 'Select',
+      height: '5' + ' ft ' + '8' + ' in',
       icon: 0,
       email: 'navin@gmail.com',
-      choosingAvatar: false,
-      touchID: false,
-      quickLog: false
+      isEditVisible: false
     };
+  }
 
-    //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
+  settingsUpdate(setting, value) {
+    switch (setting) {
+      case 'birthday':
+        this.setState({ birthday: value });
+        console.log('setting birthday state');
+        break;
+      case 'name':
+        this.setState({ name: value });
+        break;
+      case 'weight':
+        this.setState({ weight: value + ' lbs' });
+        break;
+      case 'height_feet':
+        this.setState({
+          height_feet: value,
+          height: value + ' ft ' + this.state.height_inches + ' in'
+        });
+        break;
+      case 'height_inches':
+        this.setState({
+          height_inches: value,
+          height: this.state.height_feet + ' ft ' + value + ' in'
+        });
+        break;
+      case 'icon':
+        this.setState({ icon: value });
+        break;
+      case 'email':
+        this.setState({ email: value });
+        break;
+    }
 
+    asyncSettingUpdate(setting, value);
+  }
+
+  componentDidMount() {
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -110,10 +143,10 @@ class Settings extends Component {
               titleInfo={'Edit' + '\n' + 'Profile'}
               titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
               onPress={() => {
-                this.props.navigator.push(ProfileRoute);
+                this.setState({ isEditVisible: true });
               }}
             />
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+            <SettingsList.Header headerStyle={{ marginTop: 10 }} />
             <SettingsList.Item
               icon={
                 <Image
@@ -158,20 +191,37 @@ class Settings extends Component {
                   style={styles.imageStyle}
                   height={60}
                   resizeMode="contain"
-                  source={IMAGES.faq}
+                  source={IMAGES.exportcsv}
                 />
               }
-              title="Quick Log"
-              title="FAQ"
+              title="Export Data"
               onPress={() => {
-                pullAllSymptoms(e => {
-                  console.log('***********' + e);
-                  _mailFunc([{ price: '500$' }]);
-                });
+                console.log('INSERT MAIL FUNC');
               }}
             />
           </SettingsList>
         </View>
+        <Modal
+          isVisible={this.state.isEditVisible}
+          style={styles.editProfileWrapper}
+        >
+          <Profile
+            exitModal={() => {
+              this.setState({ isEditVisible: false });
+            }}
+            settingsUpdate={(setting, value) => {
+              console.log('entered settings update');
+              this.settingsUpdate(setting, value);
+            }}
+            birthday={this.state.birthday}
+            icon={this.state.icon}
+            name={this.state.name}
+            height_feet={this.state.height_feet}
+            height_inches={this.state.height_inches}
+            height={this.state.height}
+            weight={this.state.weight}
+          />
+        </Modal>
       </View>
     );
   }
@@ -190,6 +240,11 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 7
   },
+  editProfileWrapper: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 10
+  },
   imageStyle: {
     marginLeft: 5,
     marginTop: 5,
@@ -204,7 +259,8 @@ const styles = StyleSheet.create({
   }
 });
 const ProfileRoute = {
-  component: Profile
+  component: Profile,
+  passProps: { myProp: 'foo' }
 };
 
 const TrendsRoute = {

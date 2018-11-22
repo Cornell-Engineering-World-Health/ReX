@@ -84,7 +84,8 @@ export const IMAGES = {
   ten: require('../Resources/Images/10.png'),
   checkmarkWhite: require('../Resources/Images/checkmarkWhite.png'),
   headerBack: require('../Resources/Images/header-back.png'),
-  smalldot: require('../Resources/Images/smalldot.png')
+  smalldot: require('../Resources/Images/smalldot.png'),
+  exportcsv: require('../Resources/Images/exportcsv.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,
