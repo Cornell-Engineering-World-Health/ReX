@@ -84,6 +84,7 @@ export const IMAGES = {
   ten: require('../Resources/Images/10.png'),
   checkmarkWhite: require('../Resources/Images/checkmarkWhite.png'),
   headerBack: require('../Resources/Images/header-back.png'),
+  smalldot: require('../Resources/Images/smalldot.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -255,16 +256,16 @@ export default (constants = {
 allows for iteration access to all of the symptoms
 */
 export const symptoms = [
+  constants.BACKPAIN,
   constants.BLURRED_VISION,
-  constants.HEADACHE,
   constants.DIZZINESS,
-  constants.NECKPAIN,
+  constants.ELBOWPAIN,
+  constants.FOOTPAIN,
+  constants.HEADACHE,
+  constants.HEARTPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,
-  constants.FOOTPAIN,
-  constants.BACKPAIN,
-  constants.ELBOWPAIN,
-  constants.HEARTPAIN,
+  constants.NECKPAIN,
   constants.STOMACHPAIN
 ];
 

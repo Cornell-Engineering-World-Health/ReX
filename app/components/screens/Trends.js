@@ -1,9 +1,18 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Picker } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Picker,
+  Image
+} from 'react-native';
 import Modal from 'react-native-modal';
 import BarChart from '../Charts/BarChart';
-import constants, { symptoms } from '../Resources/constants.js';
+import constants, { symptoms, IMAGES, COLOR } from '../Resources/constants.js';
 import moment from 'moment';
+import { pullSymptomForGraphs } from '../../databaseUtil/databaseUtil';
+import { LinearGradient } from 'expo';
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -21,9 +30,9 @@ List of potential modes.
 
 Modes are defined as data that can be graphed over time.
 
-For now, only Frequency and Duration are allowed.
+For now, only Frequency and Intensity are allowed.
 */
-const MODES = ['Frequency', 'Duration'];
+const MODES = ['Frequency', 'Intensity'];
 
 /*
 Used as identifying which Modal is visisble.
@@ -54,7 +63,9 @@ export default class Trends extends React.Component {
       selectedMode: MODES[0], // start with 'Frequency'
       modalVisible: '', //string
       selectedView: VIEWS[0], // string corresponding to which view to use (month / year)
-      formattedData: [0] //array of int
+      formattedData: [0], //array of int
+      averageIntensity: 0,
+      noData: true // boolean, true if all datapoints are 0
     };
   }
 
@@ -129,15 +140,32 @@ export default class Trends extends React.Component {
   }
 
   _setData() {
+    // //Test
+    // this._setFakeData();
+    // return;
+    // //End Test
     if (this.state.selectedView == VIEWS[0]) {
-      //VIEWS[0] = month view
-      //get data from database based on selected year / month
+      /*need month, symptom, and callback*/
+      let month = new Date(this.state.selectedYear, this.state.selectedMonth);
+      pullSymptomForGraphs(
+        month,
+        this.state.selectedSymptom,
+        unformattedData => {
+          this._setDataHelperMonth(unformattedData);
+        }
+      );
+    } else if (this.state.selectedView == VIEWS[1]) {
+    }
+  }
 
-      //TEMPORARY TEST
+  _setFakeData() {
+    //TEMPORARY TEST
+    if (this.state.selectedView == VIEWS[0]) {
       let daysInMonth = moment(
         this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
         'YYYY-MM'
       ).daysInMonth();
+      console.log('days in month trends', daysInMonth);
       let d = [];
       for (var x = 0; x < daysInMonth; x++) {
         d.push(Math.random() * 10);
@@ -155,6 +183,64 @@ export default class Trends extends React.Component {
       }
       this.setState({ formattedData: d });
     }
+  }
+
+  /*
+    Formats the data retrieved from the database into a data array of ints, adding 0
+    for days that have no symptoms
+  */
+  _setDataHelperMonth(unformattedData) {
+    //console.log(unformattedData, 'UNFORMATTED DATA');
+
+    //we want to loop over the number of days in the month and add 0 to empty days
+    let daysInMonth = moment(
+      this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
+      'YYYY-MM'
+    ).daysInMonth();
+
+    let hasData = false;
+    let formattedData = [];
+
+    //add a padding 0 to the month if needed
+    let month =
+      this.state.selectedMonth < 9
+        ? '0' + (this.state.selectedMonth + 1)
+        : this.state.selectedMonth + 1;
+
+    let year = this.state.selectedYear;
+
+    let totalIntensity = 0;
+    let totalDays = 0;
+
+    for (var x = 1; x <= daysInMonth; x++) {
+      //add padding 0 to day
+      let day = x < 10 ? '0' + x : x;
+
+      let dayData = unformattedData[year + '-' + month + '-' + day];
+      if (dayData != undefined) {
+        hasData = true;
+        totalDays += 1;
+        totalIntensity += dayData.total_intensity / dayData.frequency;
+
+        let value = 0;
+        if (this.state.selectedMode == MODES[0]) {
+          //frequency
+          value = dayData.frequency;
+        } else if (this.state.selectedMode == MODES[1]) {
+          //average intensity
+          value = dayData.total_intensity / dayData.frequency;
+        }
+        formattedData.push(value);
+      } else {
+        formattedData.push(0);
+      }
+    }
+    console.log(formattedData, 'FORMATTED DATA');
+    this.setState({
+      formattedData: formattedData,
+      averageIntensity: totalIntensity / totalDays,
+      noData: !hasData
+    });
   }
 
   /*
@@ -232,8 +318,25 @@ export default class Trends extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <LinearGradient
+          colors={[COLOR.purple + '80', 'white']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+          }}
+        />
         <View style={styles.header}>
           <Text style={styles.headerText}>{this.getTitle()}</Text>
+          <TouchableOpacity style={styles.menuButtonWrapper} onPress={() => {}}>
+            <Image
+              source={IMAGES.export}
+              style={styles.menuImageStyle}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
           {/*<Text style={styles.headerDateText}>{this.getFullDate()}</Text>*/}
         </View>
         <View style={styles.footer}>
@@ -346,18 +449,25 @@ export default class Trends extends React.Component {
           </ModalPicker>
         </View>
         <View style={styles.graphContainer}>
-          {
-            <BarChart
-              view={this.state.selectedView}
-              month={this.state.selectedMonth}
-              year={this.state.selectedYear}
-              data={this.state.formattedData}
-            />
-          }
+          <BarChart
+            view={this.state.selectedView}
+            month={this.state.selectedMonth}
+            year={this.state.selectedYear}
+            data={this.state.formattedData}
+            noData={this.state.noData}
+          />
         </View>
         <View style={styles.extraInfo}>
           <Info title={'Average Duration'} body={2 + ''} footer={'Hours'} />
-          <Info title={'Average Intensity'} body={6} footer={'/10'} />
+          <Info
+            title={'Average Intensity'}
+            body={
+              this.state.averageIntensity
+                ? Math.round(this.state.averageIntensity)
+                : 0
+            }
+            footer={'/10'}
+          />
         </View>
       </View>
     );
@@ -374,7 +484,7 @@ body (String)
 const Info = props => {
   return (
     <View style={styles.infoCardWrapper}>
-      <View style={[styles.infoCardContainer, styles.lightShadow]}>
+      <View style={[styles.infoCardContainer, styles.darkShadow]}>
         <Text style={styles.infoCardTitle}>{props.title}</Text>
         <View>
           <Text style={styles.infoCardBody}>{props.body}</Text>
@@ -442,25 +552,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   header: {
-    flex: 0.1,
-
+    flex: 0.14,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center'
   },
   graphContainer: {
-    flex: 0.5
+    flex: 0.56
   },
   extraInfo: {
-    flex: 0.25,
+    flex: 0.2,
     flexDirection: 'row'
   },
   footer: {
-    flex: 0.15,
+    flex: 0.09,
     flexDirection: 'row'
   },
   headerText: {
     textAlign: 'center',
-    fontSize: 35,
-    fontWeight: '100',
+    fontSize: 30,
+    fontWeight: '200',
     color: '#000'
   },
   headerDateText: {
@@ -477,7 +588,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'space-around',
     alignItems: 'stretch',
-    flex: 1
+    flex: 1,
+    padding: 5
   },
   infoCardTitle: {
     textAlign: 'center',
@@ -486,7 +598,7 @@ const styles = StyleSheet.create({
   },
   infoCardBody: {
     textAlign: 'center',
-    fontSize: 50,
+    fontSize: 45,
     fontWeight: '100'
   },
   infoCardFooter: {
@@ -504,13 +616,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#e8e8e8',
     padding: 15,
-    flex: 0.5,
-    backgroundColor: '#ffffff'
+    flex: 1
   },
   pickerButtonText: {
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: '300'
+    fontWeight: '300',
+    color: 'black'
   },
   modalWrapper: {
     justifyContent: 'flex-end',
@@ -589,5 +701,14 @@ const styles = StyleSheet.create({
     flex: 0.2,
     justifyContent: 'center',
     paddingTop: 15
+  },
+  menuImageStyle: {
+    width: 30,
+    height: 30
+  },
+  menuButtonWrapper: {
+    padding: 10,
+    position: 'absolute',
+    right: 0
   }
 });

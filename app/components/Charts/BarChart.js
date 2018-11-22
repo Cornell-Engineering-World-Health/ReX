@@ -9,6 +9,36 @@ import {
 import { BarChart, YAxis, Grid } from 'react-native-svg-charts';
 import moment from 'moment';
 import constants, { COLOR } from '../Resources/constants.js';
+import { G, Line } from 'react-native-svg';
+
+/*Dual gridlines*/
+const CustomGrid = ({ x, y, data, ticks }) => (
+  <G>
+    {// Horizontal grid
+    ticks.map(tick => (
+      <Line
+        key={tick}
+        x1={'0%'}
+        x2={'100%'}
+        y1={y(tick)}
+        y2={y(tick)}
+        stroke={'rgba(0,0,0,0.1)'}
+      />
+    ))}
+    {// Vertical grid
+    data.map((_, index) => (
+      <Line
+        key={index}
+        y1={'0%'}
+        y2={'100%'}
+        x1={x(index)}
+        x2={x(index)}
+        stroke={'rgba(0,0,0,0.1)'}
+      />
+    ))}
+  </G>
+);
+
 //Gives months in the form 'JAN', 'FEB' etc
 const SHORTENED_MONTHS = constants.SHORTENED_MONTH;
 
@@ -46,15 +76,24 @@ export default class Bar extends React.Component {
     ).daysInMonth();
     let interval = 5;
     let width = screenWidth * 0.95 / daysInMonth * interval;
-    for (var x = 0; x < daysInMonth; x++) {
+
+    if (this.props.data) {
+      console.log(this.props.data.length);
+    }
+
+    for (var x = 0; x <= daysInMonth; x += interval) {
       //  {x % 5 == 0 ? x : ''}
-      if (x % interval == 0) {
-        xAxis.push(
-          <View key={x} style={{ width: width, height: 10 }}>
-            <Text style={styles.xAxisNumbers}>{x + 1}</Text>
-          </View>
-        );
-      }
+      xAxis.push(
+        <View
+          key={x}
+          style={{
+            width: width,
+            height: 20
+          }}
+        >
+          <Text style={styles.xAxisNumbers}>{x + 1}</Text>
+        </View>
+      );
     }
     return xAxis;
   }
@@ -77,31 +116,42 @@ export default class Bar extends React.Component {
 
   render() {
     const contentInset = { top: 20, bottom: 10 };
+
+    const width = screenWidth * 0.05;
     return (
       <View style={styles.wrapper}>
         <View style={styles.container}>
+          {this.props.noData ? (
+            <View style={styles.noDataOverlay}>
+              <Text style={styles.noDataText}>Nothing Logged!</Text>
+            </View>
+          ) : null}
           <YAxis
             data={this.props.data}
-            contentInset={contentInset}
+            contentInset={{ top: 20, bottom: 20 }}
             svg={{
               fill: 'grey',
-              fontSize: 10
+              fontSize: 12
             }}
-            numberOfTicks={10}
+            style={{ width: width }}
+            min={0}
           />
           <BarChart
+            showGrid
+            xMax={this.props.data.length}
+            xMin={0}
             animate
             style={{
               width: screenWidth * 0.95
             }}
             data={this.props.data}
             svg={{
-              stroke: COLOR.cyan,
               fill: '#474747'
             }}
             contentInset={contentInset}
+            gridMin={0}
           >
-            <Grid />
+            {this.props.noData ? null : <CustomGrid belowChart={true} />}
           </BarChart>
         </View>
         <View style={styles.xAxis}>{this._renderXAxis()}</View>
@@ -127,6 +177,20 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   xAxisNumbers: {
-    fontSize: 12
+    fontSize: 12,
+    fontWeight: '100'
+  },
+  noDataOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  noDataText: {
+    fontSize: 35,
+    fontWeight: '200'
   }
 });
