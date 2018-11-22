@@ -9,7 +9,7 @@ import {
   Animated
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants, { IMAGES, COLOR } from '../Resources/constants';
+import constants, { IMAGES, COLOR } from '../../resources/constants';
 
 const CHECKED_COLOR = COLOR.medicineCardChecked;
 const UNCHECKED_COLOR = COLOR.medicineCardUnchecked;

@@ -1,27 +1,29 @@
 import React from 'react';
+import { View } from 'react-native';
 import ChooseLogScreen from './ChooseLogScreen';
 import LogFormScreen from './LogFormScreen';
 import BodySelectScreen from './BodySelectScreen';
 import { StackNavigator } from 'react-navigation';
-import {
-  View
-} from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
-import { COLOR, IMAGES} from '../Resources/constants';
+import { COLOR, IMAGES } from '../resources/constants';
 
 export default class Log extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
-  errorOnSubmit(){
-    this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
-    'Please add any missing information')
+  errorOnSubmit() {
+    this.dropdown.close();
+    this.dropdown.alertWithType(
+      'custom',
+      'Form Incomplete',
+      'Please add any missing information'
+    );
   }
 
-  successOnSubmit(){
-    this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
-    'New Medicine Added!', '')
+  successOnSubmit() {
+    this.dropdown_success.close();
+    this.dropdown_success.alertWithType('custom', 'New Medicine Added!', '');
   }
 
   render() {
@@ -31,14 +33,14 @@ export default class Log extends React.Component {
         navigationOptions: {
           title: 'Select Region',
           backgroundColor: 'white',
-          header: false,
+          header: false
         }
       },
       Choose: {
         screen: ChooseLogScreen,
         navigationOptions: {
           title: 'Choose Log Type',
-          header: false,
+          header: false
         }
       },
       Form: {
@@ -51,7 +53,7 @@ export default class Log extends React.Component {
       }
     });
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <LogSN
           screenProps={{
             errorOnSubmit: this.errorOnSubmit.bind(this),
@@ -59,19 +61,19 @@ export default class Log extends React.Component {
           }}
         />
         <DropdownAlert
-          ref={ref => this.dropdown = ref}
+          ref={ref => (this.dropdown = ref)}
           closeInterval={2000}
           imageSrc={IMAGES.close_white}
           containerStyle={{
-            backgroundColor: COLOR.red,
+            backgroundColor: COLOR.red
           }}
         />
         <DropdownAlert
-          ref={ref => this.dropdown_success = ref}
+          ref={ref => (this.dropdown_success = ref)}
           closeInterval={2000}
           imageSrc={IMAGES.checkmarkWhite}
           containerStyle={{
-            backgroundColor: COLOR.cyan,
+            backgroundColor: COLOR.cyan
           }}
         />
       </View>

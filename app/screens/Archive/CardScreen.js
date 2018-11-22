@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../Card/Card';
-import constants, { IMAGES } from '../Resources/constants';
+import constants, { IMAGES } from '../../resources/constants';
 export default class CardScreen extends React.Component {
   render() {
     return (

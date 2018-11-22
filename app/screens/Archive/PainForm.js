@@ -15,7 +15,7 @@ import Swipeout from 'react-native-swipeout';
 import Card from '../Card/Card';
 import HeadacheForm from '../screens/HeadacheForm';
 import BackPainForm from '../screens/BackPainForm';
-import { IMAGES } from '../Resources/constants';
+import { IMAGES } from '../../resources/constants';
 
 const MAIN_FORM = 'mainform';
 const HEADACHE_FORM = 'headform';

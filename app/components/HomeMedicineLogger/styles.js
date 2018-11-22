@@ -1,35 +1,35 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import {COLOR} from '../Resources/constants';
+import { COLOR } from '../../resources/constants';
 
 const width = Dimensions.get('window').width;
-const circleWidth = width*.8;
+const circleWidth = width * 0.8;
 const height = Dimensions.get('window').height;
 const borderW = 3;
 
 export default StyleSheet.create({
   medicineViewContainer: {
     height: circleWidth,
-    width: circleWidth,
+    width: circleWidth
   },
   medicineViewRow: {
     flexDirection: 'row'
   },
   medicineButton: {
-    width: circleWidth/2,
-    height: circleWidth/2,
-    margin: 0,
+    width: circleWidth / 2,
+    height: circleWidth / 2,
+    margin: 0
   },
-  buttonContent:{
+  buttonContent: {
     position: 'absolute',
     alignItems: 'center',
-    width: circleWidth/2*.5, 
-    height: circleWidth/2*.8,
+    width: circleWidth / 2 * 0.5,
+    height: circleWidth / 2 * 0.8
   },
   imageStyle: {
-    width: circleWidth/2*.5,
-    height: circleWidth/2*.7,
+    width: circleWidth / 2 * 0.5,
+    height: circleWidth / 2 * 0.7
   },
-  topLeftQuadrant:{
+  topLeftQuadrant: {
     borderTopLeftRadius: circleWidth,
     borderWidth: borderW,
     borderRightWidth: 1,
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     borderTopColor: COLOR.red,
     borderLeftColor: COLOR.red
   },
-  topRightQuadrant:{
+  topRightQuadrant: {
     borderTopRightRadius: circleWidth,
     borderWidth: borderW,
     borderLeftWidth: 1,
@@ -47,9 +47,9 @@ export default StyleSheet.create({
     borderTopColor: COLOR.cyan,
     borderRightColor: COLOR.cyan,
     borderBottomColor: COLOR.PrimaryGray,
-    borderLeftColor: COLOR.PrimaryGray,
+    borderLeftColor: COLOR.PrimaryGray
   },
-  bottomLeftQuadrant:{
+  bottomLeftQuadrant: {
     borderBottomLeftRadius: circleWidth,
     borderWidth: borderW,
     borderRightWidth: 1,
@@ -59,7 +59,7 @@ export default StyleSheet.create({
     borderBottomColor: COLOR.purple,
     borderLeftColor: COLOR.purple
   },
-  bottomRightQuadrant:{
+  bottomRightQuadrant: {
     borderBottomRightRadius: circleWidth,
     borderWidth: borderW,
     borderLeftWidth: 1,
@@ -72,6 +72,6 @@ export default StyleSheet.create({
   amountText: {
     color: COLOR.PrimaryGray,
     fontSize: 22,
-    top: -18,
-  },
+    top: -18
+  }
 });

@@ -3,21 +3,14 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  Header,
-  ScrollView,
   TouchableOpacity,
-  Picker,
-  Button,
   ImageBackground,
   Dimensions
 } from 'react-native';
 import LogFormScreen from './LogFormScreen';
-import { StackNavigator } from 'react-navigation';
-import Database from '../../Database';
-import { BODY_PARTS, COLOR, IMAGES } from '../Resources/constants';
-import ButtonWithImage from '../Button/ButtonWithImage';
-import { pullSettingsFromDatabase } from '../../databaseUtil/databaseUtil';
+import Database from '../Database';
+import { BODY_PARTS, COLOR, IMAGES } from '../resources/constants';
+import { pullSettingsFromDatabase } from '../databaseUtil/databaseUtil';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const opacity = '30';

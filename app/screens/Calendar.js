@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  Dimensions,
-  ActivityIndicator,
-  FlatList,
-  StyleSheet
-} from 'react-native';
-import { itemWidth } from '../Calendar/styles/SliderEntry.style';
-import { SliderEntry } from '../Calendar';
-import Agenda from '../Agenda/Agenda';
+import { View, Text, Dimensions, FlatList, StyleSheet } from 'react-native';
+import { itemWidth } from '../components/Calendar/styles/SliderEntry.style';
+import { SliderEntry } from '../components/Calendar';
+import Agenda from '../components/Agenda/Agenda';
 import Moment from 'moment';
 import {
   pullFromDataBase,
   pullAgendaFromDatabase,
   asyncDeleteEvent
-} from '../../databaseUtil/databaseUtil';
-import constants, { COLOR } from '../Resources/constants';
-import Modal from "react-native-modal"
-import LogFormScreen from "../screens/LogFormScreen"
+} from '../databaseUtil/databaseUtil';
+import constants, { COLOR } from '../resources/constants';
+import Modal from 'react-native-modal';
+import LogFormScreen from './LogFormScreen';
 
 let t = new Date();
 let numOfMonths = (t.getFullYear() - 1969) * 12;
@@ -115,9 +108,9 @@ class Calendar extends Component {
   };
 
   _refreshCalendar = () => {
-    console.log(this.currSymptomDisplay)
+    console.log(this.currSymptomDisplay);
     this.calendarRef.initVisualization(this.currSymptomDisplay);
-  }
+  };
 
   _renderItem = ({ item }) => {
     return (
@@ -282,12 +275,12 @@ class Calendar extends Component {
   }
 
   toggleModal = (timestamp, logtype) => {
-    console.log('hereeee')
+    console.log('hereeee');
     this.setState({
       isModalVisible: !this.state.isModalVisible,
       modalTimestamp: timestamp,
       modalLogType: logtype
-     })
+    });
   };
 
   render() {
@@ -338,10 +331,11 @@ class Calendar extends Component {
           />
         </View>
         <Modal isVisible={this.state.isModalVisible} style={styles.modal}>
-           <LogFormScreen
-              log_type={this.state.modalLogType}
-              on_finish={this.toggleModal}
-              timestamp={this.state.modalTimestamp}/>
+          <LogFormScreen
+            log_type={this.state.modalLogType}
+            on_finish={this.toggleModal}
+            timestamp={this.state.modalTimestamp}
+          />
         </Modal>
       </View>
     );

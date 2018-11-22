@@ -21,7 +21,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
 );
 import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import { Calendar } from 'react-native-calendars';
-import { COLOR, IMAGES} from '../Resources/constants';
+import { COLOR, IMAGES} from '../../resources/constants';
 
 const CALENDAR_ID = 'CALENDAR'
 const TIME_ID = 'TIME'

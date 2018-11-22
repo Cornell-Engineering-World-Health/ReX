@@ -9,14 +9,14 @@ import {
   TouchableHighlight
 } from 'react-native';
 import ButtonWithImage from '../Button/ButtonWithImage';
-import constants, { IMAGES } from '../Resources/constants';
-import Home from '../screens/HomePage';
-import MedicineView from '../screens/MedicinePage';
-import Settings from '../screens/Settings';
-import Calendar from '../screens/Calendar';
-import ChooseLogScreen from '../screens/Log';
+import constants, { IMAGES } from '../../resources/constants';
+import Home from '../../screens/HomePage';
+import MedicineView from '../../screens/MedicinePage';
+import Settings from '../../screens/Settings';
+import Calendar from '../../screens/Calendar';
+import ChooseLogScreen from '../../screens/Log';
 import PushController from '../PushController/PushController';
-import SurveyModal from '../screens/SurveyModal';
+import SurveyModal from '../../screens/SurveyModal';
 import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';

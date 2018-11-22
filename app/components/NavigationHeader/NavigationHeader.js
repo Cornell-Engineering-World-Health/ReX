@@ -19,7 +19,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 import { Calendar } from 'react-native-calendars';
-import { COLOR, IMAGES } from '../Resources/constants';
+import { COLOR, IMAGES } from '../../resources/constants';
 
 /**
 * Emulates the StackNavigator header.

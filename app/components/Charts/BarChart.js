@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { BarChart, YAxis, Grid } from 'react-native-svg-charts';
 import moment from 'moment';
-import constants, { COLOR } from '../Resources/constants.js';
+import constants, { COLOR } from '../../resources/constants.js';
 import { G, Line } from 'react-native-svg';
 
 /*Dual gridlines*/

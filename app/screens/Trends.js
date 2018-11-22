@@ -8,10 +8,10 @@ import {
   Image
 } from 'react-native';
 import Modal from 'react-native-modal';
-import BarChart from '../Charts/BarChart';
-import constants, { symptoms, IMAGES, COLOR } from '../Resources/constants.js';
+import BarChart from '../components/Charts/BarChart';
+import constants, { symptoms, IMAGES, COLOR } from '../resources/constants.js';
 import moment from 'moment';
-import { pullSymptomForGraphs } from '../../databaseUtil/databaseUtil';
+import { pullSymptomForGraphs } from '../databaseUtil/databaseUtil';
 import { LinearGradient } from 'expo';
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;

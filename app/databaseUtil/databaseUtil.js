@@ -1,6 +1,6 @@
 import Database from '../Database';
 import Moment from 'moment';
-import constants, { getCardData } from '../components/Resources/constants';
+import constants, { getCardData } from '../resources/constants';
 
 export function createTables() {
   console.log('creating tables');

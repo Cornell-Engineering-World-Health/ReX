@@ -8,15 +8,11 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import DoseCard from '../Card/DoseCard';
-import { LinearGradient } from 'expo';
-import { StackNavigator } from 'react-navigation';
-import GestureRecognizer, {
-  swipeDirections
-} from 'react-native-swipe-gestures';
-import { pullMedicineFromDatabase } from '../../databaseUtil/databaseUtil';
+import DoseCard from '../components/Card/DoseCard';
+import { pullMedicineFromDatabase } from '../databaseUtil/databaseUtil';
+import { IMAGES } from '../resources/constants';
 import Moment from 'moment';
-import LogFormScreen from '../screens/LogFormScreen';
+import LogFormScreen from './LogFormScreen';
 
 var dummy_data = [
   {
@@ -188,7 +184,7 @@ class CoolerMedicineView extends React.Component {
               >
                 <Image
                   style={{ height: 50, width: 50 }}
-                  source={require('../Resources/Images/eashanplus.png')}
+                  source={IMAGES.plusSignMinimal}
                 />
               </TouchableOpacity>
             </View>

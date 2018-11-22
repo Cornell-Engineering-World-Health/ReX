@@ -1,25 +1,28 @@
 import React from 'react';
-import {View} from 'react-native'
+import { View } from 'react-native';
 import MedicineView from './MedicineView';
-import MedicineAddForm from '../MedicineAddForm/MedicineAddForm';
+import MedicineAddForm from '../components/MedicineAddForm/MedicineAddForm';
 import { StackNavigator } from 'react-navigation';
 import DropdownAlert from 'react-native-dropdownalert';
-import { COLOR, IMAGES} from '../Resources/constants';
-
+import { COLOR, IMAGES } from '../resources/constants';
 
 export default class MedicinePage extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
-  errorOnSubmit(){
-    this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
-    'Please add any missing information')
+  errorOnSubmit() {
+    this.dropdown.close();
+    this.dropdown.alertWithType(
+      'custom',
+      'Form Incomplete',
+      'Please add any missing information'
+    );
   }
 
-  successOnSubmit(){
-    this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
-    'New Medicine Added!', '')
+  successOnSubmit() {
+    this.dropdown_success.close();
+    this.dropdown_success.alertWithType('custom', 'New Medicine Added!', '');
   }
 
   render() {
@@ -36,12 +39,12 @@ export default class MedicinePage extends React.Component {
         screen: MedicineAddForm,
         navigationOptions: {
           title: 'Add a New Medication',
-          header: false,
+          header: false
         }
       }
     });
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <MedicinePageSN
           screenProps={{
             errorOnSubmit: this.errorOnSubmit.bind(this),
@@ -49,19 +52,19 @@ export default class MedicinePage extends React.Component {
           }}
         />
         <DropdownAlert
-          ref={ref => this.dropdown = ref}
+          ref={ref => (this.dropdown = ref)}
           closeInterval={2000}
           imageSrc={IMAGES.close_white}
           containerStyle={{
-            backgroundColor: COLOR.red,
+            backgroundColor: COLOR.red
           }}
         />
         <DropdownAlert
-          ref={ref => this.dropdown_success = ref}
+          ref={ref => (this.dropdown_success = ref)}
           closeInterval={2000}
           imageSrc={IMAGES.checkmarkWhite}
           containerStyle={{
-            backgroundColor: COLOR.cyan,
+            backgroundColor: COLOR.cyan
           }}
         />
       </View>

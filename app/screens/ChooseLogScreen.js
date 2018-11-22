@@ -4,22 +4,20 @@ import {
   Text,
   View,
   Image,
-  Header,
   ScrollView,
   TouchableOpacity,
   Picker,
-  Button,
   ImageBackground
 } from 'react-native';
-import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
-import TextInputType from '../LogInputTypes/TextInputType';
-import PickerInputType from '../LogInputTypes/PickerInputType';
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
-import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
+import ScaleSlideInputType from '../components/LogInputTypes/ScaleSlideInputType';
+import TextInputType from '../components/LogInputTypes/TextInputType';
+import PickerInputType from '../components/LogInputTypes/PickerInputType';
+import NumericalPickerInputType from '../components/LogInputTypes/NumericalPickerInputType';
+import ChecklistInputType from '../components/LogInputTypes/ChecklistInputType';
 import LogFormScreen from './LogFormScreen';
 import { StackNavigator } from 'react-navigation';
-import Database from '../../Database';
-import { getSource, IMAGES } from '../Resources/constants';
+import Database from '../Database';
+import { getSource, IMAGES } from '../resources/constants';
 
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
@@ -83,9 +81,8 @@ export default class ChooseLogScreen extends React.Component {
                         log_name: this.state.log_types[key],
                         onLog: this.returnToCal.bind(this),
                         log_type: this.state.event_ids[key]
-                      })
-                    }
-                    }
+                      });
+                    }}
                   >
                     <Text style={styles.log_button_text}>{prop}</Text>
                     <Image

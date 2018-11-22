@@ -5,29 +5,21 @@ import {
   View,
   Text,
   Image,
-  FlatList,
-  List,
-  Alert,
-  TextInput,
   TouchableOpacity,
-  Picker,
   NavigatorIOS
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { sendMail } from '../Mail/MailController';
-import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
-
 import Profile from './EditProfile';
 import Trends from './Trends';
-import { _mailFunc } from '../../mailUtil/mailUtil.js';
+import { sendMail } from '../components/Mail/MailController';
+import { _mailFunc } from '../mailUtil/mailUtil.js';
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase,
-  pullAllSymptoms
-} from '../../databaseUtil/databaseUtil';
-import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
+  pullSettingsFromDatabase
+} from '../databaseUtil/databaseUtil';
+import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 class Settings extends Component {
   static propTypes = {

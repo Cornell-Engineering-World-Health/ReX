@@ -10,7 +10,7 @@ import {
   Image,
   TextInput
 } from 'react-native';
-import { COLOR, IMAGES } from '../Resources/constants.js';
+import { COLOR, IMAGES } from '../../resources/constants.js';
 
 const ITEM_HEIGHT = 55;
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(

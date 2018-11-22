@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
-import constants, { IMAGES } from '../Resources/constants';
+import constants, { IMAGES } from '../../resources/constants';
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -21,7 +21,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 import { Calendar } from 'react-native-calendars';
-import { COLOR } from '../Resources/constants';
+import { COLOR } from '../../resources/constants';
 
 /**
 ListViewer is a horizontal scrollview of items of a list.

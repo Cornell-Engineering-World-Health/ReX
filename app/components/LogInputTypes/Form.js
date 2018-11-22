@@ -9,7 +9,7 @@ import {
   Animated
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { COLOR } from '../Resources/constants.js';
+import { COLOR } from '../../resources/constants.js';
 
 export default class Form extends React.Component {
   static propTypes = {

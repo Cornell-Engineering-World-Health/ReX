@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants, { COLOR } from '../Resources/constants';
+import constants, { COLOR } from '../../resources/constants';
 
 const HEIGHT = 75;
 const PADDING = 7;

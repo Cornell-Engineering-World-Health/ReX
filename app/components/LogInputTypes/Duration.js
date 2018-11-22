@@ -10,7 +10,7 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { COLOR, durationTitles } from '../Resources/constants.js';
+import { COLOR, durationTitles } from '../../resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );

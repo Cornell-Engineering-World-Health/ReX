@@ -4,11 +4,8 @@ import {
   StyleSheet,
   View,
   Text,
-  StatusBar,
   Image,
   FlatList,
-  List,
-  Alert,
   TextInput,
   TouchableOpacity,
   DatePickerIOS,
@@ -24,8 +21,8 @@ import moment from 'moment';
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
-} from '../../databaseUtil/databaseUtil';
-import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
+} from '../databaseUtil/databaseUtil';
+import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 const AVATAR_ID = 'avatarID';
 const BIRTHDAY_ID = 'birthdayID';

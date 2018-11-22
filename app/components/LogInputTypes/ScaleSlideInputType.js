@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Slider from 'react-native-slider';
-import { IMAGES, COLOR } from '../Resources/constants';
+import { IMAGES, COLOR } from '../../resources/constants';
 
 const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';

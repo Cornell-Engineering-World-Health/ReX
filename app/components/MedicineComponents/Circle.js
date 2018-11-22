@@ -10,12 +10,12 @@ import {
   Dimensions
 } from 'react-native';
 import React, { Component } from 'react';
-import constants from '../Resources/constants';
+import constants from '../../resources/constants';
 import MedicineCard from '../Card/MedicineCard';
 import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
 import Modal from 'react-native-modal';
-import LogFormScreen from '../screens/LogFormScreen';
+import LogFormScreen from '../../screens/LogFormScreen';
 import { StackNavigator } from 'react-navigation';
 
 class Circle extends Component {
@@ -151,7 +151,7 @@ class Circle extends Component {
           >
             <View style={styles.pie} />
 
-            {/* 
+            {/*
               <PieChart
                 // paddingBottom = {150}
                 sort={(a, b) => 0}

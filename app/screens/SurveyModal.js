@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Modal from 'react-native-modal'
-import SurveyForm from '../Survey/SurveyForm';
-import constants, { IMAGES } from '../Resources/constants';
-import ButtonWithImage from '../Button/ButtonWithImage';
+import Modal from 'react-native-modal';
+import SurveyForm from '../components/Survey/SurveyForm';
+import constants, { IMAGES } from '../resources/constants';
+import ButtonWithImage from '../components/Button/ButtonWithImage';
 
 const styles = StyleSheet.create({
   topSpace: {
@@ -16,42 +16,40 @@ const styles = StyleSheet.create({
 });
 
 class SurveyModal extends Component {
-  static propTypes = {
-
-  };
+  static propTypes = {};
 
   constructor(props) {
     super(props);
 
     this.state = {
-      surveyModalVisible: false,
+      surveyModalVisible: false
     };
   }
 
-
   _toggleSurveyModal() {
-   this.setState({surveyModalVisible: !this.state.surveyModalVisible});
+    this.setState({ surveyModalVisible: !this.state.surveyModalVisible });
   }
 
-
   render() {
-
-
     return (
       <Modal
         animationInTiming={500}
         isVisible={this.state.surveyModalVisible}
-        onBackdropPress={() => {this._toggleSurveyModal()}}
+        onBackdropPress={() => {
+          this._toggleSurveyModal();
+        }}
       >
         <View style={{ flex: 1 }}>
-          <View
-            style={styles.topSpace}
-          />
+          <View style={styles.topSpace} />
           <SurveyForm
-            onSubmit={() => {this._toggleSurveyModal()}}
+            onSubmit={() => {
+              this._toggleSurveyModal();
+            }}
           />
           <ButtonWithImage
-            onPress={() => {this._toggleSurveyModal()}}
+            onPress={() => {
+              this._toggleSurveyModal();
+            }}
             rounded={true}
             width={30}
             height={30}

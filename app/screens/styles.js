@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLOR } from '../Resources/constants';
+import { COLOR } from '../resources/constants';
 
 const width = Dimensions.get('window').width;
 const circleWidth = width * 0.8;
@@ -10,7 +10,7 @@ export default StyleSheet.create({
     height: height - circleWidth - 75,
     marginLeft: 2,
     marginRight: 2,
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   separator: {
     //backgroundColor: '#f2f2f2',
@@ -36,13 +36,13 @@ export default StyleSheet.create({
     fontSize: 28,
     fontWeight: '800'
   },
-  middleMessage:{
+  middleMessage: {
     marginLeft: 20,
     marginRight: 20,
     paddingTop: 20,
-    flex: 1,
+    flex: 1
   },
-  middleMessageText:{
+  middleMessageText: {
     fontSize: 20,
     color: COLOR.PrimaryGray,
     textAlign: 'center'
