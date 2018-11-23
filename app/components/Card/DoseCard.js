@@ -333,7 +333,7 @@ class Card extends PureComponent {
                       </View>
                 </View>
               </TouchableOpacity>
-              <Modal 
+      <Modal 
         isVisible={this.state.modalVisible} 
         style={styles.modalWrapper}
         onBackdropPress= {() => {this.setState({modalVisible: false})}}
@@ -357,8 +357,7 @@ class Card extends PureComponent {
           </View>
 
         </Modal>
-            </View>
-
+      </View>
     );
   }
 }
