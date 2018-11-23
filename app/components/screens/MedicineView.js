@@ -131,25 +131,22 @@ class CoolerMedicineView extends React.Component {
     currentYear = currentDate.getYear()
     currentDay = currentDate.getDay()
     return (
-      <View style={{ padding:10, top: 20, flex: 1, backgroundColor: 'white'}}>
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row' , padding:15, justifyContent:'space-between', alignItems:'center'}}>
+      <View style={styles.wrapper}>
+          <View style={styles.header}>
               <Text style={styles.titleText} >
                 Today
               </Text>
-              <Text style={styles.titleText} >
+              <Text style={styles.separator} >
                 |
               </Text>
               <Text style={styles.date} >
                 {Moment().format('MMMM DD, YYYY')}
               </Text>
-            <TouchableOpacity onPress = {() => navigate('Form', {
+            <TouchableOpacity style = {{padding:15}} onPress = {() => navigate('Form', {
               log_type: 4
             })}>
-            <Image style = {{padding:10, height:50, width:50, }}
-              source ={require('../Resources/Images/eashanplus.png')}
-              >
+            <Image style = {{height:50, width:50, }}
+              source ={require('../Resources/Images/eashanplus.png')} >
             </Image>
             </TouchableOpacity>
           </View>
@@ -183,17 +180,28 @@ class CoolerMedicineView extends React.Component {
               }}
               keyExtractor={(_, index) => index.toString()}
             />
-          </View>
-        </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  wrapper: {
+    padding:10,
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    flexDirection: 'row' ,
+    padding:15,
+    paddingBottom:0,
+    justifyContent:'space-between',
+    alignItems:'center'
+  },
   titleText: {
     fontSize: 25,
     fontWeight: '700',
-    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     color: '#333333',
   },
   date: {
@@ -201,8 +209,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 20,
     fontWeight: '500',
-    padding: 5,
     color: '#555555',
+  },
+  separator : {
+    fontSize: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: '600',
+    color: '#555555',
+    marginLeft:5,
+    marginRight: 5,
   },
 });
 
