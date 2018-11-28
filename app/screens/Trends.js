@@ -165,7 +165,7 @@ export default class Trends extends React.Component {
         this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
         'YYYY-MM'
       ).daysInMonth();
-      console.log('days in month trends', daysInMonth);
+
       let d = [];
       for (var x = 0; x < daysInMonth; x++) {
         d.push(Math.random() * 10);
@@ -190,8 +190,6 @@ export default class Trends extends React.Component {
     for days that have no symptoms
   */
   _setDataHelperMonth(unformattedData) {
-    //console.log(unformattedData, 'UNFORMATTED DATA');
-
     //we want to loop over the number of days in the month and add 0 to empty days
     let daysInMonth = moment(
       this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
@@ -235,7 +233,7 @@ export default class Trends extends React.Component {
         formattedData.push(0);
       }
     }
-    console.log(formattedData, 'FORMATTED DATA');
+
     this.setState({
       formattedData: formattedData,
       averageIntensity: totalIntensity / totalDays,

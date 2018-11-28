@@ -111,10 +111,6 @@ class Card extends PureComponent {
     };
   }
 
-  _handlePress = () => {
-    console.log('button pressed. ');
-  };
-
   _setMaxHeight(event) {
     this.setState({
       maxHeight: event.nativeEvent.layout.height

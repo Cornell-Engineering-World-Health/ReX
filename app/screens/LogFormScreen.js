@@ -52,7 +52,7 @@ export default class ChooseLogScreen extends React.Component {
       log_type = this.props.navigation.state.params.log_type;
       log_name = this.props.navigation.state.params.log_name;
     }
-    //console.log('log type----', log_type);
+
     var keysArray = [];
 
     Database.transaction(
@@ -73,8 +73,6 @@ export default class ChooseLogScreen extends React.Component {
               var input_types = [];
               valArray[i] = json_rows[keysArray[i]];
 
-              // console.log(keysArray[i])
-
               Database.transaction(
                 tx =>
                   tx.executeSql(
@@ -83,7 +81,6 @@ export default class ChooseLogScreen extends React.Component {
                     [keysArray[i]],
                     (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name;
-                      //console.log(input_types[i]);
                       this.setState({
                         input_type_array: input_types,
                         value_labels: keysArray,
@@ -111,17 +108,12 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   valueChange(label, value) {
-    //console.log(label, value);
     let submit = this.state.submit_vals;
     submit[label] = value;
-    this.setState({ submit_vals: submit }, () => {
-      //console.log(this.state.submit_vals);
-    });
-    //this.state.submit_vals[label] = value; //store updated value
+    this.setState({ submit_vals: submit }, () => {});
   }
 
   submit() {
-    //console.log(this.state);
     if (this.state.nav) {
       // Log new symptoms
       this.props.navigation.state.params.onLog();
@@ -129,8 +121,6 @@ export default class ChooseLogScreen extends React.Component {
       let event_type_id = this.state.event_type_id;
       let values = JSON.stringify(this.state.submit_vals);
       let timestamp = moment().format('YYYY-MM-DD HH:mm:00');
-
-      // console.log(timestamp)
 
       Database.transaction(
         tx => {
@@ -149,7 +139,6 @@ export default class ChooseLogScreen extends React.Component {
       this.props.on_finish();
       if (this.props.timestamp) {
         // Edit symptom log
-        //console.log('edit symptom log');
       } else {
         // Add new medication
         asyncCreateMedicineEvents(

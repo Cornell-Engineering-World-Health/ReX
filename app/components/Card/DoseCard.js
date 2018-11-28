@@ -63,7 +63,6 @@ class Card extends PureComponent {
 
   // determines new hours text
   _handleRenderText = () => {
-    console.log('inside handle render text');
     var current = new Date(this.state.time[this.state.passed_index]);
     var timeString;
 

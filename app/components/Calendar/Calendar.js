@@ -113,17 +113,7 @@ class Calendar extends PureComponent {
   }
   componentWillUnmount() {
     this._isMounted = false;
-    //console.log('unmounted', this.props.currMonth)
   }
-
-  /**    componentDidUpdate(){
-      console.log('UPDATE')
-    }
-
-    shouldComponentUpdate(nextProps, nextState){
-      return false;//console.log("UPDATING", nextProps, nextState)
-    }
-*/
 
   /** Pulls symptom data from storage and initilizes the calendar. Optional parameter to see a particular
    *  graph first. */

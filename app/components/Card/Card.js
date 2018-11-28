@@ -93,10 +93,6 @@ class Card extends PureComponent {
     super(props);
   }
 
-  _handlePress = () => {
-    console.log('button pressed. ');
-  };
-
   _renderPage = () => {
     const imageContainerStyle = [styles.imageContainer];
 

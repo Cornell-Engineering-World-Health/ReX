@@ -71,13 +71,8 @@ export default class ScaleSlideInputType extends React.Component {
   of the screen
   */
   _setGlobalHeightAndWidth(nativeEvent) {
-    //console.log(nativeEvent, 'NATIVE EVENT');
     this.setState({ viewportHeight: nativeEvent.layout.height });
-    this.setState(
-      { viewportWidth: nativeEvent.layout.width },
-      () => {}
-      //console.log(this.state)
-    );
+    this.setState({ viewportWidth: nativeEvent.layout.width }, () => {});
   }
 
   change(value) {

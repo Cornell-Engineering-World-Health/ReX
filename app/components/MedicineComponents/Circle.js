@@ -60,15 +60,12 @@ class Circle extends Component {
   };
 
   toggleModal = () => {
-    console.log('hereeee');
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
   renderPicker() {
-    console.log(this.state.hour);
     var tempHour = Math.round(this.state.hour * 2) / 2;
     var degrees = (tempHour % 12) * 15;
-    console.log(degrees);
 
     var translateX = 150.5 * Math.sin(this.Radians(degrees));
     var translateY = 150.5 - 150.5 * Math.cos(this.Radians(degrees));
@@ -80,7 +77,6 @@ class Circle extends Component {
       translateX = -translateX;
       translateY = 2 * -translateY;
     } else if (18 < tempHour && tempHour <= 24) {
-      console.log('hey im correct');
       translateX = -translateX;
     }
 

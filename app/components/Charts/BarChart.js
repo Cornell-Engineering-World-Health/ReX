@@ -77,10 +77,6 @@ export default class Bar extends React.Component {
     let interval = 5;
     let width = screenWidth * 0.95 / daysInMonth * interval;
 
-    if (this.props.data) {
-      console.log(this.props.data.length);
-    }
-
     for (var x = 0; x <= daysInMonth; x += interval) {
       //  {x % 5 == 0 ? x : ''}
       xAxis.push(

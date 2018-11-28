@@ -75,7 +75,6 @@ class Agenda extends Component {
                         this.props.date + ' ' + item.timeStamp,
                         'MM/DD/YYYY hh:mm A'
                       ).format('YYYY-MM-DD HH:mm:ss');
-                      console.log('NAME IS:::: ' + item.cardData.title);
 
                       Database.transaction(
                         tx =>

@@ -30,7 +30,7 @@ export default class ChooseLogScreen extends React.Component {
           for (let i = 0; i < json_rows.length; i++) {
             let category = json_rows[i].event_type_category;
             let bodyLabel = this.props.navigation.state.params.bodyLabel;
-            console.log(bodyLabel);
+
             if (category == bodyLabel || bodyLabel == BODY_PARTS.ALL) {
               types_events_array[j] = {
                 event_type_name: json_rows[i].event_type_name,
@@ -40,7 +40,6 @@ export default class ChooseLogScreen extends React.Component {
               j++;
             }
           }
-          console.log('TYPES EVENTS ARRAY', types_events_array);
           this.setState({
             type_and_events: types_events_array
           });

@@ -47,7 +47,6 @@ class Settings extends Component {
     switch (setting) {
       case 'birthday':
         this.setState({ birthday: value });
-        console.log('setting birthday state');
         break;
       case 'name':
         this.setState({ name: value });

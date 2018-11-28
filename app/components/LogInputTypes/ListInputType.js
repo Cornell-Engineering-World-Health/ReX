@@ -120,9 +120,7 @@ If index is an invalid number, function does nothing.
     }
     data.splice(index, 1);
 
-    this.setState({ data: data, overlayOpenIndex: -1 }, () =>
-      console.log(this.state.overlayOpenIndex, 'HELLOOOOOO')
-    );
+    this.setState({ data: data, overlayOpenIndex: -1 });
 
     let formatSubmit = this._formatSubmit();
     this.props.valueChange(this.props.val_label, formatSubmit);

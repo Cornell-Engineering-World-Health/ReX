@@ -117,11 +117,6 @@ class MedicineCard extends Component {
   componentDidMount() {
     Animated.timing(this.state.fade, { toValue: 1, duration: 500 }).start();
   }
-
-  _handlePress = () => {
-    console.log('button pressed. ');
-  };
-
   render() {
     const swipeoutSettings = {
       autoClose: true,
