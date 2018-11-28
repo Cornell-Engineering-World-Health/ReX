@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import LogFormScreen from './LogFormScreen';
 import Database from '../Database';
@@ -182,15 +183,17 @@ export default class BodySelectScreen extends React.Component {
               >
                 <Text style={styles.labelText}>Legs</Text>
               </View>
+
               <TouchableOpacity
-                style={styles.wholeBodyButton}
+                style={styles.searchButton}
                 onPress={() => {
                   navigate('Choose', {
-                    bodyLabel: BODY_PARTS.BODY
+                    bodyLabel: BODY_PARTS.ALL
                   });
                 }}
               >
-                <Text>Whole Body</Text>
+                <Image source={IMAGES.search} style={styles.searchImage} />
+                <Text style={styles.searchText}>Search</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -199,93 +202,7 @@ export default class BodySelectScreen extends React.Component {
     );
   }
 }
-/**
-    return (
-      <View style={{flex: 1}}>
-        <ImageBackground
-          resizeMode={'contain'}
-          style={{flex: 1, flexDirection: 'row'}}
-          source={IMAGES.body}
-        >
-          <View style={[styles.vertical, {width: width/5}]}>
-            <View
-              style={styles.empty_top}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.ARMS
-                })
-              }}
-              style={[styles.arm_left, {width: width/5}]}
-            />
-            <View
-              style={styles.empty_bottom}
-            />
-          </View>
-          <View style={styles.vertical}>
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.HEAD
-                })
-              }}
-              style={[styles.head, {}]}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.TORSO
-                })
-              }}
-              style={[styles.torso, {}]}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.LEGS
-                })
-              }}
-              style={[styles.legs, {}]}
-            />
-          </View>
-          <View style={[styles.vertical, {width: width/5}]}>
-            <View
-              style={styles.empty_top}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.ARMS
-                })
-              }}
-              style={[styles.arm_right, { width: width / 5,}]}
-            />
-            <View
-              style={[styles.empty_bottom, {}]}
-            />
-          </View>
-          <View style={styles.emptyVertical}/>
-        </ImageBackground>
-      </View>
-    );
-    */
-/**
-<View
-  style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
->
-  <TouchableOpacity
-    style={styles.wholeBodyButton}
-    onPress={() => {
-      navigate('Choose', {
-        bodyLabel: BODY_PARTS.BODY
-      })
-    }}
-  >
-    <Text>Whole Body</Text>
-  </TouchableOpacity>
-</View>
-*/
+
 const styles = StyleSheet.create({
   bodyVertical: {
     flex: 1,
@@ -343,13 +260,25 @@ const styles = StyleSheet.create({
   empty_top: {
     height: height / 8
   },
-  wholeBodyButton: {
-    margin: 10,
+
+  searchButton: {
     alignItems: 'center',
-    backgroundColor: '#bf5252',
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 30,
-    borderColor: '#bf5252'
+    backgroundColor: '#42f4aa',
+    alignSelf: 'center',
+    borderRadius: 1000,
+    paddingTop: 25,
+    paddingBottom: 25,
+    paddingLeft: 30,
+    paddingRight: 30
+  },
+  searchImage: {
+    width: 35,
+    height: 35
+  },
+  searchText: {
+    fontSize: 15,
+    fontWeight: '100',
+    height: 20,
+    textAlign: 'center'
   }
 });

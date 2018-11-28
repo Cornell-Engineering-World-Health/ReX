@@ -25,7 +25,7 @@ import moment from 'moment';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { COLOR } from '../resources/constants.js';
 import Form from '../components/LogInputTypes/Form';
-
+import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -324,8 +324,13 @@ export default class ChooseLogScreen extends React.Component {
     });
     return (
       <View style={styles.container}>
-        <View style={styles.headerView}>
-          <Text style={styles.headerTitle}>{this.state.log_name}</Text>
+        <View style={styles.backWrapper}>
+          <NavigationHeader
+            onPressBack={() => {
+              this.props.navigation.goBack();
+            }}
+            title={this.state.log_name}
+          />
         </View>
         <Form
           ref={f => {
@@ -366,7 +371,6 @@ const styles = StyleSheet.create({
     height: 78,
     width: viewportWidth,
     padding: 20,
-
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.19,
@@ -405,12 +409,9 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: 'white'
   },
-  headerView: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: viewportWidth
+  backWrapper: {
+    flex: 0.1,
+    paddingTop: 25
   },
   headerTitle: {
     fontSize: 30,
@@ -508,166 +509,3 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
-
-/*
-<View style={styles.main_container}>
-  {this.state.input_type_array.map((prop, key) => {
-    if (prop == 'ScaleSlideInputType') {
-      return (
-        <ScaleSlideInputType
-          key={key}
-          input_style={styles.input_container_blue}
-          title_text_style={styles.title_text}
-          max_val={4}
-          value={parseInt(this.state.values[key]) - 1}
-          scale_labels={SCALE_LABELS}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'NumericalPickerInputType') {
-      return (
-        <NumericalPickerInputType
-          key={key}
-          input_style={styles.input_container_blue}
-          title_text_style={styles.title_text}
-          value={this.state.values[key]}
-          min={0}
-          max={60}
-          inc_scale={1}
-          unit={'minutes'}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'DosagePickerInputType') {
-      return (
-        <NumericalPickerInputType
-          key={key}
-          input_style={styles.input_container_blue}
-          title_text_style={styles.title_text}
-          value={this.state.values[key]}
-          min={0}
-          max={40}
-          inc_scale={10}
-          unit={'mg'}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'TextInputType') {
-      return (
-        <TextInputType
-          key={key}
-          input_style={styles.input_container_green}
-          title_text_style={styles.title_text}
-          text={this.state.values[key]}
-          placeholder_text={'Type here...'}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'DatePicker') {
-      return (
-        <DatePicker
-          key={key}
-          input_style={styles.input_container_transparent_green}
-          title_text_style={styles.title_text_green}
-          value={this.state.values[key]}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'DayChooserInputType') {
-      return (
-        <ChecklistInputType
-          key={key}
-          list_values={[
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-          ]}
-          input_style={styles.input_container_green}
-          title_text_style={styles.title_text}
-          title_text={this.state.value_labels[key]}
-          val_label={this.state.value_labels[key]}
-          value={this.state.values[key]}
-          valueChange={this.valueChange.bind(this)}
-        />
-      );
-    } else if (prop == 'TimeCategoryInputType') {
-      return (
-        <View key={key}>
-          {this.state.values[key].map((prop, timeKey) => {
-            return (
-              <TimePicker
-                key={
-                  this.state.values.length +
-                  timeKey +
-                  this.state.values[key][timeKey]
-                }
-                input_style={styles.input_container_transparent_blue}
-                title_text_style={styles.title_text_blue}
-                value={this.state.values[key][timeKey]}
-                title_text={'Reminder Time ' + (timeKey + 1)}
-                val_label={this.state.value_labels[key]}
-                chosen_date={this.state.values[key][timeKey]}
-                deletePressed={() => {
-                  this.state.values[key].splice(timeKey, 1);
-                  this.valueChange(
-                    this.state.value_labels[key],
-                    this.state.values[key]
-                  );
-                  this.setState({
-                    values: this.state.values
-                  });
-                }}
-                valueChange={(label, val) => {
-                  this.state.values[key][timeKey] = val;
-                  this.valueChange(
-                    this.state.value_labels[key],
-                    this.state.values[key]
-                  );
-                }}
-              />
-            );
-          })}
-          <TouchableOpacity
-            style={styles.add_button}
-            onPress={() => {
-              this.state.values[key].push(moment().format('HH:mm'));
-              this.setState({
-                values: this.state.values
-              });
-            }}
-          >
-            <Text style={styles.submit_text}>Add Another Time</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  })}
-  <TouchableOpacity
-    style={styles.submit_button}
-    onPress={this.submit.bind(this)}
-  >
-    <Text style={styles.submit_text}>Submit</Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.subFooter}>
-  <TouchableOpacity
-    style={[styles.footerButton, { backgroundColor: '#a5ffbf' }]}
-  >
-    <Text style={styles.footerButtonText}>Submit!</Text>
-  </TouchableOpacity>
-</View>
-*/

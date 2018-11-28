@@ -77,7 +77,8 @@ export const IMAGES = {
   checkmarkWhite: require('./images/checkmarkWhite.png'),
   headerBack: require('./images/header-back.png'),
   smalldot: require('./images/smalldot.png'),
-  exportcsv: require('./images/exportcsv.png')
+  exportcsv: require('./images/exportcsv.png'),
+  search: require('./images/search.png')
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -117,7 +118,8 @@ export const BODY_PARTS = {
   LEGS: 'LEGS',
   TORSO: 'TORSO',
   HEAD: 'HEAD',
-  BODY: 'BODY'
+  BODY: 'BODY',
+  ALL: 'ALL'
 };
 
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:

@@ -1,20 +1,16 @@
-import React from 'react'
+import React from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Image,
   Header,
-  ScrollView,
   TouchableOpacity,
   Dimensions
-} from 'react-native'
+} from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment'
-import Modal from 'react-native-modal'
-import TextInputType from '../LogInputTypes/TextInputType'
-import TimePicker from '../LogInputTypes/TimePicker'
-import Button from '../Button/Button'
+import moment from 'moment';
+import Button from '../Button/Button';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -22,38 +18,46 @@ import { Calendar } from 'react-native-calendars';
 import { COLOR, IMAGES } from '../../resources/constants';
 
 /**
-* Emulates the StackNavigator header.
-*/
-const NavigationHeader = ({onPressBack}) => {
-
+ * Emulates the StackNavigator header.
+ */
+const NavigationHeader = ({ onPressBack, title }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={onPressBack}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={onPressBack}>
         <Image style={styles.img} source={IMAGES.headerBack} />
       </TouchableOpacity>
+      {title ? <Text style={styles.title}>{title}</Text> : null}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingLeft: 10,
     borderBottomColor: 'black',
-    borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    justifyContent: 'center'
   },
   img: {
     width: 30,
     height: 30
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '200'
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    top: 0
   }
-})
+});
 
 NavigationHeader.propTypes = {
   onPressBack: PropTypes.func,
-}
+  title: PropTypes.string
+};
 
-export default NavigationHeader
+export default NavigationHeader;

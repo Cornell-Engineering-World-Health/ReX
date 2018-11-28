@@ -131,7 +131,7 @@ export default class Duration extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.questionText}>
-            {'How long has it been happening?'}
+            {'How long has this been happening?'}
           </Text>
         </View>
         <View style={styles.body}>

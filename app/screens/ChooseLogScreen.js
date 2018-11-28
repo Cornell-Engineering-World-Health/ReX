@@ -9,22 +9,17 @@ import {
   Picker,
   ImageBackground
 } from 'react-native';
-import ScaleSlideInputType from '../components/LogInputTypes/ScaleSlideInputType';
-import TextInputType from '../components/LogInputTypes/TextInputType';
-import PickerInputType from '../components/LogInputTypes/PickerInputType';
-import NumericalPickerInputType from '../components/LogInputTypes/NumericalPickerInputType';
-import ChecklistInputType from '../components/LogInputTypes/ChecklistInputType';
 import LogFormScreen from './LogFormScreen';
-import { StackNavigator } from 'react-navigation';
 import Database from '../Database';
-import { getSource, IMAGES } from '../resources/constants';
-
+import SearchInput, { createFilter } from 'react-native-search-filter';
+import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
+import { getSource, IMAGES, BODY_PARTS } from '../resources/constants';
+const KEYS_TO_FILTERS = ['event_type_name', 'event_type_category'];
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    log_types_array = [];
-    event_ids_array = [];
+    types_events_array = [];
     images_array = [];
 
     Database.transaction(
@@ -33,19 +28,21 @@ export default class ChooseLogScreen extends React.Component {
           json_rows = rows._array;
           let j = 0;
           for (let i = 0; i < json_rows.length; i++) {
-            if (
-              json_rows[i].event_type_category ==
-              this.props.navigation.state.params.bodyLabel
-            ) {
-              log_types_array[j] = json_rows[i].event_type_name;
-              event_ids_array[j] = json_rows[i].event_type_id;
+            let category = json_rows[i].event_type_category;
+            let bodyLabel = this.props.navigation.state.params.bodyLabel;
+            console.log(bodyLabel);
+            if (category == bodyLabel || bodyLabel == BODY_PARTS.ALL) {
+              types_events_array[j] = {
+                event_type_name: json_rows[i].event_type_name,
+                event_type_category: json_rows[i].event_type_category,
+                event_id: json_rows[i].event_type_id
+              };
               j++;
             }
           }
-
+          console.log('TYPES EVENTS ARRAY', types_events_array);
           this.setState({
-            log_types: log_types_array,
-            event_ids: event_ids_array
+            type_and_events: types_events_array
           });
         }),
       err => console.log(err)
@@ -53,9 +50,9 @@ export default class ChooseLogScreen extends React.Component {
 
     this.state = {
       navigate: this.props.navigation,
-      log_types: log_types_array,
-      event_ids: event_ids_array,
-      bodyLabel: this.props.navigation.state.params.bodyLabel
+      bodyLabel: this.props.navigation.state.params.bodyLabel,
+      types_and_events: types_events_array,
+      searchTerm: ''
     };
   }
 
@@ -65,29 +62,63 @@ export default class ChooseLogScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+
+    const filteredSymptoms = this.state.types_and_events.filter(
+      createFilter(this.state.searchTerm, KEYS_TO_FILTERS)
+    );
     return (
-      <ImageBackground style={{ flex: 1, backgroundColor: 'white' }}>
-        <ScrollView>
+      <ImageBackground style={styles.container}>
+        <View style={styles.backWrapper}>
+          <NavigationHeader
+            onPressBack={() => {
+              this.props.navigation.goBack();
+            }}
+            title={'Pick a symptom'}
+          />
+        </View>
+        <View style={styles.searchWrapper}>
+          <SearchInput
+            onChangeText={term => {
+              this.setState({ searchTerm: term });
+            }}
+            style={[styles.searchInput, styles.darkShadow]}
+            placeholder="Search"
+            autoCorrect={false}
+            returnKeyType={'search'}
+            icon={{
+              color: '#3B6693',
+              style: styles.searchIcon,
+              name: 'search'
+            }}
+            inputViewStyles={{
+              justifyContent: 'center',
+              flex: 1
+            }}
+            fuzzy={true}
+          />
+        </View>
+        <ScrollView contentContainerStyle={styles.scrollView}>
           <View style={styles.log_container}>
-            {this.state.log_types.map((prop, key) => {
-              console.log(prop);
-              if (this.state.event_ids[key] != 4) {
+            {filteredSymptoms.map((prop, key) => {
+              if (filteredSymptoms[key].event_id != 4) {
                 return (
                   <TouchableOpacity
                     key={key}
                     style={styles.log_button}
                     onPress={() => {
                       navigate('Form', {
-                        log_name: this.state.log_types[key],
+                        log_name: filteredSymptoms[key].event_type_name,
                         onLog: this.returnToCal.bind(this),
-                        log_type: this.state.event_ids[key]
+                        log_type: filteredSymptoms[key].event_id
                       });
                     }}
                   >
-                    <Text style={styles.log_button_text}>{prop}</Text>
+                    <Text style={styles.log_button_text}>
+                      {prop.event_type_name}
+                    </Text>
                     <Image
                       style={styles.log_button_img}
-                      source={getSource(prop)}
+                      source={getSource(prop.event_type_name)}
                     />
                   </TouchableOpacity>
                 );
@@ -101,14 +132,19 @@ export default class ChooseLogScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center'
+  },
   log_container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flexWrap: 'wrap',
-    marginTop: 50
+    flexWrap: 'wrap'
   },
+  scrollView: {},
   log_button: {
     margin: 10,
     alignItems: 'bottom',
@@ -130,5 +166,39 @@ const styles = StyleSheet.create({
     height: 75,
     width: 75,
     tintColor: 'white'
+  },
+  searchInput: {
+    padding: 10,
+    borderColor: '#CCC',
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 20,
+    borderWidth: 0,
+    backgroundColor: 'white',
+    fontWeight: '200',
+    color: 'black'
+  },
+  searchWrapper: {
+    paddingRight: 25,
+    paddingLeft: 25,
+    flex: 0.1,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+    flexDirection: 'row'
+  },
+  backWrapper: {
+    flex: 0.1,
+    paddingTop: 25
+  },
+  lightShadow: {
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: '#808080',
+    shadowOpacity: 0.2
+  },
+  darkShadow: {
+    shadowOffset: { width: 3, height: 3 },
+    shadowColor: '#808080',
+    shadowOpacity: 0.3
   }
 });

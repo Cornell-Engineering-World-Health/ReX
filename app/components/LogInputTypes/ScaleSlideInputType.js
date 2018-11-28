@@ -214,7 +214,7 @@ export default class ScaleSlideInputType extends React.Component {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'stretch'
   },
   button: {

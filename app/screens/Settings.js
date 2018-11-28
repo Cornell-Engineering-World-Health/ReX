@@ -161,7 +161,7 @@ class Settings extends Component {
               title="Contact"
               onPress={() => {
                 sendMail(
-                  ['navinr13@gmail.com'],
+                  [this.state.email],
                   'Comments on Your App',
                   'Dear Engineering World Health Body, \n',
                   null,
@@ -266,7 +266,7 @@ export default class settingsList extends React.Component {
           component: Settings,
           title: 'Settings'
         }}
-        style={{ flex: 1, marginTop: 20 }}
+        style={{ flex: 1 }}
         navigationBarHidden={true}
       />
     );
