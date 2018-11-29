@@ -146,6 +146,9 @@ export function intializeDatabase() {
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
       );
       tx.executeSql(
+        'INSERT INTO event_details_tbl (event_details_id,fields) VALUES (16,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+      );
+      tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,'1950-01-01 00:00:00', 1)"
       );
       tx.executeSql(
@@ -155,19 +158,17 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (8000, 3,'1950-01-01 00:00:00', 3)"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (81, 4,'1950-01-01 00:00:00', 1)"
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (81, 4,'1950-01-01 00:00:00', 4)"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (82, 5,'1950-01-01 00:00:00', 5)"
+        "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (82, 5,'1950-01-01 00:00:00', 5)"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (83, 6,'1950-01-01 00:00:00', 6)"
+        "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (83, 6,'1950-01-01 00:00:00', 6)"
       );  
+      console.log("arrived before 8500")
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (84, 7,'1950-01-01 00:00:00', 1)"
-      );    
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (8500, 16,'1950-01-01 00:00:00', 1)"
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (85, 16,'1950-01-01 00:00:00', 16)"
       );  
       /* necessary default settings */
       tx.executeSql(
@@ -417,16 +418,16 @@ export function databaseFakeData(){
 
 
   }, err => console.log(err))
-    /* Database.transaction(tx => {
-        tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
-          console.log(JSON.stringify(rows))
-        )
-    },err=> console.log(err));*/
     Database.transaction(tx => {
+        tx.executeSql('Select * from event_tbl',[], (_, { rows }) =>
+          rows._array.forEach((ele)=>console.log(ele))
+        )
+    },err=> console.log(err));
+    /*Database.transaction(tx => {
         tx.executeSql('Select * from id_tbl',[], (_, { rows }) =>
           console.log('id table',JSON.stringify(rows))
         )
-    },err=> console.log(err));
+    },err=> console.log(err));*/
 }
 
 /* pulls data from Database for month and formats it for calendar */
