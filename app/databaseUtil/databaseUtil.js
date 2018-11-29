@@ -339,31 +339,31 @@ export function databaseFakeData(){
               /* medication reminder fake data */
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
                \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false,false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,\'2018-04-17 09:00:00\', 52)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,\'2018-11-19 09:00:00\', 52)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
               \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,\'2018-04-17 09:00:00\', 53)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,\'2018-11-19 09:00:00\', 53)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (54,\
               \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false,false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (54, 4,\'2018-04-18 09:00:00\', 54)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (54, 4,\'2018-11-19 09:00:00\', 54)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (55,\
               \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,\'2018-04-18 09:00:00\', 55)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,\'2018-11-19 09:00:00\', 55)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
               \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [true,false]}\' )')
 
 
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-11-04 09:00:00\', 56)')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,\'2018-11-19 09:00:00\', 56)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
-              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-11-04 09:00:00\', 57)')
+              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-11-19","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,\'2018-11-19 09:00:00\', 57)')
 
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1800,\
-              \'{"Pill Name": "Crestor","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["12:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1800, 4,\'2018-11-18 12:00:00\', 1800)')
+              \'{"Pill Name": "Crestor","Dosage": "400mg","Start Date": "2018-11-18","End Date": "2018-11-19","Time": ["12:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1800, 4,\'2018-11-19 12:00:00\', 1800)')
           tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1801,\
-              \'{"Pill Name": "Advair","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["18:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
-          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,\'2018-11-17 08:00:00\', 1801)')
+              \'{"Pill Name": "Advair","Dosage": "400mg","Start Date": "2018-11-18","End Date": "2018-11-19","Time": ["18:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false]}\' )')
+          tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,\'2018-11-19 12:00:00\', 1801)')
 
         /* medication reminder fake data */
 
@@ -410,7 +410,7 @@ function formatDataForGraphs (data){
         d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000)
         var monthString = d.toISOString().substr(0,10) // year-month-day
         var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
-        
+
         console.log(intensity)
         if(!dataTemp[monthString]){
             dataTemp[monthString] = {
@@ -423,7 +423,7 @@ function formatDataForGraphs (data){
             dataTemp[monthString].total_intensity += intensity
         }
     });
-    return dataTemp; 
+    return dataTemp;
 }
 
 /*month is a date object where only the month and year are used, symptom is a string */
@@ -453,12 +453,7 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-<<<<<<< HEAD
       WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp", (_, { rows }) => callback(rows)
-=======
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
-      (tx, { rows }) => callback(rows._array)
->>>>>>> 98f9608d19c33027cc8aca6076e65b124399ccb2
      ),
     err => console.log(err)
   );
