@@ -86,12 +86,12 @@ class CoolerMedicineView extends React.Component {
       Object.keys(formattedData).forEach(function(med) {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-          medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken})
-          for(var i =0; i <medObj.timeCategory.length; i++){
-              console.log(medObj.time[i])
-              var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-              data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-          }
+          medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
+          // for(var i =0; i <medObj.timeCategory.length; i++){
+          //     console.log(medObj.time[i])
+          //     var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
+          //     data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
+          // }
       });
   });
 
@@ -157,6 +157,7 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
+                console.log(item)
                 return (
                   <View>
                     <DoseCard
