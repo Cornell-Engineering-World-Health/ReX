@@ -11,10 +11,18 @@ export const IMAGES = {
   calendar: require('../Resources/Images/calendarScreen.png'),
   checkmark: require('../Resources/Images/checkmark.png'),
   default: require('../Resources/Images/default.png'),
+  double_vision: require('../Resources/Images/double_vision.png'),
   elbowPain: require('../Resources/Images/elbowPain.png'),
   evening: require('../Resources/Images/evening.png'),
+  fatigue: require('../Resources/Images/fatigue.png'),
+  nausea: require('../Resources/Images/nausea.png'),
+  diarrhea: require('../Resources/Images/diarrhea.png'),
+  dysgeusia: require('../Resources/Images/popsicle.png'),
+  vomiting: require('../Resources/Images/vomiting.png'),
+  cognitive: require('../Resources/Images/cognitive.png'),
   footPain: require('../Resources/Images/footPain.png'),
   glasses: require('../Resources/Images/glasses.png'),
+  handpain: require('../Resources/Images/hand.png'),
   headPain: require('../Resources/Images/headPain.png'),
   heartPain: require('../Resources/Images/heartPain.png'),
   homeIcon: require('../Resources/Images/homeScreen.png'),
@@ -30,6 +38,7 @@ export const IMAGES = {
   plusSignMinimal: require('../Resources/Images/icons8-plus-math-50.png'),
   profile: require('../Resources/Images/profile.png'),
   profilePic: require('../Resources/Images/profilePic.png'),
+  pulsatileTinnitus: require('../Resources/Images/pulse.png'),
   scale: require('../Resources/Images/scale.png'),
   settings: require('../Resources/Images/settingsScreen.png'),
   stomachPain: require('../Resources/Images/stomachPain.png'),
@@ -178,6 +187,18 @@ export default (constants = {
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
   },
+  DOUBLE_VISION: {
+    image: IMAGES.double_vision,
+    title: 'Double Vision',
+    backgroundColor: '#ab87b8',
+    translucentColor: '#ab87b880'
+  },
+  HAND_PAIN: {
+    image: IMAGES.handpain,
+    title: 'Hand Pain',
+    backgroundColor: '#ab87b8',
+    translucentColor: '#ab87b880'
+  },
   NECKPAIN: {
     image: IMAGES.neckPain,
     title: 'Neck Pain',
@@ -187,6 +208,42 @@ export default (constants = {
   KNEEPAIN: {
     image: IMAGES.kneePain,
     title: 'Knee Pain',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  DYSGEUSIA: {
+    image: IMAGES.dysgeusia,
+    title: 'Dysgeusia',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  COGNITIVE_SLOWING: {
+    image: IMAGES.cognitive,
+    title: 'Cognitive Slowing',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  VOMITING: {
+    image: IMAGES.vomiting,
+    title: 'Vomiting',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  DIARRHEA: {
+    image: IMAGES.diarrhea,
+    title: 'Diarrhea',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  NAUSEA: {
+    image: IMAGES.nausea,
+    title: 'Nausea',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  FATIGUE: {
+    image: IMAGES.fatigue,
+    title: 'Fatigue',
     backgroundColor: '#79ADDC',
     translucentColor: '#79ADDC80'
   },
@@ -207,6 +264,12 @@ export default (constants = {
     image: IMAGES.backPain,
     backgroundColor: defaultColor,
     translucentColor: defaultColor
+  },
+  PULSATILE_TINNITUS: {
+    image: IMAGES.pulsatileTinnitus,
+    title: 'Pulsatile Tinnitus',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
   },
   ELBOWPAIN: {
     title: 'Elbow Pain',
@@ -235,9 +298,17 @@ export default (constants = {
 });
 let types = [
   constants.BLURRED_VISION,
+  constants.DOUBLE_VISION,
   constants.PILL,
   constants.HEADACHE,
+  constants.HAND_PAIN,
   constants.DIZZINESS,
+  constants.FATIGUE,
+  constants.DIARRHEA,
+  constants.VOMITING,
+  constants.COGNITIVE_SLOWING,
+  constants.DYSGEUSIA,
+  constants.NAUSEA,
   constants.NECKPAIN,
   constants.KNEEPAIN,
   constants.LEGPAIN,
@@ -245,7 +316,8 @@ let types = [
   constants.BACKPAIN,
   constants.ELBOWPAIN,
   constants.HEARTPAIN,
-  constants.STOMACHPAIN
+  constants.STOMACHPAIN,
+  constants.PULSATILE_TINNITUS
 ];
 
 /**
