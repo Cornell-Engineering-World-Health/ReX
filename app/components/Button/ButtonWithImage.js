@@ -34,7 +34,8 @@ class ButtonWithImage extends Component {
     onLongPress: PropTypes.func,
     rounded: PropTypes.bool,
     shadowOpacity: PropTypes.number,
-    horizontal: PropTypes.bool
+    horizontal: PropTypes.bool,
+    styles: PropTypes.object
   };
 
   constructor(props) {
@@ -82,8 +83,9 @@ class ButtonWithImage extends Component {
       imageStyle.push({ height: 100 });
     }
 
+
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, this.props.styles]}>
         <View style={shadowStyle}>
           <TouchableOpacity
             style={containerStyle}

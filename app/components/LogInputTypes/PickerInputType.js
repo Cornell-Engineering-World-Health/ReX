@@ -39,7 +39,7 @@ export default class PickerInputType extends React.Component {
                   key={key}
                   label={prop}
                   value={prop}
-                  color="white"
+                  color="black"
                 />
               );
             })}

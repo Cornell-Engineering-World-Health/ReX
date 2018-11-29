@@ -14,7 +14,7 @@ import ButtonWithImage from '../Button/ButtonWithImage';
 import ButtonSelector from '../MenuBar/ButtonSelector';
 import Moment from 'moment';
 import Card from '../Card/Card';
-import testData from '../Resources/CardTestData';
+
 import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
@@ -31,6 +31,9 @@ class FlatListCard extends React.Component {
   };
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      data: this.props.data
+    };
   }
   _onDelete(id) {
     for (let i = 0; i < this.props.data.length; i++) {

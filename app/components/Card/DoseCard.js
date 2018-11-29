@@ -299,7 +299,6 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText()
     return (
-      <View style = {{flex:1}} >
             <View style={styles.wrapper}>
               <TouchableOpacity
                 disabled={!this.props.buttonActive}
@@ -334,9 +333,7 @@ class Card extends PureComponent {
                       </View>
                 </View>
               </TouchableOpacity>
-            </View>
-
-        <Modal 
+      <Modal 
         isVisible={this.state.modalVisible} 
         style={styles.modalWrapper}
         onBackdropPress= {() => {this.setState({modalVisible: false})}}
@@ -360,7 +357,7 @@ class Card extends PureComponent {
           </View>
 
         </Modal>
-    </View>
+      </View>
     );
   }
 }
@@ -371,7 +368,6 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 5,
     borderRadius: 5,
-    overflow: 'hidden',
   },
   modalwrapper:{
     flexDirection:'row',

@@ -6,11 +6,12 @@ export default class ColorButton extends React.Component {
     super(props)
     this.state = {
       button_text: props.button_text,
-      background_color: false
+      background_color: props.value,
     }
   }
 
   changeCheckbuttonStyle () {
+    this.props.handleChange(!this.state.background_color)
     this.setState({
       background_color: !this.state.background_color
     })

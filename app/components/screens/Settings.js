@@ -18,11 +18,15 @@ import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
 import { StackNavigator } from 'react-navigation';
-import Profile from './EditProfile.js';
-import Summary from './Summary.js';
+import Profile from './EditProfile';
+import Summary from './Summary';
+import SummaryGraph from './SummaryGraph';
+import {_mailFunc} from  '../../mailUtil/mailUtil.js'
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  pullSymptomForGraphs,
+  pullAllSymptoms
 } from '../../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
 
@@ -48,10 +52,9 @@ class Settings extends Component {
       touchID: false,
       quickLog: false
     };
-  }
 
-  render() {
-    var bgColor = '#DCE3F4';
+    //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
+
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -63,6 +66,11 @@ class Settings extends Component {
         icon: data.icon
       });
     });
+  }
+
+  render() {
+    var bgColor = '#DCE3F4';
+
     return (
       <View style={styles.container}>
         <View
@@ -156,7 +164,7 @@ class Settings extends Component {
               title="View History"
               hasNavArrow={true}
               onPress={() => {
-                this.props.navigator.push(SummaryPage);
+                this.props.navigator.push(SummaryGraphPage);
               }}
               titleInfoStyle={styles.titleInfoStyle}
             />
@@ -192,8 +200,13 @@ class Settings extends Component {
               }
               title="Quick Log"
               title="FAQ"
-              onPress={() =>
-                Alert.alert('Question: Is this app awesome?\n Answer: yes ')
+              onPress={() => {
+                pullAllSymptoms((e) => {
+                    console.log("***********"+ e)
+                    _mailFunc([{price: "500$"}])
+                })
+
+              }
               }
             />
           </SettingsList>
@@ -235,12 +248,16 @@ const ProfileRoute = {
 const SummaryPage = {
   component: Summary
 };
+const SummaryGraphPage = {
+  component: SummaryGraph
+};
 export default class settingsList extends React.Component {
   render() {
     return (
       <NavigatorIOS
         initialRoute={{
-          component: Settings
+          component: Settings,
+          title: 'Settings'
         }}
         style={{ flex: 1, marginTop: 20 }}
         navigationBarHidden={true}

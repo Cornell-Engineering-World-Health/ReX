@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,76 +10,85 @@ import {
   Picker,
   Button,
   ImageBackground
-} from 'react-native'
-import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType'
-import TextInputType from '../LogInputTypes/TextInputType'
-import PickerInputType from '../LogInputTypes/PickerInputType'
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType'
-import ChecklistInputType from '../LogInputTypes/ChecklistInputType'
-import LogFormScreen from './LogFormScreen'
-import { StackNavigator } from 'react-navigation'
-import Database from '../../Database'
-import { getSource, IMAGES } from '../Resources/constants'
+} from 'react-native';
+import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
+import TextInputType from '../LogInputTypes/TextInputType';
+import PickerInputType from '../LogInputTypes/PickerInputType';
+import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
+import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
+import LogFormScreen from './LogFormScreen';
+import { StackNavigator } from 'react-navigation';
+import Database from '../../Database';
+import { getSource, IMAGES } from '../Resources/constants';
+import NavigationHeader from '../NavigationHeader/NavigationHeader'
 
 export default class ChooseLogScreen extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
-    log_types_array = []
-    event_ids_array = []
-    images_array = []
+    log_types_array = [];
+    event_ids_array = [];
+    images_array = [];
 
     Database.transaction(
       tx =>
         tx.executeSql('SELECT * FROM event_type_tbl', [], (tx, { rows }) => {
-          json_rows = rows._array
-          let j = 0
+          json_rows = rows._array;
+          let j = 0;
           for (let i = 0; i < json_rows.length; i++) {
-            if (json_rows[i].event_type_category == this.props.navigation.state.params.bodyLabel) {
-              log_types_array[j] = json_rows[i].event_type_name
-              event_ids_array[j] = json_rows[i].event_type_id
-              j++
+            if (
+              json_rows[i].event_type_category ==
+              this.props.navigation.state.params.bodyLabel
+            ) {
+              log_types_array[j] = json_rows[i].event_type_name;
+              event_ids_array[j] = json_rows[i].event_type_id;
+              j++;
             }
           }
 
           this.setState({
             log_types: log_types_array,
             event_ids: event_ids_array
-          })
+          });
         }),
       err => console.log(err)
-    )
+    );
 
     this.state = {
       navigate: this.props.navigation,
       log_types: log_types_array,
       event_ids: event_ids_array,
       bodyLabel: this.props.navigation.state.params.bodyLabel
-    }
+    };
   }
 
-  onSubmit (value) {}
+  onSubmit(value) {}
 
-  returnToCal () {}
+  returnToCal() {}
 
-  render () {
-    const { navigate } = this.props.navigation
+  render() {
+    const { navigate } = this.props.navigation;
     return (
-      <ImageBackground style={{ flex: 1 }}>
+      <ImageBackground style={{ flex: 1, paddingTop: 20, backgroundColor: 'white' }}>
+        <NavigationHeader
+          onPressBack={() => {this.props.navigation.goBack()}}
+        />
         <ScrollView>
           <View style={styles.log_container}>
             {this.state.log_types.map((prop, key) => {
-              console.log(prop)
+              console.log(prop);
               if (this.state.event_ids[key] != 4) {
                 return (
                   <TouchableOpacity
                     key={key}
                     style={styles.log_button}
-                    onPress={() =>
+                    onPress={() => {
                       navigate('Form', {
+                        log_name: this.state.log_types[key],
                         onLog: this.returnToCal.bind(this),
                         log_type: this.state.event_ids[key]
                       })
+                    }
                     }
                   >
                     <Text style={styles.log_button_text}>{prop}</Text>
@@ -88,13 +97,13 @@ export default class ChooseLogScreen extends React.Component {
                       source={getSource(prop)}
                     />
                   </TouchableOpacity>
-                )
+                );
               }
             })}
           </View>
         </ScrollView>
       </ImageBackground>
-    )
+    );
   }
 }
 
@@ -129,4 +138,4 @@ const styles = StyleSheet.create({
     width: 75,
     tintColor: 'white'
   }
-})
+});
