@@ -203,7 +203,7 @@ export default class BodySelectScreen extends React.Component {
                 <Text style={styles.labelText}>Legs</Text>
               </View>
               <TouchableOpacity
-                style={styles.wholeBodyButton}
+                style={styles.otherButton}
                 onPress={() => {
                   navigate('Choose', {
                     bodyLabel: BODY_PARTS.BODY
@@ -284,13 +284,12 @@ const styles = StyleSheet.create({
   empty_top: {
     height: height / 8
   },
-  wholeBodyButton: {
+  otherButton: {
     margin: 10,
     alignItems: 'center',
-    backgroundColor: '#bf5252',
+    borderColor: COLOR.blue,
     padding: 10,
     borderWidth: 2,
     borderRadius: 30,
-    borderColor: '#bf5252'
   }
 });

@@ -142,9 +142,11 @@ class CoolerMedicineView extends React.Component {
               <Text style={styles.date} >
                 {Moment().format('MMMM DD, YYYY')}
               </Text>
-            <TouchableOpacity style = {{padding:15}} onPress = {() => navigate('Form', {
-              log_type: 4
-            })}>
+            <TouchableOpacity
+              style = {{padding:15}}
+              onPress = {() => {
+                navigate('Add', {});
+              }}>
             <Image style = {{height:50, width:50, }}
               source ={require('../Resources/Images/eashanplus.png')} >
             </Image>

@@ -22,7 +22,6 @@ import Profile from './EditProfile';
 import Summary from './Summary';
 import SummaryGraph from './SummaryGraph';
 import {_mailFunc} from  '../../mailUtil/mailUtil.js'
-import {pullAllSymptoms} from '../../databaseUtil/databaseUtil.js'
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase,
@@ -53,9 +52,9 @@ class Settings extends Component {
       touchID: false,
       quickLog: false
     };
-    
+
     //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
-    
+
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -206,7 +205,7 @@ class Settings extends Component {
                     console.log("***********"+ e)
                     _mailFunc([{price: "500$"}])
                 })
-                
+
               }
               }
             />

@@ -67,7 +67,7 @@ export const IMAGES = {
   view: require('../Resources/Images/view.png'),
   export: require('../Resources/Images/export.png'),
   hamburgerMenu: require('../Resources/Images/icons8-menu-26.png'),
-  body: require('../Resources/Images/bodyLarge.png'),
+  body: require('../Resources/Images/bodyLarge2.png'),
   crying: require('../Resources/Images/crying.png'),
   close: require('../Resources/Images/close.png'),
   close_white: require('../Resources/Images/close-white.png'),
