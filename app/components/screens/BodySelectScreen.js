@@ -43,7 +43,7 @@ export default class BodySelectScreen extends React.Component {
       lineYPos = thisRef.state.lineYPos;
     }
     thisRef.labels[idx].measure((a, yPos, c, height, e) => {
-      lineYPos[idx] = yPos + height / 2;
+      lineYPos[idx] = (yPos + height / 2) + 30;
       if (idx == 3) {
         thisRef.setState({ lineYPos });
       } else {
@@ -52,11 +52,9 @@ export default class BodySelectScreen extends React.Component {
     });
   }
 
-  render() {
-    const { navigate } = this.props.navigation;
-
+  renderHorizontalLines(){
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View>
         <View
           style={[
             styles.labelLine,
@@ -90,9 +88,24 @@ export default class BodySelectScreen extends React.Component {
             }
           ]}
         />
+      </View>
+    )
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+    let h_lines = this.renderHorizontalLines();
+    return (
+      <View style={{ flex: 1, paddingTop: 30, backgroundColor: 'white' }}>
+        { h_lines }
+        <View style={styles.header}>
+          <Text style={styles.headerText}>
+            {"Where do you feel discomfort?"}
+          </Text>
+        </View>
         <ImageBackground
           resizeMode={'stretch'}
-          style={{ flex: 1, flexDirection: 'row' }}
+          style={{ marginTop: 5, flex: 1, flexDirection: 'row' }}
           source={IMAGES.body}
         >
           <View style={styles.emptyVertical} />
@@ -161,7 +174,7 @@ export default class BodySelectScreen extends React.Component {
                 ref={l => {
                   this.labels[0] = l;
                 }}
-                style={[styles.label, { marginTop: height / 50 }]}
+                style={[styles.label, { marginTop: height / 16 }]}
               >
                 <Text style={styles.labelText}>Face / Head</Text>
               </View>
@@ -169,7 +182,7 @@ export default class BodySelectScreen extends React.Component {
                 ref={l => {
                   this.labels[1] = l;
                 }}
-                style={[styles.label, { marginTop: height / 25 }]}
+                style={[styles.label, { marginTop: (height * (13/24) - 75) / 4 }]}
               >
                 <Text style={styles.labelText}>Torso</Text>
               </View>
@@ -177,7 +190,7 @@ export default class BodySelectScreen extends React.Component {
                 ref={l => {
                   this.labels[2] = l;
                 }}
-                style={[styles.label, { marginTop: height / 15 }]}
+                style={[styles.label, { marginTop: (height * (13/24) - 75) / 8}]}
               >
                 <Text style={styles.labelText}>Arms</Text>
               </View>
@@ -185,7 +198,7 @@ export default class BodySelectScreen extends React.Component {
                 ref={l => {
                   this.labels[3] = l;
                 }}
-                style={[styles.label, { marginTop: height / 5 }]}
+                style={[styles.label, { marginTop: height / 6 }]}
               >
                 <Text style={styles.labelText}>Legs</Text>
               </View>
@@ -206,94 +219,15 @@ export default class BodySelectScreen extends React.Component {
     );
   }
 }
-/**
-    return (
-      <View style={{flex: 1}}>
-        <ImageBackground
-          resizeMode={'contain'}
-          style={{flex: 1, flexDirection: 'row'}}
-          source={IMAGES.body}
-        >
-          <View style={[styles.vertical, {width: width/5}]}>
-            <View
-              style={styles.empty_top}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.ARMS
-                })
-              }}
-              style={[styles.arm_left, {width: width/5}]}
-            />
-            <View
-              style={styles.empty_bottom}
-            />
-          </View>
-          <View style={styles.vertical}>
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.HEAD
-                })
-              }}
-              style={[styles.head, {}]}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.TORSO
-                })
-              }}
-              style={[styles.torso, {}]}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.LEGS
-                })
-              }}
-              style={[styles.legs, {}]}
-            />
-          </View>
-          <View style={[styles.vertical, {width: width/5}]}>
-            <View
-              style={styles.empty_top}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                navigate('Choose', {
-                  bodyLabel: BODY_PARTS.ARMS
-                })
-              }}
-              style={[styles.arm_right, { width: width / 5,}]}
-            />
-            <View
-              style={[styles.empty_bottom, {}]}
-            />
-          </View>
-          <View style={styles.emptyVertical}/>
-        </ImageBackground>
-      </View>
-    );
-    */
-/**
-<View
-  style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}
->
-  <TouchableOpacity
-    style={styles.wholeBodyButton}
-    onPress={() => {
-      navigate('Choose', {
-        bodyLabel: BODY_PARTS.BODY
-      })
-    }}
-  >
-    <Text>Whole Body</Text>
-  </TouchableOpacity>
-</View>
-*/
+
 const styles = StyleSheet.create({
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: 20
+  },
   bodyVertical: {
     flex: 1,
     flexDirection: 'row',

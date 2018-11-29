@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderBottomColor: 'black',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingBottom: 10,
+    paddingBottom: 5,
     marginBottom: 10
   },
   img: {

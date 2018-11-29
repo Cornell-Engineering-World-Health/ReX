@@ -20,6 +20,7 @@ import LogFormScreen from './LogFormScreen';
 import { StackNavigator } from 'react-navigation';
 import Database from '../../Database';
 import { getSource, IMAGES } from '../Resources/constants';
+import NavigationHeader from '../NavigationHeader/NavigationHeader'
 
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
@@ -68,7 +69,10 @@ export default class ChooseLogScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ImageBackground style={{ flex: 1, backgroundColor: 'white' }}>
+      <ImageBackground style={{ flex: 1, paddingTop: 20, backgroundColor: 'white' }}>
+        <NavigationHeader
+          onPressBack={() => {this.props.navigation.goBack()}}
+        />
         <ScrollView>
           <View style={styles.log_container}>
             {this.state.log_types.map((prop, key) => {

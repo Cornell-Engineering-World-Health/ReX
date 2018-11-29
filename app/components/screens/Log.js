@@ -14,14 +14,9 @@ export default class Log extends React.Component {
     super(props)
   }
 
-  errorOnSubmit(){
-    this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
-    'Please add any missing information')
-  }
-
   successOnSubmit(){
     this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
-    'New Medicine Added!', '')
+    'New Symptom Logged', '')
   }
 
   render() {
@@ -54,16 +49,7 @@ export default class Log extends React.Component {
       <View style={{flex: 1}}>
         <LogSN
           screenProps={{
-            errorOnSubmit: this.errorOnSubmit.bind(this),
             successOnSubmit: this.successOnSubmit.bind(this)
-          }}
-        />
-        <DropdownAlert
-          ref={ref => this.dropdown = ref}
-          closeInterval={2000}
-          imageSrc={IMAGES.close_white}
-          containerStyle={{
-            backgroundColor: COLOR.red,
           }}
         />
         <DropdownAlert

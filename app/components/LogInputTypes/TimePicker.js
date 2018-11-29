@@ -37,7 +37,7 @@ export default class TimePicker extends React.Component {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <View style={{flex: 1, flexDirection: 'row', marginBottom: 30}}>
+        <View style={{flex: 1, flexDirection: 'row', marginBottom: 30, paddingLeft: 5}}>
           <TouchableOpacity onPress={this.handleAdd.bind(this)}>
             <Text style={styles.add}>Add Another</Text>
           </TouchableOpacity>
@@ -49,6 +49,7 @@ export default class TimePicker extends React.Component {
           <DatePickerIOS
             date={this.state.chosen_date}
             mode={'time'}
+            minuteInterval={15}
             onDateChange={this.handleChange.bind(this)} />
         </View>
       </View>

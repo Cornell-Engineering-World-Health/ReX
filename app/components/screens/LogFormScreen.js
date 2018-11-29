@@ -28,6 +28,7 @@ import moment from 'moment';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { COLOR } from '../Resources/constants.js';
 import Form from '../LogInputTypes/Form';
+import NavigationHeader from '../NavigationHeader/NavigationHeader'
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
@@ -148,6 +149,8 @@ export default class ChooseLogScreen extends React.Component {
         },
         err => console.log(err)
       );
+      this.props.screenProps.successOnSubmit()
+      this.props.navigation.navigate('Body', {})
     } else {
       this.props.on_finish();
       if (this.props.timestamp) {
@@ -327,6 +330,9 @@ export default class ChooseLogScreen extends React.Component {
     });
     return (
       <View style={styles.container}>
+        <NavigationHeader
+          onPressBack={() => {this.props.navigation.goBack()}}
+        />
         <View style={styles.headerView}>
           <Text style={styles.headerTitle}>{this.state.log_name}</Text>
         </View>
@@ -406,10 +412,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingTop: 20
   },
   headerView: {
-    paddingTop: 20,
+    paddingTop: 5,
     paddingBottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
