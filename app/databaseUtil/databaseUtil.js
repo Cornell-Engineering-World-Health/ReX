@@ -56,7 +56,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (6, 'Back Pain', 'image.png', 'Intensity','Duration','TORSO')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (7, 'Double Vision', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name, event_type_icon,card_field_id1,card_field_id2,event_type_category) values (7, 'Double Vision', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (8, 'Pulsatile Tinnitus', 'image.png', 'Intensity','Duration','HEAD')"
@@ -93,6 +93,9 @@ export function intializeDatabase() {
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (19, 'Vomiting', 'image.png', 'Intensity','Duration','TORSO')"
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (20, 'Heart Pain', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, 'Intensity', 'ScaleSlideInputType')"
@@ -149,7 +152,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (2, 2,'1950-01-01 00:00:00', 2)"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (80, 3,'1950-01-01 00:00:00', 3)"
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (8000, 3,'1950-01-01 00:00:00', 3)"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (81, 4,'1950-01-01 00:00:00', 1)"
@@ -159,7 +162,13 @@ export function intializeDatabase() {
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (83, 6,'1950-01-01 00:00:00', 6)"
-      );     
+      );  
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (84, 7,'1950-01-01 00:00:00', 1)"
+      );    
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (8500, 16,'1950-01-01 00:00:00', 1)"
+      );  
       /* necessary default settings */
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','5')"

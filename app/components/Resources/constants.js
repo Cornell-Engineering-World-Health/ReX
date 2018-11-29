@@ -16,7 +16,7 @@ export const IMAGES = {
   evening: require('../Resources/Images/evening.png'),
   fatigue: require('../Resources/Images/fatigue.png'),
   nausea: require('../Resources/Images/nausea.png'),
-  diarrhea: require('../Resources/Images/diarrhea.png'),
+  diarrhea: require('../Resources/Images/intestine.png'),
   dysgeusia: require('../Resources/Images/popsicle.png'),
   vomiting: require('../Resources/Images/vomiting.png'),
   cognitive: require('../Resources/Images/cognitive.png'),
