@@ -21,9 +21,13 @@ import { StackNavigator } from 'react-navigation';
 import Profile from './EditProfile';
 import Summary from './Summary';
 import SummaryGraph from './SummaryGraph';
+import {_mailFunc} from  '../../mailUtil/mailUtil.js'
+import {pullAllSymptoms} from '../../databaseUtil/databaseUtil.js'
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  pullSymptomForGraphs,
+  pullAllSymptoms
 } from '../../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
 
@@ -49,6 +53,9 @@ class Settings extends Component {
       touchID: false,
       quickLog: false
     };
+    
+    //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
+    
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -194,8 +201,13 @@ class Settings extends Component {
               }
               title="Quick Log"
               title="FAQ"
-              onPress={() =>
-                Alert.alert('Question: Is this app awesome?\n Answer: yes ')
+              onPress={() => {
+                pullAllSymptoms((e) => {
+                    console.log("***********"+ e)
+                    _mailFunc([{price: "500$"}])
+                })
+                
+              }
               }
             />
           </SettingsList>
