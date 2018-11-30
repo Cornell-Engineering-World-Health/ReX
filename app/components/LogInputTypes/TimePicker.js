@@ -6,7 +6,12 @@ import moment from 'moment'
 export default class TimePicker extends React.Component {
   constructor (props) {
     super(props)
-    date = new Date()
+    let rounding = 15 * 60 * 1000;
+    let closest15minTime = moment();
+    closest15minTime = moment(Math.round((+closest15minTime) / rounding) * rounding);
+    let timeStr = closest15minTime.format();
+
+    date = new Date(timeStr)
     time = props.chosen_date.split(':')
     date.setHours(time[0])
     date.setMinutes(time[1])

@@ -41,6 +41,14 @@ keyStart = 200;
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
     super(props);
+
+
+    this.state = {
+      input_type_array: [],
+    };
+  }
+
+  componentDidMount = () => {
     var log_name = '';
     var log_type = 0;
     var nav = true;
@@ -59,6 +67,8 @@ export default class ChooseLogScreen extends React.Component {
     console.log('log type----', log_type);
     var keysArray = [];
 
+    var input_types = [];
+
     Database.transaction(
       tx =>
         tx.executeSql(
@@ -68,6 +78,7 @@ export default class ChooseLogScreen extends React.Component {
           AND event_type_id = ?;',
           [timestamp, log_type],
           (tx, { rows }) => {
+            console.log('ROWS', rows)
             json_rows = JSON.parse(rows._array[0].fields);
             keysArray = Object.keys(json_rows);
 
@@ -94,7 +105,8 @@ export default class ChooseLogScreen extends React.Component {
                         values: valArray,
                         submit_vals: json_rows,
                         event_type_id: log_type,
-                        log_name: log_name
+                        log_name: log_name,
+                        nav: nav
                       });
                     }
                   ),
@@ -105,13 +117,6 @@ export default class ChooseLogScreen extends React.Component {
         ),
       err => console.log(err)
     );
-
-    var input_types = [];
-
-    this.state = {
-      input_type_array: input_types,
-      nav: nav
-    };
   }
 
   valueChange(label, value) {

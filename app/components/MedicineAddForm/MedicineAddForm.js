@@ -33,12 +33,18 @@ export default class MedicineAddForm extends React.Component {
 
     this.name;
     this.dosage;
+
+    let rounding = 15 * 60 * 1000;
+    let closest15minTime = moment();
+    closest15minTime = moment(Math.round((+closest15minTime) / rounding) * rounding);
+    let timeStr = closest15minTime.format("HH:mm");
+
     this.state = {
       startDate:'',
       endDate:'',
       markedDates : {}, //for UI
       selectingStart : true,
-      timeArray: [(new Date).toTimeString().split(':',2).join(':')],
+      timeArray: [timeStr],
       timeArrayIdx: 0,
       modalID: '',
       submit_vals: {} //object for final submit

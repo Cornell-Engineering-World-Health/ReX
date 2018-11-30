@@ -79,13 +79,17 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
-  componentWillMount = () => {
-    var medicineData= []
+  componentDidMount = () => {
+
+    let that = this
   //new Date() for current date
     pullMedicineFromDatabase(new Date(), function(formattedData) {
+      var medicineData= []
+
       Object.keys(formattedData).forEach(function(med) {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
+
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
           // for(var i =0; i <medObj.timeCategory.length; i++){
           //     console.log(medObj.time[i])
@@ -93,11 +97,11 @@ class CoolerMedicineView extends React.Component {
           //     data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
           // }
       });
-  });
 
-  this.setState ({
-      data: medicineData
-  })
+      that.setState ({
+          data: medicineData
+      })
+    });
 }
 
   compareCards = (a,b) => {
@@ -115,7 +119,7 @@ class CoolerMedicineView extends React.Component {
         break
       }
     }
-    if (a.timeval[passed_index] < b.timeval[passed_index2]) {
+    if (a.timeVal[passed_index] < b.timeVal[passed_index2]) {
       return -1
     }
     else {
@@ -157,7 +161,6 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
-                console.log(item)
                 return (
                   <View>
                     <DoseCard
@@ -166,7 +169,7 @@ class CoolerMedicineView extends React.Component {
                     takenTime={item.takenTime}
                     dosage={item.dosage}
                     passed={item.statuses}
-                    updateData = {this.updateData}
+                    imageData = {this.updateData}
                     buttonsRight={[
                       {
                         text: 'Edit',

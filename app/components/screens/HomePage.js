@@ -53,7 +53,7 @@ class Home extends React.Component {
     this.didRevert = [false, false, false, false]
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let totalAmount = this.state.totalAmount;
     let doneAmount = this.state.doneAmount;
     let thisRef = this;
@@ -101,21 +101,34 @@ class Home extends React.Component {
     });
   }
 
+  writeAllInTimeCategory(i, st, callback){
+    let done = st.doneAmount
+    let o_done = st.originalDoneAmount
+    let tot = st.totalAmount
+
+    if(done[i] != o_done[i]){
+      console.log('true', i)
+      databaseTakeMedicines(new Date(), i, true, callback)
+    } else if(this.didRevert[i]){
+      databaseTakeMedicines(new Date(), i, false, callback)
+      console.log('false', i)
+    } else {
+      callback()
+    }
+  }
+
   componentWillUnmount(){
     //console.log(this.state.doneAmount, this.state.originalDoneAmount, this.state.totalAmount)
-    let done = this.state.doneAmount
-    let o_done = this.state.originalDoneAmount
-    let tot = this.state.totalAmount
+    let st = this.state
+    let that = this
 
-    for(let i = 0; i < tot.length; i++){
-      if(done[i] != o_done[i]){
-        console.log('true', i)
-        databaseTakeMedicines(new Date(), i, true)
-      } else if(this.didRevert[i]){
-        databaseTakeMedicines(new Date(), i, false)
-        console.log('false', i)
-      }
-    }
+    that.writeAllInTimeCategory(0, st, () => {
+      that.writeAllInTimeCategory(1, st, () => {
+        that.writeAllInTimeCategory(2, st, () => {
+          that.writeAllInTimeCategory(3, st, () => {})
+        })
+      })
+    })
   }
 
 
