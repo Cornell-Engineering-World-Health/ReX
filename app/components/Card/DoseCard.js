@@ -38,20 +38,29 @@ class Card extends PureComponent {
   constructor(props) {
 
     super(props);
-
+    // if none are taken or red, will be 0.
     var passed_index = 0
+    console.log(this.props.passed)
     if(this.props.passed){
-        for (var x = 0; x < this.props.passed.length; x++) {
-          if (this.props.passed[x] == false) {
+        for (var x = this.props.passed.length ; x >= 0 ; x--) {
+          // hit a taken, next one 
+          if (this.props.passed[x]){
+            passed_index = x + 1
+            break
+          }
+          // first red we see (latest red)
+          if (this.props.passed[x] == false && this.shouldBeTaken(new Date(this.props.time[x]), new Date()) && !this.shouldBeTakenNow(new Date(this.props.time[x]))){
             passed_index = x
             break
           }
+          // if no taken or red, means we havent missed any and have taken some
+
         }
     }
+    console.log("setting passed index to: " + passed_index)
     this.state = {
       time: this.props.time,
       takenTime: this.props.takenTime,
-      status: this.props.status,
       passed: this.props.passed,
       passed_index: passed_index,
       backgroundColor: background[this.props.passed],
@@ -69,7 +78,8 @@ class Card extends PureComponent {
   }
   // determines new hours text
   _handleRenderText = () => {
-    console.log("inside handle render text")
+    // console.log("inside handle render text")
+    // console.log("passed_index: " + this.state.passed_index)
     var current = new Date(this.state.time[this.state.passed_index])
     var timeString;
 
@@ -101,16 +111,15 @@ class Card extends PureComponent {
 
   _handleClick = () => {
     that = this
-    console.log("inside handle click")
+    // console.log("inside handle click")
     //update datebase based on click
     title = 'Tylenol'
     dosage = '20 mg'
     time = '09:00'
-    let hhmm_time = new Date(this.props.time[this.state.passed_index]).toTimeString().substring(0,5)
-    databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time,!this.props.passed[this.state.passed_index])
-    this.setState({
-        status: !this.status,
-    })
+
+    // this.setState({
+    //     status: !this.status,
+    // })
     var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
     var newInd = 0;
@@ -125,23 +134,32 @@ class Card extends PureComponent {
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = border[1]
 
+      // console.log("database has been written forward: " + + this.state.passed_index)
+      let hhmm_time = new Date(this.props.time[this.state.passed_index]).toTimeString().substring(0,5)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, newPassed)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
         data: tempData
       }, () => {that._handleRenderText()})
+    
       // can click backward
     }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){
-      console.log("can click backward")
+      // console.log("can click backward")
       var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
       var circleColor = border[1]
+      // console.log("database has been written backward:  " + this.state.passed_index)
+      // console.log("UNDO", this.props.time[this.state.passed_index])
+      let hhmm_time = new Date(this.props.time[this.state.passed_index-1]).toTimeString().substring(0,5)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, newPassed)
+
       if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
-          console.log("inside red here")
+          // console.log("inside red here")
           circleColor = "#fa8b89"
           taken_string = "Missed"
       }else{
-          console.log("inside gray here")
+          // console.log("inside gray here")
           circleColor = "#cccccc"
       }
       tempData[this.state.passed_index - 1].title = taken_string
@@ -159,8 +177,8 @@ class Card extends PureComponent {
   _handleModalPress = (data) => {
     var index = data.index
     // if green or red
-    if (this.shouldBeTaken(new Date(this.state.time[index]), new Date())) {
-      console.log("inside should be taken")
+    if (this.shouldBeTaken(new Date(this.state.time[index]), new Date()) && !this.state.passed[index]) {
+      // console.log("inside should be taken")
       var tempData = this.state.data
       // checks green for taken
       var circleColor = border[1]
@@ -171,12 +189,14 @@ class Card extends PureComponent {
       var tempPassed = this.state.passed
       var tempPassedIndex = this.state.passed_index
       tempPassed[index] = !tempPassed[index]
+
+      // only need to change card shown if take the one its currently on
       if (index == this.state.passed_index){
         tempPassedIndex = this.state.passed_index +1
       }
       // record that you took this medicine in the database
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time,!this.props.passed[index])
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time, tempPassed)
 
       this.setState({
         data: tempData,

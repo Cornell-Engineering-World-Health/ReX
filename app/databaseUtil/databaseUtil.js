@@ -497,9 +497,10 @@ function formatMedicineData(data) {
 }
 
 export function pullMedicineFromDatabase(date, callback) {
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
+  // console.log(dayArray)
   Database.transaction(tx => {
     tx.executeSql(
     'SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
@@ -526,7 +527,7 @@ export function getIds(rows,callback){
             //console.log('inside getIds event_id:', event_details_id);
         }
     }
-    console.log('before wrapper call')
+    // console.log('before wrapper call')
     callback(event_id, event_details_id)
 }
 
@@ -652,12 +653,15 @@ function updateMedicineData(data,time,takenVal,callback){
 }
 
 function updateSingleMedicine(data,name,dosage,time,takenVal){
-    console.log('updating single medicine', data)
+    // console.log('updating single medicine', data)
     data.some(function(med){
         var fields = JSON.parse(med.fields)
+        // console.log("IF STATEMENT", fields['Pill Name'] === name && fields['Dosage'] === dosage)
+        // console.log("For pill: " + fields['Pill Name'] + time)
         if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
             var idx = fields['Time'].indexOf(time);
             if(idx != -1){
+                // console.log("IDX", idx)
                 let newTaken = fields['Taken'].slice()
                 newTaken[idx] = takenVal
                 fields['Taken'] = newTaken
@@ -667,15 +671,14 @@ function updateSingleMedicine(data,name,dosage,time,takenVal){
                 let newFields = JSON.stringify(fields)
                 let queryArgs = [newFields, med.event_details_id]
                 Database.transaction(tx => {
-                    tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs);
-               //      (tx, results) => {
-               //                                                         console.log("Query completed", tx, results);
-               //
-               // tx.executeSql('Select * from  event_details_tbl where event_details_id= ? ',[med.event_details_id],  (tx2, results2) => {
-               //                                                     console.log("Query completed2", tx2, results2);
-               //                                                });
-               //
-               //                                                    });
+                    tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs, (tx, results) => {
+                                                                       console.log("Query completed", tx, results);
+               
+               tx.executeSql('Select * from  event_details_tbl where event_details_id= ? ',[med.event_details_id],  (tx2, results2) => {
+                                                                   console.log("Query completed2", tx2, results2);
+                                                              });
+               
+                                                                  });
                 },err=>console.log(err))
 
                 return true
@@ -702,10 +705,11 @@ export function databaseTakeMedicines(date,timeIndex,takenVal, callback){
 
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date,name,dosage,time,takenVal){
+    // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
     let day = date.toISOString().substr(0,10)
     dayArray  = [day]
-    console.log(dayArray)
-    console.log('inside take medicine')
+    // console.log(dayArray)
+    // console.log('inside take medicine')
     Database.transaction(tx => {
     tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \

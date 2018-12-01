@@ -85,7 +85,7 @@ class CoolerMedicineView extends React.Component {
   //new Date() for current date
     pullMedicineFromDatabase(new Date(), function(formattedData) {
       var medicineData= []
-
+      // console.log("READING DATA", formattedData)
       Object.keys(formattedData).forEach(function(med) {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
@@ -161,6 +161,7 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={this.state.data.sort(this.compareCards)}
               renderItem={({ item, index }) => {
+                // console.log(item)
                 return (
                   <View>
                     <DoseCard
