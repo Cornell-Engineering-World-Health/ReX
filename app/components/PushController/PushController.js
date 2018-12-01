@@ -131,10 +131,13 @@ export function setMassNotification(
         hours,
         minutes
       );
-      setNotification(t, b, tempDateWithTime, (i, d) => {
-        let temp = { id: i, date: d };
-        id_bundle.push(temp);
-      });
+
+      if(!Moment(tempDateWithTime).isBefore((new Date()).toISOString())){
+        setNotification(t, b, tempDateWithTime, (i, d) => {
+          let temp = { id: i, date: d };
+          id_bundle.push(temp);
+        });
+      }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }

@@ -15,7 +15,9 @@ import MedicineView from '../../screens/MedicinePage';
 import Settings from '../../screens/Settings';
 import Calendar from '../../screens/Calendar';
 import ChooseLogScreen from '../../screens/Log';
-import PushController from '../PushController/PushController';
+import PushController, {
+  setMassNotification
+} from '../PushController/PushController';
 import SurveyModal from '../../screens/SurveyModal';
 import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
 const MEDICINE_PAGE = 'medicine';
@@ -68,7 +70,18 @@ class MenuBar extends React.Component {
     };
 
     var startdate = new Date('2018-12-01');
-    var enddate = new Date('2018-12-02');
+    var enddate = new Date('2018-12-10');
+
+    setMassNotification(
+      startdate,
+      enddate,
+      'title',
+      'body',
+      ['13:00', '13:08', '13:09', '16:00'],
+      stuff => {
+        console.log('callback', stuff);
+      }
+    );
   }
 
   onLog() {
