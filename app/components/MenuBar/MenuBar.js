@@ -66,6 +66,9 @@ class MenuBar extends React.Component {
     this.state = {
       selectedID: HOME_PAGE
     };
+
+    var startdate = new Date('2018-12-01');
+    var enddate = new Date('2018-12-02');
   }
 
   onLog() {
