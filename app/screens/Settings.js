@@ -190,6 +190,20 @@ class Settings extends Component {
                 console.log('INSERT MAIL FUNC');
               }}
             />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={60}
+                  resizeMode="contain"
+                  source={IMAGES.medicine}
+                />
+              }
+              title="Edit Medicine Settings"
+              onPress={() => {
+                console.log('MEDICINE SETTINGS PAGE');
+              }}
+            />
           </SettingsList>
         </View>
         <Modal
