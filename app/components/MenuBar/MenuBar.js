@@ -71,17 +71,6 @@ class MenuBar extends React.Component {
 
     var startdate = new Date('2018-12-01');
     var enddate = new Date('2018-12-10');
-
-    setMassNotification(
-      startdate,
-      enddate,
-      'title',
-      'body',
-      ['13:00', '13:08', '13:09', '16:00'],
-      stuff => {
-        console.log('callback', stuff);
-      }
-    );
   }
 
   onLog() {
