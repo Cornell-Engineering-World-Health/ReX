@@ -175,7 +175,7 @@ export default class SurveyForm extends React.Component {
         return (
           <ScaleSlideInputType
             key={key}
-            isIntensitySlider={false}
+            isSlider={false}
             question={this.state.value_labels[key]}
             input_style={styles.input_container_blue}
             title_text_style={styles.title_text}

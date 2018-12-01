@@ -38,7 +38,7 @@ class Settings extends Component {
       height_inches: '8',
       height: '5' + ' ft ' + '8' + ' in',
       icon: 0,
-      email: 'navin@gmail.com',
+      email: 'doctor@gmail.com',
       isEditVisible: false
     };
   }

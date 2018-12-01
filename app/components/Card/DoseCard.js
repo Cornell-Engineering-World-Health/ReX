@@ -326,60 +326,57 @@ class Card extends PureComponent {
   render() {
     this._handleRenderText();
     return (
-      <View style={{ flex: 1 }}>
-        <View style={styles.wrapper}>
-          <TouchableOpacity
-            disabled={!this.props.buttonActive}
-            onPress={() => this.props.onPress(time)}
+      <View style={styles.wrapper}>
+        <TouchableOpacity
+          disabled={!this.props.buttonActive}
+          onPress={() => this.props.onPress(time)}
+        >
+          <View
+            style={[
+              styles.container,
+              {
+                backgroundColor: this.state.backgroundColor,
+                borderColor: this.state.borderColor,
+                flex: 1
+              }
+            ]}
           >
-            <View
-              style={[
-                styles.container,
-                {
-                  backgroundColor: this.state.backgroundColor,
-                  borderColor: this.state.borderColor,
-                  flex: 1
-                }
-              ]}
-            >
-              <View style={styles.descriptionContainer}>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text
-                    style={[styles.titleText, { color: this.state.textColor }]}
-                  >
-                    {this.props.title}
-                  </Text>
-                  <Text style={{ color: this.state.textColor }}>
-                    {this.props.dosage}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={this._handleClick}
-                  style={{ flex: 1, alignItems: 'flex-end' }}
+            <View style={styles.descriptionContainer}>
+              <View style={{ flexDirection: 'column' }}>
+                <Text
+                  style={[styles.titleText, { color: this.state.textColor }]}
                 >
-                  <View flexDirection="row" marginTop={7}>
-                    <Text style={{ fontSize: 14, color: this.state.textColor }}>
-                      {' '}
-                      {this.state.newhours}{' '}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.more}
-                      onPress={() => {
-                        this.setState({
-                          modalVisible: true
-                        });
-                      }}
-                    >
-                      <Image source={IMAGES.smalldot} resizeMode="contain" />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ marginTop: 15 }} />
-                </TouchableOpacity>
+                  {this.props.title}
+                </Text>
+                <Text style={{ color: this.state.textColor }}>
+                  {this.props.dosage}
+                </Text>
               </View>
+              <TouchableOpacity
+                onPress={this._handleClick}
+                style={{ flex: 1, alignItems: 'flex-end' }}
+              >
+                <View flexDirection="row" marginTop={7}>
+                  <Text style={{ fontSize: 14, color: this.state.textColor }}>
+                    {' '}
+                    {this.state.newhours}{' '}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.more}
+                    onPress={() => {
+                      this.setState({
+                        modalVisible: true
+                      });
+                    }}
+                  >
+                    <Image source={IMAGES.smalldot} resizeMode="contain" />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ marginTop: 15 }} />
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-
+          </View>
+        </TouchableOpacity>
         <Modal
           isVisible={this.state.modalVisible}
           style={styles.modalWrapper}
@@ -426,8 +423,7 @@ export default Card;
 const styles = StyleSheet.create({
   wrapper: {
     padding: 5,
-    borderRadius: 5,
-    overflow: 'hidden'
+    borderRadius: 5
   },
   modalwrapper: {
     flexDirection: 'row'

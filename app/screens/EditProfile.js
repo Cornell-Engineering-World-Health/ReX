@@ -134,7 +134,7 @@ export default class Profile extends Component {
                 }}
               />
               <TextField
-                label={'Email'}
+                label={"Doctor's Email"}
                 value={this.props.email}
                 onChangeText={email => {
                   this.props.settingsUpdate('email', email);

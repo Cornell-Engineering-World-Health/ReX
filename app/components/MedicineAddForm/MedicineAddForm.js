@@ -151,7 +151,10 @@ export default class MedicineAddForm extends React.Component {
   confirmSubmit() {
     if (this.state.modalID == CALENDAR_ID) {
       this.valueChange('Start Date', this.state.startDate);
-      this.valueChange('End Date', this.state.endDate);
+      this.valueChange(
+        'End Date',
+        this.state.endDate != '' ? this.state.endDate : this.state.startDate
+      );
     } else if (this.state.modalID == TIME_ID) {
       let ta = this.state.timeArray.sort();
       let time_category = ta.map(v => {
