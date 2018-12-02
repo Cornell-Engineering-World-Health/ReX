@@ -54,7 +54,7 @@ export default class ChooseLogScreen extends React.Component {
     }
 
     var keysArray = [];
-
+    var inputArray = [timestamp,log_type]
     Database.transaction(
       tx =>
         tx.executeSql(
@@ -62,7 +62,7 @@ export default class ChooseLogScreen extends React.Component {
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
           WHERE timestamp = ? \
           AND event_type_id = ?;',
-          [timestamp, log_type],
+          inputArray,
           (tx, { rows }) => {
             json_rows = JSON.parse(rows._array[0].fields);
             keysArray = Object.keys(json_rows);

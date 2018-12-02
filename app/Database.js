@@ -1,3 +1,4 @@
 import { SQLite } from 'expo';
 
-module.exports = SQLite.openDatabase('dbfa3.db');
+module.exports = SQLite.openDatabase('dbqwerty543.db')
+
