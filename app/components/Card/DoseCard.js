@@ -44,7 +44,7 @@ class Card extends PureComponent {
         for (var x = this.props.passed.length-1 ; x >= 0 ; x--) {
           // hit a taken, next one 
           console.log(this.props.passed)
-          if (this.props.passed[x]){
+          if (this.props.passed[0][x]){
             passed_index = x + 1
             break
           }
@@ -190,7 +190,7 @@ class Card extends PureComponent {
       tempData[index].title = taken_string
       var tempPassed = this.state.passed
       var tempPassedIndex = this.state.passed_index
-      tempPassed[index] = !tempPassed[index]
+      tempPassed[0][index] = !tempPassed[0][index]
 
       // only need to change card shown if take the one its currently on
       if (index == this.state.passed_index){
@@ -310,18 +310,18 @@ class Card extends PureComponent {
       var hour_string = this.createTimeString((new Date(val)))
       var circol;
       var taken_string = "Not taken"
-      if(this.props.passed[i]){
+      if (this.props.takenTime[i] != ""){
+        taken_string = this.createTakenString(d)
+      }
+      if(this.props.passed[0][i]){
         circol = border[1]
-        taken_string = this.props.takenTime[i]
-      }else if(!this.props.passed[i] &&  this.shouldBeTaken(new Date(val), new Date())){
+        taken_string = this.createTakenString(d)
+      }else if(!this.props.passed[0][i] &&  this.shouldBeTaken(new Date(val), new Date())){
         circol = "#fa8b89"
         taken_string = "Missed"
       }else{
         circol = "#cccccc"
         taken_string = "Not taken"
-      }
-      if (this.props.takenTime[i] != ""){
-        taken_string = this.createTakenString(d)
       }
       return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
       })
