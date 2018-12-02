@@ -9,7 +9,7 @@ import {
   Animated
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { COLOR } from '../Resources/constants.js';
+import { COLOR } from '../../resources/constants.js';
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -51,6 +51,15 @@ export default class Form extends React.Component {
     the bar should be half filled)
   */
   _updateOverlay() {
+    let newOverlayWidth =
+      this.state.viewportWidth *
+      (this.state.activeSlide + 1) /
+      this.props.data.length;
+    if (!this.state.reachedEnd) {
+      Animated.timing(this.state.overlayWidth, {
+        toValue: newOverlayWidth
+      }).start();
+    }
     if (this.state.activeSlide == this.props.data.length - 1) {
       this.setState({ reachedEnd: true });
       Animated.timing(this.state.overlayWidth, {
@@ -58,15 +67,15 @@ export default class Form extends React.Component {
       }).start();
       this._updateOverlayYAxis();
     } else {
-        if(!this.state.reachedEnd){
-          let newOverlayWidth =
-            this.state.viewportWidth *
-            this.state.activeSlide /
-            this.props.data.length;
-          Animated.timing(this.state.overlayWidth, {
-            toValue: newOverlayWidth
-          }).start();
-        }
+      if (!this.state.reachedEnd) {
+        let newOverlayWidth =
+          this.state.viewportWidth *
+          this.state.activeSlide /
+          this.props.data.length;
+        Animated.timing(this.state.overlayWidth, {
+          toValue: newOverlayWidth
+        }).start();
+      }
     }
   }
 
@@ -77,14 +86,13 @@ export default class Form extends React.Component {
     }).start();
   }
 
-  disable_swipe(){
-    this.setState({swipable: false})
+  disable_swipe() {
+    this.setState({ swipable: false });
   }
 
-  enable_swipe(){
-    this.setState({swipable: true})
+  enable_swipe() {
+    this.setState({ swipable: true });
   }
-
 
   /*
 Take in a native event (part of the object passed in from onLayout)
@@ -120,10 +128,12 @@ of the screen
       />
     );
 
-    let modalStyle = (this.props.isModal) ? {
-      borderBottomLeftRadius: 15,
-      borderBottomRightRadius: 15
-    }:{}
+    let modalStyle = this.props.isModal
+      ? {
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15
+        }
+      : {};
 
     return (
       <View
@@ -144,11 +154,9 @@ of the screen
           itemWidth={this.state.viewportWidth}
           slideStyle={{ width: this.state.viewportWidth }}
           inactiveSlideOpacity={1}
-          onSnapToItem={index =>
-            this.setState({ activeSlide: index }, () => {
-              this._updateOverlay();
-            })
-          }
+          onSnapToItem={index => {
+            this.setState({ activeSlide: index }, () => this._updateOverlay());
+          }}
         />
         {pagination}
         <View style={styles.footer}>
@@ -267,8 +275,7 @@ const styles = StyleSheet.create({
   },
 
   componentWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1
+    flex: 1,
+    padding: 5
   }
 });
