@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 //import { PieChart } from 'react-native-svg-charts';
+=======
+import { PieChart } from 'react-native-svg-charts';
+>>>>>>> nocirclesadface
 import {
   StyleSheet,
   View,
@@ -10,12 +14,20 @@ import {
   Dimensions
 } from 'react-native';
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import constants from '../../resources/constants';
+=======
+import constants from '../Resources/constants';
+>>>>>>> nocirclesadface
 import MedicineCard from '../Card/MedicineCard';
 import PillCard from '../Card/PillCard';
 import { LinearGradient } from 'expo';
 import Modal from 'react-native-modal';
+<<<<<<< HEAD
 import LogFormScreen from '../../screens/LogFormScreen';
+=======
+import LogFormScreen from '../screens/LogFormScreen';
+>>>>>>> nocirclesadface
 import { StackNavigator } from 'react-navigation';
 
 class Circle extends Component {
@@ -60,12 +72,23 @@ class Circle extends Component {
   };
 
   toggleModal = () => {
+<<<<<<< HEAD
+=======
+    console.log('hereeee');
+>>>>>>> nocirclesadface
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
   renderPicker() {
+<<<<<<< HEAD
     var tempHour = Math.round(this.state.hour * 2) / 2;
     var degrees = (tempHour % 12) * 15;
+=======
+    console.log(this.state.hour);
+    var tempHour = Math.round(this.state.hour * 2) / 2;
+    var degrees = (tempHour % 12) * 15;
+    console.log(degrees);
+>>>>>>> nocirclesadface
 
     var translateX = 150.5 * Math.sin(this.Radians(degrees));
     var translateY = 150.5 - 150.5 * Math.cos(this.Radians(degrees));
@@ -77,6 +100,10 @@ class Circle extends Component {
       translateX = -translateX;
       translateY = 2 * -translateY;
     } else if (18 < tempHour && tempHour <= 24) {
+<<<<<<< HEAD
+=======
+      console.log('hey im correct');
+>>>>>>> nocirclesadface
       translateX = -translateX;
     }
 
@@ -146,6 +173,7 @@ class Circle extends Component {
             }}
           >
             <View style={styles.pie} />
+<<<<<<< HEAD
 
             {/*
               <PieChart
@@ -174,6 +202,34 @@ class Circle extends Component {
                 data={innerPieData}
               />
               <View style = {styles.hourHand} />
+=======
+            <PieChart
+              // paddingBottom = {150}
+              sort={(a, b) => 0}
+              padAngle={0}
+              innerRadius={'83%'}
+              // style = {{ alignItems: 'center' }}
+              style={{
+                position: 'absolute',
+                width: Dimensions.get('window').width / 1.5,
+                height: Dimensions.get('window').width / 1.5
+              }}
+              data={pieData}
+            />
+            <PieChart
+              // paddingBottom = {150}
+              sort={(a, b) => 0}
+              padAngle={0}
+              innerRadius={'88%'}
+              style={{
+                position: 'absolute',
+                width: Dimensions.get('window').width / 1.75,
+                height: Dimensions.get('window').width / 1.75
+              }}
+              data={innerPieData}
+            />
+            {/* <View style = {styles.hourHand} />
+>>>>>>> nocirclesadface
         <View style = {styles.minuteHand} />
         <View style = {styles.circleHand} /> */}
           </View>

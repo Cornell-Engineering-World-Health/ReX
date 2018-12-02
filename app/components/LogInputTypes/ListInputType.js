@@ -10,13 +10,19 @@ import {
   Image,
   TextInput
 } from 'react-native';
+<<<<<<< HEAD
 import { COLOR, IMAGES } from '../../resources/constants.js';
 
 const ITEM_HEIGHT = 55;
+=======
+import { COLOR, IMAGES } from '../Resources/constants.js';
+
+>>>>>>> nocirclesadface
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
+<<<<<<< HEAD
 /*
 Props:
 text:     to render
@@ -24,6 +30,37 @@ onDelete: function to delete current from list
 
 
 */
+=======
+const ListItem = props => (
+  <TouchableOpacity style={[styles.itemWrapper, props.style]}>
+    <Text style={styles.itemTextStyle}>{props.text}</Text>
+  </TouchableOpacity>
+);
+const AddItem = props => (
+  <View style={[styles.itemWrapper, props.style]}>
+    <TextInput
+      style={styles.textInputStyle}
+      onChangeText={text => {
+        props.onChangeText(text);
+      }}
+      value={props.value}
+      placeholder={'Add More'}
+      onSubmitEditing={() => {
+        props.onSubmitEditing();
+      }}
+    />
+    <TouchableOpacity
+      style={styles.imageWrapper}
+      onPress={() => {
+        props.onSubmitEditing();
+      }}
+    >
+      <Image style={styles.plusSignStyle} source={IMAGES.plusSignMinimal} />
+    </TouchableOpacity>
+  </View>
+);
+
+>>>>>>> nocirclesadface
 export default class Duration extends React.Component {
   static propTypes = {
     buttonTitles: PropTypes.array, // array of strings
@@ -35,8 +72,12 @@ export default class Duration extends React.Component {
 
     this.state = {
       symptoms: ['LAST_ELEMENT'],
+<<<<<<< HEAD
       addText: '',
       overlayOpenIndex: -1
+=======
+      addText: ''
+>>>>>>> nocirclesadface
     };
   }
 
@@ -53,17 +94,21 @@ export default class Duration extends React.Component {
           value={this.state.addText}
           onSubmitEditing={() => {
             this._onSubmit();
+<<<<<<< HEAD
             this._list.scrollToIndex({
               index: this.state.symptoms.length - 1,
               animated: true,
               viewPosition: 1
             });
+=======
+>>>>>>> nocirclesadface
           }}
         />
       );
     }
     return (
       <ListItem
+<<<<<<< HEAD
         isOverlayOpen={this.state.overlayOpenIndex == index}
         setOverlay={isOpen => {
           this._setOverlayStatus(isOpen ? index : -1);
@@ -71,6 +116,8 @@ export default class Duration extends React.Component {
         onDelete={() => {
           this._deleteItem(index);
         }}
+=======
+>>>>>>> nocirclesadface
         text={item}
         style={{
           backgroundColor:
@@ -81,6 +128,7 @@ export default class Duration extends React.Component {
     );
   };
 
+<<<<<<< HEAD
   _setOverlayStatus(index) {
     this.setState({ overlayOpenIndex: index });
   }
@@ -88,12 +136,15 @@ export default class Duration extends React.Component {
   /*
 Called when person clicks enter every time they type another entry
 */
+=======
+>>>>>>> nocirclesadface
   _onSubmit() {
     if (this.state.addText != '') {
       data = this.state.symptoms;
       data.splice(data.length - 1, 0, this.state.addText);
       this.setState({ data: data, addText: '' });
 
+<<<<<<< HEAD
       let formatSubmit = this._formatSubmit();
       this.props.valueChange(this.props.val_label, formatSubmit);
     }
@@ -126,12 +177,21 @@ If index is an invalid number, function does nothing.
     this.props.valueChange(this.props.val_label, formatSubmit);
   }
 
+=======
+      let formatSubmit = data.slice(0, data.length - 1).join(', ');
+      this.props.valueChange(this.props.val_label, formatSubmit);
+      console.log(formatSubmit, 'FORMAT_SUBMIT');
+    }
+  }
+
+>>>>>>> nocirclesadface
   render() {
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>
           <Text style={styles.questionText}>{'Any other symptoms?'}</Text>
         </View>
+<<<<<<< HEAD
         <View style={{ flex: 0.8, alignItems: 'center' }}>
           <FlatList
             ref={flatlist => {
@@ -142,6 +202,10 @@ If index is an invalid number, function does nothing.
               offset: ITEM_HEIGHT * index,
               index
             })}
+=======
+        <View style={{ flex: 0.8 }}>
+          <FlatList
+>>>>>>> nocirclesadface
             data={this.state.symptoms}
             extraData={this.state}
             keyExtractor={(item, index) => index}
@@ -152,6 +216,7 @@ If index is an invalid number, function does nothing.
     );
   }
 }
+<<<<<<< HEAD
 
 class ListItem extends React.Component {
   constructor(props) {
@@ -218,10 +283,13 @@ const AddItem = props => {
   );
 };
 
+=======
+>>>>>>> nocirclesadface
 const styles = StyleSheet.create({
   itemWrapper: {
     margin: 1,
     alignItems: 'center',
+<<<<<<< HEAD
     height: ITEM_HEIGHT,
     backgroundColor: COLOR.blue,
     width: viewportWidth * 0.8,
@@ -230,6 +298,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: 'relative',
     flex: 1
+=======
+    height: 50,
+    backgroundColor: COLOR.blue,
+    width: viewportWidth * 0.8,
+    flexDirection: 'row',
+    justifyContent: 'center'
+>>>>>>> nocirclesadface
   },
   header: {
     flex: 0.2
@@ -239,6 +314,7 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     textAlign: 'center'
   },
+<<<<<<< HEAD
   itemTextStyle: {
     textAlign: 'center',
     fontWeight: '100',
@@ -247,13 +323,30 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     alignItems: 'stretch'
+=======
+  addItemWrapper: {
+    justifyContent: 'space-between'
+  },
+  itemTextStyle: {
+    textAlign: 'center',
+    fontWeight: '100',
+    fontSize: 20
+  },
+  wrapper: {
+    flex: 1,
+    position: 'relative'
+>>>>>>> nocirclesadface
   },
   imageStyle: {
     height: 25,
     width: 25
   },
   textInputStyle: {
+<<<<<<< HEAD
     height: ITEM_HEIGHT,
+=======
+    height: 50,
+>>>>>>> nocirclesadface
     borderColor: 'gray',
     flex: 0.8,
     fontSize: 15,
@@ -263,6 +356,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff50'
   },
   imageWrapper: {
+<<<<<<< HEAD
     flex: 0.2,
     alignItems: 'center'
   }
@@ -294,3 +388,9 @@ const overlayStyles = {
     backgroundColor: '#00000075'
   }
 };
+=======
+    flex: 0.3,
+    alignItems: 'center'
+  }
+});
+>>>>>>> nocirclesadface

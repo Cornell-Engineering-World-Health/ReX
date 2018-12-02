@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 import PropTypes from 'prop-types';
+=======
+>>>>>>> nocirclesadface
 import {
   StyleSheet,
   Text,
@@ -8,7 +11,15 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native';
+<<<<<<< HEAD
 import { IMAGES, COLOR } from '../../resources/constants';
+=======
+import Slider from 'react-native-slider';
+import { IMAGES, COLOR } from '../Resources/constants';
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  'window'
+);
+>>>>>>> nocirclesadface
 
 const SELECTED_COLOR = COLOR.blue;
 const TITLE = 'How intense is your pain?';
@@ -25,6 +36,7 @@ const numericImageChoices = [
   IMAGES.nine,
   IMAGES.ten
 ];
+<<<<<<< HEAD
 /* each element is of the form [<color>, <numberTitle>, Summary>]
 https://paindoctor.com/pain-scales/ (Color scheme from #11)
 */
@@ -53,11 +65,23 @@ export default class ScaleSlideInputType extends React.Component {
     value: PropTypes.number
   };
 
+=======
+const imageChoices = [
+  IMAGES.crying,
+  IMAGES.crying,
+  IMAGES.crying,
+  IMAGES.crying
+];
+const intensityColors = []; //find 10 colors that show intensity
+//INTENSITY PAGE
+export default class ScaleSlideInputType extends React.Component {
+>>>>>>> nocirclesadface
   constructor(props) {
     super(props);
 
     this.state = {
       value: props.value,
+<<<<<<< HEAD
       viewportWidth: 1,
       viewportHeight: 1,
       selected: 0
@@ -76,6 +100,18 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   change(value) {
+=======
+      max_val: props.max_val,
+      scale_labels: props.scale_labels,
+      input_style: props.input_style,
+      title_text_style: props.title_text_style,
+      selected: -1
+    };
+  }
+
+  change(value) {
+    console.log(value);
+>>>>>>> nocirclesadface
     this.setState(() => {
       return {
         value: parseFloat(value)
@@ -85,6 +121,7 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   _renderBodyImageType() {
+<<<<<<< HEAD
     let body = null;
     if (this.props.isIntensitySlider) {
       body = this.props.scale_labels.map((option, i, arr) => {
@@ -147,10 +184,48 @@ export default class ScaleSlideInputType extends React.Component {
     return <View style={styles.body}>{body}</View>;
   }
 
+=======
+    let body = this.props.scale_labels.map((option, i, arr) => {
+      return (
+        <TouchableOpacity
+          key={i}
+          onPress={() => {
+            this.change(i);
+            this.setState({ selected: i });
+          }}
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                this.state.selected == i ? SELECTED_COLOR : 'transparent'
+            }
+          ]}
+        >
+          <Image
+            source={numericImageChoices[i]}
+            style={[
+              styles.imgStyle,
+              {
+                width: viewportWidth / (arr.length + 2),
+                height: viewportWidth / (arr.length + 2)
+              }
+            ]}
+          />
+        </TouchableOpacity>
+      );
+    });
+
+    return <View style={styles.body}>{body}</View>;
+  }
+
+  _renderBodyColorType() {}
+
+>>>>>>> nocirclesadface
   /**
    * Based on this.props.isSlider, will return a slider or a button scale input
    */
   _renderBody() {
+<<<<<<< HEAD
     let scale = this._renderBodyImageType();
 
     return (
@@ -159,6 +234,17 @@ export default class ScaleSlideInputType extends React.Component {
           this._setGlobalHeightAndWidth(nativeEvent);
         }}
       >
+=======
+    let scale;
+    if (this.props.isSlider) {
+      scale = null;
+    } else {
+      scale = this._renderBodyImageType();
+    }
+
+    return (
+      <View>
+>>>>>>> nocirclesadface
         <View style={styles.label_view}>
           <Text style={styles.label_text}>{this.props.label_left}</Text>
           <Text style={styles.label_text}>{this.props.label_right}</Text>
@@ -166,6 +252,7 @@ export default class ScaleSlideInputType extends React.Component {
         {scale}
       </View>
     );
+<<<<<<< HEAD
   }
 
   _renderFooterLabel() {
@@ -186,6 +273,8 @@ export default class ScaleSlideInputType extends React.Component {
         </View>
       );
     }
+=======
+>>>>>>> nocirclesadface
   }
 
   render() {
@@ -196,11 +285,15 @@ export default class ScaleSlideInputType extends React.Component {
             {this.props.question || TITLE}
           </Text>
         </View>
+<<<<<<< HEAD
         <View style={[styles.bottomHalf]}>
           {this._renderBody()}
           {this._renderFooterLabel()}
         </View>
         {/*Render the intensity labels underneath if necessary*/}
+=======
+        {this._renderBody()}
+>>>>>>> nocirclesadface
       </View>
     );
   }
@@ -209,6 +302,7 @@ export default class ScaleSlideInputType extends React.Component {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+<<<<<<< HEAD
     justifyContent: 'space-around',
     alignItems: 'stretch'
   },
@@ -219,6 +313,15 @@ const styles = StyleSheet.create({
   },
   bottomHalf: {
     alignItems: 'stretch'
+=======
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    padding: 15
+  },
+  button: {
+    padding: 0,
+    borderRadius: 50
+>>>>>>> nocirclesadface
   },
   questionText: {
     fontSize: 40,
@@ -231,7 +334,11 @@ const styles = StyleSheet.create({
   body: {
     flexDirection: 'row',
     justifyContent: 'center',
+<<<<<<< HEAD
     alignItems: 'stretch'
+=======
+    paddingBottom: 40
+>>>>>>> nocirclesadface
   },
   label_view: {
     flexDirection: 'row',
@@ -239,6 +346,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   label_text: {
+<<<<<<< HEAD
     fontSize: 18,
     fontWeight: '100'
   },
@@ -257,3 +365,48 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 });
+=======
+    fontSize: 15
+  }
+});
+
+/*
+<View style={this.state.input_style}>
+  <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+  <Text style={styles.text}>{String(this.state.scale_labels[this.state.value])}</Text>
+  <Slider
+    step={1}
+    maximumValue={this.state.max_val}
+    onValueChange={this.change.bind(this)}
+    value={this.state.value}
+  />
+</View>
+
+<View style={styles.wrapper}>
+  <View style={styles.header}>
+    <Text style={styles.questionText}>{this.props.question || TITLE}</Text>
+  </View>
+  {this._renderBodyImageType()}
+</View>
+
+<View style={this.state.input_style}>
+  <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+  <Text style={styles.text}>{String(this.state.scale_labels[this.state.value])}</Text>
+  <Slider
+    step={1}
+    maximumValue={this.state.max_val}
+    onValueChange={this.change.bind(this)}
+    value={this.state.value}
+    onSlidingStart={() => {
+      this.props.onStart();
+    }}
+    onSlidingComplete={() =>
+      {
+        this.props.valueChange(this.props.val_label, this.state.value);
+        this.props.onComplete()
+      }}
+  />
+</View>
+
+*/
+>>>>>>> nocirclesadface

@@ -1,6 +1,10 @@
 import { FileSystem } from 'expo';
 import Moment from 'moment';
+<<<<<<< HEAD
 import constants, { getCardData } from '../resources/constants';
+=======
+import constants, { getCardData } from '../components/Resources/constants';
+>>>>>>> nocirclesadface
 
 export function writeToFS(directory, file_name) {
   FileSystem.getInfoAsync(SURVEY_DIR, {}).then( e => {

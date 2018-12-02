@@ -9,7 +9,11 @@ import {
   Animated
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+<<<<<<< HEAD
 import { COLOR } from '../../resources/constants.js';
+=======
+import { COLOR } from '../Resources/constants.js';
+>>>>>>> nocirclesadface
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -51,6 +55,7 @@ export default class Form extends React.Component {
     the bar should be half filled)
   */
   _updateOverlay() {
+<<<<<<< HEAD
     let newOverlayWidth =
       this.state.viewportWidth *
       (this.state.activeSlide + 1) /
@@ -60,6 +65,8 @@ export default class Form extends React.Component {
         toValue: newOverlayWidth
       }).start();
     }
+=======
+>>>>>>> nocirclesadface
     if (this.state.activeSlide == this.props.data.length - 1) {
       this.setState({ reachedEnd: true });
       Animated.timing(this.state.overlayWidth, {
@@ -67,6 +74,7 @@ export default class Form extends React.Component {
       }).start();
       this._updateOverlayYAxis();
     } else {
+<<<<<<< HEAD
       if (!this.state.reachedEnd) {
         let newOverlayWidth =
           this.state.viewportWidth *
@@ -76,6 +84,17 @@ export default class Form extends React.Component {
           toValue: newOverlayWidth
         }).start();
       }
+=======
+        if(!this.state.reachedEnd){
+          let newOverlayWidth =
+            this.state.viewportWidth *
+            this.state.activeSlide /
+            this.props.data.length;
+          Animated.timing(this.state.overlayWidth, {
+            toValue: newOverlayWidth
+          }).start();
+        }
+>>>>>>> nocirclesadface
     }
   }
 
@@ -86,6 +105,7 @@ export default class Form extends React.Component {
     }).start();
   }
 
+<<<<<<< HEAD
   disable_swipe() {
     this.setState({ swipable: false });
   }
@@ -94,6 +114,17 @@ export default class Form extends React.Component {
     this.setState({ swipable: true });
   }
 
+=======
+  disable_swipe(){
+    this.setState({swipable: false})
+  }
+
+  enable_swipe(){
+    this.setState({swipable: true})
+  }
+
+
+>>>>>>> nocirclesadface
   /*
 Take in a native event (part of the object passed in from onLayout)
 
@@ -128,12 +159,19 @@ of the screen
       />
     );
 
+<<<<<<< HEAD
     let modalStyle = this.props.isModal
       ? {
           borderBottomLeftRadius: 15,
           borderBottomRightRadius: 15
         }
       : {};
+=======
+    let modalStyle = (this.props.isModal) ? {
+      borderBottomLeftRadius: 15,
+      borderBottomRightRadius: 15
+    }:{}
+>>>>>>> nocirclesadface
 
     return (
       <View
@@ -154,9 +192,17 @@ of the screen
           itemWidth={this.state.viewportWidth}
           slideStyle={{ width: this.state.viewportWidth }}
           inactiveSlideOpacity={1}
+<<<<<<< HEAD
           onSnapToItem={index => {
             this.setState({ activeSlide: index }, () => this._updateOverlay());
           }}
+=======
+          onSnapToItem={index =>
+            this.setState({ activeSlide: index }, () => {
+              this._updateOverlay();
+            })
+          }
+>>>>>>> nocirclesadface
         />
         {pagination}
         <View style={styles.footer}>
@@ -275,7 +321,13 @@ const styles = StyleSheet.create({
   },
 
   componentWrapper: {
+<<<<<<< HEAD
     flex: 1,
     padding: 5
+=======
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+>>>>>>> nocirclesadface
   }
 });
