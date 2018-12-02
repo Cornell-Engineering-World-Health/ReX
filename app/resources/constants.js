@@ -1,5 +1,5 @@
 /*
-***To use an image, import {IMAGES} from the '../Resources/constants' (make sure to
+***To use an image, import {IMAGES} from the /resources/constants' (make sure to
 include curly braces) and then call the image with IMAGES._____ (Ex: IMAGES.afternoon)
 */
 export const IMAGES = {
@@ -34,7 +34,7 @@ export const IMAGES = {
   plusSignMinimal: require('./images/plusSignMinimal.png'),
   profile: require('./images/profile.png'),
   profilePic: require('./images/profilePic.png'),
-  pulsatileTinnitus: require('../Resources/Images/pulse.png'),
+  pulsatileTinnitus: require('./images/pulse.png'),
   scale: require('./images/scale.png'),
   settings: require('./images/settingsScreen.png'),
   stomachPain: require('./images/stomachPain.png'),
