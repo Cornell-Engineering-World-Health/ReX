@@ -8,6 +8,7 @@ export const IMAGES = {
   brain: require('./images/brain.png'),
   calendar: require('./images/calendarScreen.png'),
   default: require('./images/default.png'),
+  double_vision: require('./images/double_vision.png'),
   elbowPain: require('./images/elbowPain.png'),
   footPain: require('./images/footPain.png'),
   glasses: require('./images/glasses.png'),
@@ -20,12 +21,20 @@ export const IMAGES = {
   medicine: require('./images/medicine.png'),
   morning: require('./images/morning.png'),
   neckPain: require('./images/neckPain.png'),
+  fatigue: require('./images/fatigue.png'),
+  nausea: require('./images/nausea.png'),
+  diarrhea: require('./images/diarrhea.png'),
+  dysgeusia: require('./images/popsicle.png'),
+  vomiting: require('./images/vomiting.png'),
+  cognitive: require('./images/cognitive.png'),
+  handpain: require('./images/hand.png'),
   night: require('./images/night.png'),
   pillBottle: require('./images/medicationScreen.png'),
   plusSign: require('./images/plusSign.png'),
   plusSignMinimal: require('./images/plusSignMinimal.png'),
   profile: require('./images/profile.png'),
   profilePic: require('./images/profilePic.png'),
+  pulsatileTinnitus: require('../Resources/Images/pulse.png'),
   scale: require('./images/scale.png'),
   settings: require('./images/settingsScreen.png'),
   stomachPain: require('./images/stomachPain.png'),
@@ -191,6 +200,18 @@ export default (constants = {
     backgroundColor: '#ab87b8',
     translucentColor: '#ab87b880'
   },
+  DOUBLE_VISION: {
+    image: IMAGES.double_vision,
+    title: 'Double Vision',
+    backgroundColor: '#ab87b8',
+    translucentColor: '#ab87b880'
+  },
+  HAND_PAIN: {
+    image: IMAGES.handpain,
+    title: 'Hand Pain',
+    backgroundColor: '#ab87b8',
+    translucentColor: '#ab87b880'
+  },
   NECKPAIN: {
     image: IMAGES.neckPain,
     title: 'Neck Pain',
@@ -200,6 +221,42 @@ export default (constants = {
   KNEEPAIN: {
     image: IMAGES.kneePain,
     title: 'Knee Pain',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  DYSGEUSIA: {
+    image: IMAGES.dysgeusia,
+    title: 'Dysgeusia',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  COGNITIVE_SLOWING: {
+    image: IMAGES.cognitive,
+    title: 'Cognitive Slowing',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  VOMITING: {
+    image: IMAGES.vomiting,
+    title: 'Vomiting',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  DIARRHEA: {
+    image: IMAGES.diarrhea,
+    title: 'Diarrhea',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
+  },
+  NAUSEA: {
+    image: IMAGES.nausea,
+    title: 'Nausea',
+    backgroundColor: '#FFEE93',
+    translucentColor: '#FFEE9380'
+  },
+  FATIGUE: {
+    image: IMAGES.fatigue,
+    title: 'Fatigue',
     backgroundColor: '#79ADDC',
     translucentColor: '#79ADDC80'
   },
@@ -220,6 +277,12 @@ export default (constants = {
     image: IMAGES.backPain,
     backgroundColor: defaultColor,
     translucentColor: defaultColor
+  },
+  PULSATILE_TINNITUS: {
+    image: IMAGES.pulsatileTinnitus,
+    title: 'Pulsatile Tinnitus',
+    backgroundColor: '#79ADDC',
+    translucentColor: '#79ADDC80'
   },
   ELBOWPAIN: {
     title: 'Elbow Pain',
@@ -253,7 +316,15 @@ allows for iteration access to all of the symptoms
 export const symptoms = [
   constants.BACKPAIN,
   constants.BLURRED_VISION,
+  constants.DOUBLE_VISION,
+  constants.HAND_PAIN,
   constants.DIZZINESS,
+  constants.FATIGUE,
+  constants.DIARRHEA,
+  constants.VOMITING,
+  constants.COGNITIVE_SLOWING,
+  constants.DYSGEUSIA,
+  constants.NAUSEA,
   constants.ELBOWPAIN,
   constants.FOOTPAIN,
   constants.HEADACHE,
@@ -261,7 +332,8 @@ export const symptoms = [
   constants.KNEEPAIN,
   constants.LEGPAIN,
   constants.NECKPAIN,
-  constants.STOMACHPAIN
+  constants.STOMACHPAIN,
+  constants.PULSATILE_TINNITUS
 ];
 
 /**
