@@ -40,10 +40,10 @@ class Card extends PureComponent {
     super(props);
     // if none are taken or red, will be 0.
     var passed_index = 0
-    console.log(this.props.passed)
     if(this.props.passed){
-        for (var x = this.props.passed.length ; x >= 0 ; x--) {
+        for (var x = this.props.passed.length-1 ; x >= 0 ; x--) {
           // hit a taken, next one 
+          console.log(this.props.passed)
           if (this.props.passed[x]){
             passed_index = x + 1
             break
