@@ -72,18 +72,25 @@ export default class MedicineAddForm extends React.Component {
 
   submit (){
     if(this.checkIfIncomplete()){
-        this.props.screenProps.errorOnSubmit()
+        // this.props.screenProps.errorOnSubmit()
+        this.props.errorOnSubmit()
+        console.log('error')
     } else {
-      asyncCreateMedicineEvents(
-        this.state.submit_vals['Pill Name'],
-        this.state.submit_vals['Dosage'],
-        new Date(this.state.submit_vals['Start Date']),
-        new Date(this.state.submit_vals['End Date']),
-        this.state.submit_vals['Time'],
-        this.state.submit_vals['Time Category']
-      );
-      this.props.screenProps.successOnSubmit()
-      this.props.navigation.goBack()
+      // this.props.screenProps.writeData(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']), new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'])
+      // asyncCreateMedicineEvents(
+      //   this.state.submit_vals['Pill Name'],
+      //   this.state.submit_vals['Dosage'],
+      //   new Date(this.state.submit_vals['Start Date']),
+      //   new Date(this.state.submit_vals['End Date']),
+      //   this.state.submit_vals['Time'],
+      //   this.state.submit_vals['Time Category']
+      // );
+      // this.props.screenProps.successOnSubmit()
+      // this.props.navigation.goBack()
+      // this.props.navigation.navigate('MainView', {pull: true})
+      this.props.successOnSubmit()
+      this.props.asyncDatabaseUpdate(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']), new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'])
+      this.props.exitModal()
     }
   }
   nextFocus(){
@@ -244,7 +251,7 @@ export default class MedicineAddForm extends React.Component {
       >
         <View style={styles.outerContainer}>
           <NavigationHeader
-            onPressBack={() => {this.props.navigation.goBack()}}
+            onPressBack={() => {this.props.exitModal()}}
           />
           <View style={styles.container}>
             <View style={styles.headerView}>

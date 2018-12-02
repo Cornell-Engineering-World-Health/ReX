@@ -69,12 +69,22 @@ class Card extends PureComponent {
       newhours: "hello",
       init_passed : passed_index,
       modalVisible: false,
-      data: this.render_timeline()
+      data: this.render_timeline(),
+      // taken: false,
+      // hhmm_time: "",
+      // newPassed: this.props.passed,
       };
   }
 
   componentDidMount = () => {
       this._handleRenderText()
+  }
+
+  componentWillUnmount = () => {
+    console.log("leaving this page")
+    // if (this.state.taken == true){
+    //   databaseTakeMedicine(new Date(), this.props.title, this.props.dosage, hhmm_time, newPassed)
+    // }
   }
   // determines new hours text
   _handleRenderText = () => {

@@ -5,6 +5,7 @@ import MedicineAddForm from '../MedicineAddForm/MedicineAddForm';
 import { StackNavigator } from 'react-navigation';
 import DropdownAlert from 'react-native-dropdownalert';
 import { COLOR, IMAGES} from '../Resources/constants';
+import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 
 
 export default class MedicinePage extends React.Component {
@@ -20,6 +21,18 @@ export default class MedicinePage extends React.Component {
   successOnSubmit(){
     this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
     'New Medicine Added!', '')
+  }
+
+  writeData(title, dosage, start, end, time, time_category){
+    asyncCreateMedicineEvents(
+      title,
+      dosage,
+      start,
+      end,
+      time,
+      time_category
+    );
+    console.log("writing")
   }
 
   render() {
@@ -45,7 +58,8 @@ export default class MedicinePage extends React.Component {
         <MedicinePageSN
           screenProps={{
             errorOnSubmit: this.errorOnSubmit.bind(this),
-            successOnSubmit: this.successOnSubmit.bind(this)
+            successOnSubmit: this.successOnSubmit.bind(this),
+            writeData: this.writeData.bind(this)
           }}
         />
         <DropdownAlert
