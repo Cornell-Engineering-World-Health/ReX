@@ -18,7 +18,7 @@ class main extends React.Component {
     intializeDatabase();
     databaseFakeData();
   }
-  componentDidMount() {}
+
   render() {
     return <MenuBar />;
   }

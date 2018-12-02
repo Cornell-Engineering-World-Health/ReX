@@ -9,16 +9,17 @@ import {
   TouchableHighlight
 } from 'react-native';
 import ButtonWithImage from '../Button/ButtonWithImage';
-import constants, { IMAGES } from '../Resources/constants';
-import Home from '../screens/HomePage';
-import MedicineView from '../screens/MedicinePage';
-import Settings from '../screens/Settings';
-import Calendar from '../screens/Calendar';
-import ChooseLogScreen from '../screens/Log';
-import PushController from '../PushController/PushController';
-import SurveyModal from '../screens/SurveyModal'
-import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js'
-
+import constants, { IMAGES } from '../../resources/constants';
+import Home from '../../screens/HomePage';
+import MedicineView from '../../screens/MedicinePage';
+import Settings from '../../screens/Settings';
+import Calendar from '../../screens/Calendar';
+import ChooseLogScreen from '../../screens/Log';
+import PushController, {
+  setMassNotification
+} from '../PushController/PushController';
+import SurveyModal from '../../screens/SurveyModal';
+import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
 const MEDICINE_PAGE = 'medicine';
 const SETTINGS_PAGE = 'settings';
 const HOME_PAGE = 'home';
@@ -65,10 +66,12 @@ class MenuBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedID: HOME_PAGE,
+      selectedID: HOME_PAGE
     };
-  }
 
+    var startdate = new Date('2018-12-01');
+    var enddate = new Date('2018-12-10');
+  }
 
   onLog() {
     this.setState({
@@ -182,7 +185,7 @@ class MenuBar extends React.Component {
           />
         </View>
         <PushController />
-        <SurveyModal/>
+        <SurveyModal />
       </View>
     );
   }

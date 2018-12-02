@@ -2,42 +2,43 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import constants, { COLOR } from '../Resources/constants';
+import constants, { COLOR } from '../../resources/constants';
 
+const HEIGHT = 75;
+const PADDING = 7;
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 10,
-    borderRadius: 10
+    padding: 15,
+    borderRadius: 7
   },
   shadowWrapper: {
     borderRadius: 10,
     shadowOffset: { width: 5, height: 5 },
     shadowColor: '#808080',
-    shadowOpacity: 0.5
+    shadowOpacity: 0.3
   },
   container: {
     flexDirection: 'row',
     backgroundColor: COLOR.cardContainer
   },
   imageContainer: {
-    borderRadius: 5,
-    width: 100,
+    width: HEIGHT + PADDING * 2,
     justifyContent: 'center',
     alignItems: 'center'
   },
   imageStyle: {
-    height: 75,
-    width: 75,
-    resizeMode: 'cover'
+    height: HEIGHT - PADDING,
+    width: HEIGHT - PADDING,
+    resizeMode: 'contain'
   },
   descriptionContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingTop: 15,
+    paddingTop: PADDING,
     paddingLeft: 8,
-    paddingBottom: 15,
+    paddingBottom: PADDING,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   titleText: {
     fontWeight: 'bold',
@@ -46,49 +47,29 @@ const styles = StyleSheet.create({
     color: COLOR.cardTitle
   },
   timeContainer: {
-    marginTop: 1.5,
-    paddingTop: 15,
+    paddingTop: 5,
     marginRight: 10,
     alignItems: 'flex-end',
-    flex: 0.6
+    position: 'absolute',
+    right: 5,
+    top: 1
   },
   timeStamp: {
     fontSize: 16,
     color: COLOR.cardTimestamp,
     fontWeight: '600',
-    letterSpacing: 0.6
+    letterSpacing: 0.6,
+    textAlign: 'right'
   },
   note: {
     color: COLOR.cardNotes,
     fontSize: 16,
     fontWeight: '400',
     letterSpacing: 1.0,
-    marginTop: 10
+    marginTop: 5
   },
   swipe: {
     borderRadius: 10
-  },
-  medicineNoteWrapper: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: 40,
-    alignItems: 'center'
-  },
-  medicineNoteContainer: {
-    flex: 1
-  },
-  medicineNoteText: {
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  medicineNoteLine: {
-    height: StyleSheet.hairlineWidth,
-    flexDirection: 'row',
-    flex: 0.2
   }
 });
 class Card extends PureComponent {
@@ -106,89 +87,61 @@ class Card extends PureComponent {
     onPress: PropTypes.func,
     onCloseSwipeout: PropTypes.func,
     onOpenSwipeout: PropTypes.func,
-    cardData: PropTypes.object,
-    medicineNote: PropTypes.string
+    cardData: PropTypes.object
   };
   constructor(props) {
     super(props);
   }
 
-  _handlePress = () => {
-    console.log('button pressed. ');
-  };
-
   _renderPage = () => {
-    if (this.props.medicineNote) {
-      let textStyle = [styles.medicineNoteText];
-      let medicineLine = [styles.medicineNoteLine];
-      let tempColor = '#b3b3b3';
-      if (this.props.backgroundColor) {
-        tempColor = this.props.backgroundColor;
-      }
-      textStyle.push({ color: tempColor });
-      medicineLine.push({ backgroundColor: tempColor });
-      return (
-        <View style={styles.medicineNoteWrapper}>
-          <View style={medicineLine} />
-          <View style={styles.medicineNoteContainer}>
-            <Text style={textStyle}>{this.props.medicineNote}</Text>
-            <Text style={textStyle}>{this.props.timeStamp}</Text>
-          </View>
-          <View style={medicineLine} />
-        </View>
-      );
-    } else {
-      const imageContainerStyle = [styles.imageContainer];
+    const imageContainerStyle = [styles.imageContainer];
 
-      var image = constants.DEFAULT.image;
-      var title = constants.DEFAULT.title;
-      if (this.props.cardData) {
-        imageContainerStyle.push({
-          backgroundColor: this.props.cardData.backgroundColor
-        });
+    var image = constants.DEFAULT.image;
+    var title = constants.DEFAULT.title;
+    if (this.props.cardData) {
+      imageContainerStyle.push({
+        backgroundColor: this.props.cardData.backgroundColor
+      });
 
-        image = this.props.cardData.image;
-        title = this.props.cardData.title;
-      }
-
-      return (
-        <View style={styles.wrapper}>
-          <View style={styles.shadowWrapper}>
-            <Swipeout
-              right={this.props.buttonsRight}
-              left={this.props.buttonsLeft}
-              autoClose={true}
-              style={styles.swipe}
-              disabled={!this.props.swiperActive}
-              onClose={this.props.onCloseSwipeout}
-              onOpen={this.props.onOpenSwipeout}
-            >
-              <TouchableOpacity
-                disabled={!this.props.buttonActive}
-                onPress={() => this.props.onPress(title)}
-              >
-                <View style={styles.container}>
-                  <View style={imageContainerStyle}>
-                    <Image style={styles.imageStyle} source={image} />
-                  </View>
-
-                  <View style={styles.descriptionContainer}>
-                    <View>
-                      <Text style={styles.titleText}>{title}</Text>
-                      <Text style={styles.note}> {this.props.note1} </Text>
-                      <Text style={styles.note}> {this.props.note2} </Text>
-                    </View>
-                  </View>
-                  <View style={styles.timeContainer}>
-                    <Text style={styles.timeStamp}>{this.props.timeStamp}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </Swipeout>
-          </View>
-        </View>
-      );
+      image = this.props.cardData.image;
+      title = this.props.cardData.title;
     }
+
+    return (
+      <View style={styles.wrapper}>
+        <View style={styles.shadowWrapper}>
+          <Swipeout
+            right={this.props.buttonsRight}
+            left={this.props.buttonsLeft}
+            autoClose={true}
+            style={styles.swipe}
+            disabled={!this.props.swiperActive}
+            onClose={this.props.onCloseSwipeout}
+            onOpen={this.props.onOpenSwipeout}
+          >
+            <TouchableOpacity
+              disabled={!this.props.buttonActive}
+              onPress={() => this.props.onPress(title)}
+            >
+              <View style={styles.container}>
+                <View style={imageContainerStyle}>
+                  <Image style={styles.imageStyle} source={image} />
+                </View>
+
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.titleText}>{title}</Text>
+                  <Text style={styles.note}> {this.props.note1} </Text>
+                  <Text style={styles.note}> {this.props.note2} </Text>
+                </View>
+                <View style={styles.timeContainer}>
+                  <Text style={styles.timeStamp}>{this.props.timeStamp}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </Swipeout>
+        </View>
+      </View>
+    );
   };
 
   render() {

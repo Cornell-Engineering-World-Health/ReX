@@ -1,6 +1,6 @@
 import { FileSystem } from 'expo';
 import Moment from 'moment';
-import constants, { getCardData } from '../components/Resources/constants';
+import constants, { getCardData } from '../resources/constants';
 
 export function writeToFS(directory, file_name) {
   FileSystem.getInfoAsync(SURVEY_DIR, {}).then( e => {

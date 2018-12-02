@@ -24,7 +24,7 @@ export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
 
-/*a
+/*
 Cancels all notifications listed in the given array of notification IDS
 
 Precondition: notificationIDS is an array with every element being a notificationID given
@@ -50,6 +50,7 @@ export function cancelMassNotifications(notificationIDS) {
 
 */
 export function setNotification(t, b, date, callBack) {
+    //console.log(date);
   d = {
     title: t,
     body: b
@@ -70,7 +71,7 @@ export function setNotification(t, b, date, callBack) {
     schedulingOptions
   );
   p.then(id => {
-    callBack(id, date, extraData);
+    callBack(id, date);
   });
 }
 
@@ -110,11 +111,15 @@ export function setMassNotification(
 ) {
   var id_bundle = [];
 
+  startDate.setTime(startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000) //fix time to correct timezone
+  endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60 * 1000) // as above
+
   let tempDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
-    startDate.getDate()
+    startDate.getDate(), 0,0
   );
+
   while (Moment(tempDate).isBefore(endDate)) {
     for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
@@ -126,10 +131,13 @@ export function setMassNotification(
         hours,
         minutes
       );
-      setNotification(t, b, tempDateWithTime, (i, d) => {
-        let temp = { id: i, date: d };
-        id_bundle.push(temp);
-      });
+
+      if(!Moment(tempDateWithTime).isBefore((new Date()).toISOString())){
+        setNotification(t, b, tempDateWithTime, (i, d) => {
+          let temp = { id: i, date: d };
+          id_bundle.push(temp);
+        });
+      }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
