@@ -302,7 +302,9 @@ class Card extends PureComponent {
 
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
-
+      var d = new Date();
+      d.setHours(this.props.takenTime[i].substring(0,2))
+      d.setMinutes(this.props.takenTime[i].substring(3,5))
       var hour_string = this.createTimeString((new Date(val)))
       var circol;
       var taken_string = "Not taken"
@@ -317,7 +319,7 @@ class Card extends PureComponent {
         taken_string = "Not taken"
       }
       if (this.props.takenTime[i] != ""){
-        taken_string = this.createTakenString(new Date(this.props.takenTime[i]))
+        taken_string = this.createTakenString(d)
       }
       return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
       })
