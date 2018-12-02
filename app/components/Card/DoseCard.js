@@ -83,6 +83,8 @@ class Card extends PureComponent {
     var current = new Date(this.state.time[this.state.passed_index])
     var timeString;
 
+    console.log(this.state.passed_index)
+    console.log(this.state.passed)
     if(this.state.passed_index >= this.state.passed.length){
       ind = 0
       timeString = "Done for the day"
@@ -192,18 +194,18 @@ class Card extends PureComponent {
 
       // only need to change card shown if take the one its currently on
       if (index == this.state.passed_index){
+        console.log("hehe")
         tempPassedIndex = this.state.passed_index +1
       }
       // record that you took this medicine in the database
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time, tempPassed)
-
+      console.log(tempPassedIndex)
       this.setState({
         data: tempData,
         passed: tempPassed,
         passed_index: tempPassedIndex
-      })
-      this._handleRenderText()
+      }, () =>  this._handleRenderText())
     }
   }
 
