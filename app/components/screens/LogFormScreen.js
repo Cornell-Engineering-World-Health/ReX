@@ -58,16 +58,16 @@ export default class ChooseLogScreen extends React.Component {
     }
     console.log('log type----', log_type);
     var keysArray = [];
-    var inputArray = [log_type]
+    var inputArray = [timestamp,log_type]
     Database.transaction(
       tx =>
         tx.executeSql(
           'SELECT fields FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+          WHERE timestamp = ? \
           AND event_type_id = ?;',
           inputArray,
           (tx, { rows }) => {
-            console.log(rows)
             json_rows = JSON.parse(rows._array[0].fields);
             keysArray = Object.keys(json_rows);
 
@@ -87,7 +87,6 @@ export default class ChooseLogScreen extends React.Component {
                     [keysArray[i]],
                     (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name;
-                      console.log(input_types[i]);
                       this.setState({
                         input_type_array: input_types,
                         value_labels: keysArray,
