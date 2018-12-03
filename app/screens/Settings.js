@@ -187,7 +187,7 @@ class Settings extends Component {
               }
               title="Export Data"
               onPress={() => {
-                console.log('INSERT MAIL FUNC');
+                _mailFunc(this.state.email, this.state.name + "'s data");
               }}
             />
             <SettingsList.Item

@@ -31,8 +31,30 @@ function convertArrayOfObjectsToCSV(args) {
   return result;
 }
 
-export function _mailFunc(data) {
-  console.log('data: ' + data);
+function getData() {
+  let data = [
+    {
+      Symbol: 'AAPL',
+      Company: 'Apple Inc.',
+      Price: 132.54
+    },
+    {
+      Symbol: 'INTC',
+      Company: 'Intel Corporation',
+      Price: 33.45
+    },
+    {
+      Symbol: 'GOOG',
+      Company: 'Google Inc',
+      Price: 554.52
+    }
+  ];
+
+  return data;
+}
+
+export function _mailFunc(email, subject) {
+  var stockData = getData();
   SURVEY_DIR = FileSystem.documentDirectory + 'doctordata';
   FILE_NAME = 'data.csv';
   FileSystem.getInfoAsync(SURVEY_DIR, {})
@@ -45,7 +67,7 @@ export function _mailFunc(data) {
     .then(() => {
       content = '';
       content = convertArrayOfObjectsToCSV({
-        data: data
+        data: stockData
       });
       console.log('writing: ' + content);
       return FileSystem.writeAsStringAsync(
@@ -55,9 +77,9 @@ export function _mailFunc(data) {
     })
     .then(e => {
       MailComposer.composeAsync({
-        recipients: ['cyr7@cornell.edu'],
-        subject: 'attachment test',
-        body: 'hello',
+        recipients: [email],
+        subject: subject,
+        body: '',
         attachments: [SURVEY_DIR + '/' + FILE_NAME]
       });
     })
