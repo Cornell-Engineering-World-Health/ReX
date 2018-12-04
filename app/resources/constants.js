@@ -87,7 +87,9 @@ export const IMAGES = {
   headerBack: require('./images/header-back.png'),
   smalldot: require('./images/smalldot.png'),
   exportcsv: require('./images/exportcsv.png'),
-  search: require('./images/search.png')
+  search: require('./images/search.png'),
+  fiih: require('./images/fiih_logo.png'),
+  intro_background: require('./images/intro_background.png'),
 };
 export const profile_icons = [
   IMAGES.iconWolf,

@@ -225,6 +225,9 @@ class Settings extends Component {
             height_inches={this.state.height_inches}
             height={this.state.height}
             weight={this.state.weight}
+            isInModal={true}
+            baseColor={COLOR.black}
+            baseColor={COLOR.black}
           />
         </Modal>
       </View>
