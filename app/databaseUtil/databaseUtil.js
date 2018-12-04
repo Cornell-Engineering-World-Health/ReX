@@ -965,11 +965,19 @@ export function databaseTakeMedicine(date,name,dosage,time,takenVal){
 
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
+  console.log('input array is', inputArray)
   Database.transaction(
     tx => {
       tx.executeSql(
         'INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)',
-        inputArray
+        inputArray,
+        (f, c) => {
+          tx.executeSql(
+            'Select * from settings_tbl',
+            [],
+            (a, b) => {console.log("WRITES",inputArray ,c.rows, b.rows)}
+          );
+        }
       );
     },
     err => console.log(err)
