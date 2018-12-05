@@ -109,10 +109,6 @@ class CoolerMedicineView extends React.Component {
         }
       });
     });
-
-    this.setState({
-      data: medicineData
-    });
   };
 
   compareCards = (a, b) => {

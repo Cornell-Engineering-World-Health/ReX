@@ -9,9 +9,11 @@ import {
   TextInput,
   Alert
 } from 'react-native';
+import Moment from 'moment';
 import { LinearGradient } from 'expo';
 import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
 import Modal from 'react-native-modal';
+import { pullMedicineFromDatabase } from '../databaseUtil/databaseUtil';
 import { COLOR } from '../resources/constants.js';
 const fakeData = [
   { name: 'Tylenol', dosage: 123, status: true },
@@ -31,9 +33,31 @@ export default class MedicineSettings extends React.Component {
       modalOpen: false,
       selectedMedicineIndex: -1,
       change: false,
-      currentdosage: 0,
-     
+      tempDosage: 0
     };
+  }
+
+  componentWillMount() {
+    let medicineData = [];
+    pullMedicineFromDatabase(new Date(), formattedData => {
+      Object.keys(formattedData).forEach(function(med) {
+        var medObj = formattedData[med];
+        var formattedTimes = medObj.time.map(
+          t => Moment().format('MMMM DD YYYY') + ' ' + t
+        );
+        medicineData.push({
+          name: med,
+          time: formattedTimes,
+          timeVal: medObj.time,
+          dosage: medObj.dosage,
+          statuses: medObj.taken,
+          notificationStatus: false
+        });
+      });
+      this.setState({ medicine: medicineData }, () => {
+        console.log(medicineData);
+      });
+    });
   }
 
   _keyExtractor = (item, index) => index;
@@ -42,43 +66,28 @@ export default class MedicineSettings extends React.Component {
     data = this.state.medicine;
     data[index].status = !data[index].status;
 
-    this.setState({ medicine: data }, () => {
-      console.log(this.state.medicine);
-    });
+    this.setState({ medicine: data }, () => {});
   }
 
-  _handleToggle2() {
-    data = this.state.medicine;
-    data[this.state.selectedMedicineIndex].status = !data[this.state.selectedMedicineIndex].status;
-
-    this.setState({ medicine: data });
-  }
-
-  _ModalchangeDosage= (amount) => {
-    this.setState({ currentdosage: amount });
-    this.state.change = true;
-  }
-
-  _ModalsubmitDosage = () => {
-    if (this.state.change){
-    data = this.state.medicine;
-    data[this.state.selectedMedicineIndex].dosage = this.state.currentdosage;
-    this.setState({ medicine: data });
-    
+  _modalSubmit() {
+    if (this.state.change) {
+      data = this.state.medicine;
+      data[this.state.selectedMedicineIndex].dosage = this.state.tempDosage;
+      this.setState({ medicine: data });
     }
-    this.setState({ modalOpen: false });
-    this.setState({ change: false });
-
+    this.setState({ modalOpen: false, change: false });
   }
 
-  _Modaldelete = () =>{
-    this.setState({ modalOpen: false });
+  //must include index of item to delete
+  _deleteMedicine() {
     data = this.state.medicine;
-    data.splice(this.state.selectedMedicineIndex, 1)
-    this.setState({ medicine: data });
-    
+    data.splice(this.state.selectedMedicineIndex, 1);
+    this.setState({ modalOpen: false, medicine: data });
   }
 
+  _onChangeDosage(dose) {
+    this.setState({ tempDosage: dose, change: true });
+  }
 
   _renderCard({ item, index }) {
     return (
@@ -126,15 +135,17 @@ export default class MedicineSettings extends React.Component {
         </View>
         <ModalCard
           data={this.state.medicine[this.state.selectedMedicineIndex]}
-          index = {this.state.selectedMedicineIndex}
+          index={this.state.selectedMedicineIndex}
           isOpen={this.state.modalOpen}
-          onDelete ={() =>this._Modaldelete()}
-          exitModal={() => this.setState({ modalOpen: false })}
-          modalsubmit={()=>this._ModalsubmitDosage()}
-          valuechange= {(text)=>this._ModalchangeDosage(text)}
-          onSwitch={() => {
-            this._handleToggle2(); 
+          onDelete={() => {
+            this._deleteMedicine();
           }}
+          exitModal={() => this.setState({ modalOpen: false })}
+          modalSubmit={() => this._modalSubmit()}
+          onChangeDosage={dose => this._onChangeDosage(dose)}
+          onNotificationToggle={() =>
+            this._handleToggle(this.state.selectedMedicineIndex)
+          }
         />
       </LinearGradient>
     );
@@ -169,8 +180,6 @@ title --> String
 onDelete --> function
 */
 const ModalCard = props => {
-  const changedvalue = (text) => props.valuechange(parseInt(text, 10));
-  const toggle=(index) => props.onSwitch(index)
   return (
     <Modal
       isVisible={props.isOpen}
@@ -186,49 +195,62 @@ const ModalCard = props => {
           </Text>
         </View>
         <View style={styles.modalBody}>
-
-         <View style = {styles.modaldosagecontainer}>
-        <Text style={styles.modalDosage}>
-            Dosage:
-          </Text>    
-          <View style ={styles.textinputwrapper}>
-         <TextInput
-        style={styles.dosageinput}
-        textAlign="center"
-        placeholder =  {props.data ? props.data.dosage.toString() : null}
-       // value = {props.data ? props.data.dosage.toString() : null}
-
-       onChangeText={(text) => changedvalue(text)}></TextInput>
-      </View>
-        </View>
-
-        <View style = {styles.modalnotificationcontainer}>
-        <Text style={styles.modalnotification}>
-            NotificationStatus:
-         </Text>             
-          <View style={styles.ModalcardSwitch}>
-          <Switch value={props.data? props.data.status : null} onValueChange={props.onSwitch} />
-        </View>
-        </View>
-       
-        </View>
-          
-        
-        <View style={styles.footer}>
-          <View style={styles.modalDeleteButtonWrapper}>
-            <TouchableOpacity
-              onPress={props.onDelete}
-              style={styles.modalDeleteButton}
-            >
-              <Text style={styles.modalDeleteText}>Delete</Text>
-            </TouchableOpacity>
+          <View style={styles.modalDosageContainer}>
+            <Text style={styles.modalDosage}>Dosage:</Text>
+            <View style={styles.textInputWrapper}>
+              <TextInput
+                style={styles.dosageInput}
+                textAlign="center"
+                placeholder={props.data ? props.data.dosage.toString() : null}
+                onChangeText={props.onChangeDosage}
+              />
+            </View>
           </View>
+
+          <View style={styles.modalNotificationContainer}>
+            <View>
+              <Text style={styles.modalNotification}>Allow Notifications:</Text>
+            </View>
+            <View>
+              <Switch
+                value={props.data ? props.data.status : null}
+                onValueChange={props.onNotificationToggle}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.footer}>
           <View style={styles.modalSubmitButtonWrapper}>
             <TouchableOpacity
-              onPress={props.modalsubmit}
-              style={styles.modalSubmitButton}
+              onPress={props.modalSubmit}
+              style={[styles.modalButton, { backgroundColor: '#34ace7' }]}
             >
-              <Text style={styles.modalDeleteText}>Submit</Text>
+              <Text style={styles.modalButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalDeleteButtonWrapper}>
+            <TouchableOpacity
+              onPress={() =>
+                Alert.alert(
+                  'Watch out!',
+                  'Are you sure you want to delete this medicine?',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel'
+                    },
+                    { text: 'OK', onPress: () => props.onDelete() }
+                  ],
+                  { cancelable: false }
+                )
+              }
+              style={[styles.modalButton, { backgroundColor: '#fa4b12' }]}
+            >
+              <Text style={[styles.modalButtonText, { color: 'white' }]}>
+                Delete
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -241,7 +263,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: 5
   },
   body: {
     flex: 1
@@ -258,7 +281,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.25,
-
     justifyContent: 'center'
   },
   headerText: {
@@ -285,9 +307,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   notificationText: {
-    textAlign: 'right',
-    paddingRight: 10,
-    paddingTop: 10
+    textAlign: 'right'
   },
   cardButton: {
     flex: 1,
@@ -310,26 +330,23 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: '200'
   },
-  modalDeleteButton: {
-    backgroundColor: '#fa4b12',
+  modalButton: {
     padding: 20,
     flex: 1,
     borderRadius: 10,
-  },
-  modalSubmitButton: {
-    backgroundColor: '#34ace7',
-    padding: 20,
-    flex: 1,
-    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   modalDeleteButtonWrapper: {
-    
     padding: 5,
     borderRadius: 10,
     flex: 1
   },
+  modalButtonText: {
+    fontSize: 25,
+    fontWeight: '200'
+  },
   modalSubmitButtonWrapper: {
-   
     padding: 5,
     borderRadius: 10,
     flex: 1
@@ -341,48 +358,41 @@ const styles = StyleSheet.create({
     flex: 0.2,
     flexDirection: 'row',
     justifyContent: 'space-between'
-
   },
   modalBody: {
     flex: 0.5,
     flexDirection: 'column',
-    justifyContent: 'space-between'
-
+    justifyContent: 'space-around'
   },
-  modaldosagecontainer:{
+  modalDosageContainer: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  dosageInput: {
+    padding: 10,
+    borderColor: '#e0e0e0',
+    fontSize: 20,
+    borderBottomWidth: 1
+  },
+  modalNotificationContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between'
   },
-  dosageinput:{
-    flex:1,
-    borderColor: 'gray', 
-    borderWidth: 1
-},
-modalnotificationcontainer:{
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'space-between'
-},
-modalDosage:{
-  flex:1,
-  textAlign: 'center',
-  fontSize: 20,
-  fontWeight: '200'
-
-},
-modalnotification:{
-  textAlign: 'center',
-  fontSize: 20,
-  fontWeight: '200'
-},
-textinputwrapper:{
-  flex:1.5,
-  paddingBottom:40,
-  paddingRight:20
-},
-ModalcardSwitch:{
-  flex:1,
-  justifyContent: 'center'
-}
+  modalDosage: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '200'
+  },
+  modalNotification: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '200'
+  },
+  textInputWrapper: {
+    flex: 1
+  }
 });
