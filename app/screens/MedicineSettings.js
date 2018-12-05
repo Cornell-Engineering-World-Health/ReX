@@ -111,6 +111,9 @@ export default class MedicineSettings extends React.Component {
           exitModal={() => this.setState({ modalOpen: false })}
           modalsubmit={()=>this._ModalsubmitDosage()}
           valuechange= {(text)=>this._ModalchangeDosage(text)}
+          onSwitch={() => {
+            this._handleToggle(index);
+          }}
         />
       </LinearGradient>
     );
@@ -146,6 +149,7 @@ onDelete --> function
 */
 const ModalCard = props => {
   const changedvalue = (text) => props.valuechange(parseInt(text, 10));
+  const toggle=(index) => props.onSwitch(index)
   return (
     <Modal
       isVisible={props.isOpen}
@@ -181,7 +185,7 @@ const ModalCard = props => {
             NotificationStatus:
          </Text>             
           <View style={styles.ModalcardSwitch}>
-          <Switch value={props.status} onValueChange={props.onSwitch} />
+          <Switch value={props.status} onValueChange={(status) =>toggle(status)} />
         </View>
         </View>
        
