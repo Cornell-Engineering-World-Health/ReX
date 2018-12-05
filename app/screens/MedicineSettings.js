@@ -3,12 +3,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Picker,
   StyleSheet,
   Switch,
   FlatList,
   TextInput,
-  TouchableHighlight
+  Alert
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
@@ -77,6 +76,7 @@ export default class MedicineSettings extends React.Component {
     data = this.state.medicine;
     data.splice(this.state.selectedMedicineIndex, 1)
     this.setState({ medicine: data });
+    
   }
 
 
@@ -378,9 +378,11 @@ modalnotification:{
 },
 textinputwrapper:{
   flex:1.5,
-  textAlign: 'center',
-  fontSize: 20,
-  fontWeight: '200',
-  paddingBottom:40
+  paddingBottom:40,
+  paddingRight:20
+},
+ModalcardSwitch:{
+  flex:1,
+  justifyContent: 'center'
 }
 });
