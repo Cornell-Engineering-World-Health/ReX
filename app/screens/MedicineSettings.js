@@ -31,6 +31,7 @@ export default class MedicineSettings extends React.Component {
       medicine: fakeData,
       modalOpen: false,
       selectedMedicineIndex: -1,
+      change: false,
       currentdosage: 0,
      
     };
@@ -47,16 +48,35 @@ export default class MedicineSettings extends React.Component {
     });
   }
 
+  _handleToggle2() {
+    data = this.state.medicine;
+    data[this.state.selectedMedicineIndex].status = !data[this.state.selectedMedicineIndex].status;
+
+    this.setState({ medicine: data });
+  }
+
   _ModalchangeDosage= (amount) => {
     this.setState({ currentdosage: amount });
-
+    this.state.change = true;
   }
 
   _ModalsubmitDosage = () => {
+    if (this.state.change){
     data = this.state.medicine;
     data[this.state.selectedMedicineIndex].dosage = this.state.currentdosage;
     this.setState({ medicine: data });
+    
+    }
+    this.setState({ modalOpen: false });
+    this.setState({ change: false });
 
+  }
+
+  _Modaldelete = () =>{
+    this.setState({ modalOpen: false });
+    data = this.state.medicine;
+    data.splice(this.state.selectedMedicineIndex, 1)
+    this.setState({ medicine: data });
   }
 
 
@@ -108,11 +128,12 @@ export default class MedicineSettings extends React.Component {
           data={this.state.medicine[this.state.selectedMedicineIndex]}
           index = {this.state.selectedMedicineIndex}
           isOpen={this.state.modalOpen}
+          onDelete ={() =>this._Modaldelete()}
           exitModal={() => this.setState({ modalOpen: false })}
           modalsubmit={()=>this._ModalsubmitDosage()}
           valuechange= {(text)=>this._ModalchangeDosage(text)}
           onSwitch={() => {
-            this._handleToggle(index);
+            this._handleToggle2(); 
           }}
         />
       </LinearGradient>
@@ -170,7 +191,7 @@ const ModalCard = props => {
         <Text style={styles.modalDosage}>
             Dosage:
           </Text>    
-          
+          <View style ={styles.textinputwrapper}>
          <TextInput
         style={styles.dosageinput}
         textAlign="center"
@@ -178,6 +199,7 @@ const ModalCard = props => {
        // value = {props.data ? props.data.dosage.toString() : null}
 
        onChangeText={(text) => changedvalue(text)}></TextInput>
+      </View>
         </View>
 
         <View style = {styles.modalnotificationcontainer}>
@@ -185,7 +207,7 @@ const ModalCard = props => {
             NotificationStatus:
          </Text>             
           <View style={styles.ModalcardSwitch}>
-          <Switch value={props.status} onValueChange={(status) =>toggle(status)} />
+          <Switch value={props.data? props.data.status : null} onValueChange={props.onSwitch} />
         </View>
         </View>
        
@@ -341,6 +363,24 @@ modalnotificationcontainer:{
   flex: 1,
   flexDirection: 'row',
   justifyContent: 'space-between'
+},
+modalDosage:{
+  flex:1,
+  textAlign: 'center',
+  fontSize: 20,
+  fontWeight: '200'
+
+},
+modalnotification:{
+  textAlign: 'center',
+  fontSize: 20,
+  fontWeight: '200'
+},
+textinputwrapper:{
+  flex:1.5,
+  textAlign: 'center',
+  fontSize: 20,
+  fontWeight: '200',
+  paddingBottom:40
 }
-  
 });
