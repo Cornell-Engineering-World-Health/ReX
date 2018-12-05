@@ -13,6 +13,7 @@ import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
 import Profile from './EditProfile';
 import Trends from './Trends';
+import MedicineSettings from './MedicineSettings';
 import { sendMail } from '../components/Mail/MailController';
 import { _mailFunc } from '../mailUtil/mailUtil.js';
 import {
@@ -201,7 +202,7 @@ class Settings extends Component {
               }
               title="Edit Medicine Settings"
               onPress={() => {
-                console.log('MEDICINE SETTINGS PAGE');
+                this.props.navigator.push(MedicineSettingsPage);
               }}
             />
           </SettingsList>
@@ -267,7 +268,9 @@ const ProfileRoute = {
   component: Profile,
   passProps: { myProp: 'foo' }
 };
-
+const MedicineSettingsPage = {
+  component: MedicineSettings
+};
 const TrendsRoute = {
   component: Trends
 };
