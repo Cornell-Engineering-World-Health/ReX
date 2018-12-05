@@ -60,7 +60,6 @@ class Calendar extends Component {
         let key = this._generateDateKey(itemDate);
         totalData[key] = flatlistData[i].data;
       }
-      console.log('hashmap', totalData);
       this.setState({
         agendaData: totalData,
         currentAgenda: totalData[this._generateDateKey(this.state.currentDate)]
@@ -129,7 +128,7 @@ assumes date is a valid date object
   };
 
   _refreshCalendar = () => {
-    console.log(this.currSymptomDisplay);
+    //console.log(this.currSymptomDisplay);
     this.calendarRef.initVisualization(this.currSymptomDisplay);
   };
 
@@ -175,7 +174,7 @@ assumes date is a valid date object
   };
 
   calendarHeight = currMonth => {
-    console.log(currMonth);
+    //console.log(currMonth);
     var today = currMonth;
     var numberOfDays = new Date(
       today.getFullYear(),
@@ -192,7 +191,7 @@ assumes date is a valid date object
     var numberOfPrevious = first.getDay();
     var numberOfAfter = 6 - last.getDay();
     var total = numberOfDays + numberOfPrevious + numberOfAfter;
-    console.log(numberOfDays, numberOfPrevious, numberOfAfter);
+    //console.log(numberOfDays, numberOfPrevious, numberOfAfter);
     if (total == 35) {
       this.setState({
         flatlistHeight: Dimensions.get('window').height * 0.5
@@ -296,7 +295,7 @@ assumes date is a valid date object
   }
 
   toggleModal = (timestamp, logtype) => {
-    console.log('hereeee');
+    //console.log('hereeee');
     this.setState({
       isModalVisible: !this.state.isModalVisible,
       modalTimestamp: timestamp,
