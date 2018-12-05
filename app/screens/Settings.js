@@ -32,23 +32,19 @@ class Settings extends Component {
     this.onValueChange = this.onValueChange.bind(this);
     this.state = {
       switchValue: false,
-      birthday: new Date(),
-      name: 'Navin',
-      weight: '',
-      height_feet: '5',
-      height_inches: '8',
-      height: '5' + ' ft ' + '8' + ' in',
+      name: 'Name unknown',
+      weight: 'Weight unknown',
+      height_feet: '',
+      height_inches: '',
+      height: 'Height unknown',
       icon: 0,
-      email: 'doctor@gmail.com',
+      email: "Doctor's email unkown",
       isEditVisible: false
     };
   }
 
   settingsUpdate(setting, value) {
     switch (setting) {
-      case 'birthday':
-        this.setState({ birthday: value });
-        break;
       case 'name':
         this.setState({ name: value });
         break;
@@ -80,8 +76,8 @@ class Settings extends Component {
 
   componentDidMount() {
     pullSettingsFromDatabase(data => {
+      console.log(data);
       this.setState({
-        birthday: new Date(data.birthday),
         weight: data.weight,
         name: data.name,
         height_feet: data.height_feet,
@@ -219,7 +215,6 @@ class Settings extends Component {
               console.log('entered settings update');
               this.settingsUpdate(setting, value);
             }}
-            birthday={this.state.birthday}
             icon={this.state.icon}
             name={this.state.name}
             height_feet={this.state.height_feet}

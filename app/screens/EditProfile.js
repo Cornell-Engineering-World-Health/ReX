@@ -25,7 +25,6 @@ import {
 import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 const AVATAR_ID = 'avatarID';
-const BIRTHDAY_ID = 'birthdayID';
 const HEIGHT_ID = 'heightID';
 const WEIGHT_ID = 'weightID';
 const EDIT_ID = 'editID';
@@ -140,18 +139,6 @@ export default class Profile extends Component {
                   this.props.settingsUpdate('email', email);
                 }}
               />
-              <TouchableOpacity
-                onPress={() => {
-                  this.setState({ modalID: BIRTHDAY_ID });
-                }}
-              >
-                <TextField
-                  editable={false}
-                  pointerEvents={'none'}
-                  label={'Birthday'}
-                  value={this.props.birthday.toLocaleDateString()}
-                />
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
@@ -293,45 +280,6 @@ export default class Profile extends Component {
               }}
             />
           </KeyboardAvoidingView>
-        </Modal>
-        <Modal
-          isVisible={this.state.modalID == BIRTHDAY_ID}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ modalID: '' });
-          }}
-          onSwipe={() => {
-            this.setState({ modalID: '' });
-          }}
-          swipDirection={'down'}
-          style={styles.modal}
-        >
-          <View
-            style={{
-              flex: 0.35,
-              backgroundColor: '#ffffff'
-            }}
-          >
-            <TouchableOpacity
-              style={styles.modalSubmitButton}
-              onPress={() => {
-                this.setState({ modalID: '' });
-              }}
-              alignItems="center"
-            >
-              <Text style={styles.text}>Submit</Text>
-            </TouchableOpacity>
-            <DatePickerIOS
-              style={{ height: 44 }}
-              itemStyle={{ height: 44 }}
-              mode="date"
-              date={this.props.birthday}
-              onDateChange={value => {
-                this.props.settingsUpdate('birthday', value);
-              }}
-            />
-          </View>
         </Modal>
       </View>
     );

@@ -27,7 +27,7 @@ function convertArrayOfObjectsToCSV(args) {
     });
     result += lineDelimiter;
   });
-  console.log('result of func conversion: ' + result);
+  //console.log('result of func conversion: ' + result);
   return result;
 }
 
