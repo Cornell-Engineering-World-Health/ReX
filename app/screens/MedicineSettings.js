@@ -6,7 +6,9 @@ import {
   Picker,
   StyleSheet,
   Switch,
-  FlatList
+  FlatList,
+  TextInput,
+  TouchableHighlight
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
@@ -14,8 +16,8 @@ import Modal from 'react-native-modal';
 import { COLOR } from '../resources/constants.js';
 const fakeData = [
   { name: 'Tylenol', dosage: 123, status: true },
-  { name: 'Drugs', dosage: 123, status: true },
-  { name: 'Vivi', dosage: 123, status: true }
+  { name: 'Drugs', dosage: 124, status: true },
+  { name: 'Vivi', dosage: 128, status: true }
 ];
 
 /*
@@ -28,7 +30,9 @@ export default class MedicineSettings extends React.Component {
     this.state = {
       medicine: fakeData,
       modalOpen: false,
-      selectedMedicineIndex: -1
+      selectedMedicineIndex: -1,
+      currentdosage: 0,
+     
     };
   }
 
@@ -42,6 +46,19 @@ export default class MedicineSettings extends React.Component {
       console.log(this.state.medicine);
     });
   }
+
+  _ModalchangeDosage= (amount) => {
+    this.setState({ currentdosage: amount });
+
+  }
+
+  _ModalsubmitDosage = () => {
+    data = this.state.medicine;
+    data[this.state.selectedMedicineIndex].dosage = this.state.currentdosage;
+    this.setState({ medicine: data });
+
+  }
+
 
   _renderCard({ item, index }) {
     return (
@@ -89,8 +106,11 @@ export default class MedicineSettings extends React.Component {
         </View>
         <ModalCard
           data={this.state.medicine[this.state.selectedMedicineIndex]}
+          index = {this.state.selectedMedicineIndex}
           isOpen={this.state.modalOpen}
           exitModal={() => this.setState({ modalOpen: false })}
+          modalsubmit={()=>this._ModalsubmitDosage()}
+          valuechange= {(text)=>this._ModalchangeDosage(text)}
         />
       </LinearGradient>
     );
@@ -125,6 +145,7 @@ title --> String
 onDelete --> function
 */
 const ModalCard = props => {
+  const changedvalue = (text) => props.valuechange(parseInt(text, 10));
   return (
     <Modal
       isVisible={props.isOpen}
@@ -139,7 +160,34 @@ const ModalCard = props => {
             {props.data ? props.data.name : null}
           </Text>
         </View>
-        <View style={styles.modalBody} />
+        <View style={styles.modalBody}>
+
+         <View style = {styles.modaldosagecontainer}>
+        <Text style={styles.modalDosage}>
+            Dosage:
+          </Text>    
+          
+         <TextInput
+        style={styles.dosageinput}
+        textAlign="center"
+        placeholder =  {props.data ? props.data.dosage.toString() : null}
+       // value = {props.data ? props.data.dosage.toString() : null}
+
+       onChangeText={(text) => changedvalue(text)}></TextInput>
+        </View>
+
+        <View style = {styles.modalnotificationcontainer}>
+        <Text style={styles.modalnotification}>
+            NotificationStatus:
+         </Text>             
+          <View style={styles.ModalcardSwitch}>
+          <Switch value={props.status} onValueChange={props.onSwitch} />
+        </View>
+        </View>
+       
+        </View>
+          
+        
         <View style={styles.footer}>
           <View style={styles.modalDeleteButtonWrapper}>
             <TouchableOpacity
@@ -149,9 +197,9 @@ const ModalCard = props => {
               <Text style={styles.modalDeleteText}>Delete</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.modalDeleteButtonWrapper}>
+          <View style={styles.modalSubmitButtonWrapper}>
             <TouchableOpacity
-              onPress={props.onSubmit}
+              onPress={props.modalsubmit}
               style={styles.modalSubmitButton}
             >
               <Text style={styles.modalDeleteText}>Submit</Text>
@@ -237,12 +285,26 @@ const styles = StyleSheet.create({
     fontWeight: '200'
   },
   modalDeleteButton: {
-    padding: 10,
-    flex: 1
+    backgroundColor: 'red',
+    padding: 20,
+    flex: 1,
+    borderRadius: 10,
+  },
+  modalSubmitButton: {
+    backgroundColor: 'blue',
+    padding: 20,
+    flex: 1,
+    borderRadius: 10,
   },
   modalDeleteButtonWrapper: {
-    backgroundColor: 'red',
-    padding: 3,
+    
+    padding: 5,
+    borderRadius: 10,
+    flex: 1
+  },
+  modalSubmitButtonWrapper: {
+   
+    padding: 5,
     borderRadius: 10,
     flex: 1
   },
@@ -252,6 +314,29 @@ const styles = StyleSheet.create({
   footer: {
     flex: 0.2,
     flexDirection: 'row',
-    justifyContent: 'space-around'
-  }
+    justifyContent: 'space-between'
+
+  },
+  modalBody: {
+    flex: 0.5,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+
+  },
+  modaldosagecontainer:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  dosageinput:{
+    flex:1,
+    borderColor: 'gray', 
+    borderWidth: 1
+},
+modalnotificationcontainer:{
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'space-between'
+}
+  
 });
