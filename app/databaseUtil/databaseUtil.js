@@ -269,6 +269,9 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Select Edit')"
       );
       tx.executeSql(
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('email','email@domail.com')"
+      );
+      tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('icon','0')"
       );
       /* necessary default ids */
@@ -978,19 +981,11 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal) {
 }
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
-  console.log('input array is', inputArray)
   Database.transaction(
     tx => {
       tx.executeSql(
         'INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)',
-        inputArray,
-        (f, c) => {
-          tx.executeSql(
-            'Select * from settings_tbl',
-            [],
-            (a, b) => {console.log("WRITES",inputArray ,c.rows, b.rows)}
-          );
-        }
+        inputArray
       );
     },
     err => console.log(err)

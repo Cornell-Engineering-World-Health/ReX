@@ -1,3 +1,3 @@
 import { SQLite } from 'expo';
 
-module.exports = SQLite.openDatabase('db3alplpldf.db')
+module.exports = SQLite.openDatabase('dbf2103.db')
