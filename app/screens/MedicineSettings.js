@@ -311,13 +311,13 @@ const styles = StyleSheet.create({
     fontWeight: '200'
   },
   modalDeleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#fa4b12',
     padding: 20,
     flex: 1,
     borderRadius: 10,
   },
   modalSubmitButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#34ace7',
     padding: 20,
     flex: 1,
     borderRadius: 10,
