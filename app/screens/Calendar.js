@@ -154,7 +154,7 @@ assumes date is a valid date object
 
   _loadMore = (num, callback) => {
     if (!num) num = 20;
-    console.log('loadingMore');
+    //console.log('loadingMore');
     newData = [];
     current = this.state.last;
     for (i = 1; i < num; i++) {

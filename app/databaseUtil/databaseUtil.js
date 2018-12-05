@@ -625,7 +625,7 @@ export function databaseFakeData() {
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  console.log('pulling from database');
+  //console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
