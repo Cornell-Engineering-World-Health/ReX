@@ -22,7 +22,6 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
 
-    //need to determine what values are state and which are passed into props
     this.state = {
       activeSlide: 0,
       overlayWidth: new Animated.Value(0),

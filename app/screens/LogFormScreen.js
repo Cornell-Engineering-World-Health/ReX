@@ -54,7 +54,7 @@ export default class ChooseLogScreen extends React.Component {
     }
 
     var keysArray = [];
-    var inputArray = [timestamp,log_type]
+    var inputArray = [timestamp, log_type];
     Database.transaction(
       tx =>
         tx.executeSql(
@@ -108,6 +108,8 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   valueChange(label, value) {
+    console.log('label', label);
+    console.log('value', value);
     let submit = this.state.submit_vals;
     submit[label] = value;
     this.setState({ submit_vals: submit }, () => {});
@@ -120,6 +122,7 @@ export default class ChooseLogScreen extends React.Component {
       this.props.navigation.pop();
       let event_type_id = this.state.event_type_id;
       let values = JSON.stringify(this.state.submit_vals);
+      console.log('submitvals', this.state.submit_vals);
       let timestamp = moment().format('YYYY-MM-DD HH:mm:00');
 
       Database.transaction(

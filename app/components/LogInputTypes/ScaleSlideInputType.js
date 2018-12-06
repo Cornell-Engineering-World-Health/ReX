@@ -76,12 +76,9 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   change(value) {
-    this.setState(() => {
-      return {
-        value: parseFloat(value)
-      };
-    });
-    this.props.valueChange(this.props.val_label, this.state.value);
+    this.setState({ value: parseFloat(value) }, () =>
+      this.props.valueChange(this.props.val_label, this.state.value)
+    );
   }
 
   _renderBodyImageType() {

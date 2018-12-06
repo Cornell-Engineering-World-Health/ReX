@@ -1,4 +1,3 @@
 import { SQLite } from 'expo';
 
-module.exports = SQLite.openDatabase('dbqwerty543.db')
-
+module.exports = SQLite.openDatabase('dbqerty543.db');
