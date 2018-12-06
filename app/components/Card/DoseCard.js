@@ -361,7 +361,7 @@ class Card extends PureComponent {
                                           modalVisible: true
                                           })}}>
                                       <Image
-                                      source = {require('../Resources/Images/smalldot.png')}
+                                      source = {require('../../Resources/Images/smalldot.png')}
                                       resizeMode = 'contain'>
                                       </Image>
                                   </TouchableOpacity>

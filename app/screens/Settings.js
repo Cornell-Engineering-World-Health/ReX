@@ -11,7 +11,6 @@ import {
 import Modal from 'react-native-modal';
 import SettingsList from 'react-native-settings-list';
 import moment from 'moment';
-<<<<<<< HEAD:app/screens/Settings.js
 import Profile from './EditProfile';
 import Trends from './Trends';
 import { sendMail } from '../components/Mail/MailController';
@@ -21,20 +20,6 @@ import {
   pullSettingsFromDatabase
 } from '../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../resources/constants';
-=======
-import { StackNavigator } from 'react-navigation';
-import Profile from './EditProfile';
-import Summary from './Summary';
-import SummaryGraph from './SummaryGraph';
-import {_mailFunc} from  '../../mailUtil/mailUtil.js'
-import {
-  asyncSettingUpdate,
-  pullSettingsFromDatabase,
-  pullSymptomForGraphs,
-  pullAllSymptoms
-} from '../../databaseUtil/databaseUtil';
-import { profile_icons, IMAGES, COLOR } from '../Resources/constants';
->>>>>>> nocirclesadface:app/components/screens/Settings.js
 
 class Settings extends Component {
   static propTypes = {
@@ -56,8 +41,8 @@ class Settings extends Component {
       email: 'doctor@gmail.com',
       isEditVisible: false
     };
+  }
 
-<<<<<<< HEAD:app/screens/Settings.js
   settingsUpdate(setting, value) {
     switch (setting) {
       case 'birthday':
@@ -93,10 +78,6 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-=======
-    //pullSymptomForGraphs(new Date(2018, 3),'Headache',(data) => console.log(data));
-
->>>>>>> nocirclesadface:app/components/screens/Settings.js
     pullSettingsFromDatabase(data => {
       this.setState({
         birthday: new Date(data.birthday),
@@ -171,11 +152,7 @@ class Settings extends Component {
               onPress={() => {}}
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => {
-<<<<<<< HEAD:app/screens/Settings.js
                 this.props.navigator.push(TrendsRoute);
-=======
-                this.props.navigator.push(SummaryGraphPage);
->>>>>>> nocirclesadface:app/components/screens/Settings.js
               }}
             />
 
@@ -208,7 +185,6 @@ class Settings extends Component {
                   source={IMAGES.exportcsv}
                 />
               }
-<<<<<<< HEAD:app/screens/Settings.js
               title="Export Data"
               onPress={() => {
                 console.log('INSERT MAIL FUNC');
@@ -222,17 +198,6 @@ class Settings extends Component {
                   resizeMode="contain"
                   source={IMAGES.medicine}
                 />
-=======
-              title="Quick Log"
-              title="FAQ"
-              onPress={() => {
-                pullAllSymptoms((e) => {
-                    console.log("***********"+ e)
-                    _mailFunc([{price: "500$"}])
-                })
-
-              }
->>>>>>> nocirclesadface:app/components/screens/Settings.js
               }
               title="Edit Medicine Settings"
               onPress={() => {
@@ -305,9 +270,6 @@ const ProfileRoute = {
 
 const TrendsRoute = {
   component: Trends
-};
-const SummaryGraphPage = {
-  component: SummaryGraph
 };
 export default class settingsList extends React.Component {
   render() {

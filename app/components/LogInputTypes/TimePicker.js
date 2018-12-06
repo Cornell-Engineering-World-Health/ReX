@@ -13,26 +13,12 @@ import PickerInputType from './PickerInputType';
 import moment from 'moment';
 
 export default class TimePicker extends React.Component {
-<<<<<<< HEAD
   constructor(props) {
     super(props);
     date = new Date();
     time = props.chosen_date.split(':');
     date.setHours(time[0]);
     date.setMinutes(time[1]);
-=======
-  constructor (props) {
-    super(props)
-    let rounding = 15 * 60 * 1000;
-    let closest15minTime = moment();
-    closest15minTime = moment(Math.round((+closest15minTime) / rounding) * rounding);
-    let timeStr = closest15minTime.format();
-
-    date = new Date(timeStr)
-    time = props.chosen_date.split(':')
-    date.setHours(time[0])
-    date.setMinutes(time[1])
->>>>>>> nocirclesadface
 
     this.state = {
       title_text: props.title_text,
@@ -55,7 +41,6 @@ export default class TimePicker extends React.Component {
     this.props.deletePressed();
   }
 
-<<<<<<< HEAD
   handleAdd(val) {
     this.props.addPressed();
   }
@@ -72,17 +57,6 @@ export default class TimePicker extends React.Component {
             paddingLeft: 5
           }}
         >
-=======
-  handleAdd(val){
-    this.props.addPressed()
-  }
-
-  render () {
-    return (
-      <View style={this.state.input_style}>
-        <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <View style={{flex: 1, flexDirection: 'row', marginBottom: 30, paddingLeft: 5}}>
->>>>>>> nocirclesadface
           <TouchableOpacity onPress={this.handleAdd.bind(this)}>
             <Text style={styles.add}>Add Another</Text>
           </TouchableOpacity>
@@ -95,12 +69,8 @@ export default class TimePicker extends React.Component {
             date={this.state.chosen_date}
             mode={'time'}
             minuteInterval={15}
-<<<<<<< HEAD
             onDateChange={this.handleChange.bind(this)}
           />
-=======
-            onDateChange={this.handleChange.bind(this)} />
->>>>>>> nocirclesadface
         </View>
       </View>
     );

@@ -10,21 +10,13 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
-<<<<<<< HEAD
 import { COLOR, durationTitles } from '../../resources/constants.js';
-=======
-import { COLOR, durationTitles } from '../Resources/constants.js';
->>>>>>> nocirclesadface
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
 var durationButtonTitles = durationTitles;
-<<<<<<< HEAD
 var MORE_SPECIFIC_DEFAULT = 'More Specific';
-=======
-
->>>>>>> nocirclesadface
 export default class Duration extends React.Component {
   static propTypes = {
     buttonTitles: PropTypes.array, // array of strings
@@ -37,12 +29,8 @@ export default class Duration extends React.Component {
       pickerModalOpen: false,
       hourChoice: 0,
       minuteChoice: 0,
-<<<<<<< HEAD
       selected: -1,
       moreSpecificTitle: MORE_SPECIFIC_DEFAULT
-=======
-      selected: -1
->>>>>>> nocirclesadface
     };
   }
 
@@ -55,7 +43,6 @@ export default class Duration extends React.Component {
 
     let hourSuffix = hour == 1 ? ' hour' : ' hours';
     let minuteSuffix = minute == 1 ? ' minute' : ' minutes';
-<<<<<<< HEAD
     let label = '';
     if (minute == 0) {
       label = hour + hourSuffix;
@@ -64,17 +51,6 @@ export default class Duration extends React.Component {
     }
     this.setState({ moreSpecificTitle: label });
     this.props.valueChange(this.props.val_label, label);
-=======
-
-    if (minute == 0) {
-      this.props.valueChange(this.props.val_label, hour + hourSuffix);
-    } else {
-      this.props.valueChange(
-        this.props.val_label,
-        hour + hourSuffix + ', ' + minute + minuteSuffix
-      );
-    }
->>>>>>> nocirclesadface
   }
 
   _renderTimePicker() {
@@ -116,23 +92,14 @@ export default class Duration extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
     let buttonBody = durationButtonTitles.map((option, x) => {
       var isLastElement = x == durationButtonTitles.length - 1;
 
-=======
-    //first put in the normal buttons
-    let buttonBody = durationButtonTitles.map((option, x) => {
->>>>>>> nocirclesadface
       return (
         <View style={styles.buttonWrapper} key={x}>
           <TouchableOpacity
             onPress={() => {
-<<<<<<< HEAD
               if (isLastElement) {
-=======
-              if (x == durationButtonTitles.length - 1) {
->>>>>>> nocirclesadface
                 this.setState({
                   selected: x,
                   pickerModalOpen: true
@@ -153,11 +120,7 @@ export default class Duration extends React.Component {
                   : styles.buttonText
               }
             >
-<<<<<<< HEAD
               {isLastElement ? this.state.moreSpecificTitle : option}
-=======
-              {option}
->>>>>>> nocirclesadface
             </Text>
           </TouchableOpacity>
         </View>
@@ -167,13 +130,9 @@ export default class Duration extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-<<<<<<< HEAD
           <Text style={styles.questionText}>
             {'How long has this been happening?'}
           </Text>
-=======
-          <Text style={styles.questionText}>{'How long has it been?'}</Text>
->>>>>>> nocirclesadface
         </View>
         <View style={styles.body}>
           {buttonBody}
@@ -197,11 +156,7 @@ export default class Duration extends React.Component {
                 <TouchableOpacity
                   style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
                   onPress={() => {
-<<<<<<< HEAD
                     this.setState({ pickerModalOpen: false, selected: 4 });
-=======
-                    this.setState({ pickerModalOpen: false, selected: 5 });
->>>>>>> nocirclesadface
                     this.handleMoreSpecificChange();
                   }}
                   alignItems="center"
@@ -266,14 +221,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-<<<<<<< HEAD
     alignItems: 'stretch',
     paddingLeft: 20,
     paddingRight: 20
-=======
-    alignItems: 'center',
-    padding: 12
->>>>>>> nocirclesadface
   },
   button: {
     borderColor: COLOR.blue,
@@ -304,13 +254,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     textAlign: 'center'
   },
-<<<<<<< HEAD
   buttonWrapper: {},
-=======
-  buttonWrapper: {
-    width: viewportWidth * 0.75
-  },
->>>>>>> nocirclesadface
   pickerWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
