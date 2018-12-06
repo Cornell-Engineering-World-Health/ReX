@@ -24,6 +24,9 @@ export function createTables() {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS `id_tbl` (`id_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `id_value` INTEGER NOT NULL);'
       );
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS `is_first_tbl` (`is_first` INTEGER NOT NULL PRIMARY KEY UNIQUE);'
+      );
       /* tx.executeSql(
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
@@ -187,7 +190,7 @@ export function intializeDatabase() {
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (20,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
       );
-        
+
       /* inserting initial events into event table with 1950 date for each event type*/
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1, 1,'1950-01-01 00:00:00', 1)"
@@ -206,34 +209,34 @@ export function intializeDatabase() {
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (6, 6,'1950-01-01 00:00:00', 6)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (7, 7,'1950-01-01 00:00:00', 7)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (8, 8,'1950-01-01 00:00:00', 8)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (9, 9,'1950-01-01 00:00:00', 9)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (10, 10,'1950-01-01 00:00:00', 10)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (11, 11,'1950-01-01 00:00:00', 11)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (12, 12,'1950-01-01 00:00:00', 12)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (13, 13,'1950-01-01 00:00:00', 13)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (14, 14,'1950-01-01 00:00:00', 14)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (15, 15,'1950-01-01 00:00:00', 15)"
-      ); 
+      );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (16, 16,'1950-01-01 00:00:00', 16)"
       );
@@ -266,6 +269,9 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Select Edit')"
       );
       tx.executeSql(
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('email','email@domail.com')"
+      );
+      tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('icon','0')"
       );
       /* necessary default ids */
@@ -290,6 +296,10 @@ export function intializeDatabase() {
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
+      );
+      //Initialize first time app open tbl
+      tx.executeSql(
+        "INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)"
       );
     },
     err => console.log(err),
@@ -998,4 +1008,24 @@ export function pullSettingsFromDatabase(callback) {
     },
     err => console.log(err)
   );
+}
+
+export function pullIsFirstFromDatabase(callback) {
+  Database.transaction(tx => {
+    tx.executeSql(
+      "SELECT is_first FROM is_first_tbl \
+      WHERE is_first != 1",
+      [],
+      (_, { rows }) => {console.log(rows.length); callback(rows.length == 0)},
+      err => console.log(err)
+    );
+  });
+}
+
+export function logIsFirst(callback){
+  Database.transaction(tx => {
+    tx.executeSql(
+      "INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)"
+    );
+  });
 }

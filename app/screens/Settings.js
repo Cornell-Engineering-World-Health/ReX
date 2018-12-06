@@ -86,7 +86,8 @@ class Settings extends Component {
         height_feet: data.height_feet,
         height_inches: data.height_inches,
         height: data.height_feet + "' " + data.height_inches + '" ',
-        icon: data.icon
+        icon: data.icon,
+        email: data.email
       });
     });
   }
@@ -221,10 +222,14 @@ class Settings extends Component {
             birthday={this.state.birthday}
             icon={this.state.icon}
             name={this.state.name}
+            email={this.state.email}
             height_feet={this.state.height_feet}
             height_inches={this.state.height_inches}
             height={this.state.height}
             weight={this.state.weight}
+            isInModal={true}
+            baseColor={COLOR.black}
+            baseColor={COLOR.black}
           />
         </Modal>
       </View>
