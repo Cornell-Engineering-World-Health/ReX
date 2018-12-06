@@ -10,13 +10,13 @@ import {
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { COLOR, durationTitles } from '../Resources/constants.js';
+import { COLOR, durationTitles } from '../../resources/constants.js';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
 
 var durationButtonTitles = durationTitles;
-
+var MORE_SPECIFIC_DEFAULT = 'More Specific';
 export default class Duration extends React.Component {
   static propTypes = {
     buttonTitles: PropTypes.array, // array of strings
@@ -29,7 +29,8 @@ export default class Duration extends React.Component {
       pickerModalOpen: false,
       hourChoice: 0,
       minuteChoice: 0,
-      selected: -1
+      selected: -1,
+      moreSpecificTitle: MORE_SPECIFIC_DEFAULT
     };
   }
 
@@ -42,15 +43,14 @@ export default class Duration extends React.Component {
 
     let hourSuffix = hour == 1 ? ' hour' : ' hours';
     let minuteSuffix = minute == 1 ? ' minute' : ' minutes';
-
+    let label = '';
     if (minute == 0) {
-      this.props.valueChange(this.props.val_label, hour + hourSuffix);
+      label = hour + hourSuffix;
     } else {
-      this.props.valueChange(
-        this.props.val_label,
-        hour + hourSuffix + ', ' + minute + minuteSuffix
-      );
+      label = hour + hourSuffix + ', ' + minute + minuteSuffix;
     }
+    this.setState({ moreSpecificTitle: label });
+    this.props.valueChange(this.props.val_label, label);
   }
 
   _renderTimePicker() {
@@ -92,13 +92,14 @@ export default class Duration extends React.Component {
   }
 
   render() {
-    //first put in the normal buttons
     let buttonBody = durationButtonTitles.map((option, x) => {
+      var isLastElement = x == durationButtonTitles.length - 1;
+
       return (
         <View style={styles.buttonWrapper} key={x}>
           <TouchableOpacity
             onPress={() => {
-              if (x == durationButtonTitles.length - 1) {
+              if (isLastElement) {
                 this.setState({
                   selected: x,
                   pickerModalOpen: true
@@ -119,7 +120,7 @@ export default class Duration extends React.Component {
                   : styles.buttonText
               }
             >
-              {option}
+              {isLastElement ? this.state.moreSpecificTitle : option}
             </Text>
           </TouchableOpacity>
         </View>
@@ -129,7 +130,9 @@ export default class Duration extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.questionText}>{'How long has it been?'}</Text>
+          <Text style={styles.questionText}>
+            {'How long has this been happening?'}
+          </Text>
         </View>
         <View style={styles.body}>
           {buttonBody}
@@ -153,7 +156,7 @@ export default class Duration extends React.Component {
                 <TouchableOpacity
                   style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
                   onPress={() => {
-                    this.setState({ pickerModalOpen: false, selected: 5 });
+                    this.setState({ pickerModalOpen: false, selected: 4 });
                     this.handleMoreSpecificChange();
                   }}
                   alignItems="center"
@@ -218,8 +221,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 12
+    alignItems: 'stretch',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   button: {
     borderColor: COLOR.blue,
@@ -250,9 +254,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     textAlign: 'center'
   },
-  buttonWrapper: {
-    width: viewportWidth * 0.75
-  },
+  buttonWrapper: {},
   pickerWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',

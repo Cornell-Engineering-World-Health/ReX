@@ -1,20 +1,24 @@
-import React from 'react'
-import {StyleSheet, Text, AppRegistry, TextInput, View, Picker, DatePickerIOS, TouchableOpacity} from 'react-native'
-import PickerInputType from './PickerInputType'
-import moment from 'moment'
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  AppRegistry,
+  TextInput,
+  View,
+  Picker,
+  DatePickerIOS,
+  TouchableOpacity
+} from 'react-native';
+import PickerInputType from './PickerInputType';
+import moment from 'moment';
 
 export default class TimePicker extends React.Component {
-  constructor (props) {
-    super(props)
-    let rounding = 15 * 60 * 1000;
-    let closest15minTime = moment();
-    closest15minTime = moment(Math.round((+closest15minTime) / rounding) * rounding);
-    let timeStr = closest15minTime.format();
-
-    date = new Date(timeStr)
-    time = props.chosen_date.split(':')
-    date.setHours(time[0])
-    date.setMinutes(time[1])
+  constructor(props) {
+    super(props);
+    date = new Date();
+    time = props.chosen_date.split(':');
+    date.setHours(time[0]);
+    date.setMinutes(time[1]);
 
     this.state = {
       title_text: props.title_text,
@@ -22,27 +26,37 @@ export default class TimePicker extends React.Component {
       input_style: props.input_style,
       title_text_style: props.title_text_style,
       chosen_date: date
-    }
+    };
   }
 
-  handleChange (val) {
-    this.props.valueChange(this.props.val_label, moment(val.toLocaleTimeString(), 'hh:mm:ss ampm').format('HH:mm'))
-    this.setState({chosen_date: val})
+  handleChange(val) {
+    this.props.valueChange(
+      this.props.val_label,
+      moment(val.toLocaleTimeString(), 'hh:mm:ss ampm').format('HH:mm')
+    );
+    this.setState({ chosen_date: val });
   }
 
-  handleDelete (val) {
-    this.props.deletePressed()
+  handleDelete(val) {
+    this.props.deletePressed();
   }
 
-  handleAdd(val){
-    this.props.addPressed()
+  handleAdd(val) {
+    this.props.addPressed();
   }
 
-  render () {
+  render() {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <View style={{flex: 1, flexDirection: 'row', marginBottom: 30, paddingLeft: 5}}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            marginBottom: 30,
+            paddingLeft: 5
+          }}
+        >
           <TouchableOpacity onPress={this.handleAdd.bind(this)}>
             <Text style={styles.add}>Add Another</Text>
           </TouchableOpacity>
@@ -55,10 +69,11 @@ export default class TimePicker extends React.Component {
             date={this.state.chosen_date}
             mode={'time'}
             minuteInterval={15}
-            onDateChange={this.handleChange.bind(this)} />
+            onDateChange={this.handleChange.bind(this)}
+          />
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -79,4 +94,4 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16
   }
-})
+});

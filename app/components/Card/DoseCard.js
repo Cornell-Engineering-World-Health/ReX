@@ -8,22 +8,21 @@ import {
   Image,
   StyleSheet,
   Animated,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import moment from 'moment'
 import Modal from 'react-native-modal'
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
-import constants from '../Resources/constants';
-import {databaseTakeMedicine} from '../../databaseUtil/databaseUtil';
-import Timeline from 'react-native-timeline-listview'
+import constants, { IMAGES } from '../../resources/constants';
+import { databaseTakeMedicine } from '../../databaseUtil/databaseUtil';
+import Timeline from 'react-native-timeline-listview';
 
-var background = ['#ffffff', '#ecfaf7', '#fcf0f2']
-var border = ['#ffffff', '#7fdecb', '#f8ced5']
-var text = ['#aaaaaa', '#373737', '#373737']
+var background = ['#ffffff', '#ecfaf7', '#fcf0f2'];
+var border = ['#ffffff', '#7fdecb', '#f8ced5'];
+var text = ['#aaaaaa', '#373737', '#373737'];
 
 class Card extends PureComponent {
-
   static propTypes = {
     time: PropTypes.array,
     takenTime: PropTypes.array,
@@ -36,7 +35,6 @@ class Card extends PureComponent {
   };
 
   constructor(props) {
-
     super(props);
     // if none are taken or red, will be 0.
     var passed_index = 0
@@ -56,8 +54,8 @@ class Card extends PureComponent {
           // if no taken or red, means we havent missed any and have taken some
 
         }
-    }
-    console.log("setting passed index to: " + passed_index)
+      }
+
     this.state = {
       time: this.props.time,
       takenTime: this.props.takenTime,
@@ -66,8 +64,8 @@ class Card extends PureComponent {
       backgroundColor: background[this.props.passed],
       borderColor: border[this.props.passed],
       textColor: text[this.props.passed],
-      newhours: "hello",
-      init_passed : passed_index,
+      newhours: 'hello',
+      init_passed: passed_index,
       modalVisible: false,
       data: this.render_timeline(),
       // taken: false,
@@ -118,7 +116,7 @@ class Card extends PureComponent {
 
 
   setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+    this.setState({ modalVisible: visible });
   }
 
   _handleClick = () => {
@@ -135,10 +133,10 @@ class Card extends PureComponent {
     var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
     var newInd = 0;
-    var tempData = this.state.data
+    var tempData = this.state.data;
 
     // can click forward, it you are clicking a red time that you need to take, must go forward
-    if( this.shouldBeTaken(thisMed, new Date () ) ){
+    if (this.shouldBeTaken(thisMed, new Date())) {
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
 
@@ -174,10 +172,10 @@ class Card extends PureComponent {
           // console.log("inside gray here")
           circleColor = "#cccccc"
       }
-      tempData[this.state.passed_index - 1].title = taken_string
-      tempData[this.state.passed_index - 1].circleColor = circleColor
+      tempData[this.state.passed_index - 1].title = taken_string;
+      tempData[this.state.passed_index - 1].circleColor = circleColor;
       this.setState({
-        passed_index: this.state.passed_index-1,
+        passed_index: this.state.passed_index - 1,
         passed: newPassed,
         data: tempData
       }, () => {that._handleRenderText()})
@@ -193,8 +191,8 @@ class Card extends PureComponent {
       // console.log("inside should be taken")
       var tempData = this.state.data
       // checks green for taken
-      var circleColor = border[1]
-      var taken_string = this.createTakenString(new Date())
+      var circleColor = border[1];
+      var taken_string = this.createTakenString(new Date());
 
       tempData[index].circleColor = circleColor
       tempData[index].title = taken_string
@@ -217,7 +215,7 @@ class Card extends PureComponent {
         passed_index: tempPassedIndex
       }, () =>  this._handleRenderText())
     }
-  }
+  };
 
   createTimeString = (Date) => {
     var taken_hours = Date.getHours()
@@ -230,87 +228,88 @@ class Card extends PureComponent {
         taken_hours = taken_hours - 12
       }
     }
-    if (taken_mins <= 9){
-      min_string = "0" + min_string
+    if (taken_mins <= 9) {
+      min_string = '0' + min_string;
     }
-    return taken_hours.toString() + ":" + min_string + " " + am_pm
-  }
+    return taken_hours.toString() + ':' + min_string + ' ' + am_pm;
+  };
 
-  createTakenString = (Date) => {
-    var taken_hours = Date.getHours()
-    var taken_mins = Date.getMinutes()
-    var am_pm = "AM"
-    var min_string = taken_mins.toString()
-    if (taken_hours >= 12 && taken_hours != 24){
-      am_pm = "PM"
-      if (taken_hours != 12){
-        taken_hours = taken_hours - 12
+  createTakenString = Date => {
+    var taken_hours = Date.getHours();
+    var taken_mins = Date.getMinutes();
+    var am_pm = 'AM';
+    var min_string = taken_mins.toString();
+    if (taken_hours >= 12 && taken_hours != 24) {
+      am_pm = 'PM';
+      if (taken_hours != 12) {
+        taken_hours = taken_hours - 12;
       }
     }
-    if (taken_mins <= 9){
-      min_string = "0" + min_string
+    if (taken_mins <= 9) {
+      min_string = '0' + min_string;
     }
-    return "Taken at " + taken_hours.toString() + ":" + min_string + " " + am_pm
-  }
+    return (
+      'Taken at ' + taken_hours.toString() + ':' + min_string + ' ' + am_pm
+    );
+  };
 
-  createTakeAtString = (Date) => {
-    var curHour = Date.getHours()
-    var curMin = Date.getMinutes()
-    var numHours
-    if(curHour >= 12){
-      if(curHour == 12){
-        numHours = "Take at " + 12
-      }else{
-        numHours = "Take at "+ (curHour - 12);
+  createTakeAtString = Date => {
+    var curHour = Date.getHours();
+    var curMin = Date.getMinutes();
+    var numHours;
+    if (curHour >= 12) {
+      if (curHour == 12) {
+        numHours = 'Take at ' + 12;
+      } else {
+        numHours = 'Take at ' + (curHour - 12);
       }
-      if( curMin != 0){
-        numHours = numHours + ":" + curMin + " PM"
-      }else{
-        numHours = numHours + " PM"
+      if (curMin != 0) {
+        numHours = numHours + ':' + curMin + ' PM';
+      } else {
+        numHours = numHours + ' PM';
       }
-    }else{
-      if( curHour == 1){
-        numHours = "Take at " + 1;
-      }else{
-        numHours = "Take at "+ (curHour % 12);
+    } else {
+      if (curHour == 1) {
+        numHours = 'Take at ' + 1;
+      } else {
+        numHours = 'Take at ' + curHour % 12;
       }
-      if( curMin != 0){
-        numHours = numHours + ":" + curMin + " AM"
-      }else{
-        numHours = numHours + " AM"
+      if (curMin != 0) {
+        numHours = numHours + ':' + curMin + ' AM';
+      } else {
+        numHours = numHours + ' AM';
       }
-  }
-  return numHours
-  }
-
-  createAgoString = (Date1) => {
-
-    var curHour = Date1.getHours()
-    var curMin = Date1.getMinutes()
-    var today = new Date()
-    if (today.getHours() - curHour == 1){
-      numHours = "1 Hour Ago"
-    } else if (today.getHours() == curHour){
-      numHours = today.getMinutes() - curMin + " Minutes Ago"
-    }else {
-      numHours = today.getHours() - curHour + " Hours Ago"
     }
-    return numHours
-  }
+    return numHours;
+  };
+
+  createAgoString = Date1 => {
+    var curHour = Date1.getHours();
+    var curMin = Date1.getMinutes();
+    var today = new Date();
+    if (today.getHours() - curHour == 1) {
+      numHours = '1 Hour Ago';
+    } else if (today.getHours() == curHour) {
+      numHours = today.getMinutes() - curMin + ' Minutes Ago';
+    } else {
+      numHours = today.getHours() - curHour + ' Hours Ago';
+    }
+    return numHours;
+  };
 
   shouldBeTaken = (Date1, Date2) => {
-    var Date1Sum = Date1.getHours()*60 + Date1.getMinutes();
-    var Date2Sum = Date2.getHours()*60 + Date2.getMinutes();
-    return Date1Sum < Date2Sum + 15
-  }
+    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
+    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
+    return Date1Sum < Date2Sum + 15;
+  };
 
-  shouldBeTakenNow = (Date1) => {
-    var Date1Sum = Date1.getHours()*60 + Date1.getMinutes();
-    var Date2 = new Date()
-    var Date2Sum = Date2.getHours()*60 + Date2.getMinutes();
-    var now = (Math.abs(Date1Sum - Date2Sum) < 15)
-    return now
-  }
+  shouldBeTakenNow = Date1 => {
+    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
+    var Date2 = new Date();
+    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
+    var now = Math.abs(Date1Sum - Date2Sum) < 15;
+    return now;
+  };
 
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
@@ -341,8 +340,8 @@ class Card extends PureComponent {
     return (
             <View style={styles.wrapper}>
               <TouchableOpacity
-                disabled={!this.props.buttonActive}
-                onPress={() => this.props.onPress(time)}
+                onPress={this._handleClick}
+                style={{ flex: 1, alignItems: 'flex-end' }}
               >
                 <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor, flex:1}]}>
                       <View style={styles.descriptionContainer}>
@@ -362,7 +361,7 @@ class Card extends PureComponent {
                                           modalVisible: true
                                           })}}>
                                       <Image
-                                      source = {require('../Resources/Images/smalldot.png')}
+                                      source = {require('../../resources/images/smalldot.png')}
                                       resizeMode = 'contain'>
                                       </Image>
                                   </TouchableOpacity>
@@ -372,30 +371,41 @@ class Card extends PureComponent {
                             </TouchableOpacity>
                       </View>
                 </View>
+                <View style={{ marginTop: 15 }} />
               </TouchableOpacity>
       <Modal
         isVisible={this.state.modalVisible}
         style={styles.modalWrapper}
         onBackdropPress= {() => {this.setState({modalVisible: false})}}
         >
-          <View style={{backgroundColor: 'white',  padding:20, borderRadius: 5, flex:this.state.passed.length * 0.15}} >
-              <Text style={[styles.titleText,{color: text[2], paddingBottom: 15}]}>{this.props.title}</Text>
-              <Timeline
-              lineColor='#575757'
-              data = {this.state.data}
-              lineWidth = {1}
-              circleSize = {18}
-              circleColor='#575757'
-              showTime = {false}
+          <View
+            style={{
+              backgroundColor: 'white',
+              padding: 20,
+              borderRadius: 5,
+              flex: this.state.passed.length * 0.15
+            }}
+          >
+            <Text
+              style={[styles.titleText, { color: text[2], paddingBottom: 15 }]}
+            >
+              {this.props.title}
+            </Text>
+            <Timeline
+              lineColor="#575757"
+              data={this.state.data}
+              lineWidth={1}
+              circleSize={18}
+              circleColor="#575757"
+              showTime={false}
               // columnFormat = 'single-column-format'
               // descriptionStyle = {{color: 'gray'}}
-              titleStyle = {{color: '#aaaaaa', fontSize: 12}}
-              detailContainerStyle = {{paddingTop: 0}}
-              onEventPress = {this._handleModalPress}
+              titleStyle={{ color: '#aaaaaa', fontSize: 12 }}
+              detailContainerStyle={{ paddingTop: 0 }}
+              onEventPress={this._handleModalPress}
               // renderDetail = {() => this.rerender_detail}
-              />
+            />
           </View>
-
         </Modal>
       </View>
     );
@@ -409,17 +419,17 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
   },
-  modalwrapper:{
-    flexDirection:'row',
+  modalwrapper: {
+    flexDirection: 'row'
   },
   container: {
     flexDirection: 'column',
-    flex:1,
+    flex: 1,
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#ecfaf7',
     borderColor: '#7fdecb',
-    borderWidth: 2,
+    borderWidth: 2
   },
   descriptionContainer: {
     flex: 1,
@@ -429,13 +439,13 @@ const styles = StyleSheet.create({
   titleText: {
     fontWeight: '600',
     fontSize: 18,
-    color: '#373737',
+    color: '#373737'
   },
   modaltitleText: {
     fontWeight: '600',
     fontSize: 22,
     color: '#373737',
-    marginBottom: 10,
+    marginBottom: 10
   },
   timeContainer: {
     marginTop: 1.5,
@@ -480,16 +490,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#A0A0A0',
     fontSize: 20,
     marginLeft: 30,
-    marginRight: 30,
+    marginRight: 30
   },
   modalWrapper: {
     flex: 1.0,
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
-  more:{
-    width:30,
+  more: {
+    width: 30,
     padding: 0,
-    margin:0,
+    margin: 0
   }
 });

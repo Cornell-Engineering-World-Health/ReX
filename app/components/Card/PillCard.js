@@ -10,7 +10,11 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
+<<<<<<< HEAD
+import constants, { IMAGES } from '../../resources/constants';
+=======
 import constants, { IMAGES } from '../Resources/constants';
+>>>>>>> nocirclesadface
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -110,10 +114,6 @@ class Card extends PureComponent {
       arrow: 'expand'
     };
   }
-
-  _handlePress = () => {
-    console.log('button pressed. ');
-  };
 
   _setMaxHeight(event) {
     this.setState({
