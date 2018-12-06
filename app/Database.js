@@ -1,5 +1,3 @@
-import { SQLite } from 'expo'
+import { SQLite } from 'expo';
 
-let db_id = Math.random().toString(36).substring(7);
-
-module.exports = SQLite.openDatabase('db'+db_id+'.db')
+module.exports = SQLite.openDatabase('dbf2103.db')

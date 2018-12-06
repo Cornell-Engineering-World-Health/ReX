@@ -10,8 +10,7 @@ import {
   Animated,
   Dimensions
 } from 'react-native';
-import moment from 'moment'
-import Modal from 'react-native-modal'
+import Modal from 'react-native-modal';
 import Swipeout from 'react-native-swipeout';
 import { CheckBox } from 'react-native-elements';
 import constants, { IMAGES } from '../../resources/constants';
@@ -36,29 +35,20 @@ class Card extends PureComponent {
 
   constructor(props) {
     super(props);
-    // if none are taken or red, will be 0.
-    var passed_index = 0
-    if(this.props.passed){
-        for (var x = this.props.passed.length-1 ; x >= 0 ; x--) {
-          // hit a taken, next one 
-          console.log(this.props.passed)
-          if (this.props.passed[0][x]){
-            passed_index = x + 1
-            break
-          }
-          // first red we see (latest red)
-          if (this.props.passed[x] == false && this.shouldBeTaken(new Date(this.props.time[x]), new Date()) && !this.shouldBeTakenNow(new Date(this.props.time[x]))){
-            passed_index = x
-            break
-          }
-          // if no taken or red, means we havent missed any and have taken some
 
+    var passed_index = 0;
+    if (this.props.passed) {
+      for (var x = 0; x < this.props.passed.length; x++) {
+        if (this.props.passed[x] == false) {
+          passed_index = x;
+          break;
         }
       }
-
+    }
     this.state = {
       time: this.props.time,
       takenTime: this.props.takenTime,
+      status: this.props.status,
       passed: this.props.passed,
       passed_index: passed_index,
       backgroundColor: background[this.props.passed],
@@ -67,70 +57,58 @@ class Card extends PureComponent {
       newhours: 'hello',
       init_passed: passed_index,
       modalVisible: false,
-      data: this.render_timeline(),
-      // taken: false,
-      // hhmm_time: "",
-      // newPassed: this.props.passed,
-      };
+      data: this.render_timeline()
+    };
   }
 
-  componentDidMount = () => {
-      this._handleRenderText()
-  }
-
-  componentWillUnmount = () => {
-    console.log("leaving this page")
-    // if (this.state.taken == true){
-    //   databaseTakeMedicine(new Date(), this.props.title, this.props.dosage, hhmm_time, newPassed)
-    // }
-  }
   // determines new hours text
   _handleRenderText = () => {
-    // console.log("inside handle render text")
-    // console.log("passed_index: " + this.state.passed_index)
-    var current = new Date(this.state.time[this.state.passed_index])
+    var current = new Date(this.state.time[this.state.passed_index]);
     var timeString;
 
-    console.log(this.state.passed_index)
-    console.log(this.state.passed)
-    if(this.state.passed_index >= this.state.passed.length){
-      ind = 0
-      timeString = "Done for the day"
-    }else if( this.shouldBeTakenNow(current)){
-      timeString = "Take Now"
-      ind = 1
-    }else if (this.shouldBeTaken(current, new Date())){
-      timeString = this.createAgoString(current)
-      ind = 2
-    }else{
-      timeString = this.createTakeAtString(current)
-      ind = 0
+    if (this.state.passed_index >= this.state.passed.length) {
+      ind = 0;
+      timeString = 'Done for the day';
+    } else if (this.shouldBeTakenNow(current)) {
+      timeString = 'Take Now';
+      ind = 1;
+    } else if (this.shouldBeTaken(current, new Date())) {
+      timeString = this.createAgoString(current);
+      ind = 2;
+    } else {
+      timeString = this.createTakeAtString(current);
+      ind = 0;
     }
     this.setState({
       backgroundColor: background[ind],
       borderColor: border[ind],
       textColor: text[ind],
-      newhours: timeString,
-    })
-  }
-
+      newhours: timeString
+    });
+  };
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
 
   _handleClick = () => {
-    that = this
-    // console.log("inside handle click")
+    console.log('inside handle click');
     //update datebase based on click
-    title = 'Tylenol'
-    dosage = '20 mg'
-    time = '09:00'
+    title = 'Tylenol';
+    dosage = '20 mg';
+    time = '09:00';
 
-    // this.setState({
-    //     status: !this.status,
-    // })
-    var thisMed = new Date(this.state.time[this.state.passed_index])
+    databaseTakeMedicine(
+      new Date(),
+      this.props.title,
+      this.props.dosage,
+      this.props.time[this.state.passed_index],
+      !this.props.passed[this.state.passed_index]
+    );
+    this.setState({
+      status: !this.status
+    });
+    var thisMed = new Date(this.state.time[this.state.passed_index]);
     var newPassed = this.state.passed;
     var newInd = 0;
     var tempData = this.state.data;
@@ -140,37 +118,36 @@ class Card extends PureComponent {
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
 
-      var taken_string = this.createTakenString(new Date())
-      tempData[this.state.passed_index].title = taken_string
-      tempData[this.state.passed_index].circleColor = border[1]
+      var taken_string = this.createTakenString(new Date());
+      tempData[this.state.passed_index].title = taken_string;
+      tempData[this.state.passed_index].circleColor = border[1];
 
-      // console.log("database has been written forward: " + + this.state.passed_index)
-      let hhmm_time = new Date(this.props.time[this.state.passed_index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, newPassed)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
         data: tempData
-      }, () => {that._handleRenderText()})
-    
+      });
       // can click backward
-    }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){
-      // console.log("can click backward")
-      var taken_string = "Not taken"
-      newPassed[this.state.passed_index-1] = false;
-      var circleColor = border[1]
-      // console.log("database has been written backward:  " + this.state.passed_index)
-      // console.log("UNDO", this.props.time[this.state.passed_index])
-      let hhmm_time = new Date(this.props.time[this.state.passed_index-1]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, newPassed)
-
-      if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
-          // console.log("inside red here")
-          circleColor = "#fa8b89"
-          taken_string = "Missed"
-      }else{
-          // console.log("inside gray here")
-          circleColor = "#cccccc"
+    } else if (
+      newPassed.length > 0 &&
+      this.state.passed_index > this.state.init_passed
+    ) {
+      console.log('can click backward');
+      var taken_string = 'Not taken';
+      newPassed[this.state.passed_index - 1] = false;
+      var circleColor = border[1];
+      if (
+        this.shouldBeTaken(
+          new Date(this.state.time[this.state.passed_index - 1]),
+          new Date()
+        )
+      ) {
+        console.log('inside red here');
+        circleColor = '#fa8b89';
+        taken_string = 'Missed';
+      } else {
+        console.log('inside gray here');
+        circleColor = '#cccccc';
       }
       tempData[this.state.passed_index - 1].title = taken_string;
       tempData[this.state.passed_index - 1].circleColor = circleColor;
@@ -178,54 +155,56 @@ class Card extends PureComponent {
         passed_index: this.state.passed_index - 1,
         passed: newPassed,
         data: tempData
-      }, () => {that._handleRenderText()})
-    } else {
-        this._handleRenderText()
+      });
     }
-    }
+    this._handleRenderText;
+  };
 
-  _handleModalPress = (data) => {
-    var index = data.index
+  _handleModalPress = data => {
+    var index = data.index;
     // if green or red
-    if (this.shouldBeTaken(new Date(this.state.time[index]), new Date()) && !this.state.passed[index]) {
-      // console.log("inside should be taken")
-      var tempData = this.state.data
+    if (this.shouldBeTaken(new Date(this.state.time[index]), new Date())) {
+      console.log('inside should be taken');
+      var tempData = this.state.data;
       // checks green for taken
       var circleColor = border[1];
       var taken_string = this.createTakenString(new Date());
 
-      tempData[index].circleColor = circleColor
-      tempData[index].title = taken_string
-      var tempPassed = this.state.passed
-      var tempPassedIndex = this.state.passed_index
-      tempPassed[0][index] = !tempPassed[0][index]
-
-      // only need to change card shown if take the one its currently on
-      if (index == this.state.passed_index){
-        console.log("hehe")
-        tempPassedIndex = this.state.passed_index +1
+      tempData[index].circleColor = circleColor;
+      tempData[index].title = taken_string;
+      var tempPassed = this.state.passed;
+      var tempPassedIndex = this.state.passed_index;
+      tempPassed[index] = !tempPassed[index];
+      if (index == this.state.passed_index) {
+        tempPassedIndex = this.state.passed_index + 1;
       }
       // record that you took this medicine in the database
-      let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time, tempPassed)
-      console.log(tempPassedIndex)
+      databaseTakeMedicine(
+        new Date(),
+        this.props.title,
+        this.props.dosage,
+        this.props.time[index],
+        !this.props.passed[index]
+      );
+
       this.setState({
         data: tempData,
         passed: tempPassed,
         passed_index: tempPassedIndex
-      }, () =>  this._handleRenderText())
+      });
+      this._handleRenderText();
     }
   };
 
-  createTimeString = (Date) => {
-    var taken_hours = Date.getHours()
-    var taken_mins = Date.getMinutes()
-    var am_pm = "AM"
-    var min_string = taken_mins.toString()
-    if (taken_hours >= 12 && taken_hours != 24){
-      am_pm = "PM"
-      if (taken_hours != 12){
-        taken_hours = taken_hours - 12
+  createTimeString = Date => {
+    var taken_hours = Date.getHours();
+    var taken_mins = Date.getMinutes();
+    var am_pm = 'AM';
+    var min_string = taken_mins.toString();
+    if (taken_hours >= 12 && taken_hours != 24) {
+      am_pm = 'PM';
+      if (taken_hours != 12) {
+        taken_hours = taken_hours - 12;
       }
     }
     if (taken_mins <= 9) {
@@ -312,71 +291,98 @@ class Card extends PureComponent {
   };
 
   render_timeline = () => {
-    return this.props.time.map ((val, i) => {
-      var d = new Date();
-      d.setHours(this.props.takenTime[i].substring(0,2))
-      d.setMinutes(this.props.takenTime[i].substring(3,5))
-      var hour_string = this.createTimeString((new Date(val)))
+    return this.props.time.map((val, i) => {
+      var hour_string = this.createTimeString(new Date(val));
       var circol;
-      var taken_string = "Not taken"
-      if (this.props.takenTime[i] != ""){
-        taken_string = this.createTakenString(d)
+      var taken_string = 'Not taken';
+      if (this.props.passed[i]) {
+        circol = border[1];
+        taken_string = this.props.takenTime[i];
+      } else if (
+        !this.props.passed[i] &&
+        this.shouldBeTaken(new Date(val), new Date())
+      ) {
+        circol = '#fa8b89';
+        taken_string = 'Missed';
+      } else {
+        circol = '#cccccc';
+        taken_string = 'Not taken';
       }
-      if(this.props.passed[0][i]){
-        circol = border[1]
-        taken_string = this.createTakenString(d)
-      }else if(!this.props.passed[0][i] &&  this.shouldBeTaken(new Date(val), new Date())){
-        circol = "#fa8b89"
-        taken_string = "Missed"
-      }else{
-        circol = "#cccccc"
-        taken_string = "Not taken"
+      if (this.props.takenTime[i] != '') {
+        taken_string = this.createTakenString(
+          new Date(this.props.takenTime[i])
+        );
       }
-      return {time: hour_string, description: hour_string, title: taken_string, circleColor: circol, index: i};
-      })
-  }
+      return {
+        time: hour_string,
+        description: hour_string,
+        title: taken_string,
+        circleColor: circol,
+        index: i
+      };
+    });
+  };
 
   render() {
+    this._handleRenderText();
     return (
-            <View style={styles.wrapper}>
+      <View style={styles.wrapper}>
+        <TouchableOpacity
+          disabled={!this.props.buttonActive}
+          onPress={() => this.props.onPress(time)}
+        >
+          <View
+            style={[
+              styles.container,
+              {
+                backgroundColor: this.state.backgroundColor,
+                borderColor: this.state.borderColor,
+                flex: 1
+              }
+            ]}
+          >
+            <View style={styles.descriptionContainer}>
+              <View style={{ flexDirection: 'column' }}>
+                <Text
+                  style={[styles.titleText, { color: this.state.textColor }]}
+                >
+                  {this.props.title}
+                </Text>
+                <Text style={{ color: this.state.textColor }}>
+                  {this.props.dosage}
+                </Text>
+              </View>
               <TouchableOpacity
                 onPress={this._handleClick}
                 style={{ flex: 1, alignItems: 'flex-end' }}
               >
-                <View style={[styles.container, {backgroundColor: this.state.backgroundColor, borderColor : this.state.borderColor, flex:1}]}>
-                      <View style={styles.descriptionContainer}>
-                          <View style = {{ flexDirection: 'column'}} >
-                              <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
-                              <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
-                          </View>
-                            <TouchableOpacity
-                              onPress = {this._handleClick}
-                              style={{ flex: 1, alignItems: 'flex-end' }}
-                            >
-                              <View flexDirection="row" marginTop={7}>
-                                <Text style = {{fontSize: 14, color: this.state.textColor}}> {this.state.newhours} </Text>
-                                <TouchableOpacity  style = {styles.more}
-                                      onPress = {() => {
-                                         this.setState ({
-                                          modalVisible: true
-                                          })}}>
-                                      <Image
-                                      source = {require('../../resources/images/smalldot.png')}
-                                      resizeMode = 'contain'>
-                                      </Image>
-                                  </TouchableOpacity>
-                              </View>
-                              <View style={{ marginTop: 15 }} >
-                              </View>
-                            </TouchableOpacity>
-                      </View>
+                <View flexDirection="row" marginTop={7}>
+                  <Text style={{ fontSize: 14, color: this.state.textColor }}>
+                    {' '}
+                    {this.state.newhours}{' '}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.more}
+                    onPress={() => {
+                      this.setState({
+                        modalVisible: true
+                      });
+                    }}
+                  >
+                    <Image source={IMAGES.smalldot} resizeMode="contain" />
+                  </TouchableOpacity>
                 </View>
                 <View style={{ marginTop: 15 }} />
               </TouchableOpacity>
-      <Modal
-        isVisible={this.state.modalVisible}
-        style={styles.modalWrapper}
-        onBackdropPress= {() => {this.setState({modalVisible: false})}}
+            </View>
+          </View>
+        </TouchableOpacity>
+        <Modal
+          isVisible={this.state.modalVisible}
+          style={styles.modalWrapper}
+          onBackdropPress={() => {
+            this.setState({ modalVisible: false });
+          }}
         >
           <View
             style={{
@@ -417,7 +423,7 @@ export default Card;
 const styles = StyleSheet.create({
   wrapper: {
     padding: 5,
-    borderRadius: 5,
+    borderRadius: 5
   },
   modalwrapper: {
     flexDirection: 'row'
