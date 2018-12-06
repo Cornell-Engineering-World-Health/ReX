@@ -25,10 +25,10 @@ import {
 import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 const AVATAR_ID = 'avatarID';
-const BIRTHDAY_ID = 'birthdayID';
 const HEIGHT_ID = 'heightID';
 const WEIGHT_ID = 'weightID';
 const EDIT_ID = 'editID';
+const BIRTHDAY_ID = 'birthdayID';
 
 export default class Profile extends Component {
   static propTypes = {
@@ -55,7 +55,7 @@ export default class Profile extends Component {
           >
             <Image
               style={styles.profileImageStyle}
-              source={profile_icons[this.props.icon]}
+              source={profile_icons[Math.trunc(this.props.icon)]}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -83,7 +83,7 @@ export default class Profile extends Component {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    this.handle_icon_press(index);
+                    this.props.settingsUpdate('icon', index);
                     this.setState({
                       choosingAvatar: false
                     });
@@ -109,7 +109,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
-          {!this.state.choosingAvatar ? (
+          {!this.state.choosingAvatar && this.props.isInModal ? (
             <TouchableOpacity
               style={styles.menuButtonWrapper}
               onPress={this.props.exitModal}
@@ -132,13 +132,18 @@ export default class Profile extends Component {
                 onChangeText={name => {
                   this.props.settingsUpdate('name', name);
                 }}
+                baseColor={this.props.baseColor}
+                textColor={this.props.textColor}
               />
               <TextField
                 label={"Doctor's Email"}
                 value={this.props.email}
+                autoCapitalize={'none'}
                 onChangeText={email => {
                   this.props.settingsUpdate('email', email);
                 }}
+                baseColor={this.props.baseColor}
+                textColor={this.props.textColor}
               />
               <TouchableOpacity
                 onPress={() => {
@@ -149,7 +154,13 @@ export default class Profile extends Component {
                   editable={false}
                   pointerEvents={'none'}
                   label={'Birthday'}
-                  value={this.props.birthday.toLocaleDateString()}
+                  value={
+                    !this.props.birthday
+                      ? ''
+                      : this.props.birthday.toLocaleDateString()
+                  }
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -162,11 +173,16 @@ export default class Profile extends Component {
                   pointerEvents={'none'}
                   label={'Height'}
                   value={
-                    this.props.height_feet +
-                    ' ft ' +
-                    this.props.height_inches +
-                    ' in'
+                    this.props.height_feet != '' &&
+                    this.props.height_inches != ''
+                      ? this.props.height_feet +
+                        ' ft ' +
+                        this.props.height_inches +
+                        ' in'
+                      : ''
                   }
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -178,20 +194,26 @@ export default class Profile extends Component {
                   editable={false}
                   pointerEvents={'none'}
                   label={'Weight'}
-                  value={this.props.weight}
+                  value={
+                    this.props.weight != '' ? this.props.weight + ' lbs' : ''
+                  }
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
-        <View style={styles.submitWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.props.exitModal}
-          >
-            <Text style={styles.text}>Submit</Text>
-          </TouchableOpacity>
-        </View>
+        {this.props.isInModal ? (
+          <View style={styles.submitWrapper}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.props.exitModal}
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         <Modal
           isVisible={this.state.modalID == HEIGHT_ID}
           animationInTiming={500}
@@ -252,7 +274,45 @@ export default class Profile extends Component {
             </View>
           </View>
         </Modal>
-
+        <Modal
+          isVisible={this.state.modalID == BIRTHDAY_ID}
+          animationInTiming={500}
+          animationOutTiming={500}
+          onBackdropPress={() => {
+            this.setState({ modalID: '' });
+          }}
+          onSwipe={() => {
+            this.setState({ modalID: '' });
+          }}
+          swipDirection={'down'}
+          style={styles.modal}
+        >
+          <View
+            style={{
+              flex: 0.35,
+              backgroundColor: '#ffffff'
+            }}
+          >
+            <TouchableOpacity
+              style={styles.modalSubmitButton}
+              onPress={() => {
+                this.setState({ modalID: '' });
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+            <DatePickerIOS
+              style={{ height: 44 }}
+              itemStyle={{ height: 44 }}
+              mode="date"
+              date={this.props.birthday ? this.props.birthday : new Date()}
+              onDateChange={value => {
+                this.props.settingsUpdate('birthday', value);
+              }}
+            />
+          </View>
+        </Modal>
         <Modal
           isVisible={this.state.modalID == WEIGHT_ID}
           onBackdropPress={() => {
@@ -294,45 +354,6 @@ export default class Profile extends Component {
             />
           </KeyboardAvoidingView>
         </Modal>
-        <Modal
-          isVisible={this.state.modalID == BIRTHDAY_ID}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ modalID: '' });
-          }}
-          onSwipe={() => {
-            this.setState({ modalID: '' });
-          }}
-          swipDirection={'down'}
-          style={styles.modal}
-        >
-          <View
-            style={{
-              flex: 0.35,
-              backgroundColor: '#ffffff'
-            }}
-          >
-            <TouchableOpacity
-              style={styles.modalSubmitButton}
-              onPress={() => {
-                this.setState({ modalID: '' });
-              }}
-              alignItems="center"
-            >
-              <Text style={styles.text}>Submit</Text>
-            </TouchableOpacity>
-            <DatePickerIOS
-              style={{ height: 44 }}
-              itemStyle={{ height: 44 }}
-              mode="date"
-              date={this.props.birthday}
-              onDateChange={value => {
-                this.props.settingsUpdate('birthday', value);
-              }}
-            />
-          </View>
-        </Modal>
       </View>
     );
   }
@@ -362,7 +383,7 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'stretch',
@@ -448,5 +469,10 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     left: 0
+  },
+  profileImageStyle: {
+    width: 90,
+    height: 90,
+    margin: 8
   }
 });

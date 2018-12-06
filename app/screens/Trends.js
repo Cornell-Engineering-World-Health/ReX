@@ -702,8 +702,7 @@ const styles = StyleSheet.create({
   },
   modalChildTitleWrapper: {
     flex: 0.2,
-    justifyContent: 'center',
-    paddingTop: 15
+    justifyContent: 'flex-start'
   },
   menuImageStyle: {
     width: 30,

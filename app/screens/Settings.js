@@ -32,14 +32,14 @@ class Settings extends Component {
     this.onValueChange = this.onValueChange.bind(this);
     this.state = {
       switchValue: false,
+      name: 'Name unknown',
+      weight: 'Weight unknown',
       birthday: new Date(),
-      name: 'Navin',
-      weight: '',
-      height_feet: '5',
-      height_inches: '8',
-      height: '5' + ' ft ' + '8' + ' in',
-      icon: 0,
-      email: 'doctor@gmail.com',
+      height_feet: '',
+      height_inches: '',
+      height: 'Height unknown',
+      icon: 1,
+      email: "Doctor's email unkown",
       isEditVisible: false
     };
   }
@@ -53,7 +53,7 @@ class Settings extends Component {
         this.setState({ name: value });
         break;
       case 'weight':
-        this.setState({ weight: value + ' lbs' });
+        this.setState({ weight: value });
         break;
       case 'height_feet':
         this.setState({
@@ -87,8 +87,10 @@ class Settings extends Component {
         height_feet: data.height_feet,
         height_inches: data.height_inches,
         height: data.height_feet + "' " + data.height_inches + '" ',
-        icon: data.icon
+        icon: data.icon,
+        email: data.email
       });
+      console.log('PULL SETTINGS FROM DB', data);
     });
   }
 
@@ -127,7 +129,7 @@ class Settings extends Component {
                   height={100}
                   width={100}
                   resizeMode="cover"
-                  source={profile_icons[this.state.icon]}
+                  source={profile_icons[Math.trunc(this.state.icon)]}
                 />
               }
               hasNavArrow={false}
@@ -222,10 +224,14 @@ class Settings extends Component {
             birthday={this.state.birthday}
             icon={this.state.icon}
             name={this.state.name}
+            email={this.state.email}
             height_feet={this.state.height_feet}
             height_inches={this.state.height_inches}
             height={this.state.height}
             weight={this.state.weight}
+            isInModal={true}
+            baseColor={COLOR.black}
+            baseColor={COLOR.black}
           />
         </Modal>
       </View>
