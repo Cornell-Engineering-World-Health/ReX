@@ -32,7 +32,7 @@ export function createTables() {
           ); */
     },
     err => console.log(err),
-    () => console.log('done!!!')
+    () => console.log('done creating tables!!!')
   );
 }
 export function intializeDatabase() {
@@ -44,7 +44,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, 'Headache', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                               (2, 'Dizziness', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                               (2, 'Dizziness', 'image.png','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, 'Blurred Vision', 'image.png', 'Intensity','Duration','HEAD')"
@@ -254,19 +254,19 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','5')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','8')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','Select')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','Select')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Default')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Select Edit')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('email','email@domail.com')"
@@ -307,7 +307,7 @@ export function intializeDatabase() {
   Database.transaction(
     tx => {
       tx.executeSql('Select * from event_type_tbl;', [], (tx, { rows }) =>
-        console.log(JSON.stringify(rows))
+        console.log('event type table', JSON.stringify(rows))
       );
     },
     err => console.log(err)
@@ -633,7 +633,7 @@ export function databaseFakeData() {
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  //console.log('pulling from database');
+  console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
@@ -661,7 +661,7 @@ function formatDataForGraphs(data) {
     var monthString = d.toISOString().substr(0, 10); // year-month-day
     var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
 
-    console.log(intensity);
+    console.log('intensity', intensity);
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
         frequency: 1,

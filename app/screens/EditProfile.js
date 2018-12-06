@@ -12,16 +12,13 @@ import {
   Picker,
   ScrollView,
   Dimensions,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Keyboard
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import Modal from 'react-native-modal';
 import moment from 'moment';
-import {
-  asyncSettingUpdate,
-  pullSettingsFromDatabase
-} from '../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 const AVATAR_ID = 'avatarID';
@@ -38,11 +35,12 @@ export default class Profile extends Component {
     super(props);
     this.onValueChange = this.onValueChange.bind(this);
 
-    this.state = { choosingAvatar: false, modalID: '' };
+    this.state = {
+      choosingAvatar: false,
+      modalID: '',
+      tempBirthday: props.birthday ? props.birthday : new Date()
+    };
   }
-  handle_icon_press = index => {
-    this.props.settingsUpdate('icon', index.toString());
-  };
 
   _renderHeader() {
     if (!this.state.choosingAvatar) {
@@ -55,7 +53,7 @@ export default class Profile extends Component {
           >
             <Image
               style={styles.profileImageStyle}
-              source={profile_icons[Math.trunc(this.props.icon)]}
+              source={profile_icons[this.props.icon]}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -83,7 +81,7 @@ export default class Profile extends Component {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.settingsUpdate('icon', index);
+                    this.props.settingsUpdate('icon', Math.trunc(index) + '');
                     this.setState({
                       choosingAvatar: false
                     });
@@ -144,10 +142,16 @@ export default class Profile extends Component {
                 }}
                 baseColor={this.props.baseColor}
                 textColor={this.props.textColor}
+                ref={function(emailRef) {
+                  this.emailRef = emailRef;
+                }}
               />
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: BIRTHDAY_ID });
+                  if (this.emailRef) {
+                    this.emailRef.blur();
+                  }
                 }}
               >
                 <TextField
@@ -208,7 +212,9 @@ export default class Profile extends Component {
           <View style={styles.submitWrapper}>
             <TouchableOpacity
               style={styles.button}
-              onPress={this.props.exitModal}
+              onPress={() => {
+                this.props.exitModal();
+              }}
             >
               <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
@@ -280,9 +286,7 @@ export default class Profile extends Component {
           animationOutTiming={500}
           onBackdropPress={() => {
             this.setState({ modalID: '' });
-          }}
-          onSwipe={() => {
-            this.setState({ modalID: '' });
+            this.props.settingsUpdate('birthday', this.state.tempBirthday);
           }}
           swipDirection={'down'}
           style={styles.modal}
@@ -297,6 +301,7 @@ export default class Profile extends Component {
               style={styles.modalSubmitButton}
               onPress={() => {
                 this.setState({ modalID: '' });
+                this.props.settingsUpdate('birthday', this.state.tempBirthday);
               }}
               alignItems="center"
             >
@@ -306,9 +311,9 @@ export default class Profile extends Component {
               style={{ height: 44 }}
               itemStyle={{ height: 44 }}
               mode="date"
-              date={this.props.birthday ? this.props.birthday : new Date()}
+              date={this.state.tempBirthday}
               onDateChange={value => {
-                this.props.settingsUpdate('birthday', value);
+                this.setState({ tempBirthday: value });
               }}
             />
           </View>

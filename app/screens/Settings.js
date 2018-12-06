@@ -38,7 +38,7 @@ class Settings extends Component {
       height_feet: '',
       height_inches: '',
       height: 'Height unknown',
-      icon: 1,
+      icon: '0',
       email: "Doctor's email unkown",
       isEditVisible: false
     };
@@ -51,6 +51,9 @@ class Settings extends Component {
         break;
       case 'weight':
         this.setState({ weight: value });
+        break;
+      case 'birthday':
+        this.setState({ birthday: value });
         break;
       case 'height_feet':
         this.setState({
@@ -126,7 +129,7 @@ class Settings extends Component {
                   height={100}
                   width={100}
                   resizeMode="cover"
-                  source={profile_icons[Math.trunc(this.state.icon)]}
+                  source={profile_icons[this.state.icon]}
                 />
               }
               hasNavArrow={false}
@@ -221,6 +224,7 @@ class Settings extends Component {
             icon={this.state.icon}
             name={this.state.name}
             email={this.state.email}
+            birthday={this.state.birthday}
             height_feet={this.state.height_feet}
             height_inches={this.state.height_inches}
             height={this.state.height}

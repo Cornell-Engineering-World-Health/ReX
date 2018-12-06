@@ -35,9 +35,13 @@ class IntroPage extends React.Component {
       height_feet: '',
       height_inches: '',
       height: '',
-      icon: 0,
+      icon: '0',
       email: ''
     };
+  }
+
+  componentDidMount() {
+    asyncSettingUpdate('icon', '0');
   }
 
   settingsUpdate(setting, value) {
@@ -109,7 +113,11 @@ class IntroPage extends React.Component {
             settingsUpdate={(setting, value) => {
               this.settingsUpdate(setting, value);
               asyncSettingUpdate(setting, value);
-              console.log('asyncsettingupdate in profile: ', setting, value);
+              console.log(
+                'asyncsettingupdate in profile: ',
+                setting,
+                value.toString()
+              );
             }}
             birthday={this.state.birthday}
             icon={this.state.icon}
@@ -127,15 +135,15 @@ class IntroPage extends React.Component {
           onPress={() => {
             let check = this.checkValidity();
             if (check[0] == true) {
-              SETTINGS_FIELDS.forEach(setting => {
-                console.log(
-                  'entered settings update with ' +
-                    setting +
-                    ' ' +
-                    this.state[setting]
-                );
-                asyncSettingUpdate(setting, this.state[setting]);
-              });
+              // SETTINGS_FIELDS.forEach(setting => {
+              //   console.log(
+              //     'entered settings update with ' +
+              //       setting +
+              //       ' ' +
+              //       this.state[setting]
+              //   );
+              //   asyncSettingUpdate(setting, this.state[setting]);
+              // });
               this.props.screenProps.successOnSubmit();
             } else {
               if (check[1] == 'email')
