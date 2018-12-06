@@ -46,9 +46,6 @@ class Settings extends Component {
 
   settingsUpdate(setting, value) {
     switch (setting) {
-      case 'birthday':
-        this.setState({ birthday: value });
-        break;
       case 'name':
         this.setState({ name: value });
         break;
@@ -80,8 +77,8 @@ class Settings extends Component {
 
   componentDidMount() {
     pullSettingsFromDatabase(data => {
+      console.log(data);
       this.setState({
-        birthday: new Date(data.birthday),
         weight: data.weight,
         name: data.name,
         height_feet: data.height_feet,
@@ -221,7 +218,6 @@ class Settings extends Component {
               console.log('entered settings update');
               this.settingsUpdate(setting, value);
             }}
-            birthday={this.state.birthday}
             icon={this.state.icon}
             name={this.state.name}
             email={this.state.email}

@@ -298,9 +298,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
       );
       //Initialize first time app open tbl
-      tx.executeSql(
-        "INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)"
-      );
+      tx.executeSql('INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)');
     },
     err => console.log(err),
     () => console.log('intitialization complete')
@@ -1094,19 +1092,20 @@ export function pullSettingsFromDatabase(callback) {
 export function pullIsFirstFromDatabase(callback) {
   Database.transaction(tx => {
     tx.executeSql(
-      "SELECT is_first FROM is_first_tbl \
-      WHERE is_first != 1",
+      'SELECT is_first FROM is_first_tbl \
+      WHERE is_first != 1',
       [],
-      (_, { rows }) => {console.log(rows.length); callback(rows.length == 0)},
+      (_, { rows }) => {
+        console.log(rows.length);
+        callback(rows.length == 0);
+      },
       err => console.log(err)
     );
   });
 }
 
-export function logIsFirst(callback){
+export function logIsFirst(callback) {
   Database.transaction(tx => {
-    tx.executeSql(
-      "INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)"
-    );
+    tx.executeSql('INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)');
   });
 }
