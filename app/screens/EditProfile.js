@@ -109,7 +109,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
-          {!this.state.choosingAvatar ? (
+          {(!this.state.choosingAvatar && this.props.isInModal) ? (
             <TouchableOpacity
               style={styles.menuButtonWrapper}
               onPress={this.props.exitModal}
@@ -132,29 +132,40 @@ export default class Profile extends Component {
                 onChangeText={name => {
                   this.props.settingsUpdate('name', name);
                 }}
+                baseColor={this.props.baseColor}
+                textColor={this.props.textColor}
               />
               <TextField
                 label={"Doctor's Email"}
                 value={this.props.email}
+                autoCapitalize={'none'}
                 onChangeText={email => {
                   this.props.settingsUpdate('email', email);
                 }}
+                baseColor={this.props.baseColor}
+                textColor={this.props.textColor}
               />
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: BIRTHDAY_ID });
+                  this.props.settingsUpdate('birthday', new Date())
                 }}
               >
                 <TextField
                   editable={false}
                   pointerEvents={'none'}
                   label={'Birthday'}
-                  value={this.props.birthday.toLocaleDateString()}
+                  value={!this.props.birthday ? '':
+                  this.props.birthday.toLocaleDateString()}
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
+                  this.props.settingsUpdate('height_feet', 4)
+                  this.props.settingsUpdate('height_inches', 1)
                 }}
               >
                 <TextField
@@ -162,11 +173,14 @@ export default class Profile extends Component {
                   pointerEvents={'none'}
                   label={'Height'}
                   value={
-                    this.props.height_feet +
+                    (this.props.height_feet != '' && this.props.height_inches != '') ?
+                    (this.props.height_feet +
                     ' ft ' +
                     this.props.height_inches +
-                    ' in'
+                    ' in') : ''
                   }
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -178,20 +192,24 @@ export default class Profile extends Component {
                   editable={false}
                   pointerEvents={'none'}
                   label={'Weight'}
-                  value={this.props.weight}
+                  value={
+                    (this.props.weight != '') ?
+                    (this.props.weight + ' lbs') : ''}
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
                 />
               </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
-        <View style={styles.submitWrapper}>
+        {(this.props.isInModal) ? (<View style={styles.submitWrapper}>
           <TouchableOpacity
             style={styles.button}
             onPress={this.props.exitModal}
           >
             <Text style={styles.text}>Submit</Text>
           </TouchableOpacity>
-        </View>
+        </View>) : null}
         <Modal
           isVisible={this.state.modalID == HEIGHT_ID}
           animationInTiming={500}
@@ -362,7 +380,7 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'stretch',
@@ -448,5 +466,10 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     left: 0
+  },
+  profileImageStyle: {
+    width: 90,
+    height: 90,
+    margin: 8
   }
 });
