@@ -170,6 +170,8 @@ export default class Profile extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
+                  this.props.settingsUpdate('height_feet', 4);
+                  this.props.settingsUpdate('height_inches', 1);
                 }}
               >
                 <TextField
