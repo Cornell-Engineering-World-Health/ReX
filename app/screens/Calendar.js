@@ -34,7 +34,8 @@ class Calendar extends Component {
       data: data,
       currentDate: new Date(),
       flatlistHeight: 0,
-      isModalVisible: false
+      isModalVisible: false,
+      agendaData: []
     };
     this.mutexLock = 0;
     this.calendars = []; // references to all SLIDEENTRY components which contain calendar components. indexed by KEY
@@ -43,26 +44,44 @@ class Calendar extends Component {
     this.currIndex; //current INDEX that the calendar is displaying
     this.currCalendar; //current Calendar component being displayed
     this.previouslySelected; //index of day of selectedIndicator on calendar
-    this._updateAgenda();
   }
 
-  _updateAgenda() {
+  componentDidMount() {
+    this._updateAgendaByDatabase();
+  }
+
+  _updateAgendaByDatabase() {
     pullAgendaFromDatabase(flatlistData => {
       let tempData = null;
-
+      let totalData = {};
       for (var i = 0; i < flatlistData.length; i++) {
-        if (
-          Moment(this.state.currentDate).isSame(flatlistData[i].date, 'day')
-        ) {
-          tempData = flatlistData[i].data;
-          //console.log(flatlistData[i]);
-          break;
-        }
+        let itemDate = flatlistData[i].date;
+        //store data in an object organized by date, for quick lookup time
+        let key = this._generateDateKey(itemDate);
+        totalData[key] = flatlistData[i].data;
       }
       this.setState({
-        currentAgenda: tempData
+        agendaData: totalData,
+        currentAgenda: totalData[this._generateDateKey(this.state.currentDate)]
       });
     });
+  }
+
+  /*
+Generates a key that is in the form MM-DD-YYYY
+
+assumes date is a valid date object
+*/
+  _generateDateKey(date) {
+    return Moment(date).format('MM-DD-YYYY');
+  }
+
+  /*
+    Returns agenda based on passed in currentDate date
+    Uses information stored in this.state.agendaData
+  */
+  _updateAgendaByState(currentDate) {
+    return this.state.agendaData[this._generateDateKey(currentDate)];
   }
 
   _deleteItemFromAgenda(id) {
@@ -88,18 +107,19 @@ class Calendar extends Component {
     index
   });
 
-  _onPressMonth = (ref, i) => {
+  _onPressMonth = (ref, i, newDate) => {
     if (this.calendarRef && this.calendarRef != ref) {
       this.calendarRef._clearSelection();
     }
     this.calendarRef = ref;
     this.previouslySelected = i;
-    this.setState(
-      {
-        currentDate: ref.state.currentDate
-      },
-      this._updateAgenda
-    );
+
+    let newAgenda = this._updateAgendaByState(newDate);
+
+    this.setState({
+      currentDate: newDate,
+      currentAgenda: newAgenda
+    });
   };
 
   _onPressAgenda = type => {
@@ -108,7 +128,7 @@ class Calendar extends Component {
   };
 
   _refreshCalendar = () => {
-    console.log(this.currSymptomDisplay);
+    //console.log(this.currSymptomDisplay);
     this.calendarRef.initVisualization(this.currSymptomDisplay);
   };
 
@@ -134,7 +154,7 @@ class Calendar extends Component {
 
   _loadMore = (num, callback) => {
     if (!num) num = 20;
-    console.log('loadingMore');
+    //console.log('loadingMore');
     newData = [];
     current = this.state.last;
     for (i = 1; i < num; i++) {
@@ -154,7 +174,7 @@ class Calendar extends Component {
   };
 
   calendarHeight = currMonth => {
-    console.log(currMonth);
+    //console.log(currMonth);
     var today = currMonth;
     var numberOfDays = new Date(
       today.getFullYear(),
@@ -171,7 +191,7 @@ class Calendar extends Component {
     var numberOfPrevious = first.getDay();
     var numberOfAfter = 6 - last.getDay();
     var total = numberOfDays + numberOfPrevious + numberOfAfter;
-    console.log(numberOfDays, numberOfPrevious, numberOfAfter);
+    //console.log(numberOfDays, numberOfPrevious, numberOfAfter);
     if (total == 35) {
       this.setState({
         flatlistHeight: Dimensions.get('window').height * 0.5
@@ -275,7 +295,7 @@ class Calendar extends Component {
   }
 
   toggleModal = (timestamp, logtype) => {
-    console.log('hereeee');
+    //console.log('hereeee');
     this.setState({
       isModalVisible: !this.state.isModalVisible,
       modalTimestamp: timestamp,
@@ -294,6 +314,7 @@ class Calendar extends Component {
               this.flatListRef = ref;
             }}
             data={this.state.data}
+            extraData={this.state}
             renderItem={this._renderItem}
             onEndReached={this._loadMore}
             onEndReachedThreshold={50}

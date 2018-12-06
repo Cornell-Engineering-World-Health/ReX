@@ -73,7 +73,6 @@ class Calendar extends PureComponent {
     }
 
     this.state = {
-      currentDate: undefined,
       backgroundColor: backgroundColor,
       selected: -1,
       dot1: dot1,
@@ -261,9 +260,8 @@ class Calendar extends PureComponent {
     this.setState({ dot2 });
     this.setState({ dot3 });
     this.setState({ baseBars });
-    this.setState({ currentDate }, function() {
-      this.props.onPressMonth(this, i);
-    });
+
+    this.props.onPressMonth(this, i, currentDate);
   };
 
   _clearSelection = () => {
@@ -610,22 +608,28 @@ class Calendar extends PureComponent {
           onBackdropPress={() => this.setState({ modalVisible: false })}
           isVisible={this.state.modalVisible}
           style={{ flex: 1 }}
-          backdropOpacity={0.9}
+          backdropOpacity={0.6}
           animationOutTiming={600}
           animationInTiming={600}
         >
           <View
             style={{
-              justifyContent: 'center',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: Dimensions.get('window').height / 2,
-              marginBottom: 20
+              flex: 0.5,
+              backgroundColor: 'white',
+              borderRadius: 10,
+              justifyContent: 'space-around'
             }}
           >
+            <View style={{ flex: 0.1, padding: 10 }}>
+              <Text
+                style={{ textAlign: 'center', fontSize: 25, fontWeight: '300' }}
+              >
+                Select A Month
+              </Text>
+            </View>
             <View
               style={{
-                flex: 1,
+                flex: 0.8,
                 flexDirection: 'row',
                 justifyContent: 'center'
               }}
@@ -636,7 +640,7 @@ class Calendar extends PureComponent {
                 }}
                 input_style={{ width: 100 }}
                 title_text_style={{
-                  color: 'white'
+                  color: 'black'
                 }}
                 value={monthNames[this.props.currMonth.getMonth()]}
                 picker_values={monthNames}
@@ -660,10 +664,10 @@ class Calendar extends PureComponent {
             </View>
             <View
               style={{
-                flex: 1,
+                flex: 0.2,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                marginTop: 80
+                alignItems: 'center'
               }}
             >
               <TouchableOpacity

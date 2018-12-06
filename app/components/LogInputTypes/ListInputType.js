@@ -132,7 +132,7 @@ If index is an invalid number, function does nothing.
         <View style={styles.header}>
           <Text style={styles.questionText}>{'Any other symptoms?'}</Text>
         </View>
-        <View style={{ flex: 0.8, alignItems: 'center' }}>
+        <View style={{ flex: 0.8, alignItems: 'stretch', padding: 15 }}>
           <FlatList
             ref={flatlist => {
               this._list = flatlist;
@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: ITEM_HEIGHT,
     backgroundColor: COLOR.blue,
-    width: viewportWidth * 0.8,
     flexDirection: 'row',
     justifyContent: 'center',
     zIndex: 1,
