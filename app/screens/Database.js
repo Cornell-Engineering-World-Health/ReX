@@ -1,3 +1,5 @@
 import { SQLite } from 'expo'
 
-module.exports = SQLite.openDatabase('db20gayyyysadhhhashjdsahh.db')
+let db_id = Math.random().toString(36).substring(7);
+
+module.exports = SQLite.openDatabase('db'+db_id+'.db')
