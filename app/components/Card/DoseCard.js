@@ -183,13 +183,14 @@ class Card extends PureComponent {
     var index = data.index
     // if green or red
     if (this.shouldBeTaken(new Date(this.state.time[index]), new Date()) && !this.state.passed[index]) {
-      // console.log("inside should be taken")
+      console.log("inside should be taken")
       var tempData = this.state.data
       // checks green for taken
       var circleColor = border[1]
       var taken_string = this.createTakenString(new Date())
 
       tempData[index].circleColor = circleColor
+      console.log(circleColor)
       tempData[index].title = taken_string
       var tempPassed = this.state.passed
       var tempPassedIndex = this.state.passed_index
@@ -204,6 +205,7 @@ class Card extends PureComponent {
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time, tempPassed[index])
       console.log(tempPassedIndex)
+      console.log(tempData)
       this.setState({
         data: tempData,
         passed: tempPassed,
@@ -378,7 +380,6 @@ class Card extends PureComponent {
               data = {this.state.data}
               lineWidth = {1}
               circleSize = {18}
-              circleColor='#575757'
               showTime = {false}
               // columnFormat = 'single-column-format'
               // descriptionStyle = {{color: 'gray'}}
