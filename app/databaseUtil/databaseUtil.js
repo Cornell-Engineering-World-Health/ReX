@@ -727,7 +727,8 @@ function formatMedicineData(data) {
         dosage: fields['Dosage'],
         time: fields['Time'],
         timeCategory: fields['Time Category'],
-        taken: fields['Taken']
+        taken: fields['Taken'],
+        takenTime: fields['Taken Time']
       };
     }
   });
@@ -735,16 +736,18 @@ function formatMedicineData(data) {
   return dataTemp;
 }
 
+
 export function pullMedicineFromDatabase(date, callback) {
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
+  // console.log(dayArray)
   Database.transaction(tx => {
     tx.executeSql(
-      "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
+    'SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',
       dayArray,
       (_, { rows }) => callback(formatMedicineData(rows._array)),
       err => console.log(err)
@@ -776,27 +779,18 @@ export function asyncCreateMedicineEvents(
   endDate,
   timeArray,
   timeCategories
-) {
-  Database.transaction(
-    tx => {
-      tx.executeSql('SELECT * from id_tbl', [], (_, { rows }) =>
-        getIds(rows, (event_id, event_details_id) =>
-          asyncCreateMedicineEventsWrapper(
-            name,
-            dosage,
-            startDate,
-            endDate,
-            timeArray,
-            timeCategories,
-            event_id,
-            event_details_id
-          )
-        )
-      );
-    },
-    err => console.log(err)
-  );
-}
+  ){
+    Database.transaction(
+        tx => {
+            tx.executeSql('SELECT * from id_tbl', [], (_, { rows }) =>
+                getIds(rows,
+                    (event_id,event_details_id) => asyncCreateMedicineEventsWrapper(name,dosage,startDate,endDate,timeArray, timeCategories,event_id,event_details_id)
+                )
+            );
+        },
+        err => console.log(err)
+    );
+  }
 /*startDate and endDate should be javascript dates*/
 export function asyncCreateMedicineEventsWrapper(
   name,
@@ -817,6 +811,9 @@ export function asyncCreateMedicineEventsWrapper(
         var taken = timeArray.map(t => {
           return false;
         });
+        var takenTimeInit = timeArray.map(t => {
+          return "";
+        });
         detailsJson = {
           'Pill Name': name,
           Dosage: dosage,
@@ -824,7 +821,8 @@ export function asyncCreateMedicineEventsWrapper(
           'End Date': endDate,
           Time: timeArray,
           'Time Category': timeCategories,
-          Taken: taken
+          Taken: taken,
+          'Taken Time': takenTimeInit
         };
         //console.log("detailsjson: ",detailsJson)
         var inputArray = [
@@ -855,130 +853,116 @@ export function asyncCreateMedicineEventsWrapper(
         event_id += 1;
         event_details_id += 1;
       }
-      inputArray = ['event_id', event_id];
+      inputArray = ['event_id', event_id]
       /*update event_id and event_details_id */
       tx.executeSql(
-        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
-        inputArray
+        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)', inputArray
       );
-      inputArray = ['event_details_id', event_details_id];
+      inputArray = ['event_details_id', event_details_id]
       tx.executeSql(
         'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
         inputArray
       );
+
     },
     err => console.log(err)
   );
 }
 /*TODO: clean up updateMedicine functions*/
-function updateMedicineData(data, time, takenVal) {
-  data.forEach(function(med) {
-    var fields = JSON.parse(med.fields);
-    console.log('\n\nprevious med', med);
-    console.log('\n\ntime', time);
-    var idx = fields['Time Category'].indexOf(time);
+function updateMedicineData(data,time,takenVal,callback){
+  //console.log("ALL",data, time, takenVal)
+  data.forEach(function(med){
+      var fields = JSON.parse(med.fields)
+      var idx = fields['Time Category'].indexOf(time)
+      if (idx !=-1){
+          console.log('updating')
+          let newTaken = fields["Taken"].slice()
+          newTaken[idx] = takenVal
+          fields["Taken"] = newTaken
+          let newTakenTime = fields['Taken Time'].slice()
+          newTakenTime[idx] = Moment().format('HH:mm')
+          fields['Taken Time'] = newTakenTime
+          let newFields = JSON.stringify(fields)
+          let queryArgs = [newFields, med.event_details_id]
+          Database.transaction(tx => {
+            tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ', queryArgs,  (tx, results) => {
+                callback()});
 
-    if (idx != -1) {
-      console.log('updating');
-      let newTaken = fields['Taken'].slice();
-      newTaken[idx] = takenVal;
-      console.log('\n\nnewTaken', newTaken);
-      fields['Taken'] = newTaken;
-      let newFields = JSON.stringify(fields);
-
-      console.log('\n\nnew fields', newFields);
-      let queryArgs = [med.event_details_id, newFields];
-      //console.log("\n\nqueryargs", queryArgs)
-      Database.transaction(
-        tx => {
-          tx.executeSql(
-            'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
-            queryArgs,
-            (_, { rows }) => {
-              console.log(rows);
-            }
-          );
-        },
-        err => console.log(err)
-      );
-    }
-  });
-}
-
-function updateSingleMedicine(data, name, dosage, time, takenVal) {
-  console.log('updating single medicine', data);
-  data.some(function(med) {
-    var fields = JSON.parse(med.fields);
-    if (fields.pillName === name && fields.dosage === dosage) {
-      var idx = fields.time.indexOf(time);
-      if (idx != -1) {
-        let newTaken = fields.taken.slice();
-        newTaken[idx] = takenVal;
-        fields.taken = newTaken;
-        let newFields = JSON.stringify(fields);
-        let queryArgs = [newFields, med.event_details_id];
-        Database.transaction(
-          tx => {
-            tx.executeSql(
-              'Update event_details_tbl SET fields =? where event_details_id= ? ',
-              queryArgs
-            );
-          },
-          err => console.log(err)
-        );
-
-        return true;
+          },err=>console.log(err))
       }
-    }
-    return false;
-  });
+  })
 }
-export function databaseTakeMedicines(date, timeIndex, takenVal) {
-  let timeArray = ['Morning', 'Afternoon', 'Evening', 'Night'];
-  let timeString = timeArray[timeIndex];
-  let day = date.toISOString().substr(0, 10);
-  dayArray = [day];
 
-  console.log('date ', day);
-  console.log('time ', timeString);
+function updateSingleMedicine(data,name,dosage,time,takenVal){
+  // console.log('updating single medicine', data)
+  data.some(function(med){
+      var fields = JSON.parse(med.fields)
+      // console.log("IF STATEMENT", fields['Pill Name'] === name && fields['Dosage'] === dosage)
+      // console.log("For pill: " + fields['Pill Name'] + time)
+      if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
+          var idx = fields['Time'].indexOf(time);
+          if(idx != -1){
+              // console.log("IDX", idx)
+              let newTaken = fields['Taken'].slice()
+              console.log("rerrororeo")
+              console.log(newTaken)
+              newTaken[idx] = takenVal
+              fields['Taken'] = newTaken
+              let newTakenTime = fields['Taken Time'].slice()
+              newTakenTime[idx] = Moment().format('HH:mm')
+              fields['Taken Time'] = newTakenTime
+              let newFields = JSON.stringify(fields)
+              let queryArgs = [newFields, med.event_details_id]
+              Database.transaction(tx => {
+                  tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs, (tx, results) => {
+                                                                     console.log("Query completed", tx, results);
+             
+             tx.executeSql('Select * from  event_details_tbl where event_details_id= ? ',[med.event_details_id],  (tx2, results2) => {
+                                                                 console.log("Query completed2", tx2, results2);
+                                                            });
+             
+                                                                });
+              },err=>console.log(err))
 
-  Database.transaction(
-    tx => {
-      tx.executeSql(
-        "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
+              return true
+          }
+      }
+      return false
+  })
+}
+export function databaseTakeMedicines(date,timeIndex,takenVal, callback){
+  let timeArray = ['Morning','Afternoon','Evening','Night']
+  let timeString = timeArray[timeIndex]
+  let day = date.toISOString().substr(0,10)
+  dayArray  = [day]
+
+  Database.transaction(tx => {
+      tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
-        dayArray,
-        (_, { rows }) => updateMedicineData(rows._array, timeString, takenVal)
-      );
-    },
-    err => console.log(err)
-  );
+      WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+      updateMedicineData(rows._array,timeString,takenVal, callback));
+  },err=>console.log(err))
+
 }
+
 
 //pass in time as 24 hour time string
-export function databaseTakeMedicine(date, name, dosage, time, takenVal) {
-  let day = date.toISOString().substr(0, 10);
-  dayArray = [day];
-  console.log(dayArray);
-  console.log('inside take medicine');
-  Database.transaction(
-    tx => {
-      tx.executeSql(
-        "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
-      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
-        dayArray,
-        (_, { rows }) =>
-          updateSingleMedicine(rows._array, name, dosage, time, takenVal),
-        err => console.log(err)
-      );
-    },
-    err => console.log(err)
-  );
+export function databaseTakeMedicine(date,name,dosage,time,takenVal){
+  // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
+  let day = date.toISOString().substr(0,10)
+  dayArray  = [day]
+  // console.log(dayArray)
+  // console.log('inside take medicine')
+  Database.transaction(tx => {
+  tx.executeSql('SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime(\'%Y-%m-%d\',timestamp) as day FROM event_tbl \
+    INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+    INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+    WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
+    updateSingleMedicine(rows._array,name,dosage,time,takenVal), err => console.log(err));
+},err=>console.log(err))
 }
+
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
   Database.transaction(
