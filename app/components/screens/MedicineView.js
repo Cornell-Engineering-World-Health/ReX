@@ -6,20 +6,20 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
-import DoseCard from '../components/Card/DoseCard';
 import Modal from 'react-native-modal';
-import { pullMedicineFromDatabase } from '../databaseUtil/databaseUtil';
-import { asyncCreateMedicineEvents } from '../databaseUtil/databaseUtil';
+import DoseCard from '../Card/DoseCard';
 import { LinearGradient } from 'expo';
 import { StackNavigator } from 'react-navigation';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { IMAGES, COLOR } from '../resources/constants';
+import {pullMedicineFromDatabase} from '../../databaseUtil/databaseUtil';
 import Moment from 'moment';
-import LogFormScreen from './LogFormScreen';
+import LogFormScreen from "../screens/LogFormScreen"
+import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import DropdownAlert from 'react-native-dropdownalert';
-import MedicineAddForm from '../components/MedicineAddForm/MedicineAddForm.js';
+import { COLOR, IMAGES} from '../Resources/constants';
+import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
 
 var dummy_data = [
   {
@@ -258,7 +258,7 @@ componentDidUpdate() {
                 })
               }}>
             <Image style = {{height:50, width:50, }}
-              source ={require('../resources/images/plusSignMinimal.png')} >
+              source ={require('../Resources/Images/eashanplus.png')} >
             </Image>
             </TouchableOpacity>
           </View>

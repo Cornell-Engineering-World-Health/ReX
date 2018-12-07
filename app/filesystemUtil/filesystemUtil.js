@@ -30,4 +30,4 @@ export function writeToFS(directory, file_name) {
     console.log(content)
   }).catch(e => console.log(e))
   }
-}
+

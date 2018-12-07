@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
     color: '#8e8e93'
   }
 });
+
 const ProfileRoute = {
   component: Profile,
   passProps: { myProp: 'foo' }
@@ -276,6 +277,7 @@ const ProfileRoute = {
 const TrendsRoute = {
   component: Trends
 };
+
 export default class settingsList extends React.Component {
   render() {
     return (

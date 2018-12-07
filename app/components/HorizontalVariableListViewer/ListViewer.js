@@ -26,21 +26,26 @@ import { COLOR } from '../../resources/constants';
 /**
 ListViewer is a horizontal scrollview of items of a list.
 */
-const ListViewer = ({ list, backgroundColor }) => {
+const ListViewer = ({list, backgroundColor}) => {
   let contents = list.map((v, i) => {
     return (
-      <View style={[styles.item, { backgroundColor: backgroundColor }]} key={i}>
+      <View
+        style={[styles.item, {backgroundColor: backgroundColor}]}
+        key={i}
+      >
         <Text style={styles.itemText}>{v}</Text>
       </View>
-    );
+    )
   });
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal>{contents}</ScrollView>
+      <ScrollView horizontal>
+          {contents}
+      </ScrollView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -63,11 +68,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16
   }
-});
+})
 
 ListViewer.propTypes = {
   list: PropTypes.array,
   color: PropTypes.string
-};
+}
 
-export default ListViewer;
+export default ListViewer
