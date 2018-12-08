@@ -10,6 +10,7 @@ import {
 import Modal from 'react-native-modal'
 import { databaseTakeMedicine } from '../../databaseUtil/databaseUtil';
 import Timeline from 'react-native-timeline-listview';
+import { initializeRegistryWithDefinitions } from 'react-native-animatable';
 
 var background = ['#ffffff', '#ecfaf7', '#fcf0f2'];
 var border = ['#ffffff', '#7fdecb', '#f8ced5'];
@@ -108,7 +109,7 @@ class Card extends PureComponent {
 
   _handleClick = () => {
     that = this
-    
+    console.log("inside handle click")
 
     var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
@@ -125,7 +126,7 @@ class Card extends PureComponent {
       tempData[this.state.passed_index].circleColor = border[1]
 
       let hhmm_time = new Date(this.props.time[this.state.passed_index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true,this.state.passed_index)
       this.setState({
         passed_index: newInd,
         passed: newPassed,
@@ -138,7 +139,7 @@ class Card extends PureComponent {
       newPassed[this.state.passed_index-1] = false;
       var circleColor = border[1]
       let hhmm_time = new Date(this.props.time[this.state.passed_index-1]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, false)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, false,this.state.passed_index-1)
 
       if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
           circleColor = "#fa8b89"
@@ -159,7 +160,9 @@ class Card extends PureComponent {
     }
 
   _handleModalPress = (data) => {
-    var index = data.index
+    console.log("handle modal press")
+    that = this
+    index = data.index
     var tempData = this.state.data
     // if green or red
     if (this.shouldBeTaken(new Date(this.state.time[index]), new Date()) && !this.state.passed[index]) {
@@ -178,14 +181,14 @@ class Card extends PureComponent {
       }
       // record that you took this medicine in the database
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true, index)
       console.log(tempData)
       this.setState({
         data: tempData,
         passed: tempPassed,
         passed_index: tempPassedIndex,
-      }, () =>  this._handleRenderText())
-    }
+      }, () =>  {this._handleRenderText()})
+    } 
   }
 
   createTimeString = (Date) => {
@@ -282,6 +285,7 @@ class Card extends PureComponent {
   }
 
   render_timeline = () => {
+    console.log("render timeline")
     return this.props.time.map ((val, i) => {
       var d = new Date();
       d.setHours(this.props.takenTime[i].substring(0,2))

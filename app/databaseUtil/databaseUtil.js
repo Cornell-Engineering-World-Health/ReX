@@ -893,11 +893,10 @@ function updateMedicineData(data,time,takenVal,callback){
   })
 }
 
-function updateSingleMedicine(data,name,dosage,time,takenVal){
+function updateSingleMedicine(data,name,dosage,time,takenVal,idx){
   data.some(function(med){
       var fields = JSON.parse(med.fields)
       if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
-          var idx = fields['Time'].indexOf(time);
           if(idx != -1){
               let newTaken = fields['Taken'].slice()
               console.log("rerrororeo")
@@ -944,7 +943,7 @@ export function databaseTakeMedicines(date,timeIndex,takenVal, callback){
 
 
 //pass in time as 24 hour time string
-export function databaseTakeMedicine(date,name,dosage,time,takenVal){
+export function databaseTakeMedicine(date,name,dosage,time,takenVal,idx){
   // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
   let day = date.toISOString().substr(0,10)
   dayArray  = [day]
@@ -955,7 +954,7 @@ export function databaseTakeMedicine(date,name,dosage,time,takenVal){
     INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
     INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
     WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' AND day = ? ORDER BY timestamp',dayArray, (_, { rows }) =>
-    updateSingleMedicine(rows._array,name,dosage,time,takenVal), err => console.log(err));
+    updateSingleMedicine(rows._array,name,dosage,time,takenVal,idx), err => console.log(err));
 },err=>console.log(err))
 }
 

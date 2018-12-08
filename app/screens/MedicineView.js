@@ -176,6 +176,7 @@ class CoolerMedicineView extends React.Component {
   //     })
   //   });
   this.asyncDatabasePull()
+  console.log(this.state.data)
 }
 
 componentDidUpdate() {
