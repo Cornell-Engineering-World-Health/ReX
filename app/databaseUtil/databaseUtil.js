@@ -309,7 +309,7 @@ export function intializeDatabase() {
   Database.transaction(
     tx => {
       tx.executeSql('Select * from event_type_tbl;', [], (tx, { rows }) =>
-        // console.log(JSON.stringify(rows))
+        console.log(JSON.stringify(rows))
       );
     },
     err => console.log(err)
