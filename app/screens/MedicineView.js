@@ -99,14 +99,6 @@ class CoolerMedicineView extends React.Component {
         passed_index = i
         break
       }
-      var formattedTimes = time.map(t => Moment().format("MMMM DD YYYY") + ' ' + t)
-      var taken = time.map(t => false)
-      var takenTime = time.map(t => '')
-      medicineData.push({title: title, time: formattedTimes, timeVal: time, dosage: dosage, statuses: taken, takenTime: takenTime})
-      this.setState({
-        toggle_add: false,
-        data: medicineData
-      })
     }
 
     var passed_index2 = 0
@@ -184,7 +176,7 @@ class CoolerMedicineView extends React.Component {
             <FlatList
               data={this.state.data.sort(this.compareCards)}
               extraData={this.state}
-              renderItem={this._renderCard} 
+              renderItem={this._renderCard}
               keyExtractor={(_, index) => index.toString()}
             />
          <Modal
@@ -207,7 +199,7 @@ class CoolerMedicineView extends React.Component {
          successOnSubmit={() => {
            this.successOnSubmit()
          }}
-         
+
          />
          </Modal>
          <DropdownAlert

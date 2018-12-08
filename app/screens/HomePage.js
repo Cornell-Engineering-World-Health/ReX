@@ -105,6 +105,18 @@ class Home extends React.Component {
     }
   }
 
+  componentWillUnmount(){
+    let st = this.state
+    let that = this
+    that.writeAllInTimeCategory(0, st, () => {
+      that.writeAllInTimeCategory(1, st, () => {
+        that.writeAllInTimeCategory(2, st, () => {
+          that.writeAllInTimeCategory(3, st, () => {})
+        })
+      })
+    })
+  }
+
   logAll(index){
     let time
     let iconDropDown
