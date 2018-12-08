@@ -194,6 +194,8 @@ class Card extends PureComponent {
       if (taken_hours != 12){
         taken_hours = taken_hours - 12
       }
+    }else if(taken_hours == 0){
+      taken_hours = 12
     }
     if (taken_mins <= 9){
       min_string = "0" + min_string
