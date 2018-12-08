@@ -99,7 +99,16 @@ class CoolerMedicineView extends React.Component {
         passed_index = i
         break
       }
+      var formattedTimes = time.map(t => Moment().format("MMMM DD YYYY") + ' ' + t)
+      var taken = time.map(t => false)
+      var takenTime = time.map(t => '')
+      medicineData.push({title: title, time: formattedTimes, timeVal: time, dosage: dosage, statuses: taken, takenTime: takenTime})
+      this.setState({
+        toggle_add: false,
+        data: medicineData
+      })
     }
+
     var passed_index2 = 0
     for (var j = 0; j < b.statuses.length; j++){
       if (b.statuses[j] == false){

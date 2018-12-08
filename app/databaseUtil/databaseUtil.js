@@ -309,7 +309,7 @@ export function intializeDatabase() {
   Database.transaction(
     tx => {
       tx.executeSql('Select * from event_type_tbl;', [], (tx, { rows }) =>
-        console.log(JSON.stringify(rows))
+        // console.log(JSON.stringify(rows))
       );
     },
     err => console.log(err)
@@ -882,7 +882,6 @@ function updateMedicineData(data,time,takenVal,callback){
   //console.log("ALL",data, time, takenVal)
   data.forEach(function(med){
       var fields = JSON.parse(med.fields)
-      // var idx = fields['Time Category'].indexOf(time)
       var idx = getAllIndexes(fields['Time Category'], time)
       let newTaken = fields["Taken"].slice()
       let newTakenTime = fields['Taken Time'].slice()
@@ -920,8 +919,6 @@ function updateSingleMedicine(data,name,dosage,time,takenVal,idx){
       if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
           if(idx != -1){
               let newTaken = fields['Taken'].slice()
-              // console.log("rerrororeo")
-              // console.log(newTaken)
               newTaken[idx] = takenVal
               fields['Taken'] = newTaken
               let newTakenTime = fields['Taken Time'].slice()
