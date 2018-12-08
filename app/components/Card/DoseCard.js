@@ -94,6 +94,7 @@ class Card extends PureComponent {
       timeString = this.createTakeAtString(current)
       ind = 0
     }
+    this.forceUpdate()
     this.setState({
       backgroundColor: background[ind],
       borderColor: border[ind],
