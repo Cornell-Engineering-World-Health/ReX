@@ -5,17 +5,10 @@ import {
   View,
   Text,
   ImageBackground,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
   Image,
 } from 'react-native';
-import Moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
-import ButtonWithImage from '../components/Button/ButtonWithImage'
-import Modal from 'react-native-modal';
 import { profile_icons } from '../resources/constants';
-// import constants from '../resources/constants';
 import {IMAGES, COLOR} from '../resources/constants';
 import { HomeMedicineLogger } from '../components/HomeMedicineLogger';
 import {
@@ -23,7 +16,6 @@ import {
   pullSettingsFromDatabase,
   databaseTakeMedicines
 } from '../databaseUtil/databaseUtil';
-const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
 
 class Home extends React.Component {
@@ -103,6 +95,7 @@ class Home extends React.Component {
     let done = st.doneAmount
     let o_done = st.originalDoneAmount
     let tot = st.totalAmount
+    console.log("writing in time category")
 
     if(done[i] != o_done[i]){
       console.log('true', i)
@@ -119,6 +112,7 @@ class Home extends React.Component {
     //console.log(this.state.doneAmount, this.state.originalDoneAmount, this.state.totalAmount)
     let st = this.state
     let that = this
+    console.log("unmount")
 
     that.writeAllInTimeCategory(0, st, () => {
       that.writeAllInTimeCategory(1, st, () => {

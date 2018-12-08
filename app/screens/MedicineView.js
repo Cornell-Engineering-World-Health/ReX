@@ -93,13 +93,12 @@ class CoolerMedicineView extends React.Component {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
+          console.log(medicineData)
       });
-
       that.setState ({
           data: medicineData
       })
     });
-
   }
 
   errorOnSubmit(){

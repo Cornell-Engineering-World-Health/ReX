@@ -868,20 +868,45 @@ export function asyncCreateMedicineEventsWrapper(
     err => console.log(err)
   );
 }
+
+function getAllIndexes(arr, val) {
+  var indexes = [], i;
+  for(i = 0; i < arr.length; i++)
+      if (arr[i] === val)
+          indexes.push(i);
+  return indexes;
+}
+
 /*TODO: clean up updateMedicine functions*/
 function updateMedicineData(data,time,takenVal,callback){
   //console.log("ALL",data, time, takenVal)
   data.forEach(function(med){
       var fields = JSON.parse(med.fields)
-      var idx = fields['Time Category'].indexOf(time)
-      if (idx !=-1){
-          console.log('updating')
-          let newTaken = fields["Taken"].slice()
-          newTaken[idx] = takenVal
-          fields["Taken"] = newTaken
-          let newTakenTime = fields['Taken Time'].slice()
-          newTakenTime[idx] = Moment().format('HH:mm')
-          fields['Taken Time'] = newTakenTime
+      // var idx = fields['Time Category'].indexOf(time)
+      var idx = getAllIndexes(fields['Time Category'], time)
+      console.log("field time cat: " +fields['Time Category'])
+      console.log("fields: " +JSON.stringify(fields))
+      console.log("index: " + idx)
+      let newTaken = fields["Taken"].slice()
+      let newTakenTime = fields['Taken Time'].slice()
+
+      for ( var i =0; i< idx.length; i++){
+        if(!newTaken[idx[i]]){
+          newTaken[idx[i]] = takenVal
+          newTakenTime[idx[i]] = Moment().format('HH:mm')
+        }
+        }
+         console.log("issa newtaken: " +newTaken)
+         console.log("issa newtakentime: " +newTakenTime)
+        fields["Taken"] = newTaken
+        fields['Taken Time'] = newTakenTime
+      
+    
+          // console.log("issa idx :  " + idx)
+          // console.log("issa newtaken: " +newTaken)
+          // let newTakenTime = fields['Taken Time'].slice()
+          // newTakenTime[idx] = Moment().format('HH:mm')
+          // fields['Taken Time'] = newTakenTime
           let newFields = JSON.stringify(fields)
           let queryArgs = [newFields, med.event_details_id]
           Database.transaction(tx => {
@@ -889,7 +914,7 @@ function updateMedicineData(data,time,takenVal,callback){
                 callback()});
 
           },err=>console.log(err))
-      }
+      
   })
 }
 
@@ -915,7 +940,6 @@ function updateSingleMedicine(data,name,dosage,time,takenVal,idx){
              tx.executeSql('Select * from  event_details_tbl where event_details_id= ? ',[med.event_details_id],  (tx2, results2) => {
                                                                  console.log("Query completed2", tx2, results2);
                                                             });
-             
                                                                 });
               },err=>console.log(err))
 
