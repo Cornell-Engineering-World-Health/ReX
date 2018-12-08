@@ -4,16 +4,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TouchableHighlight,
   Image,
   StyleSheet,
-  Animated,
-  Dimensions
 } from 'react-native';
-import moment from 'moment'
 import Modal from 'react-native-modal'
-import Swipeout from 'react-native-swipeout';
-import { CheckBox } from 'react-native-elements';
 import { databaseTakeMedicine } from '../../databaseUtil/databaseUtil';
 import Timeline from 'react-native-timeline-listview';
 
@@ -83,7 +77,7 @@ class Card extends PureComponent {
     var current = new Date(this.state.time[this.state.passed_index])
     var timeString;
 
-    console.log("yo we hadnling rerndt etext")
+    console.log("yo we handling render text")
     console.log(this.state.passed)
     console.log(this.props.passed)
     if(this.state.passed_index >= this.state.passed.length){
@@ -114,15 +108,8 @@ class Card extends PureComponent {
 
   _handleClick = () => {
     that = this
-    // console.log("inside handle click")
-    //update datebase based on click
-    title = 'Tylenol'
-    dosage = '20 mg'
-    time = '09:00'
+    
 
-    // this.setState({
-    //     status: !this.status,
-    // })
     var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
     var newInd = 0;
@@ -137,10 +124,7 @@ class Card extends PureComponent {
       tempData[this.state.passed_index].title = taken_string
       tempData[this.state.passed_index].circleColor = border[1]
 
-      // console.log("database has been written forward: " + + this.state.passed_index)
       let hhmm_time = new Date(this.props.time[this.state.passed_index]).toTimeString().substring(0,5)
-      console.log("newwwwwewew")
-      console.log(newPassed)
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true)
       this.setState({
         passed_index: newInd,
@@ -150,21 +134,16 @@ class Card extends PureComponent {
     
       // can click backward
     }else if( newPassed.length > 0 && this.state.passed_index > this.state.init_passed){
-      // console.log("can click backward")
       var taken_string = "Not taken"
       newPassed[this.state.passed_index-1] = false;
       var circleColor = border[1]
-      // console.log("database has been written backward:  " + this.state.passed_index)
-      // console.log("UNDO", this.props.time[this.state.passed_index])
       let hhmm_time = new Date(this.props.time[this.state.passed_index-1]).toTimeString().substring(0,5)
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, false)
 
       if(this.shouldBeTaken(new Date(this.state.time[this.state.passed_index-1]), new Date ())){
-          // console.log("inside red here")
           circleColor = "#fa8b89"
           taken_string = "Missed"
       }else{
-          // console.log("inside gray here")
           circleColor = "#cccccc"
       }
       tempData[this.state.passed_index - 1].title = taken_string
@@ -181,35 +160,30 @@ class Card extends PureComponent {
 
   _handleModalPress = (data) => {
     var index = data.index
+    var tempData = this.state.data
     // if green or red
     if (this.shouldBeTaken(new Date(this.state.time[index]), new Date()) && !this.state.passed[index]) {
-      console.log("inside should be taken")
-      var tempData = this.state.data
       // checks green for taken
-      var circleColor = border[1]
-      var taken_string = this.createTakenString(new Date())
 
-      tempData[index].circleColor = circleColor
-      console.log(circleColor)
-      tempData[index].title = taken_string
+      tempData[index].circleColor = border[1]
+      tempData[index].title = this.createTakenString(new Date())
+
       var tempPassed = this.state.passed
-      var tempPassedIndex = this.state.passed_index
-      tempPassed[index] = !tempPassed[index]
+      tempPassed[index] = true
 
       // only need to change card shown if take the one its currently on
+      var tempPassedIndex = this.state.passed_index
       if (index == this.state.passed_index){
-        console.log("hehe")
-        tempPassedIndex = this.state.passed_index +1
+        tempPassedIndex = this.state.passed_index + 1
       }
       // record that you took this medicine in the database
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
-      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage,hhmm_time, tempPassed[index])
-      console.log(tempPassedIndex)
+      databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true)
       console.log(tempData)
       this.setState({
         data: tempData,
         passed: tempPassed,
-        passed_index: tempPassedIndex
+        passed_index: tempPassedIndex,
       }, () =>  this._handleRenderText())
     }
   }

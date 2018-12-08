@@ -894,15 +894,11 @@ function updateMedicineData(data,time,takenVal,callback){
 }
 
 function updateSingleMedicine(data,name,dosage,time,takenVal){
-  // console.log('updating single medicine', data)
   data.some(function(med){
       var fields = JSON.parse(med.fields)
-      // console.log("IF STATEMENT", fields['Pill Name'] === name && fields['Dosage'] === dosage)
-      // console.log("For pill: " + fields['Pill Name'] + time)
       if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
           var idx = fields['Time'].indexOf(time);
           if(idx != -1){
-              // console.log("IDX", idx)
               let newTaken = fields['Taken'].slice()
               console.log("rerrororeo")
               console.log(newTaken)
