@@ -87,27 +87,17 @@ class CoolerMedicineView extends React.Component {
 
   asyncDatabasePull = () => {
     let that = this
-  //new Date() for current date
     pullMedicineFromDatabase(new Date(), function(formattedData) {
-      console.log("getting data")
       var medicineData= []
-      // console.log("READING DATA", formattedData)
       Object.keys(formattedData).forEach(function(med) {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
-          // for(var i =0; i <medObj.timeCategory.length; i++){
-          //     console.log(medObj.time[i])
-          //     var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-          //     data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-          // }
       });
 
       that.setState ({
           data: medicineData
       })
-      // {console.log("old data")}
-      // {console.log(this.state.data)}
     });
 
   }
@@ -152,36 +142,7 @@ class CoolerMedicineView extends React.Component {
   }
 
   componentDidMount = () => {
-
-  //   let that = this
-  // //new Date() for current date
-  //   pullMedicineFromDatabase(new Date(), function(formattedData) {
-  //     console.log("getting data")
-  //     var medicineData= []
-  //     // console.log("READING DATA", formattedData)
-  //     Object.keys(formattedData).forEach(function(med) {
-  //         var medObj = formattedData[med]
-  //         var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
-
-  //         medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
-  //         // for(var i =0; i <medObj.timeCategory.length; i++){
-  //         //     console.log(medObj.time[i])
-  //         //     var formattedTime = Moment(medObj.time[i],'HH:mm').format('H:mm A')
-  //         //     data.push({title: med, time:medObj.time[i], dosage:medObj.dosage, status: medObj.taken[i]})
-  //         // }
-  //     });
-
-  //     that.setState ({
-  //         data: medicineData
-  //     })
-  //   });
   this.asyncDatabasePull()
-  console.log(this.state.data)
-}
-
-componentDidUpdate() {
-  // Typical usage (don't forget to compare props):
-  console.log("whats up")
 }
 
   compareCards = (a,b) => {
@@ -265,8 +226,6 @@ componentDidUpdate() {
           </View>
             <TouchableOpacity>
             </TouchableOpacity>
-            {console.log("data before flatlist")}
-            {console.log(this.state.data.sort(this.compareCards))}
             <FlatList
               data={this.state.data.sort(this.compareCards)}
               extraData={this.state}

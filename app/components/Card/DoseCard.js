@@ -77,10 +77,6 @@ class Card extends PureComponent {
 
     var current = new Date(this.state.time[this.state.passed_index])
     var timeString;
-
-    console.log("yo we handling render text")
-    console.log(this.state.passed)
-    console.log(this.props.passed)
     if(this.state.passed_index >= this.state.passed.length){
       ind = 0
       timeString = "Done for the day"
@@ -110,7 +106,6 @@ class Card extends PureComponent {
 
   _handleClick = () => {
     that = this
-    console.log("inside handle click")
 
     var thisMed = new Date(this.state.time[this.state.passed_index])
     var newPassed = this.state.passed;
@@ -161,8 +156,6 @@ class Card extends PureComponent {
     }
 
   _handleModalPress = (data) => {
-    console.log("handle modal press")
-    that = this
     index = data.index
     var tempData = this.state.data
     // if green or red
@@ -183,7 +176,6 @@ class Card extends PureComponent {
       // record that you took this medicine in the database
       let hhmm_time = new Date(this.props.time[index]).toTimeString().substring(0,5)
       databaseTakeMedicine(new Date(),this.props.title,this.props.dosage, hhmm_time, true, index)
-      console.log(tempData)
       this.setState({
         data: tempData,
         passed: tempPassed,
@@ -286,7 +278,6 @@ class Card extends PureComponent {
   }
 
   render_timeline = () => {
-    console.log("render timeline")
     return this.props.time.map ((val, i) => {
       var d = new Date();
       d.setHours(this.props.takenTime[i].substring(0,2))

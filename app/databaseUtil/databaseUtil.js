@@ -3,7 +3,7 @@ import Moment from 'moment';
 import constants, { getCardData } from '../resources/constants';
 
 export function createTables() {
-  console.log('creating tables');
+  // console.log('creating tables');
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -36,7 +36,7 @@ export function createTables() {
   );
 }
 export function intializeDatabase() {
-  console.log('intializing database');
+  // console.log('intializing database');
   date = new Date();
   Database.transaction(
     tx => {
@@ -309,7 +309,7 @@ export function intializeDatabase() {
   Database.transaction(
     tx => {
       tx.executeSql('Select * from event_type_tbl;', [], (tx, { rows }) =>
-        console.log(JSON.stringify(rows))
+        // console.log(JSON.stringify(rows))
       );
     },
     err => console.log(err)
@@ -344,7 +344,7 @@ export function formatData(data) {
 }
 
 export function databaseFakeData(){
-    console.log('faking data')
+    // console.log('faking data')
     Database.transaction(tx => {
       tx.executeSql('INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (300,\'{"Intensity": "2","Duration": "40"}\')')
       tx.executeSql('INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (300, 1,\'2018-03-07 06:00:00\', 300)')
@@ -554,7 +554,7 @@ export function databaseFakeData(){
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  console.log('pulling from database');
+  // console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
@@ -582,7 +582,7 @@ function formatDataForGraphs(data) {
     var monthString = d.toISOString().substr(0, 10); // year-month-day
     var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
 
-    console.log(intensity);
+    // console.log(intensity);
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
         frequency: 1,
@@ -960,7 +960,6 @@ export function databaseTakeMedicine(date,name,dosage,time,takenVal,idx){
 
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
-  console.log('input array is', inputArray)
   Database.transaction(
     tx => {
       tx.executeSql(
