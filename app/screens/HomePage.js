@@ -48,7 +48,6 @@ class Home extends React.Component {
     let doneAmount = this.state.doneAmount;
     let thisRef = this;
     pullMedicineFromDatabase(new Date(), function(formattedData){
-      console.log("NEW PULLED MEDICINE:", formattedData)
       Object.keys(formattedData).forEach(function(med){
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time) {
@@ -95,34 +94,14 @@ class Home extends React.Component {
     let done = st.doneAmount
     let o_done = st.originalDoneAmount
     let tot = st.totalAmount
-    console.log("writing in time category")
-
-    if(done[i] != o_done[i]){
-      console.log('true', i)
-      databaseTakeMedicines(new Date(), i, true, callback)
-    } else if(this.didRevert[i]){
+    if(this.didRevert[i] ){
       databaseTakeMedicines(new Date(), i, false, callback)
-      console.log('false', i)
+    }else if(done[i] != o_done[i]){
+      databaseTakeMedicines(new Date(), i, true, callback)
     } else {
       callback()
     }
   }
-
-  componentWillUnmount(){
-    //console.log(this.state.doneAmount, this.state.originalDoneAmount, this.state.totalAmount)
-    let st = this.state
-    let that = this
-    console.log("unmount")
-
-    that.writeAllInTimeCategory(0, st, () => {
-      that.writeAllInTimeCategory(1, st, () => {
-        that.writeAllInTimeCategory(2, st, () => {
-          that.writeAllInTimeCategory(3, st, () => {})
-        })
-      })
-    })
-  }
-
 
   logAll(index){
     let time
@@ -153,7 +132,15 @@ class Home extends React.Component {
       dropDownMessage = 'All remaining '+time+' medications are taken!'
     }
     thisRef = this;
-    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
+    let st = this.state
+    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
+    this.writeAllInTimeCategory(0, st,  () => {
+      this.writeAllInTimeCategory(1, st,  () => {
+        this.writeAllInTimeCategory(2, st,  () => {
+          this.writeAllInTimeCategory(3, st,  () => {})
+        })
+      })
+    }))
   }
 
   revertAll(index){
@@ -182,7 +169,15 @@ class Home extends React.Component {
       this.didRevert[index] = true;
       dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
-    this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)})
+    let st = this.state
+    this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
+    this.writeAllInTimeCategory(0, st, () => {
+      this.writeAllInTimeCategory(1, st, () => {
+        this.writeAllInTimeCategory(2, st,() => {
+          this.writeAllInTimeCategory(3, st,  () => {})
+        })
+      })
+    }))
 
   }
 

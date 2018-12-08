@@ -884,20 +884,16 @@ function updateMedicineData(data,time,takenVal,callback){
       var fields = JSON.parse(med.fields)
       // var idx = fields['Time Category'].indexOf(time)
       var idx = getAllIndexes(fields['Time Category'], time)
-      console.log("field time cat: " +fields['Time Category'])
-      console.log("fields: " +JSON.stringify(fields))
-      console.log("index: " + idx)
       let newTaken = fields["Taken"].slice()
       let newTakenTime = fields['Taken Time'].slice()
 
       for ( var i =0; i< idx.length; i++){
-        if(!newTaken[idx[i]]){
+        if(newTaken[idx[i]] != takenVal){
           newTaken[idx[i]] = takenVal
           newTakenTime[idx[i]] = Moment().format('HH:mm')
         }
         }
-         console.log("issa newtaken: " +newTaken)
-         console.log("issa newtakentime: " +newTakenTime)
+
         fields["Taken"] = newTaken
         fields['Taken Time'] = newTakenTime
       
@@ -924,8 +920,8 @@ function updateSingleMedicine(data,name,dosage,time,takenVal,idx){
       if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
           if(idx != -1){
               let newTaken = fields['Taken'].slice()
-              console.log("rerrororeo")
-              console.log(newTaken)
+              // console.log("rerrororeo")
+              // console.log(newTaken)
               newTaken[idx] = takenVal
               fields['Taken'] = newTaken
               let newTakenTime = fields['Taken Time'].slice()
