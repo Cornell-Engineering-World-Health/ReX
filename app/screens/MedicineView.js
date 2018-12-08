@@ -10,9 +10,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import DoseCard from '../components/Card/DoseCard';
-import { LinearGradient } from 'expo';
-import { StackNavigator } from 'react-navigation';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {pullMedicineFromDatabase} from '../databaseUtil/databaseUtil';
 import Moment from 'moment';
 import LogFormScreen from "../screens/LogFormScreen"
@@ -21,49 +18,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { COLOR, IMAGES} from '../resources/constants';
 import MedicineAddForm from '../components/MedicineAddForm/MedicineAddForm.js';
 
-var dummy_data = [
-  {
-    title: 'Dinonuggies',
-    dosage: '489mg',
-    time: ["January 31 1980 12:00", "January 31 1980 13:10","January 31 1980 20:30"],
-    takenTime: ["January 31 1980 12:10", "", ""],
-    timeval: [1200, 1310, 2030],
-    statuses: [true, false, false]
-  },
-  {
-    title: 'KT',
-    dosage: '4344348mg',
-    time: ["January 31 1980 9:30"],
-    takenTime: [""],
-    timeval: [930],
-    statuses: [false]
-  },
-  {
-    title: 'Beanz',
-    dosage: '430mg',
-    time: ["January 31 1980 12:30"],
-    takenTime: [""],
-    timeval: [1230],
-    statuses: [false]
-  },
-  {
-    title: 'Oliviera',
-    dosage: '233mg',
-    time: ["January 31 1980 13:30"],
-    takenTime: [""],
-    timeval: [1330],
-    statuses: [false]
-  },
-  {
-    title: 'Splash',
-    dosage: '3mg',
-    time: ["January 31 1980 15:10"],
-    takenTime: [""],
-    timeval: [1510],
-    statuses: [false]
-  }
-]
-
 class CoolerMedicineView extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
@@ -71,12 +25,6 @@ class CoolerMedicineView extends React.Component {
 
   constructor(props) {
     super(props);
-
-    // updateData = (newData) => {
-    //   this.setState({
-    //     data: newData
-    //   })
-    // }
 
     this.state = {
       data: [],
@@ -93,13 +41,12 @@ class CoolerMedicineView extends React.Component {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
+          console.log(medicineData)
       });
-
       that.setState ({
           data: medicineData
       })
     });
-
   }
 
   errorOnSubmit(){
@@ -152,7 +99,16 @@ class CoolerMedicineView extends React.Component {
         passed_index = i
         break
       }
+      var formattedTimes = time.map(t => Moment().format("MMMM DD YYYY") + ' ' + t)
+      var taken = time.map(t => false)
+      var takenTime = time.map(t => '')
+      medicineData.push({title: title, time: formattedTimes, timeVal: time, dosage: dosage, statuses: taken, takenTime: takenTime})
+      this.setState({
+        toggle_add: false,
+        data: medicineData
+      })
     }
+
     var passed_index2 = 0
     for (var j = 0; j < b.statuses.length; j++){
       if (b.statuses[j] == false){
@@ -192,7 +148,6 @@ class CoolerMedicineView extends React.Component {
         </View>
     );
   }
-
   render() {
     const { navigate } = this.props.navigation
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
