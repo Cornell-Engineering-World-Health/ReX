@@ -1,42 +1,42 @@
-import Database from '../Database';
-import Moment from 'moment';
-import constants, { getCardData } from '../resources/constants';
+import Database from "../Database";
+import Moment from "moment";
+import constants, { getCardData } from "../resources/constants";
 
 export function createTables() {
-  console.log('creating tables');
+  // console.log('creating tables');
   Database.transaction(
     tx => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);'
+        "CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `field_name` TEXT NOT NULL UNIQUE, `view_name` TEXT NOT NULL);'
+        "CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `field_name` TEXT NOT NULL UNIQUE, `view_name` TEXT NOT NULL);"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,`event_type_category` TEXT, FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));'
+        "CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,`event_type_category` TEXT, FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER NOT NULL PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));'
+        "CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER NOT NULL PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `settings_tbl` (`setting_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `setting_value` TEXT NOT NULL);'
+        "CREATE TABLE IF NOT EXISTS `settings_tbl` (`setting_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `setting_value` TEXT NOT NULL);"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `id_tbl` (`id_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `id_value` INTEGER NOT NULL);'
+        "CREATE TABLE IF NOT EXISTS `id_tbl` (`id_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `id_value` INTEGER NOT NULL);"
       );
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS `is_first_tbl` (`is_first` INTEGER NOT NULL PRIMARY KEY UNIQUE);'
+        "CREATE TABLE IF NOT EXISTS `is_first_tbl` (`is_first` INTEGER NOT NULL PRIMARY KEY UNIQUE);"
       );
       /* tx.executeSql(
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
     },
     err => console.log(err),
-    () => console.log('done creating tables!!!')
+    () => console.log("done creating tables!!!")
   );
 }
 export function intializeDatabase() {
-  console.log('intializing database');
+  // console.log('intializing database');
   date = new Date();
   Database.transaction(
     tx => {
@@ -298,16 +298,16 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
       );
       //Initialize first time app open tbl
-      tx.executeSql('INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)');
+      tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
     err => console.log(err),
-    () => console.log('intitialization complete')
+    () => console.log("intitialization complete")
   );
 
   Database.transaction(
     tx => {
-      tx.executeSql('Select * from event_type_tbl;', [], (tx, { rows }) =>
-        console.log('event type table', JSON.stringify(rows))
+      tx.executeSql("Select * from event_type_tbl;", [], (tx, { rows }) =>
+        console.log("event type table", JSON.stringify(rows))
       );
     },
     err => console.log(err)
@@ -319,7 +319,7 @@ export function formatData(data) {
   // console.log(data)
   dataTemp = {};
   data.forEach(function(ev) {
-    let d = new Date(ev.timestamp.replace(' ', 'T'));
+    let d = new Date(ev.timestamp.replace(" ", "T"));
     let day = d.getDate() - 1;
     let symptom = ev.event_type_name;
     let intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
@@ -342,7 +342,7 @@ export function formatData(data) {
 }
 
 export function databaseFakeData() {
-  console.log('faking data');
+  // console.log('faking data')
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -633,7 +633,7 @@ export function databaseFakeData() {
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  console.log('pulling from database');
+  // console.log('pulling from database');
 
   formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
@@ -656,12 +656,12 @@ function formatDataForGraphs(data) {
   dataTemp = {};
   //console.log('data for graphs ', data)
   data.forEach(function(ev) {
-    var d = new Date(ev.timestamp.replace(' ', 'T'));
+    var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
     var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
 
-    console.log('intensity', intensity);
+    // console.log(intensity);
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
         frequency: 1,
@@ -722,12 +722,12 @@ function formatAgenda(data) {
   // console.log(data)
   agendaFlatList = [];
   data.forEach(function(ele) {
-    formattedTime = Moment(ele.timestamp, 'YYYY-MM-DD HH:mm:ss').format(
-      'h:mm A'
+    formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
+      "h:mm A"
     );
     j = JSON.parse(ele.fields);
-    note_value1 = ele.card_field_id1 + ': ' + j[ele.card_field_id1];
-    note_value2 = ele.card_field_id2 + ': ' + j[ele.card_field_id2];
+    note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1];
+    note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2];
 
     // TODO: should have error checking here incase json is malformatted
     // TODO: should use event_type_name for cardData
@@ -786,9 +786,9 @@ export function asyncDeleteEvent(id) {
   Database.transaction(
     tx => {
       tx.executeSql(
-        'DELETE FROM event_tbl WHERE event_details_id = ?',
+        "DELETE FROM event_tbl WHERE event_details_id = ?",
         inputArray,
-        (tx, { rows }) => console.log('event has been deleted with id :', id),
+        (tx, { rows }) => console.log("event has been deleted with id :", id),
         err => console.log(err)
       );
     },
@@ -798,15 +798,16 @@ export function asyncDeleteEvent(id) {
 function formatMedicineData(data) {
   dataTemp = {};
   data.forEach(function(med) {
-    let earliestTime = new Date(med.timestamp.replace(' ', 'T'));
+    let earliestTime = new Date(med.timestamp.replace(" ", "T"));
     let fields = JSON.parse(med.fields);
 
-    if (!dataTemp[fields['Pill Name']]) {
-      dataTemp[fields['Pill Name']] = {
-        dosage: fields['Dosage'],
-        time: fields['Time'],
-        timeCategory: fields['Time Category'],
-        taken: fields['Taken']
+    if (!dataTemp[fields["Pill Name"]]) {
+      dataTemp[fields["Pill Name"]] = {
+        dosage: fields["Dosage"],
+        time: fields["Time"],
+        timeCategory: fields["Time Category"],
+        taken: fields["Taken"],
+        takenTime: fields["Taken Time"]
       };
     }
   });
@@ -815,9 +816,10 @@ function formatMedicineData(data) {
 }
 
 export function pullMedicineFromDatabase(date, callback) {
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
+  // console.log(dayArray)
   Database.transaction(tx => {
     tx.executeSql(
       "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
@@ -835,16 +837,16 @@ export function getIds(rows, callback) {
   event_details_id = -1;
   event_id = -1;
   for (var i = 0; i < rows._array.length; i++) {
-    if (rows._array[i]['id_name'] === 'event_id') {
-      event_id = rows._array[i]['id_value'];
+    if (rows._array[i]["id_name"] === "event_id") {
+      event_id = rows._array[i]["id_value"];
       //console.log('inside getIds event_id:', event_id);
     }
-    if (rows._array[i]['id_name'] === 'event_details_id') {
-      event_details_id = rows._array[i]['id_value'];
+    if (rows._array[i]["id_name"] === "event_details_id") {
+      event_details_id = rows._array[i]["id_value"];
       //console.log('inside getIds event_id:', event_details_id);
     }
   }
-  console.log('before wrapper call');
+  console.log("before wrapper call");
   callback(event_id, event_details_id);
 }
 
@@ -858,7 +860,7 @@ export function asyncCreateMedicineEvents(
 ) {
   Database.transaction(
     tx => {
-      tx.executeSql('SELECT * from id_tbl', [], (_, { rows }) =>
+      tx.executeSql("SELECT * from id_tbl", [], (_, { rows }) =>
         getIds(rows, (event_id, event_details_id) =>
           asyncCreateMedicineEventsWrapper(
             name,
@@ -896,14 +898,18 @@ export function asyncCreateMedicineEventsWrapper(
         var taken = timeArray.map(t => {
           return false;
         });
+        var takenTimeInit = timeArray.map(t => {
+          return "";
+        });
         detailsJson = {
-          'Pill Name': name,
+          "Pill Name": name,
           Dosage: dosage,
-          'Start Date': startDate,
-          'End Date': endDate,
+          "Start Date": startDate,
+          "End Date": endDate,
           Time: timeArray,
-          'Time Category': timeCategories,
-          Taken: taken
+          "Time Category": timeCategories,
+          Taken: taken,
+          "Taken Time": takenTimeInit
         };
         //console.log("detailsjson: ",detailsJson)
         var inputArray = [
@@ -911,96 +917,122 @@ export function asyncCreateMedicineEventsWrapper(
           JSON.stringify(detailsJson)
         ];
         tx.executeSql(
-          'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
+          "INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)",
           inputArray
         );
 
         /* inserting event record */
         var formattedTimeStamp = Moment(
-          dateString + ' ' + timeArray[0],
-          'YYYY-MM-DD HH:mm'
-        ).format('YYYY-MM-DD HH:mm:ss');
+          dateString + " " + timeArray[0],
+          "YYYY-MM-DD HH:mm"
+        ).format("YYYY-MM-DD HH:mm:ss");
         inputArray = [
           String(event_id),
-          '4',
+          "4",
           formattedTimeStamp,
           String(event_details_id)
         ];
         tx.executeSql(
-          'INSERT OR REPLACE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?,?,?)',
+          "INSERT OR REPLACE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?,?,?)",
           inputArray
         );
         //console.log('incrementing id and details_id')
         event_id += 1;
         event_details_id += 1;
       }
-      inputArray = ['event_id', event_id];
+      inputArray = ["event_id", event_id];
       /*update event_id and event_details_id */
       tx.executeSql(
-        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
+        "INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)",
         inputArray
       );
-      inputArray = ['event_details_id', event_details_id];
+      inputArray = ["event_details_id", event_details_id];
       tx.executeSql(
-        'INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)',
+        "INSERT OR REPLACE INTO id_tbl (id_name,id_value) VALUES (?,?)",
         inputArray
       );
     },
     err => console.log(err)
   );
 }
+
+function getAllIndexes(arr, val) {
+  var indexes = [],
+    i;
+  for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+  return indexes;
+}
+
 /*TODO: clean up updateMedicine functions*/
-function updateMedicineData(data, time, takenVal) {
+function updateMedicineData(data, time, takenVal, callback) {
+  //console.log("ALL",data, time, takenVal)
   data.forEach(function(med) {
     var fields = JSON.parse(med.fields);
-    console.log('\n\nprevious med', med);
-    console.log('\n\ntime', time);
-    var idx = fields['Time Category'].indexOf(time);
+    var idx = getAllIndexes(fields["Time Category"], time);
+    let newTaken = fields["Taken"].slice();
+    let newTakenTime = fields["Taken Time"].slice();
 
-    if (idx != -1) {
-      console.log('updating');
-      let newTaken = fields['Taken'].slice();
-      newTaken[idx] = takenVal;
-      console.log('\n\nnewTaken', newTaken);
-      fields['Taken'] = newTaken;
-      let newFields = JSON.stringify(fields);
-
-      console.log('\n\nnew fields', newFields);
-      let queryArgs = [med.event_details_id, newFields];
-      //console.log("\n\nqueryargs", queryArgs)
-      Database.transaction(
-        tx => {
-          tx.executeSql(
-            'INSERT OR REPLACE INTO event_details_tbl (event_details_id,fields) VALUES (?,?)',
-            queryArgs,
-            (_, { rows }) => {
-              console.log(rows);
-            }
-          );
-        },
-        err => console.log(err)
-      );
+    for (var i = 0; i < idx.length; i++) {
+      if (newTaken[idx[i]] != takenVal) {
+        newTaken[idx[i]] = takenVal;
+        newTakenTime[idx[i]] = Moment().format("HH:mm");
+      }
     }
+
+    fields["Taken"] = newTaken;
+    fields["Taken Time"] = newTakenTime;
+
+    // console.log("issa idx :  " + idx)
+    // console.log("issa newtaken: " +newTaken)
+    // let newTakenTime = fields['Taken Time'].slice()
+    // newTakenTime[idx] = Moment().format('HH:mm')
+    // fields['Taken Time'] = newTakenTime
+    let newFields = JSON.stringify(fields);
+    let queryArgs = [newFields, med.event_details_id];
+    Database.transaction(
+      tx => {
+        tx.executeSql(
+          "Update event_details_tbl SET fields =? where event_details_id= ? ",
+          queryArgs,
+          (tx, results) => {
+            callback();
+          }
+        );
+      },
+      err => console.log(err)
+    );
   });
 }
 
-function updateSingleMedicine(data, name, dosage, time, takenVal) {
-  console.log('updating single medicine', data);
+function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
   data.some(function(med) {
     var fields = JSON.parse(med.fields);
-    if (fields.pillName === name && fields.dosage === dosage) {
-      var idx = fields.time.indexOf(time);
+    if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {
       if (idx != -1) {
-        let newTaken = fields.taken.slice();
+        let newTaken = fields["Taken"].slice();
         newTaken[idx] = takenVal;
-        fields.taken = newTaken;
+        fields["Taken"] = newTaken;
+        let newTakenTime = fields["Taken Time"].slice();
+        newTakenTime[idx] = Moment().format("HH:mm");
+        fields["Taken Time"] = newTakenTime;
         let newFields = JSON.stringify(fields);
         let queryArgs = [newFields, med.event_details_id];
         Database.transaction(
           tx => {
             tx.executeSql(
-              'Update event_details_tbl SET fields =? where event_details_id= ? ',
-              queryArgs
+              "Update event_details_tbl SET fields =? where event_details_id= ? ",
+              queryArgs,
+              (tx, results) => {
+                console.log("Query completed", tx, results);
+
+                tx.executeSql(
+                  "Select * from  event_details_tbl where event_details_id= ? ",
+                  [med.event_details_id],
+                  (tx2, results2) => {
+                    console.log("Query completed2", tx2, results2);
+                  }
+                );
+              }
             );
           },
           err => console.log(err)
@@ -1012,36 +1044,12 @@ function updateSingleMedicine(data, name, dosage, time, takenVal) {
     return false;
   });
 }
-export function databaseTakeMedicines(date, timeIndex, takenVal) {
-  let timeArray = ['Morning', 'Afternoon', 'Evening', 'Night'];
+export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
+  let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
 
-  console.log('date ', day);
-  console.log('time ', timeString);
-
-  Database.transaction(
-    tx => {
-      tx.executeSql(
-        "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
-      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
-      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
-        dayArray,
-        (_, { rows }) => updateMedicineData(rows._array, timeString, takenVal)
-      );
-    },
-    err => console.log(err)
-  );
-}
-
-//pass in time as 24 hour time string
-export function databaseTakeMedicine(date, name, dosage, time, takenVal) {
-  let day = date.toISOString().substr(0, 10);
-  dayArray = [day];
-  console.log(dayArray);
-  console.log('inside take medicine');
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1051,20 +1059,49 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal) {
       WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
         dayArray,
         (_, { rows }) =>
-          updateSingleMedicine(rows._array, name, dosage, time, takenVal),
+          updateMedicineData(rows._array, timeString, takenVal, callback)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+//pass in time as 24 hour time string
+export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
+  // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
+  let day = date.toISOString().substr(0, 10);
+  dayArray = [day];
+  // console.log(dayArray)
+  // console.log('inside take medicine')
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
+    INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+    INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+    WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' AND day = ? ORDER BY timestamp",
+        dayArray,
+        (_, { rows }) =>
+          updateSingleMedicine(rows._array, name, dosage, time, takenVal, idx),
         err => console.log(err)
       );
     },
     err => console.log(err)
   );
 }
+
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
   Database.transaction(
     tx => {
       tx.executeSql(
-        'INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)',
-        inputArray
+        "INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)",
+        inputArray,
+        (f, c) => {
+          tx.executeSql("Select * from settings_tbl", [], (a, b) => {
+            console.log("WRITES", inputArray, c.rows, b.rows);
+          });
+        }
       );
     },
     err => console.log(err)
@@ -1081,7 +1118,7 @@ function parseSettings(data) {
 export function pullSettingsFromDatabase(callback) {
   Database.transaction(
     tx => {
-      tx.executeSql('SELECT * from settings_tbl', [], (_, { rows }) =>
+      tx.executeSql("SELECT * from settings_tbl", [], (_, { rows }) =>
         callback(parseSettings(rows._array))
       );
     },
@@ -1092,8 +1129,8 @@ export function pullSettingsFromDatabase(callback) {
 export function pullIsFirstFromDatabase(callback) {
   Database.transaction(tx => {
     tx.executeSql(
-      'SELECT is_first FROM is_first_tbl \
-      WHERE is_first != 1',
+      "SELECT is_first FROM is_first_tbl \
+      WHERE is_first != 1",
       [],
       (_, { rows }) => {
         console.log(rows.length);
@@ -1106,6 +1143,6 @@ export function pullIsFirstFromDatabase(callback) {
 
 export function logIsFirst(callback) {
   Database.transaction(tx => {
-    tx.executeSql('INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)');
+    tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)");
   });
 }

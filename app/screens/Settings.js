@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SettingsList from 'react-native-settings-list';
-import moment from 'moment';
 import Profile from './EditProfile';
 import Trends from './Trends';
 import MedicineSettings from './MedicineSettings';
@@ -43,6 +42,7 @@ class Settings extends Component {
       isEditVisible: false
     };
   }
+
 
   settingsUpdate(setting, value) {
     switch (setting) {
