@@ -45,6 +45,9 @@ class Agenda extends Component {
 
   _keyExtractor = (item, index) => item.id;
 
+  /**
+   * renders agenda
+   */
   _renderAgenda() {
     if (this.state.agendaInfo && this.state.agendaInfo.length != 0) {
       return (

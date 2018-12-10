@@ -33,6 +33,9 @@ class CoolerMedicineView extends React.Component {
     };
   }
 
+  /**
+   * asyncDatabasePull populates [state.data] with medication data for the current day
+   */
   asyncDatabasePull = () => {
     let that = this
     pullMedicineFromDatabase(new Date(), function(formattedData) {
@@ -41,7 +44,6 @@ class CoolerMedicineView extends React.Component {
           var medObj = formattedData[med]
           var formattedTimes = medObj.time.map(t=> Moment().format("MMMM DD YYYY") + ' ' + t)
           medicineData.push({title: med, time:formattedTimes, timeVal:medObj.time, dosage:medObj.dosage, statuses: medObj.taken, takenTime: medObj.takenTime})
-          console.log(medicineData)
       });
       that.setState ({
           data: medicineData
@@ -49,16 +51,31 @@ class CoolerMedicineView extends React.Component {
     });
   }
 
+  /**
+   * error dropdown if user fails to complete the medicine add form and presses submit
+   */
   errorOnSubmit(){
     this.dropdown.close(); this.dropdown.alertWithType('custom', 'Form Incomplete',
     'Please add any missing information')
   }
 
+  /**
+   * success dropdown if users succesfully submits the medicine add form
+   */
   successOnSubmit(){
     this.dropdown_success.close(); this.dropdown_success.alertWithType('custom',
     'New Medicine Added!', '')
   }
 
+  /**
+   * asyncDatabaseUpdate takes data for a new medication and writes to the database:
+   * title (String): medicine name
+   * dosage (String): dosage amount in mg
+   * start (Moment date object): when to begin logging
+   * end (Moment date object): when to stop logging
+   * time (String array): array of times to start-> writes to the database
+   * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
+   */
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
     asyncCreateMedicineEvents(
       title,
@@ -90,8 +107,15 @@ class CoolerMedicineView extends React.Component {
 
   componentDidMount = () => {
   this.asyncDatabasePull()
-}
+  }
 
+  /**
+   * custom sorting algorithm for medicine cards on the medicine view flatlist:
+   * [Red] Missed Medications
+   * [Green] Take Now Medications
+   * [Grey] Complete/Future Medications
+   * sorted in ascending time order within each category
+   */
   compareCards = (a,b) => {
     var passed_index = 0
     for (var i = 0; i < a.statuses.length; i++){
@@ -99,10 +123,6 @@ class CoolerMedicineView extends React.Component {
         passed_index = i
         break
       }
-      var formattedTimes = time.map(t => Moment().format("MMMM DD YYYY") + ' ' + t)
-      var taken = time.map(t => false)
-      var takenTime = time.map(t => '')
-      medicineData.push({title: title, time: formattedTimes, timeVal: time, dosage: dosage, statuses: taken, takenTime: takenTime})
       this.setState({
         toggle_add: false,
         data: medicineData
@@ -124,6 +144,9 @@ class CoolerMedicineView extends React.Component {
     }
   }
 
+  /**
+   * returns DoseCard component populated with appropriate medicine data
+   */
   _renderCard = ({item}) => {
     return (
       <View>
@@ -148,6 +171,7 @@ class CoolerMedicineView extends React.Component {
         </View>
     );
   }
+
   render() {
     const { navigate } = this.props.navigation
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -230,6 +254,7 @@ class CoolerMedicineView extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   wrapper: {
     padding:10,
