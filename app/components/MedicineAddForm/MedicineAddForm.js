@@ -57,6 +57,10 @@ export default class MedicineAddForm extends React.Component {
     this.setState({ submit_vals: temp_vals })
   }
 
+  /**
+   * Check if the Add Medicine Form has been completed
+   * Return false if any field is empty, and true otherwise
+   */
   checkIfIncomplete(){
       if(Object.keys(this.state.submit_vals).length < 6 ||
           this.state.submit_vals['Pill Name'] == '' ||
@@ -70,33 +74,29 @@ export default class MedicineAddForm extends React.Component {
       return false
   }
 
+  /**
+   * Submit the Add Medicine Form when submit button is pressed
+   * If incomplete -> Callback for error dropdown, and force user to fix the form
+   * If complete -> Callback for success dropdown, and callbacks to update the database and return to the Medicine View
+   */
   submit (){
     if(this.checkIfIncomplete()){
-        // this.props.screenProps.errorOnSubmit()
         this.props.errorOnSubmit()
         console.log('error')
     } else {
-      // this.props.screenProps.writeData(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']), new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'])
-      // asyncCreateMedicineEvents(
-      //   this.state.submit_vals['Pill Name'],
-      //   this.state.submit_vals['Dosage'],
-      //   new Date(this.state.submit_vals['Start Date']),
-      //   new Date(this.state.submit_vals['End Date']),
-      //   this.state.submit_vals['Time'],
-      //   this.state.submit_vals['Time Category']
-      // );
-      // this.props.screenProps.successOnSubmit()
-      // this.props.navigation.goBack()
-      // this.props.navigation.navigate('MainView', {pull: true})
       this.props.successOnSubmit()
       this.props.asyncDatabaseUpdate(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']), new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'])
       this.props.exitModal()
     }
   }
+
   nextFocus(){
     this.dosage.textInput.focus()
   }
 
+  /**
+   * Render fill between two dates in calendar input type for start/end dates
+   */
   fill_between(startDate, endDate){
     let new_marked_date = {}
     new_marked_date[startDate] =  {startingDay: true, color: COLOR.cyan, textColor: 'white'}
@@ -142,6 +142,9 @@ export default class MedicineAddForm extends React.Component {
     return 'Night'
   }
 
+  /**
+   * Populate state with values from the Add Medicine Form on submit
+   */
   confirmSubmit(){
     if(this.state.modalID == CALENDAR_ID){
       this.valueChange('Start Date', this.state.startDate)

@@ -69,7 +69,7 @@ export const IMAGES = {
   iconWhale: require('./images/icons8-whale-100.png'),
   view: require('./images/view.png'),
   hamburgerMenu: require('./images/icons8-menu-26.png'),
-  body: require('./images/bodyLarge.png'),
+  body: require('./images/bodyLarge2.png'),
   close: require('./images/close.png'),
   close_white: require('./images/close-white.png'),
   zero: require('./images/0.png'),
