@@ -98,7 +98,6 @@ class Calendar extends PureComponent {
       this._onDatePress(new Date().getDate() - 1);
     }
 
-    //console.log('mounted', this.props.currMonth)
     this.initVisualization();
   }
 
@@ -114,8 +113,10 @@ class Calendar extends PureComponent {
     this._isMounted = false;
   }
 
-  /** Pulls symptom data from storage and initilizes the calendar. Optional parameter to see a particular
-   *  graph first. */
+  /**
+   * Pulls symptom data from storage and initilizes the calendar. Optional parameter to see a particular
+   * graph first.
+   */
   initVisualization = type => {
     pullFromDataBase(this.props.currMonth, null, data => {
       let dot1 = [];
@@ -168,6 +169,9 @@ class Calendar extends PureComponent {
     });
   };
 
+  /**
+   * Update graph visualization given parameter corresponding to the symptom to display.
+   */
   updateVisualization = type => {
     var graphRefs = this.graphRefs;
     var thisRef = this; //reference to this lost on callback
@@ -208,6 +212,9 @@ class Calendar extends PureComponent {
     });
   };
 
+  /**
+   * Select specific date on calendar when selected
+   */
   _onDatePress = i => {
     let backgroundColor = [];
     backgroundColor[i] = 1;
@@ -217,37 +224,7 @@ class Calendar extends PureComponent {
     let dot3 = this.state.dot3;
     let baseBars = this.state.baseBars;
 
-    /**
-        for (var j = 0; j < this.numberOfDays; j++){
-          if (dot1[j] == styles.genericGray){
-            dot1[j] = styles.generic
-          }
-          if (dot2[j] == styles.genericGray){
-            dot2[j] = styles.generic
-          }
-          if (dot3[j] == styles.genericGray){
-            dot3[j] = styles.generic
-          }
-          if(baseBars[j] == styles.baseBarSelected){
-            baseBars[j] = styles.baseBar
-          }
-        }
-        */
     this._clearSelection();
-    /**
-        if (dot1[i] == styles.generic){
-          dot1[i] = styles.genericGray
-        }
-        if (dot2[i] == styles.generic){
-          dot2[i] = styles.genericGray
-        }
-        if (dot3[i] == styles.generic){
-          dot3[i] = styles.genericGray
-        }
-        if(baseBars[i] == styles.baseBar){
-          baseBars[i] = styles.baseBarSelected
-        }
-        */
     let currentDate = new Date(
       this.today.getFullYear(),
       this.today.getMonth(),
@@ -264,6 +241,9 @@ class Calendar extends PureComponent {
     this.props.onPressMonth(this, i, currentDate);
   };
 
+  /**
+   * Unselect specific date on calendar when a different date is selected (so multiple dates aren't highlighted)
+   */
   _clearSelection = () => {
     if (this.state.selected != -1) {
       let dot1 = this.state.dot1;
@@ -300,31 +280,13 @@ class Calendar extends PureComponent {
     }
   };
 
+  /**
+   * Pull up modal to traverse between calendar dates quickly
+   */
   _onTitlePress = () => {
     this.setState({
       modalVisible: true
     });
-  };
-
-  _onHeadachePress = () => {
-    let circles = this.state.dot1;
-    circles[this.state.selected] = styles.headache;
-
-    this.setState({ dot1: circles });
-  };
-
-  _onBlurredPress = () => {
-    let circles = this.state.dot2;
-    circles[this.state.selected] = styles.blurred;
-
-    this.setState({ dot2: circles });
-  };
-
-  _onPillPress = () => {
-    let circles = this.state.dot3;
-    circles[this.state.selected] = styles.pill;
-
-    this.setState({ dot3: circles });
   };
 
   dateStyle = function(i) {
@@ -338,6 +300,9 @@ class Calendar extends PureComponent {
     };
   };
 
+  /**
+   * renderWeek(), renderMonth(), renderYear(), and renderDates() render the respective text components onto the calendar
+   */
   renderWeek() {
     const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     return days.map(day => {
@@ -457,6 +422,9 @@ class Calendar extends PureComponent {
     });
   }
 
+  /**
+   * Render greyed out dates from the previous month that still display on the calendar
+   */
   renderPreviousDates() {
     const days = [
       '01',
@@ -517,6 +485,9 @@ class Calendar extends PureComponent {
     }
   }
 
+  /**
+   * render greyed out dates from the next month that still display on the calendar
+   */
   renderNextDates() {
     const days = [
       '01',
