@@ -55,6 +55,10 @@ class CoolerMedicineView extends React.Component {
         });
       });
     });
+
+    this.setState({
+      data: medicineData
+    });
   };
 
   /**
