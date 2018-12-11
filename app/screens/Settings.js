@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   StyleSheet,
   View,
@@ -7,19 +7,19 @@ import {
   Image,
   TouchableOpacity,
   NavigatorIOS
-} from 'react-native';
-import Modal from 'react-native-modal';
-import SettingsList from 'react-native-settings-list';
-import Profile from './EditProfile';
-import Trends from './Trends';
-import MedicineSettings from './MedicineSettings';
-import { sendMail } from '../components/Mail/MailController';
-import { _mailFunc } from '../mailUtil/mailUtil.js';
+} from "react-native";
+import Modal from "react-native-modal";
+import SettingsList from "react-native-settings-list";
+import Profile from "./EditProfile";
+import Trends from "./Trends";
+import MedicineSettings from "./MedicineSettings";
+import { sendMail } from "../components/Mail/MailController";
+import { _mailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
-} from '../databaseUtil/databaseUtil';
-import { profile_icons, IMAGES, COLOR } from '../resources/constants';
+} from "../databaseUtil/databaseUtil";
+import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
 class Settings extends Component {
   static propTypes = {
@@ -31,46 +31,45 @@ class Settings extends Component {
     this.onValueChange = this.onValueChange.bind(this);
     this.state = {
       switchValue: false,
-      name: 'Name unknown',
-      weight: 'Weight unknown',
+      name: "Name unknown",
+      weight: "Weight unknown",
       birthday: new Date(),
-      height_feet: '',
-      height_inches: '',
-      height: 'Height unknown',
-      icon: '0',
+      height_feet: "",
+      height_inches: "",
+      height: "Height unknown",
+      icon: "0",
       email: "Doctor's email unkown",
       isEditVisible: false
     };
   }
 
-
   settingsUpdate(setting, value) {
     switch (setting) {
-      case 'name':
+      case "name":
         this.setState({ name: value });
         break;
-      case 'weight':
+      case "weight":
         this.setState({ weight: value });
         break;
-      case 'birthday':
+      case "birthday":
         this.setState({ birthday: value });
         break;
-      case 'height_feet':
+      case "height_feet":
         this.setState({
           height_feet: value,
-          height: value + ' ft ' + this.state.height_inches + ' in'
+          height: value + " ft " + this.state.height_inches + " in"
         });
         break;
-      case 'height_inches':
+      case "height_inches":
         this.setState({
           height_inches: value,
-          height: this.state.height_feet + ' ft ' + value + ' in'
+          height: this.state.height_feet + " ft " + value + " in"
         });
         break;
-      case 'icon':
+      case "icon":
         this.setState({ icon: value });
         break;
-      case 'email':
+      case "email":
         this.setState({ email: value });
         break;
     }
@@ -83,6 +82,7 @@ class Settings extends Component {
       console.log(data);
       this.setState({
         weight: data.weight,
+        birthday: new Date(data.birthday),
         name: data.name,
         height_feet: data.height_feet,
         height_inches: data.height_inches,
@@ -90,29 +90,29 @@ class Settings extends Component {
         icon: data.icon,
         email: data.email
       });
-      console.log('PULL SETTINGS FROM DB', data);
+      console.log("PULL SETTINGS FROM DB", data);
     });
   }
 
   render() {
-    var bgColor = '#DCE3F4';
+    var bgColor = "#DCE3F4";
 
     return (
       <View style={styles.container}>
         <View
           style={{
             borderBottomWidth: 1,
-            backgroundColor: '#f7f7f8',
-            borderColor: '#c8c7cc'
+            backgroundColor: "#f7f7f8",
+            borderColor: "#c8c7cc"
           }}
         >
           <Text
             style={{
-              alignSelf: 'flex-start',
+              alignSelf: "flex-start",
               marginTop: 50,
               marginLeft: 20,
               marginBottom: 10,
-              fontWeight: 'bold',
+              fontWeight: "bold",
               fontSize: 35
             }}
           >
@@ -134,8 +134,8 @@ class Settings extends Component {
               }
               hasNavArrow={false}
               title={this.state.name}
-              titleInfo={'Edit' + '\n' + 'Profile'}
-              titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
+              titleInfo={"Edit" + "\n" + "Profile"}
+              titleStyle={{ fontSize: 20, fontWeight: "bold" }}
               onPress={() => {
                 this.setState({ isEditVisible: true });
               }}
@@ -164,8 +164,8 @@ class Settings extends Component {
               onPress={() => {
                 sendMail(
                   [this.state.email],
-                  'Comments on Your App',
-                  'Dear Engineering World Health Body, \n',
+                  "Comments on Your App",
+                  "Dear Engineering World Health Body, \n",
                   null,
                   null
                 );
@@ -218,7 +218,7 @@ class Settings extends Component {
               this.setState({ isEditVisible: false });
             }}
             settingsUpdate={(setting, value) => {
-              console.log('entered settings update');
+              console.log("entered settings update");
               this.settingsUpdate(setting, value);
             }}
             icon={this.state.icon}
@@ -244,7 +244,7 @@ class Settings extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EFEFF4',
+    backgroundColor: "#EFEFF4",
     flex: 1
   },
   avatar: {
@@ -254,25 +254,25 @@ const styles = StyleSheet.create({
   },
   editProfileWrapper: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10
   },
   imageStyle: {
     marginLeft: 5,
     marginTop: 5,
     marginBottom: 5,
-    alignSelf: 'center',
+    alignSelf: "center",
     height: 55,
     width: 55
   },
   titleInfoStyle: {
     fontSize: 16,
-    color: '#8e8e93'
+    color: "#8e8e93"
   }
 });
 const ProfileRoute = {
   component: Profile,
-  passProps: { myProp: 'foo' }
+  passProps: { myProp: "foo" }
 };
 const MedicineSettingsPage = {
   component: MedicineSettings
@@ -286,7 +286,7 @@ export default class settingsList extends React.Component {
       <NavigatorIOS
         initialRoute={{
           component: Settings,
-          title: 'Settings'
+          title: "Settings"
         }}
         style={{ flex: 1 }}
         navigationBarHidden={true}
