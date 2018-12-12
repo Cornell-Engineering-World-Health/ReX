@@ -547,6 +547,9 @@ export function databaseFakeData(){
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,'2018-11-19 12:00:00', 1801)"
       );
+      tx.executeSql(
+        "INSERT OR REPLACE INTO is_first_tbl (is_first) VALUES (0)"
+      );
     },
     err => console.log(err)
   );
@@ -596,6 +599,29 @@ function formatDataForGraphs(data) {
   return dataTemp;
 }
 
+/* aggregates data for each month in the year */
+function formatYearDataForGraphs(data) {
+  dataTemp = {};
+  console.log('data for graphs ', data)
+  data.forEach(function(ev) {
+    var d = new Date(ev.timestamp.replace(' ', 'T'));
+    d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+    var monthString = d.toISOString().substr(0, 7); // year-month
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+
+    if (!dataTemp[monthString]) {
+      dataTemp[monthString] = {
+        frequency: 1,
+        total_intensity: intensity
+      };
+    } else {
+      dataTemp[monthString].frequency += 1;
+      dataTemp[monthString].total_intensity += intensity;
+    }
+  });
+  return dataTemp;
+}
+
 /*month is a date object where only the month and year are used, symptom is a string */
 export function pullSymptomForGraphs(month, symptom, callback) {
   formattedMonth = month.toISOString().substr(0, 7);
@@ -615,6 +641,26 @@ export function pullSymptomForGraphs(month, symptom, callback) {
   );
 }
 
+/*month is a date object where only year is used, symptom is a string */
+export function pullYearlySymptomForGraphs(year, symptom, callback) {
+  formattedYear = year.toISOString().substr(0, 4);
+  console.log(formattedYear)
+  var params = [symptom, formattedYear];
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT event_id,event_type_name, timestamp, fields, strftime('%Y',timestamp) FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = ? and \
+      strftime('%Y',timestamp) = ? ORDER BY timestamp",
+        params,
+        (tx, { rows }) => callback(formatYearDataForGraphs(rows._array))
+      ),
+    err => console.log(err)
+  );
+}
+
 /* gets all Symptoms from database and calls callback with array */
 export function pullAllSymptoms(callback) {
   Database.transaction(
@@ -623,8 +669,23 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
-        (_, { rows }) => callback(rows)
+      WHERE timestamp != '1950-01-01 00:00:00' ORDER BY timestamp", [],
+        (_, { rows }) => callback(rows._array)
+      ),
+    err => console.log(err)
+  );
+}
+
+/* gets all EventTypes from database that have data logged and  calls callback with array */
+export function pullAllLoggedSymptomsTypes(callback) {
+  Database.transaction(
+    tx =>
+      tx.executeSql(
+        "SELECT DISTINCT event_type_name FROM event_tbl \
+      INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
+      INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",[],
+        (_, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
   );
