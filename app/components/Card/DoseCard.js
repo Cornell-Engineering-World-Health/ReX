@@ -72,7 +72,13 @@ class Card extends PureComponent {
       this._handleRenderText()
   }
 
-  // determines new hours text
+  /**
+   * Renders the appropriate text, border color, and background color for the DoseCard component given its status"
+   * 1) [[x] "hours ago", red, red] -> missed medication
+   * 2) ["Take Now", green, green] -> take now medication
+   * 3) ["Take in" [x], grey, grey] -> future medication
+   * 4) ["Done for the day", grey, grey] -> completed medication
+   */
   _handleRenderText = () => {
 
     var current = new Date(this.state.time[this.state.passed_index])
@@ -104,6 +110,9 @@ class Card extends PureComponent {
     this.setState({modalVisible: visible});
   }
 
+  /**
+   * Update visual properties and write to database when medication is logged or unlogged from medicine view
+   */
   _handleClick = () => {
     that = this
 
@@ -155,6 +164,10 @@ class Card extends PureComponent {
     }
     }
 
+  /**
+   * Update visual properties and write to database when medication is logged from the modal view for each DoseCard component
+   * Requirement: medicine cannot be unlogged from the modal view
+   */
   _handleModalPress = (data) => {
     index = data.index
     var tempData = this.state.data
@@ -282,6 +295,9 @@ class Card extends PureComponent {
     return now
   }
 
+  /**
+   * Render Timeline component from within a single DoseCard's modal to display all logging times for single medication
+   */
   render_timeline = () => {
     return this.props.time.map ((val, i) => {
       var d = new Date();
@@ -318,7 +334,7 @@ class Card extends PureComponent {
                       <View style={styles.descriptionContainer}>
                           <View style = {{ flexDirection: 'column'}} >
                               <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
-                              <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
+                              <Text style={{color: this.state.textColor}}>{this.props.dosage + "mg"}</Text>
                           </View>
                             <TouchableOpacity
                               onPress = {this._handleClick}

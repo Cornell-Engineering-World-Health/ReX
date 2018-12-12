@@ -13,6 +13,9 @@ import {
 import CheckBox from 'react-native-check-box';
 import ColorButton from './ColorButton';
 
+/**
+ * Checklist input component for forms
+ */
 export default class ChecklistInputType extends React.Component {
   constructor(props) {
     super(props);
