@@ -54,10 +54,9 @@ class CoolerMedicineView extends React.Component {
           takenTime: medObj.takenTime
         });
       });
-    });
-
-    this.setState({
-      data: medicineData
+      that.setState({
+        data: medicineData
+      });
     });
   };
 
