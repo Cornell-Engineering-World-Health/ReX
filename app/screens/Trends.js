@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Text,
   View,
@@ -6,13 +6,17 @@ import {
   StyleSheet,
   Picker,
   Image
-} from 'react-native';
-import Modal from 'react-native-modal';
-import BarChart from '../components/Charts/BarChart';
-import constants, { symptoms, IMAGES, COLOR } from '../resources/constants.js';
-import moment from 'moment';
-import { pullSymptomForGraphs } from '../databaseUtil/databaseUtil';
-import { LinearGradient } from 'expo';
+} from "react-native";
+import Modal from "react-native-modal";
+import BarChart from "../components/Charts/BarChart";
+import constants, { symptoms, IMAGES, COLOR } from "../resources/constants.js";
+import moment from "moment";
+import {
+  pullSymptomForGraphs,
+  pullYearlySymptomForGraphs,
+  pullAllLoggedSymptomsTypes
+} from "../databaseUtil/databaseUtil";
+import { LinearGradient } from "expo";
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -32,17 +36,17 @@ Modes are defined as data that can be graphed over time.
 
 For now, only Frequency and Intensity are allowed.
 */
-const MODES = ['Frequency', 'Intensity'];
+const MODES = ["Frequency", "Intensity"];
 
 /*
 Used as identifying which Modal is visisble.
 */
-const MODALS = ['SYMPTOM', 'TIME', 'MODE'];
+const MODALS = ["SYMPTOM", "TIME", "MODE"];
 
 /*
 Used to distinguish month view and year view
 */
-const VIEWS = ['MONTH_VIEW', 'YEAR_VIEW'];
+const VIEWS = ["MONTH_VIEW", "YEAR_VIEW"];
 
 export default class Trends extends React.Component {
   constructor(props) {
@@ -59,18 +63,21 @@ export default class Trends extends React.Component {
       selectedMonth: currMonth /*index of the current month where 0 corresponds to January.
                                  [int where 0 <= selectedMonth < 12] */,
       selectedYear: currYear,
-      selectedSymptom: this.getSymptoms()[0], //start with first symptom
+      selectedSymptom: "", //start empty, will initialize in _setSymptoms
       selectedMode: MODES[0], // start with 'Frequency'
-      modalVisible: '', //string
+      modalVisible: "", //string
       selectedView: VIEWS[0], // string corresponding to which view to use (month / year)
       formattedData: [0], //array of int
       averageIntensity: 0,
-      noData: true // boolean, true if all datapoints are 0
+      noData: true, // boolean, true if all datapoints are 0
+      symptoms: [],
+      hasSymptoms: false //boolean, true if there exists symptoms that have been logged
     };
   }
 
   componentDidMount() {
     this._setData();
+    this._setSymptoms();
   }
 
   /*
@@ -82,7 +89,7 @@ export default class Trends extends React.Component {
     let shortYear = this.state.selectedYear % 100;
 
     return (
-      SHORTENED_MONTHS[this.state.selectedMonth] + ' ' + prefix + shortYear
+      SHORTENED_MONTHS[this.state.selectedMonth] + " " + prefix + shortYear
     );
   }
 
@@ -91,7 +98,7 @@ export default class Trends extends React.Component {
    returns a date of the form: January 2018
   */
   getFullDate() {
-    return MONTHS[this.state.selectedMonth] + ' ' + this.state.selectedYear;
+    return MONTHS[this.state.selectedMonth] + " " + this.state.selectedYear;
   }
 
   /*
@@ -100,39 +107,59 @@ export default class Trends extends React.Component {
 
   Mode and Selected symptoms are from state, and shortened date
   is full when month is -1, and just the last two digits when month is defined.
+
+  if no symptom has been logged, return an empty string
   */
   getTitle() {
-    let date = '';
+    // check if no symptoms have been logged
+    if (!this.state.hasSymptoms) {
+      return "";
+    }
+
+    let date = "";
     let month = this.state.selectedMonth;
     let year = this.state.selectedYear;
     if (this.state.selectedMonth > -1) {
-      date = '' + month + '/' + year % 1000;
+      date = "" + month + "/" + (year % 1000);
     } else {
-      date = '' + year;
+      date = "" + year;
     }
 
-    return this.state.selectedSymptom + ' ' + this.state.selectedMode;
+    return this.state.selectedSymptom + " " + this.state.selectedMode;
+  }
+
+  /*
+    Sets into state.symptoms an array of symptoms that have had events in the past
+  */
+  _setSymptoms() {
+    pullAllLoggedSymptomsTypes(symptoms => {
+      let symptomsTemp = symptoms.map(item => item.event_type_name);
+      this.setState({
+        symptoms: symptomsTemp,
+        selectedSymptom: symptomsTemp.length != 0 ? symptomsTemp[0] : null,
+        hasSymptoms: symptomsTemp.length != 0
+      });
+    });
   }
 
   /*
     Returns an array of symptoms that the user has logged in the past month.
-    Returns 'None' if no symptoms were ever logged.
-
-    FOR TESTING PURPOSES
-      Returns all symptoms in the constants file
-
+    Returns an empty array if no symptoms were logged.
   */
   getSymptoms() {
-    let s = [];
-    for (var x = 0; x < SYMPTOMS.length; x++) {
-      s.push(SYMPTOMS[x].title);
+    // let s = [];
+    // for (var x = 0; x < SYMPTOMS.length; x++) {
+    //   s.push(SYMPTOMS[x].title);
+    // }
+    //
+    // return s;
+    if (this.state) {
+      return this.state.symptoms;
     }
-
-    return s;
   }
 
   _exitModal() {
-    this.setState({ modalVisible: '' });
+    this.setState({ modalVisible: "" });
     this._setData();
   }
   _enterModal(chosenModal) {
@@ -144,6 +171,8 @@ export default class Trends extends React.Component {
     // this._setFakeData();
     // return;
     // //End Test
+    let month = new Date(this.state.selectedYear, this.state.selectedMonth);
+
     if (this.state.selectedView == VIEWS[0]) {
       /*need month, symptom, and callback*/
       let month = new Date(this.state.selectedYear, this.state.selectedMonth);
@@ -155,6 +184,13 @@ export default class Trends extends React.Component {
         }
       );
     } else if (this.state.selectedView == VIEWS[1]) {
+      pullYearlySymptomForGraphs(
+        month,
+        this.state.selectedSymptom,
+        unformattedData => {
+          this._setDataHelperYear(unformattedData);
+        }
+      );
     }
   }
 
@@ -162,8 +198,8 @@ export default class Trends extends React.Component {
     //TEMPORARY TEST
     if (this.state.selectedView == VIEWS[0]) {
       let daysInMonth = moment(
-        this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
-        'YYYY-MM'
+        this.state.selectedYear + "-" + (this.state.selectedMonth + 1),
+        "YYYY-MM"
       ).daysInMonth();
 
       let d = [];
@@ -186,14 +222,64 @@ export default class Trends extends React.Component {
   }
 
   /*
+  Formats the data retrieved from the database into an array of ints, adding 0 for the months that have no symptoms
+  */
+  _setDataHelperYear(unformattedData) {
+    //we want to loop over the number of days in the year and add 0 to empty days
+
+    console.log(unformattedData);
+
+    let totalMonths = 12;
+    let totalIntensity = 0;
+    let totalMonthsWithData = 0;
+    let formattedData = [];
+    let hasData = false;
+    let year = this.state.selectedYear;
+    //console.log("ud", unformattedData);
+
+    //iterate through each month of the year, and add corresponding data (0 if no data applicable)
+    for (var x = 1; x <= totalMonths; x++) {
+      let month = x < 10 ? "0" + x : x + "";
+      let monthData = unformattedData[year + "-" + month];
+      if (monthData != undefined) {
+        hasData = true;
+        totalMonthsWithData += 1;
+        totalIntensity += monthData.total_intensity / monthData.frequency;
+        //  console.log(monthData, "month data");
+        let value = 0;
+        if (this.state.selectedMode == MODES[0]) {
+          //frequency
+          value = monthData.frequency;
+        } else if (this.state.selectedMode == MODES[1]) {
+          //average intensity
+          value = monthData.total_intensity / monthData.frequency;
+        }
+        formattedData.push(value);
+      } else {
+        formattedData.push(0);
+      }
+    }
+
+    //update state to reflect changes
+    this.setState({
+      formattedData: formattedData,
+      averageIntensity: totalIntensity / totalMonthsWithData,
+      noData: !hasData
+    });
+  }
+
+  /*
     Formats the data retrieved from the database into a data array of ints, adding 0
     for days that have no symptoms
   */
   _setDataHelperMonth(unformattedData) {
     //we want to loop over the number of days in the month and add 0 to empty days
+
+    console.log(unformattedData);
+
     let daysInMonth = moment(
-      this.state.selectedYear + '-' + (this.state.selectedMonth + 1),
-      'YYYY-MM'
+      this.state.selectedYear + "-" + (this.state.selectedMonth + 1),
+      "YYYY-MM"
     ).daysInMonth();
 
     let hasData = false;
@@ -202,7 +288,7 @@ export default class Trends extends React.Component {
     //add a padding 0 to the month if needed
     let month =
       this.state.selectedMonth < 9
-        ? '0' + (this.state.selectedMonth + 1)
+        ? "0" + (this.state.selectedMonth + 1)
         : this.state.selectedMonth + 1;
 
     let year = this.state.selectedYear;
@@ -212,9 +298,9 @@ export default class Trends extends React.Component {
 
     for (var x = 1; x <= daysInMonth; x++) {
       //add padding 0 to day
-      let day = x < 10 ? '0' + x : x;
+      let day = x < 10 ? "0" + x : x;
 
-      let dayData = unformattedData[year + '-' + month + '-' + day];
+      let dayData = unformattedData[year + "-" + month + "-" + day];
       if (dayData != undefined) {
         hasData = true;
         totalDays += 1;
@@ -248,7 +334,7 @@ export default class Trends extends React.Component {
     //generate year picker items
     let pickerItems = [];
     for (var x = 1970; x < 2100; x++) {
-      pickerItems.push(<Picker.Item label={x + ''} value={x} key={x} />);
+      pickerItems.push(<Picker.Item label={x + ""} value={x} key={x} />);
     }
 
     let yearPicker = (
@@ -258,9 +344,9 @@ export default class Trends extends React.Component {
           this.setState({ selectedYear: itemValue })
         }
         itemStyle={{
-          color: 'black',
+          color: "black",
           fontSize: 18,
-          fontWeight: '100'
+          fontWeight: "100"
         }}
       >
         {pickerItems}
@@ -289,8 +375,8 @@ export default class Trends extends React.Component {
       });
 
       return (
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 1, justifyContent: 'space-around' }}>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: 1, justifyContent: "space-around" }}>
             <View style={styles.monthPickerRow}>{monthPicker.slice(0, 3)}</View>
             <View style={styles.monthPickerRow}>{monthPicker.slice(3, 6)}</View>
             <View style={styles.monthPickerRow}>{monthPicker.slice(6, 9)}</View>
@@ -298,14 +384,14 @@ export default class Trends extends React.Component {
               {monthPicker.slice(9, 12)}
             </View>
           </View>
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             {yearPicker}
           </View>
         </View>
       );
     }
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>{yearPicker}</View>
+      <View style={{ flex: 1, justifyContent: "center" }}>{yearPicker}</View>
     );
   }
 
@@ -313,19 +399,12 @@ export default class Trends extends React.Component {
     this.setState({ selectedView: view });
   }
 
-  render() {
+  /*
+  returns react component that is rendered if the user has ever logged a symptom in the past
+  */
+  _renderNormalScreen() {
     return (
-      <View style={styles.container}>
-        <LinearGradient
-          colors={[COLOR.purple + '80', 'white']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-          }}
-        />
+      <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <Text style={styles.headerText}>{this.getTitle()}</Text>
           <TouchableOpacity
@@ -337,7 +416,7 @@ export default class Trends extends React.Component {
             <Image
               source={IMAGES.headerBack}
               style={styles.menuImageStyle}
-              resizeMode={'contain'}
+              resizeMode={"contain"}
             />
           </TouchableOpacity>
           {/*<Text style={styles.headerDateText}>{this.getFullDate()}</Text>*/}
@@ -368,16 +447,16 @@ export default class Trends extends React.Component {
               <View style={styles.modalChildTitleWrapper}>
                 <Text style={styles.modalChildTitleText}>Symptoms</Text>
               </View>
-              <View style={{ flex: 0.6, justifyContent: 'center' }}>
+              <View style={{ flex: 0.6, justifyContent: "center" }}>
                 <Picker
                   selectedValue={this.state.selectedSymptom}
                   onValueChange={(itemValue, itemIndex) =>
                     this.setState({ selectedSymptom: itemValue })
                   }
                   itemStyle={{
-                    color: 'black',
+                    color: "black",
                     fontSize: 18,
-                    fontWeight: '100'
+                    fontWeight: "100"
                   }}
                 >
                   {this.getSymptoms().map(item => (
@@ -439,9 +518,9 @@ export default class Trends extends React.Component {
                   this.setState({ selectedMode: itemValue })
                 }
                 itemStyle={{
-                  color: 'black',
+                  color: "black",
                   fontSize: 18,
-                  fontWeight: '100'
+                  fontWeight: "100"
                 }}
               >
                 {MODES.map(item => (
@@ -461,17 +540,71 @@ export default class Trends extends React.Component {
           />
         </View>
         <View style={styles.extraInfo}>
-          <Info title={'Average Duration'} body={2 + ''} footer={'Hours'} />
+          <Info title={"Average Duration"} body={2 + ""} footer={"Hours"} />
           <Info
-            title={'Average Intensity'}
+            title={"Average Intensity"}
             body={
               this.state.averageIntensity
-                ? Math.round(this.state.averageIntensity)
+                ? this.state.averageIntensity.toFixed(1)
                 : 0
             }
-            footer={'/10'}
+            footer={"/10"}
           />
         </View>
+      </View>
+    );
+  }
+
+  _renderOpeningScreen() {
+    return (
+      <View style={styles.openingScreenContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{this.getTitle()}</Text>
+          <TouchableOpacity
+            style={styles.menuButtonWrapper}
+            onPress={() => {
+              this.props.navigator.pop();
+            }}
+          >
+            <Image
+              source={IMAGES.headerBack}
+              style={styles.menuImageStyle}
+              resizeMode={"contain"}
+            />
+          </TouchableOpacity>
+          {/*<Text style={styles.headerDateText}>{this.getFullDate()}</Text>*/}
+        </View>
+        <View style={styles.openingScreenTextContainer}>
+          <Text style={styles.openingScreenText1}>
+            Here you will find graphs to show your symptom history.
+          </Text>
+        </View>
+        <View style={styles.openingScreenTextContainer}>
+          <Text style={styles.openingScreenText2}>
+            Come back after you've logged your first symptom!
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <LinearGradient
+          colors={[COLOR.purple + "80", "white"]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+          }}
+        />
+
+        {this.state.hasSymptoms
+          ? this._renderNormalScreen()
+          : this._renderOpeningScreen()}
       </View>
     );
   }
@@ -551,158 +684,158 @@ const ModalPicker = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'space-between'
+    alignItems: "stretch",
+    justifyContent: "space-between"
   },
   header: {
-    flex: 0.14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flex: 0.2,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   graphContainer: {
     flex: 0.56
   },
   extraInfo: {
     flex: 0.2,
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   footer: {
     flex: 0.09,
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   headerText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 30,
-    fontWeight: '200',
-    color: '#000'
+    fontWeight: "200",
+    color: "#000"
   },
   headerDateText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: '300'
+    fontWeight: "300"
   },
   infoCardWrapper: {
     padding: 12,
     flex: 1
   },
   infoCardContainer: {
-    backgroundColor: 'white', //temporary
+    backgroundColor: "white", //temporary
     borderRadius: 5,
-    justifyContent: 'space-around',
-    alignItems: 'stretch',
+    justifyContent: "space-around",
+    alignItems: "stretch",
     flex: 1,
     padding: 5
   },
   infoCardTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: '100'
+    fontWeight: "100"
   },
   infoCardBody: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 45,
-    fontWeight: '100'
+    fontWeight: "100"
   },
   infoCardFooter: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 15,
-    fontWeight: '100'
+    fontWeight: "100"
   },
   pickerButtonWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch'
+    justifyContent: "center",
+    alignItems: "stretch"
   },
   pickerButtonContainer: {
-    justifyContent: 'center',
+    justifyContent: "center",
     borderTopWidth: 1,
-    borderColor: '#e8e8e8',
+    borderColor: "#e8e8e8",
     padding: 15,
     flex: 1
   },
   pickerButtonText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: '300',
-    color: 'black'
+    fontWeight: "300",
+    color: "black"
   },
   modalWrapper: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0
   },
   modalContainer: {
-    backgroundColor: '#ffffff',
-    alignItems: 'stretch'
+    backgroundColor: "#ffffff",
+    alignItems: "stretch"
   },
   modalSubmitButton: {
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#aedfe1'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#aedfe1"
   },
   modalSubmitText: {
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'black',
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "black",
     fontSize: 15
   },
   modalChildWrapper: {
     flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center'
+    alignItems: "stretch",
+    justifyContent: "center"
   },
   modalChildTitleText: {
     fontSize: 25,
-    fontWeight: '100',
-    textAlign: 'center'
+    fontWeight: "100",
+    textAlign: "center"
   },
   modalSelectedDateButton: {
-    backgroundColor: '#eaeaea'
+    backgroundColor: "#eaeaea"
   },
   modalDateButton: {
     flex: 1,
     padding: 10
   },
   pickerItemStyle: {
-    fontWeight: '100'
+    fontWeight: "100"
   },
   lightShadow: {
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#808080',
+    shadowColor: "#808080",
     shadowOpacity: 0.2
   },
   darkShadow: {
     shadowOffset: { width: 3, height: 3 },
-    shadowColor: '#808080',
+    shadowColor: "#808080",
     shadowOpacity: 0.3
   },
   monthButton: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   monthButtonText: {
-    fontWeight: '100'
+    fontWeight: "100"
   },
   monthPickerRow: {
     height: 50,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'center'
+    flexDirection: "row",
+    alignItems: "stretch",
+    justifyContent: "center"
   },
   modalDateBody: { flex: 1 },
   modalDateHeader: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   monthButtonSelected: {
     borderRadius: 5,
-    backgroundColor: '#eaeaea'
+    backgroundColor: "#eaeaea"
   },
   modalChildTitleWrapper: {
     flex: 0.2,
-    justifyContent: 'flex-start'
+    justifyContent: "flex-start"
   },
   menuImageStyle: {
     width: 30,
@@ -710,7 +843,30 @@ const styles = StyleSheet.create({
   },
   menuButtonWrapper: {
     padding: 10,
-    position: 'absolute',
+    position: "absolute",
     left: 0
+  },
+  openingScreenContainer: {
+    flex: 0.86,
+    alignItems: "stretch",
+    justifyContent: "space-between"
+  },
+  openingScreenText1: {
+    textAlign: "center",
+    paddingRight: 45,
+    paddingLeft: 45,
+    fontSize: 45,
+    fontWeight: "100"
+  },
+
+  openingScreenText2: {
+    textAlign: "center",
+    paddingRight: 50,
+    paddingLeft: 50,
+    fontSize: 25,
+    fontWeight: "300"
+  },
+  openingScreenTextContainer: {
+    flex: 0.3
   }
 });

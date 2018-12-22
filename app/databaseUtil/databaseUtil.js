@@ -35,6 +35,7 @@ export function createTables() {
     () => console.log("done creating tables!!!")
   );
 }
+
 export function intializeDatabase() {
   // console.log('intializing database');
   date = new Date();
@@ -44,7 +45,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, 'Headache', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                               (2, 'Dizziness', 'image.png','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                               (2, 'Dizziness', 'image.png','Intensity', 'Duration', 'HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, 'Blurred Vision', 'image.png', 'Intensity','Duration','HEAD')"
@@ -662,7 +663,7 @@ function formatDataForGraphs(data) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
-    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
     // console.log(intensity);
     if (!dataTemp[monthString]) {
@@ -681,12 +682,12 @@ function formatDataForGraphs(data) {
 /* aggregates data for each month in the year */
 function formatYearDataForGraphs(data) {
   dataTemp = {};
-  console.log('data for graphs ', data)
+  //console.log("data for graphs ", data);
   data.forEach(function(ev) {
-    var d = new Date(ev.timestamp.replace(' ', 'T'));
+    var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 7); // year-month
-    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
@@ -720,10 +721,13 @@ export function pullSymptomForGraphs(month, symptom, callback) {
   );
 }
 
-/*month is a date object where only year is used, symptom is a string */
+/*
+year int
+symptom string
+callback func
+*/
 export function pullYearlySymptomForGraphs(year, symptom, callback) {
   formattedYear = year.toISOString().substr(0, 4);
-  console.log(formattedYear)
   var params = [symptom, formattedYear];
   Database.transaction(
     tx =>
@@ -748,7 +752,8 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' ORDER BY timestamp", [],
+      WHERE timestamp != '1950-01-01 00:00:00' ORDER BY timestamp",
+        [],
         (_, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
@@ -763,7 +768,8 @@ export function pullAllLoggedSymptomsTypes(callback) {
         "SELECT DISTINCT event_type_name FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",[],
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+        [],
         (_, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
@@ -826,6 +832,7 @@ function formatAgenda(data) {
 
   return agendaFlatList;
 }
+
 export function pullAgendaFromDatabase(callback) {
   // Agenda query
   Database.transaction(
@@ -856,6 +863,7 @@ export function asyncDeleteEvent(id) {
     err => console.log(err)
   );
 }
+
 function formatMedicineData(data) {
   dataTemp = {};
   data.forEach(function(med) {
@@ -1105,12 +1113,12 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
     return false;
   });
 }
+
 export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
   let day = date.toISOString().substr(0, 10);
   dayArray = [day];
-
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1176,6 +1184,7 @@ function parseSettings(data) {
   });
   return obj;
 }
+
 export function pullSettingsFromDatabase(callback) {
   Database.transaction(
     tx => {

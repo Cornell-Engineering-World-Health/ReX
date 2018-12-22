@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   StyleSheet,
   View,
@@ -7,58 +7,56 @@ import {
   ScrollView,
   Text,
   TouchableHighlight
-} from 'react-native';
-import ButtonWithImage from '../Button/ButtonWithImage';
-import constants, { IMAGES } from '../../resources/constants';
-import Home from '../../screens/HomePage';
-import MedicineView from '../../screens/MedicinePage';
-import Settings from '../../screens/Settings';
-import Calendar from '../../screens/Calendar';
-import ChooseLogScreen from '../../screens/Log';
-import PushController, {
-  setMassNotification
-} from '../PushController/PushController';
-import SurveyModal from '../../screens/SurveyModal';
-import MedicineAddForm from '../MedicineAddForm/MedicineAddForm.js';
-const MEDICINE_PAGE = 'medicine';
-const SETTINGS_PAGE = 'settings';
-const HOME_PAGE = 'home';
-const CALENDAR_PAGE = 'calendar';
-const SYMPTOMS_LIST = 'flatlistcard';
-const SYMPTOM_LOG_CHOOSER = 'symptomlog';
+} from "react-native";
+import ButtonWithImage from "../Button/ButtonWithImage";
+import constants, { IMAGES } from "../../resources/constants";
+import Home from "../../screens/HomePage";
+import MedicineView from "../../screens/MedicinePage";
+import Settings from "../../screens/Settings";
+import Calendar from "../../screens/Calendar";
+import ChooseLogScreen from "../../screens/Log";
+import PushController from "../PushController/PushController";
+import SurveyModal from "../../screens/SurveyModal";
+import MedicineAddForm from "../MedicineAddForm/MedicineAddForm.js";
+const MEDICINE_PAGE = "medicine";
+const SETTINGS_PAGE = "settings";
+const HOME_PAGE = "home";
+const CALENDAR_PAGE = "calendar";
+const SYMPTOMS_LIST = "flatlistcard";
+const SYMPTOM_LOG_CHOOSER = "symptomlog";
 
-const SELECTED_BACKGROUND_COLOR = '#cc99ff';
-const DEFAULT_BACKGROUND_COLOR = '#ffffff';
-const QUICK_LOG_COLOR = '#cc99ff';
+const SELECTED_BACKGROUND_COLOR = "#cc99ff";
+const DEFAULT_BACKGROUND_COLOR = "#ffffff";
+const QUICK_LOG_COLOR = "#cc99ff";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   },
   inputButtonContainer: {
     height: 200
   },
   addButton: {
     height: 75,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#ffffff',
-    alignItems: 'flex-end'
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#ffffff",
+    alignItems: "flex-end"
   },
   menuButtons: {
     height: 150,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#ffffff'
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#ffffff"
   },
   bottomModal: {
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   },
   menuStyle: {
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
     height: 100,
-    flexDirection: 'row'
+    flexDirection: "row"
   }
 });
 
@@ -69,8 +67,8 @@ class MenuBar extends React.Component {
       selectedID: HOME_PAGE
     };
 
-    var startdate = new Date('2018-12-01');
-    var enddate = new Date('2018-12-10');
+    var startdate = new Date("2018-12-01");
+    var enddate = new Date("2018-12-10");
   }
 
   onLog() {
