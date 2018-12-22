@@ -286,6 +286,11 @@ class CoolerMedicineView extends React.Component {
             backgroundColor: COLOR.cyan
           }}
         />
+        {!this.state.data[0] && (
+          <Text style={styles.defaultText}>
+            No medicines scheduled for today!
+          </Text>
+        )}
       </View>
     );
   }
@@ -331,6 +336,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     margin: 0
+  },
+  defaultText: {
+    flex:1,
+    color: '#555555',
+    fontSize: 20,
+    textAlign:'center',
+    justifyContent: 'center',
+    alignSelf:'center',
   }
 });
 
