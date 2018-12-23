@@ -1090,7 +1090,7 @@ export function logIsFirst(callback){
 }
 
 export function updateMedicineNotification(data, name, dosage, newIsOn, callback){
-  data.some(function(med){
+  data.forEach(function(med){
       var fields = JSON.parse(med.fields)
       if(fields['Pill Name'] === name && fields['Dosage'] === dosage){
             fields['Notification On'] = newIsOn
@@ -1100,11 +1100,7 @@ export function updateMedicineNotification(data, name, dosage, newIsOn, callback
                 tx.executeSql('Update event_details_tbl SET fields =? where event_details_id= ? ',queryArgs,
                 () => {if (callback) {callback()}});
             },err=>console.log(err))
-
-            return true
-
       }
-      return false
   })
 }
 
@@ -1119,6 +1115,6 @@ export function databaseMedicineNotification(name,dosage,newIsOn, callback){
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
       WHERE timestamp != \'1950-01-01 00:00:00\' AND event_type_name = \'Medication Reminder\' ORDER BY timestamp', [], (_, { rows }) =>
-      {console.log(rows._array); updateMedicineNotification(rows._array, name, dosage, newIsOn, callback)}, err => console.log(err));
+      {updateMedicineNotification(rows._array, name, dosage, newIsOn, callback)}, err => console.log(err));
   },err=>console.log(err))
 }
