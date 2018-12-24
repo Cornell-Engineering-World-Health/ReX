@@ -135,6 +135,8 @@ export default class ChooseLogScreen extends React.Component {
         },
         err => console.log(err)
       );
+      this.props.screenProps.successOnSubmit()
+      this.props.navigation.navigate('Body', {})
     } else {
       this.props.on_finish();
       if (this.props.timestamp) {
