@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -8,17 +8,17 @@ import {
   FlatList,
   TextInput,
   Alert
-} from 'react-native';
-import Moment from 'moment';
-import { LinearGradient } from 'expo';
-import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
-import Modal from 'react-native-modal';
-import { pullMedicineFromDatabase } from '../databaseUtil/databaseUtil';
-import { COLOR } from '../resources/constants.js';
+} from "react-native";
+import Moment from "moment";
+import { LinearGradient } from "expo";
+import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
+import Modal from "react-native-modal";
+import { pullMedicineFromDatabase } from "../databaseUtil/databaseUtil";
+import { COLOR } from "../resources/constants.js";
 const fakeData = [
-  { name: 'Tylenol', dosage: 123, status: true },
-  { name: 'Drugs', dosage: 124, status: true },
-  { name: 'Vivi', dosage: 128, status: true }
+  { name: "Tylenol", dosage: 123, status: true },
+  { name: "Drugs", dosage: 124, status: true },
+  { name: "Vivi", dosage: 128, status: true }
 ];
 
 /*
@@ -43,7 +43,7 @@ export default class MedicineSettings extends React.Component {
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
-          t => Moment().format('MMMM DD YYYY') + ' ' + t
+          t => Moment().format("MMMM DD YYYY") + " " + t
         );
         medicineData.push({
           name: med,
@@ -108,9 +108,9 @@ export default class MedicineSettings extends React.Component {
   render() {
     return (
       <LinearGradient
-        colors={[COLOR.purple + '80', 'white']}
+        colors={[COLOR.purple + "80", "white"]}
         style={{
-          position: 'absolute',
+          position: "absolute",
           left: 0,
           right: 0,
           top: 0,
@@ -120,7 +120,7 @@ export default class MedicineSettings extends React.Component {
       >
         <View style={styles.header}>
           <NavigationHeader
-            title={'Medicine Settings'}
+            title={"Medicine Settings"}
             onPressBack={() => this.props.navigator.pop()}
           />
         </View>
@@ -196,15 +196,9 @@ const ModalCard = props => {
         </View>
         <View style={styles.modalBody}>
           <View style={styles.modalDosageContainer}>
-            <Text style={styles.modalDosage}>Dosage:</Text>
-            <View style={styles.textInputWrapper}>
-              <TextInput
-                style={styles.dosageInput}
-                textAlign="center"
-                placeholder={props.data ? props.data.dosage.toString() : null}
-                onChangeText={props.onChangeDosage}
-              />
-            </View>
+            <Text style={styles.modalDosage}>
+              Dosage:{props.data ? props.data.dosage.toString() : null}
+            </Text>
           </View>
 
           <View style={styles.modalNotificationContainer}>
@@ -224,7 +218,7 @@ const ModalCard = props => {
           <View style={styles.modalSubmitButtonWrapper}>
             <TouchableOpacity
               onPress={props.modalSubmit}
-              style={[styles.modalButton, { backgroundColor: '#34ace7' }]}
+              style={[styles.modalButton, { backgroundColor: "#34ace7" }]}
             >
               <Text style={styles.modalButtonText}>Submit</Text>
             </TouchableOpacity>
@@ -233,22 +227,22 @@ const ModalCard = props => {
             <TouchableOpacity
               onPress={() =>
                 Alert.alert(
-                  'Watch out!',
-                  'Are you sure you want to delete this medicine?',
+                  "Watch out!",
+                  "Are you sure you want to delete this medicine?",
                   [
                     {
-                      text: 'Cancel',
-                      onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel'
+                      text: "Cancel",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "cancel"
                     },
-                    { text: 'OK', onPress: () => props.onDelete() }
+                    { text: "OK", onPress: () => props.onDelete() }
                   ],
                   { cancelable: false }
                 )
               }
-              style={[styles.modalButton, { backgroundColor: '#fa4b12' }]}
+              style={[styles.modalButton, { backgroundColor: "#fa4b12" }]}
             >
-              <Text style={[styles.modalButtonText, { color: 'white' }]}>
+              <Text style={[styles.modalButtonText, { color: "white" }]}>
                 Delete
               </Text>
             </TouchableOpacity>
@@ -262,8 +256,8 @@ const ModalCard = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'space-between',
+    alignItems: "stretch",
+    justifyContent: "space-between",
     padding: 5
   },
   body: {
@@ -271,21 +265,21 @@ const styles = StyleSheet.create({
   },
   lightShadow: {
     shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#808080',
+    shadowColor: "#808080",
     shadowOpacity: 0.2
   },
   darkShadow: {
     shadowOffset: { width: 3, height: 3 },
-    shadowColor: '#808080',
+    shadowColor: "#808080",
     shadowOpacity: 0.2
   },
   header: {
     flex: 0.25,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   headerText: {
     fontSize: 40,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   cardWrapper: {
     paddingRight: 20,
@@ -294,48 +288,48 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   cardContainer: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     padding: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     borderRadius: 8,
-    alignItems: 'center'
+    alignItems: "center"
   },
   cardTitle: {
     fontSize: 20,
-    fontWeight: '200',
+    fontWeight: "200",
     padding: 10
   },
   notificationText: {
-    textAlign: 'right'
+    textAlign: "right"
   },
   cardButton: {
     flex: 1,
-    backgroundColor: '#f9f9f9'
+    backgroundColor: "#f9f9f9"
   },
   modal: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   modalContainer: {
     flex: 0.5,
-    backgroundColor: 'white',
-    alignItems: 'stretch',
-    justifyContent: 'space-between',
+    backgroundColor: "white",
+    alignItems: "stretch",
+    justifyContent: "space-between",
     padding: 10,
     borderRadius: 10
   },
   modalHeaderText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 40,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   modalButton: {
     padding: 20,
     flex: 1,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   modalDeleteButtonWrapper: {
     padding: 5,
@@ -344,7 +338,7 @@ const styles = StyleSheet.create({
   },
   modalButtonText: {
     fontSize: 25,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   modalSubmitButtonWrapper: {
     padding: 5,
@@ -356,41 +350,41 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 0.2,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   modalBody: {
     flex: 0.5,
-    flexDirection: 'column',
-    justifyContent: 'space-around'
+    flexDirection: "column",
+    justifyContent: "space-around"
   },
   modalDosageContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   dosageInput: {
     padding: 10,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
     fontSize: 20,
     borderBottomWidth: 1
   },
   modalNotificationContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   modalDosage: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   modalNotification: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   textInputWrapper: {
     flex: 1
