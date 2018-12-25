@@ -85,4 +85,3 @@ export function _mailFunc(email, subject) {
     })
     .catch(e => console.log(e));
 }
-m;
