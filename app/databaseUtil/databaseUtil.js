@@ -3,7 +3,7 @@ import Moment from "moment";
 import constants, { getCardData } from "../resources/constants";
 
 export function createTables() {
-  // console.log('creating tables');
+  console.log("creating tables");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -36,7 +36,7 @@ export function createTables() {
   );
 }
 export function intializeDatabase() {
-  // console.log('intializing database');
+  console.log("intializing database");
   date = new Date();
   Database.transaction(
     tx => {
@@ -342,7 +342,7 @@ export function formatData(data) {
 }
 
 export function databaseFakeData() {
-  // console.log('faking data')
+  console.log("faking data");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -495,7 +495,7 @@ export function databaseFakeData() {
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (30,\'{"Intensity": "4","Duration": "60"}\' )'
       );
-      
+
       /* medication reminder fake data */
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
@@ -540,7 +540,6 @@ export function databaseFakeData() {
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,'2018-11-19 09:00:00', 57)"
       );
-
 
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1800,\
