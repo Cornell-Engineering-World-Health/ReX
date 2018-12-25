@@ -591,7 +591,7 @@ function formatDataForGraphs(data) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
-    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
     // console.log(intensity);
     if (!dataTemp[monthString]) {
@@ -615,7 +615,7 @@ function formatYearDataForGraphs(data) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 7); // year-month
-    var intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
