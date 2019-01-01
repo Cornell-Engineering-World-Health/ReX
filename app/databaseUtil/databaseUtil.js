@@ -254,19 +254,19 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','5')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','8')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','Select')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','Select')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Select Edit')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Default')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('email','email@domail.com')"
