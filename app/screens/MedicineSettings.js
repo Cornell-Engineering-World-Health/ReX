@@ -85,10 +85,7 @@ export default class MedicineSettings extends React.Component {
     this.setState({ modalOpen: false, medicine: data });
   }
 
-  _onChangeDosage(dose) {
-    this.setState({ tempDosage: dose, change: true });
-  }
-
+  //renders card for flatlist
   _renderCard({ item, index }) {
     return (
       <Card
@@ -132,21 +129,20 @@ export default class MedicineSettings extends React.Component {
             renderItem={data => this._renderCard(data)}
             keyExtractor={this._keyExtractor}
           />
+          <ModalCard
+            data={this.state.medicine[this.state.selectedMedicineIndex]}
+            index={this.state.selectedMedicineIndex}
+            isOpen={this.state.modalOpen}
+            onDelete={() => {
+              this._deleteMedicine();
+            }}
+            exitModal={() => this.setState({ modalOpen: false })}
+            modalSubmit={() => this._modalSubmit()}
+            onNotificationToggle={() =>
+              this._handleToggle(this.state.selectedMedicineIndex)
+            }
+          />
         </View>
-        <ModalCard
-          data={this.state.medicine[this.state.selectedMedicineIndex]}
-          index={this.state.selectedMedicineIndex}
-          isOpen={this.state.modalOpen}
-          onDelete={() => {
-            this._deleteMedicine();
-          }}
-          exitModal={() => this.setState({ modalOpen: false })}
-          modalSubmit={() => this._modalSubmit()}
-          onChangeDosage={dose => this._onChangeDosage(dose)}
-          onNotificationToggle={() =>
-            this._handleToggle(this.state.selectedMedicineIndex)
-          }
-        />
       </LinearGradient>
     );
   }
