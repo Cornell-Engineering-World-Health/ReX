@@ -44,7 +44,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, 'Headache', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                              (2, 'Dizziness', 'image.png', 'HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (2, 'Dizziness', 'image.png','Intensity','Duration', 'HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, 'Blurred Vision', 'image.png', 'Intensity','Duration','HEAD')"
