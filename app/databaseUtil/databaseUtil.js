@@ -31,8 +31,8 @@ export function createTables() {
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
     },
-    err => console.log(err),
-    () => console.log("done!!!")
+    err => console.log(err, "error creating tables"),
+    () => console.log("done creating tables.")
   );
 }
 export function intializeDatabase() {
@@ -44,7 +44,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, 'Headache', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                              (2, 'Dizziness', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                              (2, 'Dizziness', 'image.png', 'HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, 'Blurred Vision', 'image.png', 'Intensity','Duration','HEAD')"
@@ -300,7 +300,7 @@ export function intializeDatabase() {
       //Initialize first time app open tbl
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
-    err => console.log(err),
+    err => console.log(err, "error in initialization"),
     () => console.log("intitialization complete")
   );
 
@@ -1118,7 +1118,7 @@ export function pullIsFirstFromDatabase(callback) {
         console.log(rows.length);
         callback(rows.length == 0);
       },
-      err => console.log(err)
+      err => console.log(err, "pullIsFirstFromDatabase")
     );
   });
 }
@@ -1154,7 +1154,7 @@ export function updateMedicineNotification(
             }
           );
         },
-        err => console.log(err)
+        err => console.log(err, "updateMedicineNotification")
       );
     }
   });
@@ -1183,9 +1183,9 @@ export function databaseMedicineNotification(name, dosage, newIsOn, callback) {
             callback
           );
         },
-        err => console.log(err)
+        err => console.log(err, "DatabaseMedicineNotification")
       );
     },
-    err => console.log(err)
+    err => console.log(err, "databaseMedicineNotification")
   );
 }

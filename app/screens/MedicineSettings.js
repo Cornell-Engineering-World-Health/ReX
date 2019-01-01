@@ -15,12 +15,6 @@ import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 import { pullMedicineFromDatabase } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
-const fakeData = [
-  { name: "Tylenol", dosage: 123, status: true },
-  { name: "Drugs", dosage: 124, status: true },
-  { name: "Vivi", dosage: 128, status: true }
-];
-
 /*
 Allows users to edit medicine
 */
@@ -29,16 +23,15 @@ export default class MedicineSettings extends React.Component {
     super(props);
 
     this.state = {
-      medicine: fakeData,
+      medicine: [], // array of medicine objects from the database
       modalOpen: false,
-      selectedMedicineIndex: -1,
-      change: false,
-      tempDosage: 0
+      selectedMedicineIndex: -1
     };
   }
 
   componentWillMount() {
     let medicineData = [];
+    //fill medicine state with those from the database
     pullMedicineFromDatabase(new Date(), formattedData => {
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
@@ -62,20 +55,24 @@ export default class MedicineSettings extends React.Component {
 
   _keyExtractor = (item, index) => index;
 
+  /*
+    Handles turning on/off notifications for each medicineData
+
+
+    TODO: MUST CONNECT TO DATABASE (currently only affects state)
+  */
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
 
-    this.setState({ medicine: data }, () => {});
+    this.setState({ medicine: data });
   }
 
+  /*
+    Exit modal after submitting the form
+  */
   _modalSubmit() {
-    if (this.state.change) {
-      data = this.state.medicine;
-      data[this.state.selectedMedicineIndex].dosage = this.state.tempDosage;
-      this.setState({ medicine: data });
-    }
-    this.setState({ modalOpen: false, change: false });
+    this.setState({ modalOpen: false });
   }
 
   //must include index of item to delete
@@ -101,6 +98,53 @@ export default class MedicineSettings extends React.Component {
       />
     );
   }
+  /*
+    If there are no medicines in the database, log a friendly message
+    Ex)
+    "You haven't set up any medication reminders! Go to the medicine page add one."
+  */
+  _renderBody() {
+    if (this.state.medicine && this.state.medicine.length == 0) {
+      //there are no medications in the db
+      return (
+        <View style={styles.noMedicineBody}>
+          <Text style={styles.noMedicineWarning1}>
+            You haven't set up any medication reminders!
+          </Text>
+          <Text style={styles.noMedicineWarning2}>
+            Go to the medicine page and add one.
+          </Text>
+        </View>
+      );
+    } else {
+      //there are medications to render
+      return (
+        <View style={styles.body}>
+          <Text style={styles.notificationText}>Allow Notifications</Text>
+          <FlatList
+            data={this.state.medicine}
+            extraData={this.state}
+            renderItem={data => this._renderCard(data)}
+            keyExtractor={this._keyExtractor}
+          />
+          <ModalCard
+            data={this.state.medicine[this.state.selectedMedicineIndex]}
+            index={this.state.selectedMedicineIndex}
+            isOpen={this.state.modalOpen}
+            onDelete={() => {
+              this._deleteMedicine();
+            }}
+            exitModal={() => this.setState({ modalOpen: false })}
+            modalSubmit={() => this._modalSubmit()}
+            onChangeDosage={dose => this._onChangeDosage(dose)}
+            onNotificationToggle={() =>
+              this._handleToggle(this.state.selectedMedicineIndex)
+            }
+          />
+        </View>
+      );
+    }
+  }
 
   render() {
     return (
@@ -121,28 +165,7 @@ export default class MedicineSettings extends React.Component {
             onPressBack={() => this.props.navigator.pop()}
           />
         </View>
-        <View style={styles.body}>
-          <Text style={styles.notificationText}>Allow Notifications</Text>
-          <FlatList
-            data={this.state.medicine}
-            extraData={this.state}
-            renderItem={data => this._renderCard(data)}
-            keyExtractor={this._keyExtractor}
-          />
-          <ModalCard
-            data={this.state.medicine[this.state.selectedMedicineIndex]}
-            index={this.state.selectedMedicineIndex}
-            isOpen={this.state.modalOpen}
-            onDelete={() => {
-              this._deleteMedicine();
-            }}
-            exitModal={() => this.setState({ modalOpen: false })}
-            modalSubmit={() => this._modalSubmit()}
-            onNotificationToggle={() =>
-              this._handleToggle(this.state.selectedMedicineIndex)
-            }
-          />
-        </View>
+        {this._renderBody()}
       </LinearGradient>
     );
   }
@@ -384,5 +407,22 @@ const styles = StyleSheet.create({
   },
   textInputWrapper: {
     flex: 1
+  },
+  noMedicineWarning1: {
+    textAlign: "center",
+    fontSize: 40,
+    fontWeight: "100",
+    paddingBottom: 20
+  },
+  noMedicineWarning2: {
+    paddingTop: 10,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "300"
+  },
+  noMedicineBody: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center"
   }
 });
