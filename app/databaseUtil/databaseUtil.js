@@ -7,7 +7,7 @@ export function createTables() {
   Database.transaction(
     tx => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);"
+        "CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER PRIMARY KEY, `fields` TEXT NOT NULL);"
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `field_name` TEXT NOT NULL UNIQUE, `view_name` TEXT NOT NULL);"
@@ -16,7 +16,7 @@ export function createTables() {
         "CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,`event_type_category` TEXT, FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));"
       );
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER NOT NULL PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));"
+        "CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));"
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `settings_tbl` (`setting_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `setting_value` TEXT NOT NULL);"
@@ -35,6 +35,7 @@ export function createTables() {
     () => console.log("done creating tables.")
   );
 }
+
 export function intializeDatabase() {
   console.log("intializing database");
   date = new Date();
@@ -787,6 +788,7 @@ export function asyncDeleteEvent(id) {
     err => console.log(err)
   );
 }
+
 function formatMedicineData(data) {
   dataTemp = {};
   data.forEach(function(med) {
