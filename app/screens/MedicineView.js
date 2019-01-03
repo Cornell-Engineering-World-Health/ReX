@@ -116,33 +116,9 @@ class CoolerMedicineView extends React.Component {
    * [Grey] Complete/Future Medications
    * sorted in ascending time order within each category
    */
-  compareCards = (a,b) => {
-    var passed_index = 0
-    for (var i = 0; i < a.statuses.length; i++){
-      if (a.statuses[i] == false){
-        passed_index = i
-        break
-      }
-      this.setState({
-        toggle_add: false,
-        data: medicineData
-      })
-    }
-
-    var passed_index2 = 0
-    for (var j = 0; j < b.statuses.length; j++){
-      if (b.statuses[j] == false){
-        passed_index2 = j
-        break
-      }
-    }
-    if (a.timeVal[passed_index] < b.timeVal[passed_index2]) {
-      return -1
-    }
-    else {
-      return 1
-    }
-  }
+  // compareCards = (a,b) => {
+  //   return 1;
+  // }
 
   /**
    * returns DoseCard component populated with appropriate medicine data
@@ -206,7 +182,7 @@ class CoolerMedicineView extends React.Component {
             <TouchableOpacity>
             </TouchableOpacity>
             <FlatList
-              data={this.state.data.sort(this.compareCards)}
+              data={this.state.data}
               extraData={this.state}
               renderItem={this._renderCard} 
               keyExtractor={(_, index) => index.toString()}
