@@ -334,7 +334,7 @@ class Card extends PureComponent {
                       <View style={styles.descriptionContainer}>
                           <View style = {{ flexDirection: 'column'}} >
                               <Text style={[styles.titleText,{color: this.state.textColor}]}>{this.props.title}</Text>
-                              <Text style={{color: this.state.textColor}}>{this.props.dosage + "mg"}</Text>
+                              <Text style={{color: this.state.textColor}}>{this.props.dosage}</Text>
                           </View>
                             <TouchableOpacity
                               onPress = {this._handleClick}
