@@ -411,58 +411,24 @@ class Card extends PureComponent {
                 onPress={this._handleClick}
                 style={{ flex: 1, alignItems: "flex-end" }}
               >
-                <View
-                  style={[
-                    styles.container,
-                    {
-                      backgroundColor: this.state.backgroundColor,
-                      borderColor: this.state.borderColor,
-                      flex: 1
-                    }
-                  ]}
-                >
-                  <View style={styles.descriptionContainer}>
-                    <View style={{ flexDirection: "column" }}>
-                      <Text
-                        style={[
-                          styles.titleText,
-                          { color: this.state.textColor }
-                        ]}
-                      >
-                        {this.props.title}
-                      </Text>
-                      <Text style={{ color: this.state.textColor }}>
-                        {this.props.dosage}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={this._handleClick}
-                      style={{ flex: 1, alignItems: "flex-end" }}
-                    >
-                      <View flexDirection="row" marginTop={7}>
-                        <Text
-                          style={{ fontSize: 14, color: this.state.textColor }}
-                        >
-                          {" "}
-                          {this.state.newhours}{" "}
-                        </Text>
-                        <TouchableOpacity
-                          style={styles.more}
-                          onPress={() => {
-                            this.setState({
-                              modalVisible: true
-                            });
-                          }}
-                        >
-                          <Image
-                            source={require("../../resources/images/smalldot.png")}
-                            resizeMode="contain"
-                          />
-                        </TouchableOpacity>
-                      </View>
-                      <View style={{ marginTop: 15 }} />
-                    </TouchableOpacity>
-                  </View>
+                <View flexDirection="row" marginTop={7}>
+                  <Text style={{ fontSize: 14, color: this.state.textColor }}>
+                    {" "}
+                    {this.state.newhours}{" "}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.more}
+                    onPress={() => {
+                      this.setState({
+                        modalVisible: true
+                      });
+                    }}
+                  >
+                    <Image
+                      source={require("../../resources/images/smalldot.png")}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View style={{ marginTop: 15 }} />
               </TouchableOpacity>
