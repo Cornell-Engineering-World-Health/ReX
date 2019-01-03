@@ -12,23 +12,20 @@ import {
   Picker,
   ScrollView,
   Dimensions,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Keyboard
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import SettingsList from 'react-native-settings-list';
 import Modal from 'react-native-modal';
 import moment from 'moment';
-import {
-  asyncSettingUpdate,
-  pullSettingsFromDatabase
-} from '../databaseUtil/databaseUtil';
 import { profile_icons, IMAGES, COLOR } from '../resources/constants';
 
 const AVATAR_ID = 'avatarID';
-const BIRTHDAY_ID = 'birthdayID';
 const HEIGHT_ID = 'heightID';
 const WEIGHT_ID = 'weightID';
 const EDIT_ID = 'editID';
+const BIRTHDAY_ID = 'birthdayID';
 
 export default class Profile extends Component {
   static propTypes = {
@@ -38,11 +35,12 @@ export default class Profile extends Component {
     super(props);
     this.onValueChange = this.onValueChange.bind(this);
 
-    this.state = { choosingAvatar: false, modalID: '' };
+    this.state = {
+      choosingAvatar: false,
+      modalID: '',
+      tempBirthday: props.birthday ? props.birthday : new Date()
+    };
   }
-  handle_icon_press = index => {
-    this.props.settingsUpdate('icon', index.toString());
-  };
 
   _renderHeader() {
     if (!this.state.choosingAvatar) {
@@ -83,7 +81,7 @@ export default class Profile extends Component {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    this.handle_icon_press(index);
+                    this.props.settingsUpdate('icon', Math.trunc(index) + '');
                     this.setState({
                       choosingAvatar: false
                     });
@@ -109,7 +107,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
-          {(!this.state.choosingAvatar && this.props.isInModal) ? (
+          {!this.state.choosingAvatar && this.props.isInModal ? (
             <TouchableOpacity
               style={styles.menuButtonWrapper}
               onPress={this.props.exitModal}
@@ -144,19 +142,27 @@ export default class Profile extends Component {
                 }}
                 baseColor={this.props.baseColor}
                 textColor={this.props.textColor}
+                ref={function(emailRef) {
+                  this.emailRef = emailRef;
+                }}
               />
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: BIRTHDAY_ID });
-                  this.props.settingsUpdate('birthday', new Date())
+                  if (this.emailRef) {
+                    this.emailRef.blur();
+                  }
                 }}
               >
                 <TextField
                   editable={false}
                   pointerEvents={'none'}
                   label={'Birthday'}
-                  value={!this.props.birthday ? '':
-                  this.props.birthday.toLocaleDateString()}
+                  value={
+                    !this.props.birthday
+                      ? ''
+                      : this.props.birthday.toLocaleDateString()
+                  }
                   baseColor={this.props.baseColor}
                   textColor={this.props.textColor}
                 />
@@ -164,8 +170,8 @@ export default class Profile extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
-                  this.props.settingsUpdate('height_feet', 4)
-                  this.props.settingsUpdate('height_inches', 1)
+                  this.props.settingsUpdate('height_feet', 4);
+                  this.props.settingsUpdate('height_inches', 1);
                 }}
               >
                 <TextField
@@ -173,11 +179,13 @@ export default class Profile extends Component {
                   pointerEvents={'none'}
                   label={'Height'}
                   value={
-                    (this.props.height_feet != '' && this.props.height_inches != '') ?
-                    (this.props.height_feet +
-                    ' ft ' +
-                    this.props.height_inches +
-                    ' in') : ''
+                    this.props.height_feet != '' &&
+                    this.props.height_inches != ''
+                      ? this.props.height_feet +
+                        ' ft ' +
+                        this.props.height_inches +
+                        ' in'
+                      : ''
                   }
                   baseColor={this.props.baseColor}
                   textColor={this.props.textColor}
@@ -193,8 +201,8 @@ export default class Profile extends Component {
                   pointerEvents={'none'}
                   label={'Weight'}
                   value={
-                    (this.props.weight != '') ?
-                    (this.props.weight + ' lbs') : ''}
+                    this.props.weight != '' ? this.props.weight + ' lbs' : ''
+                  }
                   baseColor={this.props.baseColor}
                   textColor={this.props.textColor}
                 />
@@ -202,14 +210,18 @@ export default class Profile extends Component {
             </View>
           </ScrollView>
         </View>
-        {(this.props.isInModal) ? (<View style={styles.submitWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.props.exitModal}
-          >
-            <Text style={styles.text}>Submit</Text>
-          </TouchableOpacity>
-        </View>) : null}
+        {this.props.isInModal ? (
+          <View style={styles.submitWrapper}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.props.exitModal();
+              }}
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         <Modal
           isVisible={this.state.modalID == HEIGHT_ID}
           animationInTiming={500}
@@ -270,7 +282,44 @@ export default class Profile extends Component {
             </View>
           </View>
         </Modal>
-
+        <Modal
+          isVisible={this.state.modalID == BIRTHDAY_ID}
+          animationInTiming={500}
+          animationOutTiming={500}
+          onBackdropPress={() => {
+            this.setState({ modalID: '' });
+            this.props.settingsUpdate('birthday', this.state.tempBirthday);
+          }}
+          swipDirection={'down'}
+          style={styles.modal}
+        >
+          <View
+            style={{
+              flex: 0.35,
+              backgroundColor: '#ffffff'
+            }}
+          >
+            <TouchableOpacity
+              style={styles.modalSubmitButton}
+              onPress={() => {
+                this.setState({ modalID: '' });
+                this.props.settingsUpdate('birthday', this.state.tempBirthday);
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+            <DatePickerIOS
+              style={{ height: 44 }}
+              itemStyle={{ height: 44 }}
+              mode="date"
+              date={this.state.tempBirthday}
+              onDateChange={value => {
+                this.setState({ tempBirthday: value });
+              }}
+            />
+          </View>
+        </Modal>
         <Modal
           isVisible={this.state.modalID == WEIGHT_ID}
           onBackdropPress={() => {
@@ -311,45 +360,6 @@ export default class Profile extends Component {
               }}
             />
           </KeyboardAvoidingView>
-        </Modal>
-        <Modal
-          isVisible={this.state.modalID == BIRTHDAY_ID}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ modalID: '' });
-          }}
-          onSwipe={() => {
-            this.setState({ modalID: '' });
-          }}
-          swipDirection={'down'}
-          style={styles.modal}
-        >
-          <View
-            style={{
-              flex: 0.35,
-              backgroundColor: '#ffffff'
-            }}
-          >
-            <TouchableOpacity
-              style={styles.modalSubmitButton}
-              onPress={() => {
-                this.setState({ modalID: '' });
-              }}
-              alignItems="center"
-            >
-              <Text style={styles.text}>Submit</Text>
-            </TouchableOpacity>
-            <DatePickerIOS
-              style={{ height: 44 }}
-              itemStyle={{ height: 44 }}
-              mode="date"
-              date={this.props.birthday}
-              onDateChange={value => {
-                this.props.settingsUpdate('birthday', value);
-              }}
-            />
-          </View>
         </Modal>
       </View>
     );
