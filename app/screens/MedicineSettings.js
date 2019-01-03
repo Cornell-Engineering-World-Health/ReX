@@ -215,8 +215,9 @@ const ModalCard = props => {
         </View>
         <View style={styles.modalBody}>
           <View style={styles.modalDosageContainer}>
+            <Text style={styles.modalDosage}>Dosage:</Text>
             <Text style={styles.modalDosage}>
-              Dosage:{props.data ? props.data.dosage.toString() : null}
+              {props.data ? props.data.dosage.toString() : null}
             </Text>
           </View>
 
