@@ -15,7 +15,8 @@ import { HomeMedicineLogger } from '../components/HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
   pullSettingsFromDatabase,
-  databaseTakeMedicines
+  databaseTakeMedicines,
+  pullAllSymptoms
 } from '../databaseUtil/databaseUtil';
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
@@ -24,6 +25,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
+    pullAllSymptoms(console.log)
     this.state = {
       modalVisible: null,
       data: [],
