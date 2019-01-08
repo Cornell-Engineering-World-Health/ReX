@@ -167,10 +167,6 @@ export default class Trends extends React.Component {
   }
 
   _setData() {
-    // //Test
-    // this._setFakeData();
-    // return;
-    // //End Test
     let month = new Date(this.state.selectedYear, this.state.selectedMonth);
 
     if (this.state.selectedView == VIEWS[0]) {
@@ -424,7 +420,11 @@ export default class Trends extends React.Component {
         <View style={styles.footer}>
           <PickerButton
             title={this.state.selectedSymptom}
-            onPress={() => this._enterModal(MODALS[0])}
+            onPress={() => this._enterModal(MODALS[0])} //SYMPTOMS
+          />
+          <PickerButton
+            title={this.state.selectedMode}
+            onPress={() => this._enterModal(MODALS[2])} //MODE
           />
           <PickerButton
             title={
@@ -432,11 +432,7 @@ export default class Trends extends React.Component {
                 ? this.getShortenedDate()
                 : this.state.selectedYear
             }
-            onPress={() => this._enterModal(MODALS[1])}
-          />
-          <PickerButton
-            title={this.state.selectedMode}
-            onPress={() => this._enterModal(MODALS[2])}
+            onPress={() => this._enterModal(MODALS[1])} //DATE
           />
           <ModalPicker
             isVisible={this.state.modalVisible == MODALS[0] /* SYMPTOMS */}
@@ -464,6 +460,29 @@ export default class Trends extends React.Component {
                   ))}
                 </Picker>
               </View>
+            </View>
+          </ModalPicker>
+          <ModalPicker
+            isVisible={this.state.modalVisible == MODALS[2] /* MODE */}
+            exitModal={() => this._exitModal()}
+            flex={0.4}
+          >
+            <View style={styles.modalChildWrapper}>
+              <Picker
+                selectedValue={this.state.selectedMode}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ selectedMode: itemValue })
+                }
+                itemStyle={{
+                  color: "black",
+                  fontSize: 18,
+                  fontWeight: "100"
+                }}
+              >
+                {MODES.map(item => (
+                  <Picker.Item label={item} value={item} key={item} />
+                ))}
+              </Picker>
             </View>
           </ModalPicker>
           <ModalPicker
@@ -506,29 +525,6 @@ export default class Trends extends React.Component {
               </View>
             </View>
           </ModalPicker>
-          <ModalPicker
-            isVisible={this.state.modalVisible == MODALS[2] /* MODE */}
-            exitModal={() => this._exitModal()}
-            flex={0.4}
-          >
-            <View style={styles.modalChildWrapper}>
-              <Picker
-                selectedValue={this.state.selectedMode}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ selectedMode: itemValue })
-                }
-                itemStyle={{
-                  color: "black",
-                  fontSize: 18,
-                  fontWeight: "100"
-                }}
-              >
-                {MODES.map(item => (
-                  <Picker.Item label={item} value={item} key={item} />
-                ))}
-              </Picker>
-            </View>
-          </ModalPicker>
         </View>
         <View style={styles.graphContainer}>
           <BarChart
@@ -540,7 +536,7 @@ export default class Trends extends React.Component {
           />
         </View>
         <View style={styles.extraInfo}>
-          <Info title={"Average Duration"} body={2 + ""} footer={"Hours"} />
+          {/*<Info title={"Average Duration"} body={2 + ""} footer={"Hours"} />*/}
           <Info
             title={"Average Intensity"}
             body={
@@ -698,7 +694,8 @@ const styles = StyleSheet.create({
   },
   extraInfo: {
     flex: 0.2,
-    flexDirection: "row"
+    flexDirection: "row",
+    justifyContent: "center"
   },
   footer: {
     flex: 0.09,
@@ -717,7 +714,7 @@ const styles = StyleSheet.create({
   },
   infoCardWrapper: {
     padding: 12,
-    flex: 1
+    flex: 0.5
   },
   infoCardContainer: {
     backgroundColor: "white", //temporary
