@@ -7,7 +7,7 @@ export function createTables() {
   Database.transaction(
     tx => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `fields` TEXT NOT NULL);"
+        "CREATE TABLE IF NOT EXISTS `event_details_tbl` (`event_details_id` INTEGER PRIMARY KEY, `fields` TEXT NOT NULL);"
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `field_to_view_tbl` (`field_id` INTEGER NOT NULL PRIMARY KEY UNIQUE, `field_name` TEXT NOT NULL UNIQUE, `view_name` TEXT NOT NULL);"
@@ -16,7 +16,7 @@ export function createTables() {
         "CREATE TABLE IF NOT EXISTS `event_type_tbl` (`event_type_id` INTEGER NOT NULL PRIMARY KEY UNIQUE,`event_type_name` TEXT NOT NULL UNIQUE, `event_type_icon` TEXT NOT NULL, `card_field_id1` INTEGER, `card_field_id2` INTEGER,`event_type_category` TEXT, FOREIGN KEY(card_field_id1) REFERENCES `field_to_view_tbl`(`field_id`), FOREIGN KEY(`card_field_id2`) REFERENCES `field_to_view_tbl` (`field_id`));"
       );
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER NOT NULL PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));"
+        "CREATE TABLE IF NOT EXISTS `event_tbl` (`event_id` INTEGER PRIMARY KEY,`event_type_id` INTEGER NOT NULL, `timestamp` TEXT NOT NULL, `event_details_id` INTEGER NOT NULL UNIQUE, FOREIGN KEY(`event_details_id`) REFERENCES `event_details_tbl`(`event_details_id`), FOREIGN KEY(`event_type_id`) REFERENCES `event_type_tbl`(`event_type_id`));"
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `settings_tbl` (`setting_name` TEXT NOT NULL PRIMARY KEY UNIQUE, `setting_value` TEXT NOT NULL);"
@@ -31,10 +31,11 @@ export function createTables() {
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
     },
-    err => console.log(err),
-    () => console.log("done!!!")
+    err => console.log(err, "error creating tables"),
+    () => console.log("done creating tables.")
   );
 }
+
 export function intializeDatabase() {
   console.log("intializing database");
   date = new Date();
@@ -44,7 +45,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (1, 'Headache', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,event_type_category) values                              (2, 'Dizziness', 'image.png','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (2, 'Dizziness', 'image.png','Intensity','Duration', 'HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (3, 'Blurred Vision', 'image.png', 'Intensity','Duration','HEAD')"
@@ -254,19 +255,19 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','5')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','8')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','Select')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','Select')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height','0')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Select Edit')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('name','Default')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('email','email@domail.com')"
@@ -300,7 +301,7 @@ export function intializeDatabase() {
       //Initialize first time app open tbl
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
-    err => console.log(err),
+    err => console.log(err, "error in initialization"),
     () => console.log("intitialization complete")
   );
 
@@ -787,6 +788,7 @@ export function asyncDeleteEvent(id) {
     err => console.log(err)
   );
 }
+
 function formatMedicineData(data) {
   dataTemp = {};
   data.forEach(function(med) {
@@ -1118,7 +1120,7 @@ export function pullIsFirstFromDatabase(callback) {
         console.log(rows.length);
         callback(rows.length == 0);
       },
-      err => console.log(err)
+      err => console.log(err, "pullIsFirstFromDatabase")
     );
   });
 }
@@ -1154,7 +1156,7 @@ export function updateMedicineNotification(
             }
           );
         },
-        err => console.log(err)
+        err => console.log(err, "updateMedicineNotification")
       );
     }
   });
@@ -1183,9 +1185,9 @@ export function databaseMedicineNotification(name, dosage, newIsOn, callback) {
             callback
           );
         },
-        err => console.log(err)
+        err => console.log(err, "DatabaseMedicineNotification")
       );
     },
-    err => console.log(err)
+    err => console.log(err, "databaseMedicineNotification")
   );
 }
