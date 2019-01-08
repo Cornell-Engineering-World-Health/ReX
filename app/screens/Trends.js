@@ -68,10 +68,12 @@ export default class Trends extends React.Component {
       modalVisible: "", //string
       selectedView: VIEWS[0], // string corresponding to which view to use (month / year)
       formattedData: [0], //array of int
+      unformattedData: [], //data from database (object of objects)
       averageIntensity: 0,
       noData: true, // boolean, true if all datapoints are 0
       symptoms: [],
-      hasSymptoms: false //boolean, true if there exists symptoms that have been logged
+      hasSymptoms: false, //boolean, true if there exists symptoms that have been logged
+      selectedBar: -1
     };
   }
 
@@ -168,7 +170,7 @@ export default class Trends extends React.Component {
 
   _setData() {
     let month = new Date(this.state.selectedYear, this.state.selectedMonth);
-
+    this.setState({ selectedBar: -1 });
     if (this.state.selectedView == VIEWS[0]) {
       /*need month, symptom, and callback*/
       let month = new Date(this.state.selectedYear, this.state.selectedMonth);
@@ -222,16 +224,13 @@ export default class Trends extends React.Component {
   */
   _setDataHelperYear(unformattedData) {
     //we want to loop over the number of days in the year and add 0 to empty days
-
-    console.log(unformattedData);
-
+    console.log("unformatteddata", unformattedData);
     let totalMonths = 12;
     let totalIntensity = 0;
     let totalMonthsWithData = 0;
     let formattedData = [];
     let hasData = false;
     let year = this.state.selectedYear;
-    //console.log("ud", unformattedData);
 
     //iterate through each month of the year, and add corresponding data (0 if no data applicable)
     for (var x = 1; x <= totalMonths; x++) {
@@ -255,9 +254,10 @@ export default class Trends extends React.Component {
         formattedData.push(0);
       }
     }
-
+    console.log("formatted data", formattedData);
     //update state to reflect changes
     this.setState({
+      unformattedData: unformattedData,
       formattedData: formattedData,
       averageIntensity: totalIntensity / totalMonthsWithData,
       noData: !hasData
@@ -271,7 +271,7 @@ export default class Trends extends React.Component {
   _setDataHelperMonth(unformattedData) {
     //we want to loop over the number of days in the month and add 0 to empty days
 
-    console.log(unformattedData);
+    console.log("unformattedData", unformattedData);
 
     let daysInMonth = moment(
       this.state.selectedYear + "-" + (this.state.selectedMonth + 1),
@@ -317,6 +317,7 @@ export default class Trends extends React.Component {
     }
 
     this.setState({
+      unformattedData: unformattedData,
       formattedData: formattedData,
       averageIntensity: totalIntensity / totalDays,
       noData: !hasData
@@ -389,6 +390,62 @@ export default class Trends extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>{yearPicker}</View>
     );
+  }
+
+  _renderInfoBody() {
+    let year = this.state.selectedYear;
+    let data = this.state.unformattedData;
+
+    if (this.state.selectedView == VIEWS[1]) {
+      //year view
+      let m = this.state.selectedBar;
+      let month = m + 1 < 10 ? "0" + (m + 1) : "" + (m + 1);
+      let key = year + "-" + month;
+      if (data[key]) {
+        let { total_intensity, frequency } = data[key];
+        return (
+          "Intensity " +
+          total_intensity / frequency +
+          "\nFrequency " +
+          frequency
+        );
+      } else {
+        return "Tap on a month to see more.";
+      }
+    } else if (this.state.selectedView == VIEWS[0]) {
+      //month VIEW
+      let d = this.state.selectedBar;
+      let m = this.state.selectedMonth;
+      let month = m + 1 < 10 ? "0" + (m + 1) : "" + (m + 1);
+      let day = d + 1 < 10 ? "0" + (d + 1) : "" + (d + 1);
+      console.log(day, "day");
+      console.log(month, "month");
+      let key = year + "-" + month + "-" + day;
+      console.log("key", key);
+      if (data[key]) {
+        let { total_intensity, frequency } = data[key];
+        return (
+          "Intensity " +
+          total_intensity / frequency +
+          "\nFrequency " +
+          frequency
+        );
+      } else {
+        return "Tap on a day to see more.";
+      }
+    }
+  }
+
+  _renderInfoTitle() {
+    if (this.state.selectedBar < 0) return null;
+    if (this.state.selectedView == VIEWS[0]) {
+      //month view
+      return (
+        MONTHS[this.state.selectedMonth] + " " + (this.state.selectedBar + 1)
+      );
+    } else {
+      return MONTHS[this.state.selectedBar];
+    }
   }
 
   _changeView(view) {
@@ -533,20 +590,31 @@ export default class Trends extends React.Component {
             year={this.state.selectedYear}
             data={this.state.formattedData}
             noData={this.state.noData}
+            onSelectBar={index => {
+              this.setState({ selectedBar: index });
+            }}
+            selectedIndex={this.state.selectedBar}
           />
         </View>
-        <View style={styles.extraInfo}>
-          {/*<Info title={"Average Duration"} body={2 + ""} footer={"Hours"} />*/}
-          <Info
-            title={"Average Intensity"}
-            body={
-              this.state.averageIntensity
-                ? this.state.averageIntensity.toFixed(1)
-                : 0
-            }
-            footer={"/10"}
-          />
-        </View>
+        {this.state.noData ? null : (
+          <View style={styles.extraInfo}>
+            <Info
+              title={"Average Intensity"}
+              body={
+                this.state.averageIntensity
+                  ? this.state.averageIntensity.toFixed(1)
+                  : 0
+              }
+              footer={"/10"}
+            />
+
+            <Info
+              title={this._renderInfoTitle()}
+              body={this._renderInfoBody()}
+              style={{ body: styles.subInfoCardBody }}
+            />
+          </View>
+        )}
       </View>
     );
   }
@@ -614,12 +682,17 @@ title (String)
 body (String)
 */
 const Info = props => {
+  let bodyStyle = styles.infoCardBody;
+  if (props.style && props.style.body) {
+    bodyStyle = props.style.body;
+  }
+
   return (
     <View style={styles.infoCardWrapper}>
       <View style={[styles.infoCardContainer, styles.darkShadow]}>
         <Text style={styles.infoCardTitle}>{props.title}</Text>
         <View>
-          <Text style={styles.infoCardBody}>{props.body}</Text>
+          <Text style={bodyStyle}>{props.body}</Text>
           {props.footer ? (
             <Text style={styles.infoCardFooter}>{props.footer}</Text>
           ) : null}
@@ -865,5 +938,10 @@ const styles = StyleSheet.create({
   },
   openingScreenTextContainer: {
     flex: 0.3
+  },
+  subInfoCardBody: {
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "100"
   }
 });

@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   TouchableOpacity,
   Text,
   Dimensions,
   StyleSheet
-} from 'react-native';
-import { BarChart, YAxis, Grid } from 'react-native-svg-charts';
-import moment from 'moment';
-import constants, { COLOR } from '../../resources/constants.js';
-import { G, Line } from 'react-native-svg';
+} from "react-native";
+import { BarChart, YAxis, Grid } from "react-native-svg-charts";
+import moment from "moment";
+import constants, { COLOR } from "../../resources/constants.js";
+import { G, Line } from "react-native-svg";
 
 /*Dual gridlines*/
 const CustomGrid = ({ x, y, data, ticks }) => (
@@ -18,22 +18,22 @@ const CustomGrid = ({ x, y, data, ticks }) => (
     ticks.map(tick => (
       <Line
         key={tick}
-        x1={'0%'}
-        x2={'100%'}
+        x1={"0%"}
+        x2={"100%"}
         y1={y(tick)}
         y2={y(tick)}
-        stroke={'rgba(0,0,0,0.1)'}
+        stroke={"rgba(0,0,0,0.1)"}
       />
     ))}
     {// Vertical grid
     data.map((_, index) => (
       <Line
         key={index}
-        y1={'0%'}
-        y2={'100%'}
+        y1={"0%"}
+        y2={"100%"}
         x1={x(index)}
         x2={x(index)}
-        stroke={'rgba(0,0,0,0.1)'}
+        stroke={"rgba(0,0,0,0.1)"}
       />
     ))}
   </G>
@@ -45,9 +45,9 @@ const SHORTENED_MONTHS = constants.SHORTENED_MONTH;
 /*
 Used to distinguish month view and year view
 */
-const VIEWS = ['MONTH_VIEW', 'YEAR_VIEW'];
+const VIEWS = ["MONTH_VIEW", "YEAR_VIEW"];
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get("window").width;
 
 /*
 props
@@ -55,6 +55,8 @@ view:     one of the constants defined above in VIEWS (ex: VIEWS[0])
 month     int corresponding to the index of the month (0 corresponding to January)
 year      int corresponding to the year
 data      list of data (list of ONLY int values)
+noData    boolean (true if data is empty)
+selectedIndex int between 0 and the length of the data array
 */
 
 export default class Bar extends React.Component {
@@ -62,7 +64,12 @@ export default class Bar extends React.Component {
     super(props);
   }
 
+  /*
+  renders x axis based on selected view (month view or year view)
+*/
   _renderXAxis() {
+    if (this.props.noData) return null;
+
     return this.props.view == VIEWS[0]
       ? this._renderMonthAxis()
       : this._renderYearAxis();
@@ -71,11 +78,11 @@ export default class Bar extends React.Component {
   _renderMonthAxis() {
     let xAxis = [];
     let daysInMonth = moment(
-      this.props.year + '-' + (this.props.month + 1),
-      'YYYY-MM'
+      this.props.year + "-" + (this.props.month + 1),
+      "YYYY-MM"
     ).daysInMonth();
     let interval = 5;
-    let width = screenWidth * 0.95 / daysInMonth * interval;
+    let width = ((screenWidth * 0.95) / daysInMonth) * interval;
 
     for (var x = 0; x <= daysInMonth; x += interval) {
       //  {x % 5 == 0 ? x : ''}
@@ -97,7 +104,7 @@ export default class Bar extends React.Component {
   _renderYearAxis() {
     let xAxis = [];
     let interval = 2;
-    let width = screenWidth * 0.95 / 12 * interval;
+    let width = ((screenWidth * 0.95) / 12) * interval;
     for (var x = 0; x < 12; x++) {
       if (x % interval == 0) {
         xAxis.push(
@@ -108,6 +115,35 @@ export default class Bar extends React.Component {
       }
     }
     return xAxis;
+  }
+
+  /*
+    This function takes an array of numbers and generates an array of objects,
+    where each object is in the form
+    {
+      fill: <hex color>,
+      value: <value>,
+    }
+  */
+  _formatData() {
+    let formattedData = this.props.data.map((item, index) => {
+      let tempObj = {};
+      tempObj.value = item;
+
+      if (this.props.selectedIndex && this.props.selectedIndex == index) {
+        tempObj.svg = {
+          fill: "#00afa6"
+        };
+      } else {
+        tempObj.svg = {
+          fill: "#161616",
+          onPressIn: () => this.props.onSelectBar(index)
+        };
+      }
+      return tempObj;
+    });
+
+    return formattedData;
   }
 
   render() {
@@ -123,10 +159,10 @@ export default class Bar extends React.Component {
             </View>
           ) : null}
           <YAxis
-            data={this.props.data}
+            data={this.props.noData ? [] : this.props.data}
             contentInset={{ top: 20, bottom: 20 }}
             svg={{
-              fill: 'grey',
+              fill: "grey",
               fontSize: 12
             }}
             style={{ width: width }}
@@ -140,10 +176,11 @@ export default class Bar extends React.Component {
             style={{
               width: screenWidth * 0.95
             }}
-            data={this.props.data}
+            data={this._formatData()}
             svg={{
-              fill: '#474747'
+              fill: "#161616"
             }}
+            yAccessor={({ item }) => item.value}
             contentInset={contentInset}
             gridMin={0}
           >
@@ -159,34 +196,34 @@ export default class Bar extends React.Component {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   xAxis: {
-    flexDirection: 'row',
+    flexDirection: "row",
     width: screenWidth * 0.95,
     height: 20,
-    alignSelf: 'flex-end'
+    alignSelf: "flex-end"
   },
   xAxisNumbers: {
     fontSize: 12,
-    fontWeight: '100'
+    fontWeight: "100"
   },
   noDataOverlay: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   noDataText: {
     fontSize: 35,
-    fontWeight: '200'
+    fontWeight: "200"
   }
 });
