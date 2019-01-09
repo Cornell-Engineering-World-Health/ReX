@@ -611,7 +611,7 @@ function formatDataForGraphs(data) {
 /* aggregates data for each month in the year */
 function formatYearDataForGraphs(data) {
   dataTemp = {};
-  console.log("data for graphs ", data);
+  //console.log("data for graphs ", data);
   data.forEach(function(ev) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
