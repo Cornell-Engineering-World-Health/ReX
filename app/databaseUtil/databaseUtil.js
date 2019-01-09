@@ -556,9 +556,6 @@ export function databaseFakeData() {
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,'2018-11-19 12:00:00', 1801)"
       );
-      tx.executeSql(
-        "INSERT OR REPLACE INTO is_first_tbl (is_first) VALUES (0)"
-      );
     },
     err => console.log(err)
   );
