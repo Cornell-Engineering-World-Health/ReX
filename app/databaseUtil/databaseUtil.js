@@ -1117,6 +1117,7 @@ export function pullIsFirstFromDatabase(callback) {
       WHERE is_first != 1",
       [],
       (_, { rows }) => {
+        console.log(rows)
         console.log(rows.length);
         callback(rows.length == 0);
       },
@@ -1129,6 +1130,16 @@ export function logIsFirst(callback) {
   Database.transaction(tx => {
     tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)");
   });
+  Database.transaction(tx => {
+    tx.executeSql(
+      "SELECT is_first FROM is_first_tbl",
+      [],
+      (_, { rows }) => {
+        console.log("new")
+        console.log(rows)
+      },
+    )
+  })
 }
 
 export function updateMedicineNotification(
