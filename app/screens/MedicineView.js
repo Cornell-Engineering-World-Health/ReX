@@ -12,7 +12,6 @@ import Modal from "react-native-modal";
 import DoseCard from "../components/Card/DoseCard";
 import { pullMedicineFromDatabase } from "../databaseUtil/databaseUtil";
 import Moment from "moment";
-import LogFormScreen from "../screens/LogFormScreen";
 import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES } from "../resources/constants";
@@ -59,6 +58,7 @@ class CoolerMedicineView extends React.Component {
       });
     });
   };
+
 
   /**
    * error dropdown if user fails to complete the medicine add form and presses submit
@@ -124,6 +124,53 @@ class CoolerMedicineView extends React.Component {
     this.asyncDatabasePull();
   };
 
+  shouldBeTaken = (Date1, Date2) => {
+    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
+    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
+    return Date1Sum < Date2Sum + 15;
+  };
+
+  shouldBeTakenNow = Date1 => {
+    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
+    var Date2 = new Date();
+    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
+    var now = Math.abs(Date1Sum - Date2Sum) < 15;
+    return now;
+  };
+
+  // 0 is red
+  // 1 is green
+  // 2 is gray
+  // returns tuple of [passed_index, color]
+  getPassedIndex = (a) => {
+    var passed_index = 0;
+    if (a.statuses) {
+      for (var x = a.statuses.length - 1; x >= 0; x--) {
+        // hit a taken, next one
+        if (a.statuses[x]) {
+          passed_index = x + 1;
+          break;
+        }
+        // first red we see (latest red)
+        if (
+          a.statuses[x] == false &&
+          this.shouldBeTaken(new Date(a.time[x]), new Date()) &&
+          !this.shouldBeTakenNow(new Date(a.time[x]))
+        ) {
+          return [x, 0];
+        }
+        // if no taken or red, means we havent missed any and have taken some
+      }
+    }else{
+      passed_index = 0;
+    }
+    if (this.shouldBeTakenNow(new Date(a.time[passed_index]))){
+      return [passed_index, 1]
+    }else{
+      return [passed_index, 2]
+    }
+  }
+
   /**
    * custom sorting algorithm for medicine cards on the medicine view flatlist:
    * [Red] Missed Medications
@@ -131,9 +178,25 @@ class CoolerMedicineView extends React.Component {
    * [Grey] Complete/Future Medications
    * sorted in ascending time order within each category
    */
-  // compareCards = (a,b) => {
-  //   return 1;
-  // }
+
+  compareCards = (a,b) => {
+
+    var passed_a = (this.getPassedIndex(a))[0]
+    var color_a  = (this.getPassedIndex(a))[1]
+    var passed_b = (this.getPassedIndex(b))[0]
+    var color_b  = (this.getPassedIndex(b))[1]
+
+    // console.log("this is passed " + a.title + passed_a)
+    // console.log("this is color "  + a.title + color_a)
+    // console.log("this is passed " + b.title+ passed_b)
+    // console.log("this is color "  + b.title + color_b)
+
+    if (color_a != color_b){
+      return color_a > color_b
+    }else {
+      return (a.time[passed_a] < b.time[passed_b])
+    }
+  }
 
   /**
    * returns DoseCard component populated with appropriate medicine data
@@ -206,7 +269,7 @@ class CoolerMedicineView extends React.Component {
         </View>
         <TouchableOpacity />
         <FlatList
-          data={this.state.data}
+          data={this.state.data.sort(this.compareCards)}
           extraData={this.state}
           renderItem={this._renderCard}
           keyExtractor={(_, index) => index.toString()}

@@ -24,27 +24,9 @@ class Card extends PureComponent {
 
   constructor(props) {
     super(props);
-    // if none are taken or red, will be 0.
-    var passed_index = 0;
-    if (this.props.passed) {
-      for (var x = this.props.passed.length - 1; x >= 0; x--) {
-        // hit a taken, next one
-        if (this.props.passed[x]) {
-          passed_index = x + 1;
-          break;
-        }
-        // first red we see (latest red)
-        if (
-          this.props.passed[x] == false &&
-          this.shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
-          !this.shouldBeTakenNow(new Date(this.props.time[x]))
-        ) {
-          passed_index = x;
-          break;
-        }
-        // if no taken or red, means we havent missed any and have taken some
-      }
-    }
+
+    var passed_index = this.getPassedIndex()
+    
     this.state = {
       time: this.props.time,
       takenTime: this.props.takenTime,
@@ -65,6 +47,28 @@ class Card extends PureComponent {
 
   componentDidMount = () => {
     this._handleRenderText();
+  };
+
+  // returns the passed index for a Dose Card
+  getPassedIndex = () => {
+    if (this.props.passed) {
+      for (var x = this.props.passed.length - 1; x >= 0; x--) {
+        // hit a taken, next one
+        if (this.props.passed[x]) {
+          return x + 1;
+        }
+        // first red we see (latest red)
+        if (
+          this.props.passed[x] == false &&
+          this.shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
+          !this.shouldBeTakenNow(new Date(this.props.time[x]))
+        ) {
+          return x;
+        }
+        // if no taken or red, means we havent missed any and have taken some
+      }
+    }
+    return 0
   };
 
   /**
@@ -297,7 +301,7 @@ class Card extends PureComponent {
       if (curMin != 0) {
         numHours = numHours + ":" + curMin + " PM";
       } else {
-        numHours = numHours + " PM";
+        numHours = numHours + ":00 PM";
       }
     } else {
       if (curHour == 1) {
@@ -308,7 +312,7 @@ class Card extends PureComponent {
       if (curMin != 0) {
         numHours = numHours + ":" + curMin + " AM";
       } else {
-        numHours = numHours + " AM";
+        numHours = numHours + ":00 AM";
       }
     }
     return numHours;
