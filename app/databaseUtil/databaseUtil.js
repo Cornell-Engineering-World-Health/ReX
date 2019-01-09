@@ -1191,3 +1191,42 @@ export function databaseMedicineNotification(name, dosage, newIsOn, callback) {
     err => console.log(err, "databaseMedicineNotification")
   );
 }
+
+/*
+Export all symptoms in an array of objects, where each object contains relevant fields
+
+each object has the format
+
+{
+symptom:
+timestamp:
+...
+}
+
+In place of ... are fields associated with that symptom
+*/
+export function exportAllSymptoms(callBack) {
+  console.log("entered export all symptoms");
+  pullAllSymptoms(symptoms => {
+    //console.log(symptoms);
+
+    let formattedSymptoms = [];
+
+    symptoms.map((symptom, index) => {
+      if (symptom.event_type_name != "Medication Reminder") {
+        let symptomTemp = {};
+        symptomTemp.symptom = symptom.event_type_name;
+        symptomTemp.timestamp = symptom.timestamp;
+
+        let fields = JSON.parse(symptom.fields);
+        let fieldEntries = Object.entries(fields);
+
+        for (const [field, value] of fieldEntries) {
+          symptomTemp[field] = value;
+        }
+        formattedSymptoms.push(symptomTemp);
+      }
+    });
+    callBack(formattedSymptoms);
+  });
+}

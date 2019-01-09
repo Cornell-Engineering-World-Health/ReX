@@ -14,10 +14,11 @@ import Profile from "./EditProfile";
 import Trends from "./Trends";
 import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
-import { _mailFunc } from "../mailUtil/mailUtil.js";
+import { exportDataMailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  exportAllSymptoms
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
@@ -190,7 +191,11 @@ class Settings extends Component {
               }
               title="Export Data"
               onPress={() => {
-                _mailFunc(this.state.email, this.state.name + "'s data");
+                //_mailFunc(this.state.email, this.state.name + "'s data");
+                exportDataMailFunc(
+                  this.state.email,
+                  this.state.name + "'s symptom history"
+                );
               }}
             />
             <SettingsList.Item
