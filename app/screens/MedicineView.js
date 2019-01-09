@@ -12,13 +12,12 @@ import Modal from "react-native-modal";
 import DoseCard from "../components/Card/DoseCard";
 import { pullMedicineFromDatabase } from "../databaseUtil/databaseUtil";
 import Moment from "moment";
-import LogFormScreen from "../screens/LogFormScreen";
 import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES } from "../resources/constants";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 
-class CoolerMedicineView extends React.Component {
+class MedicineView extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
   };
@@ -324,4 +323,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CoolerMedicineView;
+export default MedicineView;
