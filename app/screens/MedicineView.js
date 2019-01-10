@@ -92,7 +92,7 @@ class MedicineView extends React.Component {
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
       asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
       new_title = "Fiih Medication Reminder";
-      new_body = "It's time to take" + title +"! (" + dosage + ")";
+      new_body = "It's time to take " + title +"! (" + dosage + ")";
       setMassNotification(start, end, new_title, new_body, time);
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
