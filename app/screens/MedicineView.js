@@ -93,7 +93,7 @@ class MedicineView extends React.Component {
       asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
       new_title = "Fiih Medication Reminder";
       new_body = "It's time to take " + title +"! (" + dosage + ")";
-      setMassNotification(start, end, new_title, new_body, time);
+      setMassNotification(start, end, new_title, new_body, time, () => {console.log("created reminders")});
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
