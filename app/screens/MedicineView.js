@@ -60,7 +60,6 @@ class CoolerMedicineView extends React.Component {
     });
   };
 
-
   /**
    * error dropdown if user fails to complete the medicine add form and presses submit
    */
@@ -125,9 +124,7 @@ class CoolerMedicineView extends React.Component {
     this.asyncDatabasePull();
   };
 
-  // 0 is red
-  // 1 is green
-  // 2 is gray
+  // 0 is red, 1 is green, 2 is gray
   // returns tuple of [passed_index, color]
   getPassedIndex = (a) => {
     var passed_index = 0;
@@ -165,23 +162,22 @@ class CoolerMedicineView extends React.Component {
    * [Grey] Complete/Future Medications
    * sorted in ascending time order within each category
    */
-
   compareCards = (a,b) => {
-
     var passed_a = (this.getPassedIndex(a))[0]
     var color_a  = (this.getPassedIndex(a))[1]
     var passed_b = (this.getPassedIndex(b))[0]
     var color_b  = (this.getPassedIndex(b))[1]
 
-    // console.log("this is passed " + a.title + passed_a)
-    // console.log("this is color "  + a.title + color_a)
-    // console.log("this is passed " + b.title+ passed_b)
-    // console.log("this is color "  + b.title + color_b)
-
     if (color_a != color_b){
       return color_a > color_b
     }else {
-      return (a.time[passed_a] < b.time[passed_b])
+      // Done for the Day must be last
+      if (passed_a == a.statuses.length){
+        return 1
+      // Compare times if same color
+      }else{
+        return (a.time[passed_a] > b.time[passed_b])
+      }
     }
   }
 
