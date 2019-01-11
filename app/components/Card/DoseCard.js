@@ -5,6 +5,7 @@ import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
 import { initializeRegistryWithDefinitions } from "react-native-animatable";
+import { shouldBeTaken, shouldBeTakenNow } from '../../resources/helpers';
 
 var background = ["#ffffff", "#ecfaf7", "#fcf0f2"];
 var border = ["#ffffff", "#7fdecb", "#f8ced5"];
@@ -60,8 +61,8 @@ class Card extends PureComponent {
         // first red we see (latest red)
         if (
           this.props.passed[x] == false &&
-          this.shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
-          !this.shouldBeTakenNow(new Date(this.props.time[x]))
+          shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
+          !shouldBeTakenNow(new Date(this.props.time[x]))
         ) {
           return x;
         }
@@ -84,10 +85,10 @@ class Card extends PureComponent {
     if (this.state.passed_index >= this.state.passed.length) {
       ind = 0;
       timeString = "Done for the day";
-    } else if (this.shouldBeTakenNow(current)) {
+    } else if (shouldBeTakenNow(current)) {
       timeString = "Take Now";
       ind = 1;
-    } else if (this.shouldBeTaken(current, new Date())) {
+    } else if (shouldBeTaken(current, new Date())) {
       timeString = this.createAgoString(current);
       ind = 2;
     } else {
@@ -119,7 +120,7 @@ class Card extends PureComponent {
     var tempData = this.state.data;
 
     // can click forward, it you are clicking a red time that you need to take, must go forward
-    if (this.shouldBeTaken(thisMed, new Date())) {
+    if (shouldBeTaken(thisMed, new Date())) {
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
 
@@ -170,7 +171,7 @@ class Card extends PureComponent {
       );
 
       if (
-        this.shouldBeTaken(
+        shouldBeTaken(
           new Date(this.state.time[this.state.passed_index - 1]),
           new Date()
         )
@@ -206,7 +207,7 @@ class Card extends PureComponent {
     var tempData = this.state.data;
     // if green or red
     if (
-      this.shouldBeTaken(new Date(this.state.time[index]), new Date()) &&
+      shouldBeTaken(new Date(this.state.time[index]), new Date()) &&
       !this.state.passed[index]
     ) {
       // checks green for taken
@@ -332,20 +333,6 @@ class Card extends PureComponent {
     return numHours;
   };
 
-  shouldBeTaken = (Date1, Date2) => {
-    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
-    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
-    return Date1Sum < Date2Sum + 15;
-  };
-
-  shouldBeTakenNow = Date1 => {
-    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
-    var Date2 = new Date();
-    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
-    var now = Math.abs(Date1Sum - Date2Sum) < 15;
-    return now;
-  };
-
   /**
    * Render Timeline component from within a single DoseCard's modal to display all logging times for single medication
    */
@@ -365,7 +352,7 @@ class Card extends PureComponent {
         taken_string = this.createTakenString(d);
       } else if (
         !this.props.passed[i] &&
-        this.shouldBeTaken(new Date(val), new Date())
+        shouldBeTaken(new Date(val), new Date())
       ) {
         circol = "#fa8b89";
         taken_string = "Missed";

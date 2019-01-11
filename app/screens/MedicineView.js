@@ -15,6 +15,7 @@ import Moment from "moment";
 import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES } from "../resources/constants";
+import { shouldBeTaken, shouldBeTakenNow } from "../resources/helpers";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 
 class CoolerMedicineView extends React.Component {
@@ -124,20 +125,6 @@ class CoolerMedicineView extends React.Component {
     this.asyncDatabasePull();
   };
 
-  shouldBeTaken = (Date1, Date2) => {
-    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
-    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
-    return Date1Sum < Date2Sum + 15;
-  };
-
-  shouldBeTakenNow = Date1 => {
-    var Date1Sum = Date1.getHours() * 60 + Date1.getMinutes();
-    var Date2 = new Date();
-    var Date2Sum = Date2.getHours() * 60 + Date2.getMinutes();
-    var now = Math.abs(Date1Sum - Date2Sum) < 15;
-    return now;
-  };
-
   // 0 is red
   // 1 is green
   // 2 is gray
@@ -154,8 +141,8 @@ class CoolerMedicineView extends React.Component {
         // first red we see (latest red)
         if (
           a.statuses[x] == false &&
-          this.shouldBeTaken(new Date(a.time[x]), new Date()) &&
-          !this.shouldBeTakenNow(new Date(a.time[x]))
+          shouldBeTaken(new Date(a.time[x]), new Date()) &&
+          !shouldBeTakenNow(new Date(a.time[x]))
         ) {
           return [x, 0];
         }
@@ -164,7 +151,7 @@ class CoolerMedicineView extends React.Component {
     }else{
       passed_index = 0;
     }
-    if (this.shouldBeTakenNow(new Date(a.time[passed_index]))){
+    if (shouldBeTakenNow(new Date(a.time[passed_index]))){
       return [passed_index, 1]
     }else{
       return [passed_index, 2]
