@@ -556,9 +556,6 @@ export function databaseFakeData() {
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,'2018-11-19 12:00:00', 1801)"
       );
-      tx.executeSql(
-        "INSERT OR REPLACE INTO is_first_tbl (is_first) VALUES (0)"
-      );
     },
     err => console.log(err)
   );
@@ -1117,6 +1114,7 @@ export function pullIsFirstFromDatabase(callback) {
       WHERE is_first != 1",
       [],
       (_, { rows }) => {
+        console.log(rows)
         console.log(rows.length);
         callback(rows.length == 0);
       },
@@ -1129,6 +1127,16 @@ export function logIsFirst(callback) {
   Database.transaction(tx => {
     tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)");
   });
+  Database.transaction(tx => {
+    tx.executeSql(
+      "SELECT is_first FROM is_first_tbl",
+      [],
+      (_, { rows }) => {
+        console.log("new")
+        console.log(rows)
+      },
+    )
+  })
 }
 
 export function updateMedicineNotification(
