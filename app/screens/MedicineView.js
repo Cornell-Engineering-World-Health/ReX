@@ -16,6 +16,7 @@ import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES } from "../resources/constants";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
+import { setMassNotification } from "../components/PushController/PushController.js";
 
 class MedicineView extends React.Component {
   static propTypes = {
@@ -89,7 +90,10 @@ class MedicineView extends React.Component {
    * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
    */
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
-    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
+      asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
+      new_title = "Fiih Medication Reminder";
+      new_body = "It's time to take " + title +"! (" + dosage + ")";
+      setMassNotification(start, end, new_title, new_body, time, () => {console.log("created reminders")});
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
