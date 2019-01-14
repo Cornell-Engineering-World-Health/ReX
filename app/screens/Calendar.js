@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, Dimensions, FlatList, StyleSheet } from 'react-native';
+import { View, Dimensions, FlatList, StyleSheet } from 'react-native';
 import { itemWidth } from '../components/Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../components/Calendar';
 import Agenda from '../components/Agenda/Agenda';
 import Moment from 'moment';
 import {
-  pullFromDataBase,
   pullAgendaFromDatabase,
   asyncDeleteEvent
 } from '../databaseUtil/databaseUtil';
-import constants, { COLOR } from '../resources/constants';
 import Modal from 'react-native-modal';
 import LogFormScreen from './LogFormScreen';
 

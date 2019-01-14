@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import * as moment from 'moment';
-import * as Modal from 'react-native-modal';
+import moment from 'moment';
+import Modal from 'react-native-modal';
 import TextInputType from '../LogInputTypes/TextInputType';
 import TimePicker from '../LogInputTypes/TimePicker';
 import Button from '../Button/Button';

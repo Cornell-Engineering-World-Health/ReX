@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { IMAGES } from '../../resources/constants';
 
 /**

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PickerInputType from './PickerInputType';
 
 export default class NumericalPickerInputType extends React.Component {

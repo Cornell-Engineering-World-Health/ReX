@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 import SurveyForm from '../components/Survey/SurveyForm';
-import constants, { IMAGES } from '../resources/constants';
+import { IMAGES } from '../resources/constants';
 import ButtonWithImage from '../components/Button/ButtonWithImage';
 
 const styles = StyleSheet.create({
