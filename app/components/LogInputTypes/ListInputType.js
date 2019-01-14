@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {
   View,
   Text,
   TouchableOpacity,
-  Dimensions,
   StyleSheet,
   FlatList,
   Image,
@@ -13,9 +12,6 @@ import {
 import { COLOR, IMAGES } from '../../resources/constants.js';
 
 const ITEM_HEIGHT = 55;
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
-);
 
 /*
 Props:

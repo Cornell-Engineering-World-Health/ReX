@@ -1,11 +1,10 @@
 /*
 @flow
 */
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Alert, Platform } from 'react-native';
 import { Notifications, Constants, Permissions } from 'expo';
-import Moment from 'moment';
+import * as Moment from 'moment';
 
 /*
 Cancel specific notification given an id

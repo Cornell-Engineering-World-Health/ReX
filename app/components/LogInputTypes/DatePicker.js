@@ -1,6 +1,5 @@
 import React from 'react'
-import {StyleSheet, Text, AppRegistry, TextInput, View, Picker, DatePickerIOS} from 'react-native'
-import PickerInputType from './PickerInputType'
+import {StyleSheet, Text, View, DatePickerIOS} from 'react-native'
 import moment from 'moment'
 
 export default class DatePicker extends React.Component {

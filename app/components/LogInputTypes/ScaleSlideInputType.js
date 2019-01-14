@@ -1,11 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  Dimensions,
   TouchableOpacity
 } from 'react-native';
 import { IMAGES, COLOR } from '../../resources/constants';

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  DatePickerIOS,
   Picker
 } from 'react-native';
 import Modal from 'react-native-modal';

@@ -1,14 +1,13 @@
-import React from "react";
+import * as React from "react";
 import {
   View,
-  TouchableOpacity,
   Text,
   Dimensions,
   StyleSheet
 } from "react-native";
 import { BarChart, YAxis, Grid } from "react-native-svg-charts";
-import moment from "moment";
-import constants, { COLOR } from "../../resources/constants.js";
+import * as moment from "moment";
+import * as constants from "../../resources/constants.js";
 import { G, Line } from "react-native-svg";
 
 /*Dual gridlines*/

@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-  Text,
   View,
-  ImageBackground,
-  TouchableHighlight,
   Dimensions
 } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { COLOR } from '../../../resources/constants';
 const width = Dimensions.get('window').width / 7 - 7;
 const height = Dimensions.get('window').height / 2.5 / 6;
 

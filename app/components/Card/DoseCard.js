@@ -4,7 +4,6 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
-import { initializeRegistryWithDefinitions } from "react-native-animatable";
 
 var background = ["#ffffff", "#ecfaf7", "#fcf0f2"];
 var border = ["#ffffff", "#7fdecb", "#f8ced5"];

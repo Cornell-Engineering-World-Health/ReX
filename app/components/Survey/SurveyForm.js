@@ -1,26 +1,13 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
-  Image,
-  Header,
-  ScrollView,
-  TouchableOpacity,
-  DatePickerIOS,
-  Picker,
-  Button
 } from 'react-native';
 import { FileSystem } from 'expo';
 import ScaleSlideInputType from '../LogInputTypes/ScaleSlideInputType';
 import TextInputType from '../LogInputTypes/TextInputType';
-import PickerInputType from '../LogInputTypes/PickerInputType';
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
 import ChecklistInputType from '../LogInputTypes/ChecklistInputType';
 import DatePicker from '../LogInputTypes/DatePicker';
-import TimePicker from '../LogInputTypes/TimePicker';
-import Database from '../../Database';
-import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import moment from 'moment';
 import Form from '../LogInputTypes/Form';
 import survey from '../../survey/questions.json';

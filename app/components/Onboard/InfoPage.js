@@ -1,16 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity,
-  TextInput,
-  Dimensions,
   ImageBackground
 } from 'react-native';
 import Profile from '../../screens/EditProfile';
-import { IMAGES, COLOR } from '../../resources/constants';
+import { IMAGES } from '../../resources/constants';
 import { asyncSettingUpdate } from '../../databaseUtil/databaseUtil';
 
 const SETTINGS_FIELDS = [

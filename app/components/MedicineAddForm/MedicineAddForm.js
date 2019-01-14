@@ -1,16 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import moment from 'moment';
-import Modal from 'react-native-modal';
+import * as moment from 'moment';
+import * as Modal from 'react-native-modal';
 import TextInputType from '../LogInputTypes/TextInputType';
 import TimePicker from '../LogInputTypes/TimePicker';
 import Button from '../Button/Button';
@@ -19,9 +18,8 @@ import NavigationHeader from '../NavigationHeader/NavigationHeader';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
-import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import { Calendar } from 'react-native-calendars';
-import { COLOR, IMAGES } from '../../resources/constants';
+import { COLOR } from '../../resources/constants';
 
 const CALENDAR_ID = 'CALENDAR'
 const TIME_ID = 'TIME'
