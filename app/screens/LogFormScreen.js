@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -8,26 +8,26 @@ import {
   DatePickerIOS,
   Button,
   Dimensions
-} from 'react-native';
-import ScaleSlideInputType from '../components/LogInputTypes/ScaleSlideInputType';
-import TextInputType from '../components/LogInputTypes/TextInputType';
-import ListInputType from '../components/LogInputTypes/ListInputType';
-import PickerInputType from '../components/LogInputTypes/PickerInputType';
-import NumericalPickerInputType from '../components/LogInputTypes/NumericalPickerInputType';
-import Duration from '../components/LogInputTypes/Duration';
-import ChecklistInputType from '../components/LogInputTypes/ChecklistInputType';
-import DatePicker from '../components/LogInputTypes/DatePicker';
-import TimePicker from '../components/LogInputTypes/TimePicker';
-import { StackNavigator } from 'react-navigation';
-import Database from '../Database';
-import { asyncCreateMedicineEvents } from '../databaseUtil/databaseUtil';
-import moment from 'moment';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { COLOR } from '../resources/constants.js';
-import Form from '../components/LogInputTypes/Form';
-import NavigationHeader from '../components/NavigationHeader/NavigationHeader';
+} from "react-native";
+import ScaleSlideInputType from "../components/LogInputTypes/ScaleSlideInputType";
+import TextInputType from "../components/LogInputTypes/TextInputType";
+import ListInputType from "../components/LogInputTypes/ListInputType";
+import PickerInputType from "../components/LogInputTypes/PickerInputType";
+import NumericalPickerInputType from "../components/LogInputTypes/NumericalPickerInputType";
+import Duration from "../components/LogInputTypes/Duration";
+import ChecklistInputType from "../components/LogInputTypes/ChecklistInputType";
+import DatePicker from "../components/LogInputTypes/DatePicker";
+import TimePicker from "../components/LogInputTypes/TimePicker";
+import { StackNavigator } from "react-navigation";
+import Database from "../Database";
+import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
+import moment from "moment";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import { COLOR } from "../resources/constants.js";
+import Form from "../components/LogInputTypes/Form";
+import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
+  "window"
 );
 
 event_id_count = 30000;
@@ -37,10 +37,10 @@ keyStart = 200;
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
     super(props);
-    var log_name = '';
+    var log_name = "";
     var log_type = 0;
     var nav = true;
-    var timestamp = '1950-01-01 00:00:00';
+    var timestamp = "1950-01-01 00:00:00";
     if (this.props.log_type) {
       log_type = this.props.log_type;
       log_name = this.props.log_name;
@@ -54,14 +54,14 @@ export default class ChooseLogScreen extends React.Component {
     }
 
     var keysArray = [];
-    var inputArray = [timestamp,log_type]
+    var inputArray = [timestamp, log_type];
     Database.transaction(
       tx =>
         tx.executeSql(
-          'SELECT fields FROM event_tbl \
+          "SELECT fields FROM event_tbl \
           INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
           WHERE timestamp = ? \
-          AND event_type_id = ?;',
+          AND event_type_id = ?;",
           inputArray,
           (tx, { rows }) => {
             json_rows = JSON.parse(rows._array[0].fields);
@@ -76,8 +76,8 @@ export default class ChooseLogScreen extends React.Component {
               Database.transaction(
                 tx =>
                   tx.executeSql(
-                    'SELECT view_name FROM field_to_view_tbl \
-                    WHERE field_name = ?;',
+                    "SELECT view_name FROM field_to_view_tbl \
+                    WHERE field_name = ?;",
                     [keysArray[i]],
                     (tx, { rows }) => {
                       input_types[i] = rows._array[0].view_name;
@@ -120,23 +120,25 @@ export default class ChooseLogScreen extends React.Component {
       this.props.navigation.pop();
       let event_type_id = this.state.event_type_id;
       let values = JSON.stringify(this.state.submit_vals);
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:00');
 
+      let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
+      event_details_id_count++;
+      event_id_count++;
       Database.transaction(
         tx => {
           tx.executeSql(
-            'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)',
+            "INSERT INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)",
             [event_details_id_count, values]
           );
           tx.executeSql(
-            'INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)',
+            "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)",
             [event_id_count, event_type_id, timestamp, event_details_id_count]
           );
         },
         err => console.log(err)
       );
-      this.props.screenProps.successOnSubmit()
-      this.props.navigation.navigate('Body', {})
+      this.props.screenProps.successOnSubmit();
+      this.props.navigation.navigate("Body", {});
     } else {
       this.props.on_finish();
       if (this.props.timestamp) {
@@ -144,12 +146,12 @@ export default class ChooseLogScreen extends React.Component {
       } else {
         // Add new medication
         asyncCreateMedicineEvents(
-          this.state.submit_vals['Pill Name'],
-          this.state.submit_vals['Dosage'],
-          new Date(this.state.submit_vals['Start Date']),
-          new Date(this.state.submit_vals['End Date']),
-          this.state.submit_vals['Time'],
-          this.state.submit_vals['Time Category'],
+          this.state.submit_vals["Pill Name"],
+          this.state.submit_vals["Dosage"],
+          new Date(this.state.submit_vals["Start Date"]),
+          new Date(this.state.submit_vals["End Date"]),
+          this.state.submit_vals["Time"],
+          this.state.submit_vals["Time Category"],
           event_id_count,
           event_details_id_count
         );
@@ -158,16 +160,16 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   render() {
-    var SCALE_LABELS = ['', '', '', '', '', '', '', '', '', ''];
-    var MEDICATION_SCALE_LABELS = ['Morning', 'Afternoon', 'Evening'];
+    var SCALE_LABELS = ["", "", "", "", "", "", "", "", "", ""];
+    var MEDICATION_SCALE_LABELS = ["Morning", "Afternoon", "Evening"];
 
     let component_array = this.state.input_type_array.map((prop, key) => {
-      if (prop == 'ScaleSlideInputType') {
+      if (prop == "ScaleSlideInputType") {
         return (
           <ScaleSlideInputType
             key={key}
-            label_left={'No Pain'}
-            label_right={'Severe'}
+            label_left={"No Pain"}
+            label_right={"Severe"}
             value={parseInt(this.state.values[key]) - 1}
             scale_labels={SCALE_LABELS}
             title_text={this.state.value_labels[key]}
@@ -178,7 +180,7 @@ export default class ChooseLogScreen extends React.Component {
             isIntensitySlider={true}
           />
         );
-      } else if (prop == 'NumericalPickerInputType') {
+      } else if (prop == "NumericalPickerInputType") {
         return (
           <Duration
             val_label={this.state.value_labels[key]}
@@ -187,7 +189,7 @@ export default class ChooseLogScreen extends React.Component {
             }}
           />
         );
-      } else if (prop == 'DosagePickerInputType') {
+      } else if (prop == "DosagePickerInputType") {
         return (
           <NumericalPickerInputType
             key={key}
@@ -197,7 +199,7 @@ export default class ChooseLogScreen extends React.Component {
             min={0}
             max={40}
             inc_scale={10}
-            unit={'mg'}
+            unit={"mg"}
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
             valueChange={(label, value) => {
@@ -205,7 +207,7 @@ export default class ChooseLogScreen extends React.Component {
             }}
           />
         );
-      } else if (prop == 'TextInputType') {
+      } else if (prop == "TextInputType") {
         return (
           // <TextInputType
           //   key={key}
@@ -224,7 +226,7 @@ export default class ChooseLogScreen extends React.Component {
             val_label={this.state.value_labels[key]}
           />
         );
-      } else if (prop == 'DatePicker') {
+      } else if (prop == "DatePicker") {
         return (
           <DatePicker
             key={key}
@@ -238,18 +240,18 @@ export default class ChooseLogScreen extends React.Component {
             }}
           />
         );
-      } else if (prop == 'DayChooserInputType') {
+      } else if (prop == "DayChooserInputType") {
         return (
           <ChecklistInputType
             key={key}
             list_values={[
-              'Sunday',
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday'
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday"
             ]}
             input_style={styles.input_container_green}
             title_text_style={styles.title_text}
@@ -261,7 +263,7 @@ export default class ChooseLogScreen extends React.Component {
             }}
           />
         );
-      } else if (prop == 'TimeCategoryInputType') {
+      } else if (prop == "TimeCategoryInputType") {
         return (
           <View key={key}>
             {this.state.values[key].map((prop, timeKey) => {
@@ -275,7 +277,7 @@ export default class ChooseLogScreen extends React.Component {
                   input_style={styles.input_container_transparent_blue}
                   title_text_style={styles.title_text_blue}
                   value={this.state.values[key][timeKey]}
-                  title_text={'Reminder Time ' + (timeKey + 1)}
+                  title_text={"Reminder Time " + (timeKey + 1)}
                   val_label={this.state.value_labels[key]}
                   chosen_date={this.state.values[key][timeKey]}
                   deletePressed={() => {
@@ -301,7 +303,7 @@ export default class ChooseLogScreen extends React.Component {
             <TouchableOpacity
               style={styles.add_button}
               onPress={() => {
-                this.state.values[key].push(moment().format('HH:mm'));
+                this.state.values[key].push(moment().format("HH:mm"));
                 this.setState({
                   values: this.state.values
                 });
@@ -339,8 +341,8 @@ export default class ChooseLogScreen extends React.Component {
 const styles = StyleSheet.create({
   footerButtonText: {
     fontSize: 20,
-    fontWeight: '100',
-    textAlign: 'center'
+    fontWeight: "100",
+    textAlign: "center"
   },
   skipButton: {
     height: 75,
@@ -348,14 +350,14 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 50,
     shadowOffset: { width: 2, height: 2 },
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.19,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     left: 5,
-    backgroundColor: '#f9ff5b',
+    backgroundColor: "#f9ff5b",
     bottom: 3
   },
   footerButton: {
@@ -363,42 +365,42 @@ const styles = StyleSheet.create({
     width: viewportWidth,
     padding: 20,
     shadowOffset: { width: 2, height: 2 },
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.19,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
-    backgroundColor: 'transparent',
-    position: 'absolute',
+    backgroundColor: "transparent",
+    position: "absolute",
 
     borderTopWidth: 1
   },
   overlay: {
     height: 78,
     marginBottom: 0,
-    flexDirection: 'row',
-    position: 'absolute',
+    flexDirection: "row",
+    position: "absolute",
     backgroundColor: COLOR.lightGreen
   },
   subFooter: {
     flex: 0.1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center'
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center"
   },
   footer: {
     flex: 0.2,
     width: viewportWidth,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center'
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center"
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: 'white'
+    justifyContent: "center",
+    alignItems: "stretch",
+    backgroundColor: "white"
   },
   backWrapper: {
     flex: 0.1,
@@ -406,97 +408,97 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 30,
-    textAlign: 'center',
-    fontWeight: '400',
-    color: 'black'
+    textAlign: "center",
+    fontWeight: "400",
+    color: "black"
   },
   main_container: {
     marginTop: 50,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   title_text: {
     fontSize: 20,
-    color: '#e5e5e5',
+    color: "#e5e5e5",
     paddingBottom: 10
   },
   title_text_green: {
     fontSize: 20,
-    color: '#2D8464',
+    color: "#2D8464",
     paddingBottom: 10
   },
   title_text_blue: {
     fontSize: 20,
-    color: '#2D6D84',
+    color: "#2D6D84",
     paddingBottom: 10
   },
   input_container_blue: {
     width: 320,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: '#2D6D84',
+    backgroundColor: "#2D6D84",
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D6D84'
+    borderColor: "#2D6D84"
   },
   input_container_green: {
     width: 320,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: '#2D8464',
+    backgroundColor: "#2D8464",
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D8464'
+    borderColor: "#2D8464"
   },
   input_container_transparent_green: {
     width: 320,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#2D8464'
+    borderColor: "#2D8464"
   },
   input_container_transparent_blue: {
     width: 320,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 10,
-    borderColor: '#2D6D84'
+    borderColor: "#2D6D84"
   },
   submit_button: {
     marginTop: 30,
     marginBottom: 30,
-    alignItems: 'bottom',
+    alignItems: "bottom",
     width: 320,
-    alignItems: 'center',
-    backgroundColor: '#bf5252',
+    alignItems: "center",
+    backgroundColor: "#bf5252",
     padding: 15,
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#bf5252'
+    borderColor: "#bf5252"
   },
   add_button: {
     marginBottom: 20,
-    alignItems: 'bottom',
+    alignItems: "bottom",
     width: 320,
-    alignItems: 'center',
-    backgroundColor: '#bf5252',
+    alignItems: "center",
+    backgroundColor: "#bf5252",
     padding: 20,
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#bf5252'
+    borderColor: "#bf5252"
   },
   submit_text: {
-    color: 'white',
+    color: "white",
     fontSize: 25
   },
   componentWrapper: {
     width: viewportWidth,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1
   }
 });

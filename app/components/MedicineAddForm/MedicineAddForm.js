@@ -283,7 +283,7 @@ export default class MedicineAddForm extends React.Component {
               placeholder_text={'Tap to type'}
               title_text={'Dosage (mg)'}
               val_label={'Dosage'}
-              valueChange={this.valueChange.bind(this)}
+              valueChange={(l, v) => {this.valueChange(l, v+"mg")}}
               blurOnSubmit={false}
               returnKeyType = { 'next' }
               onSubmitEditing={() => {Keyboard.dismiss()}}

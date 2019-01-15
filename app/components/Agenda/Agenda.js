@@ -70,34 +70,34 @@ class Agenda extends Component {
                 buttonActive={!this.state.expandVisible}
                 iconName={item.iconName}
                 buttonsRight={[
-                  {
-                    text: 'Edit',
-                    type: 'edit',
-                    onPress: () => {
-                      var timestamp = moment(
-                        this.props.date + ' ' + item.timeStamp,
-                        'MM/DD/YYYY hh:mm A'
-                      ).format('YYYY-MM-DD HH:mm:ss');
-
-                      Database.transaction(
-                        tx =>
-                          tx.executeSql(
-                            'SELECT event_type_id FROM event_type_tbl \
-                          WHERE event_type_name = ?;',
-                            [item.cardData.title],
-                            (tx, { rows }) => {
-                              var eventType = JSON.parse(
-                                rows._array[0].event_type_id
-                              );
-                              this.props.toggleModal(timestamp, eventType);
-                            }
-                          ),
-                        err => console.log(err)
-                      );
-
-                      /*force a render with new changes  */
-                    }
-                  },
+                  // {
+                  //   text: 'Edit',
+                  //   type: 'edit',
+                  //   onPress: () => {
+                  //     var timestamp = moment(
+                  //       this.props.date + ' ' + item.timeStamp,
+                  //       'MM/DD/YYYY hh:mm A'
+                  //     ).format('YYYY-MM-DD HH:mm:ss');
+                  //
+                  //     Database.transaction(
+                  //       tx =>
+                  //         tx.executeSql(
+                  //           'SELECT event_type_id FROM event_type_tbl \
+                  //         WHERE event_type_name = ?;',
+                  //           [item.cardData.title],
+                  //           (tx, { rows }) => {
+                  //             var eventType = JSON.parse(
+                  //               rows._array[0].event_type_id
+                  //             );
+                  //             this.props.toggleModal(timestamp, eventType);
+                  //           }
+                  //         ),
+                  //       err => console.log(err)
+                  //     );
+                  //
+                  //     /*force a render with new changes  */
+                  //   }
+                  // },
                   {
                     text: 'Delete',
                     type: 'delete',

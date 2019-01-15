@@ -37,6 +37,7 @@ class Home extends React.Component {
       backgroundColorDropDown: COLOR.cyan,
       message: 'You haven\'t had a headache in 5 days!'
     };
+
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase((data) => {
         this.setState({
@@ -213,7 +214,7 @@ class Home extends React.Component {
                 </View>
                 <View style={{ marginTop: 25, marginRight: 20 }}>
                   <Image
-                    source={profile_icons[this.state.icon]}
+                    source={profile_icons[Math.trunc(this.state.icon)]}
                     style={{ width: 100, height: 100, resizeMode: 'contain' }}
                   />
                 </View>
