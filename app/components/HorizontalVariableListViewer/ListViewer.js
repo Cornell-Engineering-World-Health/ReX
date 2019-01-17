@@ -3,25 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  Header,
   ScrollView,
-  TouchableOpacity,
-  DatePickerIOS,
-  Picker,
-  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import Modal from 'react-native-modal';
-import TextInputType from '../LogInputTypes/TextInputType';
-import TimePicker from '../LogInputTypes/TimePicker';
-import Button from '../Button/Button';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
-);
-import { Calendar } from 'react-native-calendars';
-import { COLOR } from '../../resources/constants';
 
 /**
 ListViewer is a horizontal scrollview of items of a list.

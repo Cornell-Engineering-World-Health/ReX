@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   FlatList,
   TouchableOpacity,
   Image
@@ -12,11 +11,7 @@ import {
 import Card from '../Card/Card.js';
 import { COLOR, IMAGES } from '../../resources/constants';
 import Modal from 'react-native-modal';
-import GestureRecognizer, {
-  swipeDirections
-} from 'react-native-swipe-gestures';
-import moment from 'moment';
-import Database from '../../Database';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import { asyncDeleteEvent } from '../../databaseUtil/databaseUtil';
 
 class Agenda extends Component {

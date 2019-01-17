@@ -5,7 +5,6 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   NavigatorIOS
 } from "react-native";
 import Modal from "react-native-modal";
@@ -18,7 +17,6 @@ import { exportDataMailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase,
-  exportAllSymptoms
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
