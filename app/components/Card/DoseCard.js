@@ -29,8 +29,7 @@ class Card extends PureComponent {
     var index_color = this.getPassedIndexandColor()
     var index = index_color[0];
     var color = index_color[1];
-    console.log("passed index: " + index)
-    console.log("inside constructor")
+
     this.state = {
       takenTime: this.props.takenTime,
       passed: this.props.passed,
@@ -91,7 +90,6 @@ class Card extends PureComponent {
    * 4) ["Done for the day", grey, grey] -> completed medication
    */
   _handleRenderText = () => {
-    console.log("inside handle Render text")
     var current = new Date(this.props.time[this.state.passed_index]);
     var timeString;
     if (this.state.passed_index >= this.state.passed.length) {
@@ -107,7 +105,6 @@ class Card extends PureComponent {
       timeString = this.createTakeAtString(current);
       ind = 0;
     }
-    // console.log("force update!")
     this.forceUpdate();
     this.setState({
       backgroundColor: background[ind],
@@ -389,8 +386,6 @@ class Card extends PureComponent {
   }
 
   render() {
-    console.log("inside render")
-    console.log(this.props.title + " | color: "+ this.state.backgroundColor )
     return (
       <View style={styles.wrapper} key = {this.props.title}>
         <TouchableOpacity
