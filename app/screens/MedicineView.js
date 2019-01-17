@@ -256,7 +256,7 @@ class CoolerMedicineView extends React.Component {
           data={this.state.data.sort(this.compareCards)}
           extraData={this.state}
           renderItem={this._renderCard}
-          keyExtractor={(item, _) => item.toString()}
+          keyExtractor={(item, _) => item.title}
         />
         <Modal
           isVisible={this.state.toggle_add}
