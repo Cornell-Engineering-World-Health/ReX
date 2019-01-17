@@ -8,13 +8,10 @@ import {
   Dimensions,
   Image
 } from "react-native";
-import LogFormScreen from "./LogFormScreen";
-import Database from "../Database";
 import { BODY_PARTS, COLOR, IMAGES } from "../resources/constants";
-import { pullSettingsFromDatabase } from "../databaseUtil/databaseUtil";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
-const opacity = "30";
+
 export default class BodySelectScreen extends React.Component {
   constructor(props) {
     super(props);

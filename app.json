@@ -1,6 +1,6 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "31.0.0",
     "splash": {
       "image": "./app/resources/images/icons8-jellyfish-100.png",
       "backgroundColor": "#7fdecb"

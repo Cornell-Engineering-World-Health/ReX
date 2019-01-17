@@ -4,18 +4,10 @@ import {
   Text,
   View,
   Image,
-  Header,
   TouchableOpacity,
-  Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import Button from '../Button/Button';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
-);
-import { Calendar } from 'react-native-calendars';
-import { COLOR, IMAGES } from '../../resources/constants';
+import { IMAGES } from '../../resources/constants';
 
 /**
  * Emulates the StackNavigator header.

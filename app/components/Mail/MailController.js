@@ -1,7 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Platform } from 'react-native';
-import { MailComposer, takeSnapshotAsync } from 'expo';
+import { MailComposer} from 'expo';
 
 const saveOptions = {
   recipients: ['navinr13@gmail.com'],

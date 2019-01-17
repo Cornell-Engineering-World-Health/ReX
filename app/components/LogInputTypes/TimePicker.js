@@ -2,14 +2,10 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  AppRegistry,
-  TextInput,
   View,
-  Picker,
   DatePickerIOS,
   TouchableOpacity
 } from 'react-native';
-import PickerInputType from './PickerInputType';
 import moment from 'moment';
 
 export default class TimePicker extends React.Component {

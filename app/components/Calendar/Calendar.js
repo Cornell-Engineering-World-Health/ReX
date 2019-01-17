@@ -1,27 +1,21 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
   Text,
-  StyleSheet,
   Dimensions,
-  ScrollView,
   TouchableOpacity
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Button } from 'react-native-elements';
 import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
 import {
   pullFromDataBase,
-  pullMedicineFromDatabase
 } from '../../databaseUtil/databaseUtil';
-import constants from '../../resources/constants';
 import { getColor, getTranslucentColor } from '../../resources/constants';
 import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
 import PickerInputType from '../LogInputTypes/PickerInputType';
 import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
-const { width } = Dimensions.get('window');
 const monthNames = [
   'January',
   'February',

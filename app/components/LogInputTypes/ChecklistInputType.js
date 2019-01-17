@@ -2,15 +2,9 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  AppRegistry,
-  TextInput,
   View,
   ScrollView,
-  Picker,
-  ViewPropTypes,
-  TouchableOpacity
 } from 'react-native';
-import CheckBox from 'react-native-check-box';
 import ColorButton from './ColorButton';
 
 /**

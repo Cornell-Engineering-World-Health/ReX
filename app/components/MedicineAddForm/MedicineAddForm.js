@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
@@ -19,9 +18,8 @@ import NavigationHeader from '../NavigationHeader/NavigationHeader';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
-import { asyncCreateMedicineEvents } from '../../databaseUtil/databaseUtil';
 import { Calendar } from 'react-native-calendars';
-import { COLOR, IMAGES } from '../../resources/constants';
+import { COLOR } from '../../resources/constants';
 
 const CALENDAR_ID = 'CALENDAR'
 const TIME_ID = 'TIME'
