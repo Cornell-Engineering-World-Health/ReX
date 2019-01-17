@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { View, Dimensions } from 'react-native';
+import React, { Component, PureComponent } from 'react';
+import { View, Text, Image, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles/SliderEntry.style';
 import Calendar from './Calendar.js';

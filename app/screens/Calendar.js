@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { View, Dimensions, FlatList, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Text, Dimensions, FlatList, StyleSheet } from 'react-native';
 import { itemWidth } from '../components/Calendar/styles/SliderEntry.style';
 import { SliderEntry } from '../components/Calendar';
 import Agenda from '../components/Agenda/Agenda';
 import Moment from 'moment';
 import {
+  pullFromDataBase,
   pullAgendaFromDatabase,
   asyncDeleteEvent
 } from '../databaseUtil/databaseUtil';
+import constants, { COLOR } from '../resources/constants';
 import Modal from 'react-native-modal';
 import LogFormScreen from './LogFormScreen';
 
@@ -23,14 +26,14 @@ class Calendar extends Component {
     super(props);
     data = [];
     for (i = -numOfCals; i < numOfCals; i++) {
-      data.push({ key: i });
+      data.push({ key: `${i}` });
     }
     this.state = {
       first: -numOfCals,
       last: numOfCals - 1,
       data: data,
       currentDate: new Date(),
-      flatlistHeight: 0,
+      flatlistHeight: 300,
       isModalVisible: false,
       agendaData: []
     };
@@ -66,7 +69,6 @@ class Calendar extends Component {
 
   /*
 Generates a key that is in the form MM-DD-YYYY
-
 assumes date is a valid date object
 */
   _generateDateKey(date) {
@@ -131,7 +133,7 @@ assumes date is a valid date object
 
   _renderItem = ({ item }) => {
     return (
-      /*<Text> {item.key} </Text>*/
+      <View>
       <SliderEntry
         ref={ref => {
           this.calendars[item.key] = ref;
@@ -139,13 +141,14 @@ assumes date is a valid date object
         data={
           new Date(
             new Date().getFullYear(),
-            new Date().getMonth() + item.key,
+            new Date().getMonth() + parseInt(item.key, 10),
             0
           )
         }
         pickerHandler={this._pickerHandler.bind(this)}
         onPressMonth={this._onPressMonth}
       />
+      </View>
     );
   };
 
@@ -303,7 +306,9 @@ assumes date is a valid date object
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-        <View style={{}}>
+        <View>
+          {console.log("fuck me")}
+          {console.log(this.state.flatlistHeight)}
           <FlatList
             height={this.state.flatlistHeight}
             style={itemStyle}
