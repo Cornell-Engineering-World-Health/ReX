@@ -23,7 +23,6 @@ class main extends React.Component {
     intializeDatabase();
     databaseFakeData();
     pullIsFirstFromDatabase((is_f) => {
-      console.log('HEH'. is_f)
       this.setState({isOnboarded: is_f ? 0 : 1})
     });
   }
