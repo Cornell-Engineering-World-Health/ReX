@@ -27,6 +27,7 @@ class Card extends PureComponent {
     super(props);
 
     var passed_index = this.getPassedIndex()
+    console.log("passed index: " + passed_index)
     
     this.state = {
       time: this.props.time,
@@ -95,6 +96,7 @@ class Card extends PureComponent {
       timeString = this.createTakeAtString(current);
       ind = 0;
     }
+    console.log("force update!")
     this.forceUpdate();
     this.setState({
       backgroundColor: background[ind],
@@ -371,6 +373,7 @@ class Card extends PureComponent {
   };
 
   render() {
+    console.log(this.props.title + " | color: "+ this.state.backgroundColor )
     return (
       <View style={styles.wrapper}>
         <TouchableOpacity

@@ -185,6 +185,7 @@ class CoolerMedicineView extends React.Component {
    * returns DoseCard component populated with appropriate medicine data
    */
   _renderCard = ({ item }) => {
+    console.log("Medicine View: "+ item.title )
     return (
       <View>
         <DoseCard
@@ -212,6 +213,7 @@ class CoolerMedicineView extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    console.log("rendering medicine view");
     const monthNames = [
       "January",
       "February",
