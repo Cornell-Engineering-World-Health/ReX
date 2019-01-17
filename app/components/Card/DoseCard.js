@@ -31,19 +31,15 @@ class Card extends PureComponent {
     var color = index_color[1];
 
     this.state = {
-      takenTime: this.props.takenTime,
       passed: this.props.passed,
       passed_index: index,
       backgroundColor: background[color],
       borderColor: border[color],
       textColor: text[color],
-      newhours: "hello",
+      newhours: "",
       init_passed: index,
       modalVisible: false,
       data: this.render_timeline()
-      // taken: false,
-      // hhmm_time: "",
-      // newPassed: this.props.passed,
     };
   }
 
