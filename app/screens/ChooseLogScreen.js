@@ -6,15 +6,14 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Picker,
   ImageBackground
 } from "react-native";
-import LogFormScreen from "./LogFormScreen";
 import Database from "../Database";
 import SearchInput, { createFilter } from "react-native-search-filter";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import { getSource, IMAGES, BODY_PARTS } from "../resources/constants";
 const KEYS_TO_FILTERS = ["event_type_name", "event_type_category"];
+
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
     super(props);

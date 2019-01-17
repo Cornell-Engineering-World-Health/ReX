@@ -3,26 +3,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
-  DatePickerIOS,
-  Button,
   Dimensions
 } from "react-native";
 import ScaleSlideInputType from "../components/LogInputTypes/ScaleSlideInputType";
-import TextInputType from "../components/LogInputTypes/TextInputType";
 import ListInputType from "../components/LogInputTypes/ListInputType";
-import PickerInputType from "../components/LogInputTypes/PickerInputType";
 import NumericalPickerInputType from "../components/LogInputTypes/NumericalPickerInputType";
 import Duration from "../components/LogInputTypes/Duration";
 import ChecklistInputType from "../components/LogInputTypes/ChecklistInputType";
 import DatePicker from "../components/LogInputTypes/DatePicker";
 import TimePicker from "../components/LogInputTypes/TimePicker";
-import { StackNavigator } from "react-navigation";
 import Database from "../Database";
 import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import moment from "moment";
-import Carousel, { Pagination } from "react-native-snap-carousel";
 import { COLOR } from "../resources/constants.js";
 import Form from "../components/LogInputTypes/Form";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";

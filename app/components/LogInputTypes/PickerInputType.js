@@ -2,8 +2,6 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  AppRegistry,
-  TextInput,
   View,
   Picker
 } from 'react-native';

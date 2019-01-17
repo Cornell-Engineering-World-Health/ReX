@@ -5,7 +5,6 @@ import {
   Text,
   View,
   Image,
-  Dimensions,
   TouchableOpacity
 } from 'react-native';
 import { IMAGES, COLOR } from '../../resources/constants';

@@ -2,7 +2,6 @@
 @flow
 */
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Platform } from 'react-native';
 import { Notifications, Constants, Permissions } from 'expo';
 import Moment from 'moment';

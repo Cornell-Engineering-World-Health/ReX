@@ -1,13 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
-  StyleSheet,
   View,
   Text,
   ImageBackground,
   Image,
 } from 'react-native';
-import Moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
 import { profile_icons } from '../resources/constants';
 import {IMAGES, COLOR} from '../resources/constants';
@@ -17,7 +14,6 @@ import {
   pullSettingsFromDatabase,
   databaseTakeMedicines
 } from '../databaseUtil/databaseUtil';
-const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 import styles from './styles';
 
 class Home extends React.Component {
