@@ -191,6 +191,7 @@ class CoolerMedicineView extends React.Component {
         <DoseCard
           title={item.title}
           time={item.time}
+          key={item.title}
           takenTime={item.takenTime}
           dosage={item.dosage}
           passed={item.statuses}
@@ -257,7 +258,7 @@ class CoolerMedicineView extends React.Component {
           data={this.state.data.sort(this.compareCards)}
           extraData={this.state}
           renderItem={this._renderCard}
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={(item, _) => item.toString()}
         />
         <Modal
           isVisible={this.state.toggle_add}

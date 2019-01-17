@@ -26,19 +26,20 @@ class Card extends PureComponent {
   constructor(props) {
     super(props);
 
-    var passed_index = this.getPassedIndex()
-    console.log("passed index: " + passed_index)
-    
+    var index_color = this.getPassedIndexandColor()
+    var index = index_color[0];
+    var color = index_color[1];
+    console.log("passed index: " + index)
+    console.log("inside constructor")
     this.state = {
-      time: this.props.time,
       takenTime: this.props.takenTime,
       passed: this.props.passed,
-      passed_index: passed_index,
-      backgroundColor: background[passed_index],
-      borderColor: border[passed_index],
-      textColor: text[passed_index],
+      passed_index: index,
+      backgroundColor: background[color],
+      borderColor: border[color],
+      textColor: text[color],
       newhours: "hello",
-      init_passed: passed_index,
+      init_passed: index,
       modalVisible: false,
       data: this.render_timeline()
       // taken: false,
@@ -51,27 +52,36 @@ class Card extends PureComponent {
     this._handleRenderText();
   };
 
-  // returns the passed index for a Dose Card
-  getPassedIndex = () => {
-    if (this.props.passed) {
-      for (var x = this.props.passed.length - 1; x >= 0; x--) {
-        // hit a taken, next one
-        if (this.props.passed[x]) {
-          return x + 1;
+  
+     // 0 is gray, 1 is green, 2 is red
+  getPassedIndexandColor = () => {
+      var passed_index = 0;
+      if (this.props.passed) {
+        for (var x = this.props.passed.length - 1; x >= 0; x--) {
+          // hit a taken, next one
+          if (this.props.passed[x]) {
+            passed_index = x + 1;
+            break;
+          }
+          // first red we see (latest red)
+          if (
+            this.props.passed[x] == false &&
+            shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
+            !shouldBeTakenNow(new Date(this.props.time[x]))
+          ) {
+            return [x, 2];
+          }
+          // if no taken or red, means we havent missed any and have taken some
         }
-        // first red we see (latest red)
-        if (
-          this.props.passed[x] == false &&
-          shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
-          !shouldBeTakenNow(new Date(this.props.time[x]))
-        ) {
-          return x;
-        }
-        // if no taken or red, means we havent missed any and have taken some
+      }else{
+        passed_index = 0;
+      }
+      if (shouldBeTakenNow(new Date(this.props.time[passed_index]))){
+        return [passed_index, 1]
+      }else{
+        return [passed_index, 0]
       }
     }
-    return 0
-  };
 
   /**
    * Renders the appropriate text, border color, and background color for the DoseCard component given its status"
@@ -81,7 +91,8 @@ class Card extends PureComponent {
    * 4) ["Done for the day", grey, grey] -> completed medication
    */
   _handleRenderText = () => {
-    var current = new Date(this.state.time[this.state.passed_index]);
+    console.log("inside handle Render text")
+    var current = new Date(this.props.time[this.state.passed_index]);
     var timeString;
     if (this.state.passed_index >= this.state.passed.length) {
       ind = 0;
@@ -96,7 +107,7 @@ class Card extends PureComponent {
       timeString = this.createTakeAtString(current);
       ind = 0;
     }
-    console.log("force update!")
+    // console.log("force update!")
     this.forceUpdate();
     this.setState({
       backgroundColor: background[ind],
@@ -116,7 +127,7 @@ class Card extends PureComponent {
   _handleClick = () => {
     that = this;
 
-    var thisMed = new Date(this.state.time[this.state.passed_index]);
+    var thisMed = new Date(this.props.time[this.state.passed_index]);
     var newPassed = this.state.passed;
     var newInd = 0;
     var tempData = this.state.data;
@@ -174,7 +185,7 @@ class Card extends PureComponent {
 
       if (
         shouldBeTaken(
-          new Date(this.state.time[this.state.passed_index - 1]),
+          new Date(this.props.time[this.state.passed_index - 1]),
           new Date()
         )
       ) {
@@ -209,7 +220,7 @@ class Card extends PureComponent {
     var tempData = this.state.data;
     // if green or red
     if (
-      shouldBeTaken(new Date(this.state.time[index]), new Date()) &&
+      shouldBeTaken(new Date(this.props.time[index]), new Date()) &&
       !this.state.passed[index]
     ) {
       // checks green for taken
@@ -372,10 +383,16 @@ class Card extends PureComponent {
     });
   };
 
+  getBackgroundColor = () => {
+    var index_color = this.getPassedIndexandColor()
+    return index_color[1]
+  }
+
   render() {
+    console.log("inside render")
     console.log(this.props.title + " | color: "+ this.state.backgroundColor )
     return (
-      <View style={styles.wrapper}>
+      <View style={styles.wrapper} key = {this.props.title}>
         <TouchableOpacity
           disabled={!this.props.buttonActive}
           onPress={() => this.props.onPress(time)}
