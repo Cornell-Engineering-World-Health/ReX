@@ -15,6 +15,7 @@ import Moment from "moment";
 import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES } from "../resources/constants";
+import { shouldBeTaken, shouldBeTakenNow } from "../resources/helpers";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 import { setMassNotification } from "../components/PushController/PushController.js";
 
@@ -127,6 +128,37 @@ class MedicineView extends React.Component {
     this.asyncDatabasePull();
   };
 
+  // 0 is red, 1 is green, 2 is gray
+  // returns tuple of [passed_index, color]
+  getPassedIndex = (a) => {
+    var passed_index = 0;
+    if (a.statuses) {
+      for (var x = a.statuses.length - 1; x >= 0; x--) {
+        // hit a taken, next one
+        if (a.statuses[x]) {
+          passed_index = x + 1;
+          break;
+        }
+        // first red we see (latest red)
+        if (
+          a.statuses[x] == false &&
+          shouldBeTaken(new Date(a.time[x]), new Date()) &&
+          !shouldBeTakenNow(new Date(a.time[x]))
+        ) {
+          return [x, 0];
+        }
+        // if no taken or red, means we havent missed any and have taken some
+      }
+    }else{
+      passed_index = 0;
+    }
+    if (shouldBeTakenNow(new Date(a.time[passed_index]))){
+      return [passed_index, 1]
+    }else{
+      return [passed_index, 2]
+    }
+  }
+
   /**
    * custom sorting algorithm for medicine cards on the medicine view flatlist:
    * [Red] Missed Medications
@@ -134,9 +166,24 @@ class MedicineView extends React.Component {
    * [Grey] Complete/Future Medications
    * sorted in ascending time order within each category
    */
-  // compareCards = (a,b) => {
-  //   return 1;
-  // }
+  compareCards = (a,b) => {
+    var passed_a = (this.getPassedIndex(a))[0]
+    var color_a  = (this.getPassedIndex(a))[1]
+    var passed_b = (this.getPassedIndex(b))[0]
+    var color_b  = (this.getPassedIndex(b))[1]
+
+    if (color_a != color_b){
+      return color_a > color_b
+    }else {
+      // Done for the Day must be last
+      if (passed_a == a.statuses.length){
+        return 1
+      // Compare times if same color
+      }else{
+        return (a.time[passed_a] > b.time[passed_b])
+      }
+    }
+  }
 
   /**
    * returns DoseCard component populated with appropriate medicine data
@@ -147,6 +194,7 @@ class MedicineView extends React.Component {
         <DoseCard
           title={item.title}
           time={item.time}
+          key={item.title}
           takenTime={item.takenTime}
           dosage={item.dosage}
           passed={item.statuses}
@@ -209,10 +257,10 @@ class MedicineView extends React.Component {
         </View>
         <TouchableOpacity />
         <FlatList
-          data={this.state.data}
+          data={this.state.data.sort(this.compareCards)}
           extraData={this.state}
           renderItem={this._renderCard}
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={(item, _) => item.title}
         />
         <Modal
           isVisible={this.state.toggle_add}
