@@ -12,8 +12,18 @@ import { HomeMedicineLogger } from '../components/HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
   pullSettingsFromDatabase,
-  databaseTakeMedicines
+  databaseTakeMedicines,
+  pullAllSymptoms,
+  pullAllMedicineData
 } from '../databaseUtil/databaseUtil';
+import Moment from 'moment'
+const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
+const POSITIVE_MESSAGE_TIME_DIFF = 4.32 * Math.pow(10, 8); //3 days
+const ENCOURAGEMENT_TEXT = [
+  "Keep logging!",
+  "Keep it going!",
+  "You're doing great."
+]
 import styles from './styles';
 
 class Home extends React.Component {
@@ -29,9 +39,9 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: 'You haven\'t had a headache in 5 days!'
+      message: 'No symptoms are currently logged.'
     };
-
+    this.generatePositiveMessage()
     //TODO: make one function that only pulls name from database
     pullSettingsFromDatabase((data) => {
         this.setState({
@@ -87,6 +97,97 @@ class Home extends React.Component {
         data: formattedData,
       })
     });
+  }
+
+  generateSymptomMessage(callback){
+    let that = this
+    pullAllSymptoms((logged_symptoms) => {
+      if(logged_symptoms.length == 0){
+        if(callback) callback()
+        return
+      }
+
+      let avoid_log_types_set = {}
+      logged_symptoms.forEach((s) => {
+        if(Moment() - Moment(s["timestamp"]) < POSITIVE_MESSAGE_TIME_DIFF){ //symptoms is recent
+          avoid_log_types_set[""+s["event_type_name"]] = true
+        }
+      })
+
+      let most_recent_log_per_type = {}
+      logged_symptoms.forEach((s) => {
+        if(avoid_log_types_set[s["event_type_name"]] == undefined){ //avoid recent log types
+          most_recent_log_per_type[""+s["event_type_name"]] = s["timestamp"]
+        }
+      })
+
+      if(Object.keys(most_recent_log_per_type) == 0){//Failed to find
+        if(callback) callback()
+      } else {
+        let keys = Object.keys(most_recent_log_per_type)
+        let choice = Math.floor(Math.random() * keys.length)
+        let chosen_symptom_time = most_recent_log_per_type[keys[choice]]
+        that.setState({message:
+          ENCOURAGEMENT_TEXT[Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)] +
+          "\n"+
+          "Your last occurance of " +
+          keys[choice].toLowerCase() +
+          " was\n" +
+          Moment(chosen_symptom_time).fromNow() +
+          "!"
+        })
+      }
+    })
+  }
+
+  generateMedicationMessage(callback){
+    let that = this
+    pullAllMedicineData((medication_reminders) => {
+      if(medication_reminders.length == 0){
+        if(callback) callback()
+        return
+      }
+
+      let most_recent_missed_t = medication_reminders[0]["timestamp"]
+      medication_reminders.forEach((med) => {
+        let fields = JSON.parse(med.fields);
+        let contains_false = false
+        fields['Taken'].forEach((didTake) => {
+          if(didTake == false) contains_false = true
+        })
+        if(contains_false && (Moment() - Moment(med["timestamp"]) > 0)){//in the past
+          most_recent_missed_t = med["timestamp"]
+        }
+      })
+
+      if(Moment() - Moment(most_recent_missed_t) < POSITIVE_MESSAGE_TIME_DIFF){//Failed
+        if(callback) callback()
+        return
+      } else {
+        let time_diff_str = Moment(most_recent_missed_t).fromNow()
+        if(time_diff_str.indexOf('ago') == -1){
+          if(callback) callback()
+          return
+        }
+        time_diff_str = time_diff_str.substring(0, time_diff_str.length-4)
+        that.setState({message:
+          ENCOURAGEMENT_TEXT[Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)] +
+          "\n"+
+          "You have not missed any medications in\n" +
+          time_diff_str+
+          "!"
+        })
+      }
+    })
+  }
+
+  generatePositiveMessage(){
+    let symptom_or_medicine = Math.random() < .5
+    if(symptom_or_medicine){
+      this.generateSymptomMessage(() => this.generateMedicationMessage())
+    } else {
+      this.generateMedicationMessage(() => this.generateSymptomMessage())
+    }
   }
 
   writeAllInTimeCategory(i, st, callback){

@@ -39,7 +39,8 @@ export default StyleSheet.create({
   middleMessage: {
     marginLeft: 20,
     marginRight: 20,
-    paddingTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1
   },
   middleMessageText: {

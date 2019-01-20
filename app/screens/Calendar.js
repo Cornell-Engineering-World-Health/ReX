@@ -307,8 +307,6 @@ assumes date is a valid date object
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start' }}>
         <View>
-          {console.log("fuck me")}
-          {console.log(this.state.flatlistHeight)}
           <FlatList
             height={this.state.flatlistHeight}
             style={itemStyle}

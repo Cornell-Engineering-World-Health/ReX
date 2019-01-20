@@ -4,5 +4,4 @@ let db_id = Math.random()
   .toString(36)
   .substring(7);
 
-module.exports = SQLite.openDatabase("dbrw.db");
-
+module.exports = SQLite.openDatabase("dbrw221.db");
