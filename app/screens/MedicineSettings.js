@@ -13,7 +13,10 @@ import Moment from "moment";
 import { LinearGradient } from "expo";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
-import { pullMedicineFromDatabase } from "../databaseUtil/databaseUtil";
+import {
+  pullMedicineFromDatabase,
+  asyncDeleteMedicine
+} from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
 /*
 Allows users to edit medicine
@@ -53,7 +56,7 @@ export default class MedicineSettings extends React.Component {
     });
   }
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => ""+index;
 
   /*
     Handles turning on/off notifications for each medicineData
@@ -78,7 +81,8 @@ export default class MedicineSettings extends React.Component {
   //must include index of item to delete
   _deleteMedicine() {
     data = this.state.medicine;
-    data.splice(this.state.selectedMedicineIndex, 1);
+    let [med] = data.splice(this.state.selectedMedicineIndex, 1);
+    asyncDeleteMedicine(med.name)
     this.setState({ modalOpen: false, medicine: data });
   }
 

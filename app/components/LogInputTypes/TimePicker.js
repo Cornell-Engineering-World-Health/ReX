@@ -49,7 +49,7 @@ export default class TimePicker extends React.Component {
           style={{
             // flex: 1,
             flexDirection: 'row',
-            marginBottom: 30,
+            marginBottom: 50,
             paddingLeft: 5
           }}
         >
