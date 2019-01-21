@@ -47,7 +47,7 @@ export default class TimePicker extends React.Component {
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
         <View
           style={{
-            flex: 1,
+            // flex: 1,
             flexDirection: 'row',
             marginBottom: 30,
             paddingLeft: 5
