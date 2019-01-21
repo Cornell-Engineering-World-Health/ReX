@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
@@ -449,7 +449,7 @@ class Card extends PureComponent {
               backgroundColor: "white",
               padding: 20,
               borderRadius: 5,
-              flex: this.state.passed.length * 0.15
+              flex: Math.min(this.state.passed.length * 0.11 + .05, Dimensions.get('window').height)
             }}
           >
             <Text
