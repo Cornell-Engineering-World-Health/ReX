@@ -449,7 +449,7 @@ class Card extends PureComponent {
               backgroundColor: "white",
               padding: 20,
               borderRadius: 5,
-              flex: this.state.passed.length * 0.15
+              flex: this.state.passed.length * 0.11 + .05
             }}
           >
             <Text
@@ -558,7 +558,6 @@ const styles = StyleSheet.create({
     marginRight: 30
   },
   modalWrapper: {
-    flex: 1.0,
     alignItems: "stretch",
     justifyContent: "center"
   },
