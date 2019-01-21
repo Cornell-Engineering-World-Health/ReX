@@ -117,15 +117,18 @@ export default class ChooseLogScreen extends React.Component {
       let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
       event_details_id_count++;
       event_id_count++;
+
       Database.transaction(
         tx => {
           tx.executeSql(
-            "INSERT INTO event_details_tbl (event_details_id,fields) VALUES (?, ?)",
-            [event_details_id_count, values]
+            "INSERT INTO event_details_tbl (event_details_id,fields) VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?)",
+            [values]
           );
           tx.executeSql(
-            "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?, ?, ?)",
-            [event_id_count, event_type_id, timestamp, event_details_id_count]
+            "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) " +
+            "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
+            [event_type_id, timestamp],
+            (tx, { rows }) => {}
           );
         },
         err => console.log(err)
@@ -160,7 +163,7 @@ export default class ChooseLogScreen extends React.Component {
       if (prop == "ScaleSlideInputType") {
         return (
           <ScaleSlideInputType
-            key={key}
+            key={""+key}
             label_left={"No Pain"}
             label_right={"Severe"}
             value={parseInt(this.state.values[key]) - 1}
@@ -185,7 +188,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DosagePickerInputType") {
         return (
           <NumericalPickerInputType
-            key={key}
+            key={""+key}
             input_style={styles.input_container_blue}
             title_text_style={styles.title_text}
             value={this.state.values[key]}
@@ -222,7 +225,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DatePicker") {
         return (
           <DatePicker
-            key={key}
+            key={""+key}
             input_style={styles.input_container_transparent_green}
             title_text_style={styles.title_text_green}
             value={this.state.values[key]}
@@ -236,7 +239,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DayChooserInputType") {
         return (
           <ChecklistInputType
-            key={key}
+            key={""+key}
             list_values={[
               "Sunday",
               "Monday",
@@ -258,11 +261,12 @@ export default class ChooseLogScreen extends React.Component {
         );
       } else if (prop == "TimeCategoryInputType") {
         return (
-          <View key={key}>
+          <View key={""+key}>
             {this.state.values[key].map((prop, timeKey) => {
               return (
                 <TimePicker
                   key={
+                    ""+
                     this.state.values.length +
                     timeKey +
                     this.state.values[key][timeKey]
