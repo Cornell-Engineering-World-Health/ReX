@@ -558,7 +558,6 @@ const styles = StyleSheet.create({
     marginRight: 30
   },
   modalWrapper: {
-    flex: 1.0,
     alignItems: "stretch",
     justifyContent: "center"
   },
