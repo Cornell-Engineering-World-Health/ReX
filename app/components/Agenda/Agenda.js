@@ -48,7 +48,7 @@ class Agenda extends Component {
       return (
         <FlatList
           data={this.state.agendaInfo}
-          keyExtractor={item => item.id}
+          keyExtractor={item => ""+item.id}
           extraData={this.state}
           renderItem={({ item, index }) => {
             return (

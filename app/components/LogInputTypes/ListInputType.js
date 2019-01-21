@@ -140,7 +140,7 @@ If index is an invalid number, function does nothing.
             })}
             data={this.state.symptoms}
             extraData={this.state}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => ""+index}
             renderItem={this._renderItem}
           />
         </View>
