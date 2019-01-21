@@ -5,4 +5,3 @@ let db_id = Math.random()
   .substring(7);
 
 module.exports = SQLite.openDatabase("db" + db_id + ".db");
-

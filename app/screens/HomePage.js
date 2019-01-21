@@ -16,6 +16,7 @@ import {
   pullAllSymptoms,
   pullAllMedicineData
 } from '../databaseUtil/databaseUtil';
+import Moment from 'moment'
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 const POSITIVE_MESSAGE_TIME_DIFF = 4.32 * Math.pow(10, 8); //3 days
 const ENCOURAGEMENT_TEXT = [
