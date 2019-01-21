@@ -353,7 +353,7 @@ export default class Profile extends Component {
             <TextInput
               keyboardType="numeric"
               textAlign="center"
-              style={{ height: 75, fontSize: 35 }}
+              style={{ fontSize: 35 }}
               placeholder="Enter Weight in lbs"
               onChangeText={weight => {
                 this.props.settingsUpdate('weight', weight);
