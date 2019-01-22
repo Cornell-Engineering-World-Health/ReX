@@ -800,6 +800,61 @@ export function asyncDeleteEvent(id) {
   );
 }
 
+export function asyncDeleteMedicine(name) {
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "Select * from event_details_tbl",
+        [],
+        (tx, { rows }) => {
+          let removeIds = []
+          rows._array.forEach((med) => {
+            let fields = JSON.parse(med.fields)
+            if(fields['Pill Name'] == name){
+              removeIds.push(med['event_details_id'])
+            }
+          })
+
+          deleteEventTblQuery = "DELETE FROM event_tbl WHERE "
+          deleteEventDetailTblQuery = "DELETE FROM event_details_tbl WHERE "
+
+          removeIds.forEach((id, idx, arr) => {
+            deleteEventTblQuery += "event_details_id = ?"
+            deleteEventDetailTblQuery += "event_details_id = ?"
+            if(idx != arr.length-1){
+              deleteEventTblQuery += " OR "
+              deleteEventDetailTblQuery += " OR "
+            }
+          })
+
+          console.log(deleteEventTblQuery, removeIds)
+          tx.executeSql(
+            deleteEventTblQuery,
+            removeIds,
+            (tx, { rows }) => {
+              console.log("Medicine: "+name+" has been deleted. (1/2)")
+            },
+            err => console.log(err)
+          );
+          tx.executeSql(
+            deleteEventDetailTblQuery,
+            removeIds,
+            (tx, { rows }) => {
+              console.log("Medicine: "+name+" has been deleted. (2/2)")
+            },
+            err => console.log(err)
+          );
+
+
+        },
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+
 function formatMedicineData(data) {
   dataTemp = {};
   data.forEach(function(med) {

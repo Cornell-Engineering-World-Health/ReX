@@ -12,9 +12,16 @@ export default class TimePicker extends React.Component {
   constructor(props) {
     super(props);
     date = new Date();
-    time = props.chosen_date.split(':');
+
+    let rounding = 15 * 60 * 1000;
+    let closest15minTime = moment();
+    closest15minTime = moment(Math.round((+closest15minTime) / rounding) * rounding);
+    let timeStr = closest15minTime.format("HH:mm");
+
+    time = timeStr.split(':');
     date.setHours(time[0]);
     date.setMinutes(time[1]);
+
 
     this.state = {
       title_text: props.title_text,
@@ -49,7 +56,7 @@ export default class TimePicker extends React.Component {
           style={{
             // flex: 1,
             flexDirection: 'row',
-            marginBottom: 30,
+            marginBottom: 50,
             paddingLeft: 5
           }}
         >
