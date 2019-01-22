@@ -29,12 +29,16 @@ const mapTypeToInitVal = {
   time: new Date()
 };
 
-const SURVEY_DIR = FileSystem.documentDirectory + 'test11';
+const SURVEY_DIR = FileSystem.documentDirectory + 'survey';
 const FILE_NAME = 'survey.csv';
 
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
+    this.initState()
+  }
+
+  initState(){
     let keysArray = survey['Questions'].map(q => q['QuestionType']);
     let titles = survey['Questions'].map(q => q['Title']);
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
@@ -91,12 +95,11 @@ export default class SurveyForm extends React.Component {
 
   submit() {
     console.log(this.state.submit_vals);
-    this.props.onSubmit();
+    this.props.close();
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
-          console.log('making dir');
-          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR); //make Directory if not exist
         }
       })
       .then(e => {
@@ -131,7 +134,9 @@ export default class SurveyForm extends React.Component {
   }
 
   state_to_csv() {
-    let content = 'Survey Name,' + this.state.surveyId + '\n';
+    let content = 'Survey Name,' + this.state.surveyId + '\n' +
+                  'Date,' + (new Date()).toLocaleDateString() +
+                  ',' + (new Date()).toLocaleTimeString() + '\n';
     let keys = Object.keys(this.state.submit_vals);
     keys.forEach(k => {
       if (
