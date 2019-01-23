@@ -99,7 +99,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (19, 'Vomiting', 'image.png', 'Intensity','Duration','TORSO')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (20, 'Heart Pain', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (20, 'Heart Pain', 'image.png', 'Intensity','Duration','TORSO')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, 'Intensity', 'ScaleSlideInputType')"
@@ -435,7 +435,6 @@ export function databaseFakeData() {
 * Writes a symptom entry into the database.
 */
 export function asyncCreateSymptomLogEvent(event_type_id, detailsJson, timestamp){
-  console.log("@@@@", detailsJson)
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -687,6 +686,12 @@ export function asyncDeleteEvent(id) {
         (tx, { rows }) => console.log("event has been deleted with id :", id),
         err => console.log(err)
       );
+      tx.executeSql(
+        "DELETE FROM event_details_tbl WHERE event_details_id = ?",
+        inputArray,
+        (tx, { rows }) => console.log("event has been deleted with id :", id),
+        err => console.log(err)
+      );
     },
     err => console.log(err)
   );
@@ -719,7 +724,6 @@ export function asyncDeleteMedicine(name) {
             }
           })
 
-          console.log(deleteEventTblQuery, removeIds)
           tx.executeSql(
             deleteEventTblQuery,
             removeIds,

@@ -121,7 +121,8 @@ export const COLOR = {
   medicineCardChecked: "#e6ffe6",
   medicineCardUnchecked: "#ffc2b3",
   lightGreen: "#9cff6880",
-  green: "#9cff68"
+  green: "#9cff68",
+  yellow: "#FFEE93"
 };
 
 export const BODY_PARTS = {
@@ -187,122 +188,122 @@ export default (constants = {
   HEADACHE: {
     image: IMAGES.brain,
     title: "Headache",
-    backgroundColor: "#7fdecb",
-    translucentColor: "#7fdecb80"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   DIZZINESS: {
     image: IMAGES.intensePain,
     title: "Dizziness",
-    backgroundColor: "#7fdecb",
-    translucentColor: "#7fdecb80"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   BLURRED_VISION: {
     image: IMAGES.glasses,
     title: "Blurred Vision",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   DOUBLE_VISION: {
     image: IMAGES.double_vision,
     title: "Double Vision",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   HAND_PAIN: {
     image: IMAGES.handpain,
     title: "Hand Pain",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: COLOR.blue,
+    translucentColor: COLOR.blue+"80"
   },
   NECKPAIN: {
     image: IMAGES.neckPain,
     title: "Neck Pain",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   KNEEPAIN: {
     image: IMAGES.kneePain,
     title: "Knee Pain",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: COLOR.red,
+    translucentColor: COLOR.red+"80"
   },
   DYSGEUSIA: {
     image: IMAGES.dysgeusia,
     title: "Dysgeusia",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   COGNITIVE_SLOWING: {
     image: IMAGES.cognitive,
     title: "Cognitive Slowing",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   VOMITING: {
     image: IMAGES.vomiting,
     title: "Vomiting",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: COLOR.purple,
+    translucentColor: COLOR.purple+"80"
   },
   DIARRHEA: {
     image: IMAGES.diarrhea,
     title: "Diarrhea",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: COLOR.yellow,
+    translucentColor: COLOR.yellow+"80"
   },
   NAUSEA: {
     image: IMAGES.nausea,
     title: "Nausea",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: COLOR.yellow,
+    translucentColor: COLOR.yellow+"80"
   },
   FATIGUE: {
     image: IMAGES.fatigue,
     title: "Fatigue",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: COLOR.yellow,
+    translucentColor: COLOR.yellow+"80"
   },
   LEGPAIN: {
     image: IMAGES.legPain,
     title: "Leg Pain",
-    backgroundColor: "#f0924c",
-    translucentColor: "#f0924c80"
+    backgroundColor: COLOR.blue,
+    translucentColor: COLOR.blue+"80"
   },
   FOOTPAIN: {
     image: IMAGES.footPain,
     title: "Foot Pain",
-    backgroundColor: "#F7AEF8",
-    translucentColor: "#F7AEF880"
+    backgroundColor: COLOR.blue,
+    translucentColor: COLOR.blue+"80"
   },
   BACKPAIN: {
     title: "Back Pain",
     image: IMAGES.backPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: COLOR.purple,
+    translucentColor: COLOR.purple+"80"
   },
   PULSATILE_TINNITUS: {
     image: IMAGES.pulsatileTinnitus,
     title: "Pulsatile Tinnitus",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: COLOR.cyan,
+    translucentColor: COLOR.cyan+"80"
   },
   ELBOWPAIN: {
     title: "Elbow Pain",
     image: IMAGES.elbowPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: COLOR.blue,
+    translucentColor: COLOR.blue+"80"
   },
   HEARTPAIN: {
     title: "Heart Pain",
     image: IMAGES.heartPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: COLOR.purple,
+    translucentColor: COLOR.purple+"80"
   },
   STOMACHPAIN: {
     title: "Stomach Pain",
     image: IMAGES.stomachPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: COLOR.purple,
+    translucentColor: COLOR.purple+"80"
   },
   DEFAULT: {
     image: IMAGES.default,
