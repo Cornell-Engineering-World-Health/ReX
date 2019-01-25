@@ -34,7 +34,7 @@ export const IMAGES = {
   plusSignMinimal: require("./images/plusSignMinimal.png"),
   profile: require("./images/profile.png"),
   profilePic: require("./images/profilePic.png"),
-  pulsatileTinnitus: require("./images/pulse.png"),
+  RingingInEars: require("./images/pulse.png"),
   scale: require("./images/scale.png"),
   settings: require("./images/settingsScreen.png"),
   stomachPain: require("./images/stomachPain.png"),
@@ -280,9 +280,9 @@ export default (constants = {
     backgroundColor: defaultColor,
     translucentColor: defaultColor
   },
-  PULSATILE_TINNITUS: {
-    image: IMAGES.pulsatileTinnitus,
-    title: "Pulsatile Tinnitus",
+  RINGING_IN_EARS: {
+    image: IMAGES.RingingInEars,
+    title: "Ringing in Ears",
     backgroundColor: "#79ADDC",
     translucentColor: "#79ADDC80"
   },
@@ -335,7 +335,7 @@ export const symptoms = [
   constants.LEGPAIN,
   constants.NECKPAIN,
   constants.STOMACHPAIN,
-  constants.PULSATILE_TINNITUS
+  constants.RINGING_IN_EARS
 ];
 
 /**

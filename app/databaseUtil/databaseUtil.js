@@ -63,7 +63,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name, event_type_icon,card_field_id1,card_field_id2,event_type_category) values (7, 'Double Vision', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (8, 'Pulsatile Tinnitus', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (8, 'Ringing in Ears', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (9, 'Neck Pain', 'image.png', 'Intensity','Duration','HEAD')"
