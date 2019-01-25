@@ -186,7 +186,7 @@ class Calendar extends PureComponent {
           }
           for (var j = 0; j < graphRefs.length; j++) {
             if (graphRefs[j]) {
-              graphRefs[j].transitionTo({ bottom: -31.3 }, 200, 'ease');
+              graphRefs[j].transitionTo({ bottom: -50.0 }, 200, 'ease');
               if (j == last) {
                 setTimeout(() => {
                   thisRef.setState(
@@ -212,6 +212,9 @@ class Calendar extends PureComponent {
     });
   };
 
+  setBarHeightBounds = (layout) => {
+    //console.log(layout)
+  }
   /**
    * Select specific date on calendar when selected
    */
@@ -384,7 +387,7 @@ class Calendar extends PureComponent {
       var barHolder = [];
       let h = 0;
       if (this.state.intensities) {
-        h = 2.83 * (this.state.intensities[i] || 0);
+        h = (1.0/9.0) * (this.state.intensities[i] || 0);
       }
 
       return (
@@ -392,11 +395,14 @@ class Calendar extends PureComponent {
           style={dateStyle}
           key={i}
           onPress={() => this._onDatePress(i)}
+
+                    onLayout={(event) => { this.setBarHeightBounds(event.nativeEvent.layout)}}
         >
           <View style={styles.textBox}>
             <Text style={textStyle}>{day}</Text>
           </View>
-          <View style={styles.dayBox}>
+          <View style={styles.dayBox}
+          >
             <Animatable.View
               ref={b => {
                 this.graphRefs[i] = b;
@@ -404,7 +410,7 @@ class Calendar extends PureComponent {
               duration={400}
               animation="slideInUp"
               style={[
-                { backgroundColor: this.state.graphColor, height: h },
+                { backgroundColor: this.state.graphColor, flex: h},
                 styles.bar
               ]}
             />

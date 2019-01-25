@@ -11,7 +11,7 @@
     },
     "splash": {
       "image": "./app/resources/images/intro_background.png",
-      "backgroundColor": "#7fdecb"
+      "backgroundColor": "#2e3238"
     }
   }
 }

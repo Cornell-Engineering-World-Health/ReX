@@ -319,13 +319,12 @@ export function intializeDatabase() {
 }
 
 export function formatData(data) {
-  // console.log(data)
   dataTemp = {};
   data.forEach(function(ev) {
     let d = new Date(ev.timestamp.replace(" ", "T"));
     let day = d.getDate() - 1;
     let symptom = ev.event_type_name;
-    let intensity = parseInt(JSON.parse(ev.fields).Intensity) * 2;
+    let intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
     if (!dataTemp[symptom]) {
       dataTemp[symptom] = {
@@ -340,7 +339,7 @@ export function formatData(data) {
         intensity) /
       dataTemp[symptom].count[day];
   });
-  //console.log(dataTemp)
+
   return dataTemp;
 }
 
@@ -366,7 +365,12 @@ export function databaseFakeData() {
       tx.executeSql(
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (21, 5,'2018-04-03 06:01:00', 21)"
       );
-
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (22,\'{"Intensity": "9","Duration": "10"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (22, 5,'2019-01-31 06:01:00', 22)"
+      );
       /* medication reminder fake data */
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
