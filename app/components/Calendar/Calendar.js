@@ -212,9 +212,6 @@ class Calendar extends PureComponent {
     });
   };
 
-  setBarHeightBounds = (layout) => {
-    //console.log(layout)
-  }
   /**
    * Select specific date on calendar when selected
    */
@@ -395,8 +392,6 @@ class Calendar extends PureComponent {
           style={dateStyle}
           key={i}
           onPress={() => this._onDatePress(i)}
-
-                    onLayout={(event) => { this.setBarHeightBounds(event.nativeEvent.layout)}}
         >
           <View style={styles.textBox}>
             <Text style={textStyle}>{day}</Text>
