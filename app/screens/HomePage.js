@@ -299,6 +299,7 @@ class Home extends React.Component {
             <View style={styles.topInfo}>
               <View
                 style={{
+                  paddingTop: 35,
                   flexDirection: 'row',
                   justifyContent: 'space-between'
                 }}
@@ -307,7 +308,7 @@ class Home extends React.Component {
                   <Text style={styles.welcomeText}>Welcome</Text>
                   <Text style={styles.nameText}>{this.state.name}</Text>
                 </View>
-                <View style={{ marginTop: 25, marginRight: 20 }}>
+                <View style={{ marginRight: 20 }}>
                   <Image
                     source={profile_icons[Math.trunc(this.state.icon)]}
                     style={{ width: 100, height: 100, resizeMode: 'contain' }}
