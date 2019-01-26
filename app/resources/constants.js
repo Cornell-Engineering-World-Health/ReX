@@ -24,7 +24,7 @@ export const IMAGES = {
   fatigue: require("./images/fatigue.png"),
   nausea: require("./images/nausea.png"),
   diarrhea: require("./images/diarrhea.png"),
-  dysgeusia: require("./images/popsicle.png"),
+  impaired_taste: require("./images/popsicle.png"),
   vomiting: require("./images/vomiting.png"),
   cognitive: require("./images/cognitive.png"),
   handpain: require("./images/hand.png"),
@@ -226,9 +226,9 @@ export default (constants = {
     backgroundColor: "#79ADDC",
     translucentColor: "#79ADDC80"
   },
-  DYSGEUSIA: {
-    image: IMAGES.dysgeusia,
-    title: "Dysgeusia",
+  IMPAIRED_TASTE: {
+    image: IMAGES.impaired_taste,
+    title: "Impaired Taste",
     backgroundColor: "#FFEE93",
     translucentColor: "#FFEE9380"
   },
@@ -325,7 +325,7 @@ export const symptoms = [
   constants.DIARRHEA,
   constants.VOMITING,
   constants.COGNITIVE_SLOWING,
-  constants.DYSGEUSIA,
+  constants.IMPAIRED_TASTE,
   constants.NAUSEA,
   constants.ELBOWPAIN,
   constants.FOOTPAIN,
