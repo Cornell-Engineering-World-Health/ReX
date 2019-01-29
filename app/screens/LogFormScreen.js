@@ -14,7 +14,10 @@ import ChecklistInputType from "../components/LogInputTypes/ChecklistInputType";
 import DatePicker from "../components/LogInputTypes/DatePicker";
 import TimePicker from "../components/LogInputTypes/TimePicker";
 import Database from "../Database";
-import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
+import {
+  asyncCreateMedicineEvents,
+  asyncCreateSymptomLogEvent
+} from "../databaseUtil/databaseUtil";
 import moment from "moment";
 import { COLOR } from "../resources/constants.js";
 import Form from "../components/LogInputTypes/Form";
@@ -61,11 +64,11 @@ export default class ChooseLogScreen extends React.Component {
             keysArray = Object.keys(json_rows);
 
             var valArray = [];
-
+            var submit_vals = {}
             for (let i = 0; i < keysArray.length; i++) {
               var input_types = [];
-              valArray[i] = json_rows[keysArray[i]];
-
+              valArray[i] = "N/A";
+              submit_vals[keysArray[i]] = "N/A"
               Database.transaction(
                 tx =>
                   tx.executeSql(
@@ -78,7 +81,7 @@ export default class ChooseLogScreen extends React.Component {
                         input_type_array: input_types,
                         value_labels: keysArray,
                         values: valArray,
-                        submit_vals: json_rows,
+                        submit_vals: submit_vals,
                         event_type_id: log_type,
                         log_name: log_name
                       });
@@ -107,6 +110,7 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   submit() {
+    console.log(this.state)
     if (this.state.nav) {
       // Log new symptoms
       this.props.navigation.state.params.onLog();
@@ -117,22 +121,8 @@ export default class ChooseLogScreen extends React.Component {
       let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
       event_details_id_count++;
       event_id_count++;
+      asyncCreateSymptomLogEvent(event_type_id, values, timestamp)
 
-      Database.transaction(
-        tx => {
-          tx.executeSql(
-            "INSERT INTO event_details_tbl (event_details_id,fields) VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?)",
-            [values]
-          );
-          tx.executeSql(
-            "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) " +
-            "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
-            [event_type_id, timestamp],
-            (tx, { rows }) => {}
-          );
-        },
-        err => console.log(err)
-      );
       this.props.screenProps.successOnSubmit();
       this.props.navigation.navigate("Body", {});
     } else {
