@@ -224,7 +224,6 @@ export default class Trends extends React.Component {
   */
   _setDataHelperYear(unformattedData) {
     //we want to loop over the number of days in the year and add 0 to empty days
-    console.log("unformatteddata", unformattedData);
     let totalMonths = 12;
     let totalIntensity = 0;
     let totalMonthsWithData = 0;
@@ -240,7 +239,7 @@ export default class Trends extends React.Component {
         hasData = true;
         totalMonthsWithData += 1;
         totalIntensity += monthData.total_intensity / monthData.frequency;
-        //  console.log(monthData, "month data");
+
         let value = 0;
         if (this.state.selectedMode == MODES[0]) {
           //frequency
@@ -254,7 +253,7 @@ export default class Trends extends React.Component {
         formattedData.push(0);
       }
     }
-    console.log("formatted data", formattedData);
+
     //update state to reflect changes
     this.setState({
       unformattedData: unformattedData,
@@ -270,8 +269,6 @@ export default class Trends extends React.Component {
   */
   _setDataHelperMonth(unformattedData) {
     //we want to loop over the number of days in the month and add 0 to empty days
-
-    console.log("unformattedData", unformattedData);
 
     let daysInMonth = moment(
       this.state.selectedYear + "-" + (this.state.selectedMonth + 1),
@@ -418,10 +415,7 @@ export default class Trends extends React.Component {
       let m = this.state.selectedMonth;
       let month = m + 1 < 10 ? "0" + (m + 1) : "" + (m + 1);
       let day = d + 1 < 10 ? "0" + (d + 1) : "" + (d + 1);
-      console.log(day, "day");
-      console.log(month, "month");
       let key = year + "-" + month + "-" + day;
-      console.log("key", key);
       if (data[key]) {
         let { total_intensity, frequency } = data[key];
         return (
@@ -639,11 +633,7 @@ export default class Trends extends React.Component {
           {/*<Text style={styles.headerDateText}>{this.getFullDate()}</Text>*/}
         </View>
         <View style={styles.openingScreenTextContainer}>
-          <Text style={styles.openingScreenText1}>
-            Here you will find graphs to show your symptom history.
-          </Text>
-        </View>
-        <View style={styles.openingScreenTextContainer}>
+          <Text style={styles.openingScreenText1}>Symptom History</Text>
           <Text style={styles.openingScreenText2}>
             Come back after you've logged your first symptom!
           </Text>
@@ -819,10 +809,11 @@ const styles = StyleSheet.create({
   },
   pickerButtonContainer: {
     justifyContent: "center",
-    borderTopWidth: 1,
+    borderLeftWidth: 1,
     borderColor: "#e8e8e8",
-    padding: 15,
-    flex: 1
+    padding: 3,
+    flex: 1,
+    backgroundColor: "white"
   },
   pickerButtonText: {
     textAlign: "center",
@@ -933,11 +924,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingRight: 50,
     paddingLeft: 50,
+    padding: 50,
     fontSize: 25,
     fontWeight: "300"
   },
   openingScreenTextContainer: {
-    flex: 0.3
+    flex: 1,
+    justifyContent: "center"
   },
   subInfoCardBody: {
     textAlign: "center",
