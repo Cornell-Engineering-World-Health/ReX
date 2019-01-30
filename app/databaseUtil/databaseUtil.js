@@ -504,6 +504,15 @@ export function databaseFakeData() {
   );
 }
 
+/**
+* function to just keep date format consistent with specs and Locale String
+*/
+function toDateString(date){
+  let date_comp = date.toLocaleDateString().split('/')
+  if(date_comp[0].length == 1) date_comp[0] = '0'+ date_comp[0]
+  return date_comp[2] + '-' + date_comp[0] + '-' + date_comp[1]
+}
+
 function printAllEventDetails(){
   Database.transaction(
     tx =>
@@ -829,9 +838,8 @@ function formatMedicineData(data) {
 
 export function pullMedicineFromDatabase(date, callback) {
   // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  let day = date.toISOString().substr(0, 10);
+  let day = toDateString(date)
   dayArray = [day];
-  // console.log(dayArray)
   Database.transaction(tx => {
     tx.executeSql(
       "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
@@ -1009,7 +1017,6 @@ function updateMedicineData(data, time, takenVal, callback) {
           queryArgs,
           (tx, results) => {
             if(callback) callback();
-            console.log(results)
           }
         );
       },
@@ -1035,7 +1042,8 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
           tx => {
             tx.executeSql(
               "Update event_details_tbl SET fields =? where event_details_id= ? ",
-              queryArgs
+              queryArgs,
+              printAllEventDetails()
             );
           },
           err => console.log(err)
@@ -1050,7 +1058,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
 export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
-  let day = date.toISOString().substr(0, 10);
+  let day = toDateString(date)
   dayArray = [day];
 
   Database.transaction(
@@ -1072,9 +1080,8 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
   // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
-  let day = date.toISOString().substr(0, 10);
+  let day = toDateString(date)
   dayArray = [day];
-  // console.log(dayArray)
   // console.log('inside take medicine')
   Database.transaction(
     tx => {

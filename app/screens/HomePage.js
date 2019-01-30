@@ -50,7 +50,6 @@ class Home extends React.Component {
             icon: data.icon
         })
     })
-    this.didRevert = [false, false, false, false]
   }
 
   componentDidMount() {
@@ -68,7 +67,6 @@ class Home extends React.Component {
     }
 
     pullMedicineFromDatabase(new Date(), function(formattedData){
-      console.log(formattedData)
       let notTakenMeds = {
         morning: [],
         afternoon: [],
@@ -267,6 +265,7 @@ class Home extends React.Component {
     let backgroundColorDropDown
     let dropDownTitle = ''
     let dropDownMessage = ''
+    let didRevert = false
 
     switch(index){
       case 0: iconDropDown = IMAGES.morningColorW; backgroundColorDropDown = COLOR.red; time = 'morning'; break;
@@ -277,6 +276,7 @@ class Home extends React.Component {
     let doneAmount = this.state.doneAmount
     let originalDoneAmount = this.state.originalDoneAmount
     dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
+
     if(this.state.totalAmount[index] == 0){
       dropDownMessage = 'No '+time+' medications are being tracked.'
     } else if(this.state.doneAmount[index] == 0){
@@ -284,12 +284,12 @@ class Home extends React.Component {
     } else {
       doneAmount[index] = 0
       originalDoneAmount[index] = 0
-      this.didRevert[index] = true;
+      didRevert= true;
       dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
     let st = this.state
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
-      databaseTakeMedicines(new Date(), index, false)
+      () => {if(didRevert) databaseTakeMedicines(new Date(), index, false)}
     )
   }
 
