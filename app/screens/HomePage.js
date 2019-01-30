@@ -287,10 +287,13 @@ class Home extends React.Component {
       didRevert= true;
       dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
+
     let st = this.state
-    this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
-      () => {if(didRevert) databaseTakeMedicines(new Date(), index, false)}
-    )
+    this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {
+      this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)
+      console.log(didRevert)
+      if(didRevert) databaseTakeMedicines(new Date(), index, false)
+    })
   }
 
   render() {

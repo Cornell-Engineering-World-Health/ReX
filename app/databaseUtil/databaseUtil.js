@@ -1042,8 +1042,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
           tx => {
             tx.executeSql(
               "Update event_details_tbl SET fields =? where event_details_id= ? ",
-              queryArgs,
-              printAllEventDetails()
+              queryArgs
             );
           },
           err => console.log(err)
@@ -1143,8 +1142,6 @@ export function pullIsFirstFromDatabase(callback) {
       WHERE is_first != 1",
       [],
       (_, { rows }) => {
-        console.log(rows)
-        console.log(rows.length);
         callback(rows.length == 0);
       },
       err => console.log(err, "pullIsFirstFromDatabase")
