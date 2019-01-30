@@ -12,6 +12,7 @@ import { HomeMedicineLogger } from '../components/HomeMedicineLogger';
 import {
   pullMedicineFromDatabase,
   pullSettingsFromDatabase,
+  databaseTakeMedicine,
   databaseTakeMedicines,
   pullAllSymptoms,
   pullAllMedicineData
@@ -56,7 +57,24 @@ class Home extends React.Component {
     let totalAmount = this.state.totalAmount;
     let doneAmount = this.state.doneAmount;
     let thisRef = this;
+
+    let extractInfo = (data, medName, idx) => {
+      return {
+        name: medName,
+        dosage: data[medName].dosage,
+        time: data[medName].time[idx],
+        idx: idx
+      }
+    }
+
     pullMedicineFromDatabase(new Date(), function(formattedData){
+      console.log(formattedData)
+      let notTakenMeds = {
+        morning: [],
+        afternoon: [],
+        evening: [],
+        night: []
+      }
       Object.keys(formattedData).forEach(function(med){
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time) {
@@ -65,24 +83,32 @@ class Home extends React.Component {
               totalAmount[0]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[0]++;
+              } else {
+                notTakenMeds.morning.push(extractInfo(formattedData, med, i))
               }
               break;
             case 'Afternoon':
               totalAmount[1]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[1]++;
+              } else {
+                notTakenMeds.afternoon.push(extractInfo(formattedData, med, i))
               }
               break;
             case 'Evening':
               totalAmount[2]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[2]++;
+              } else {
+                notTakenMeds.evening.push(extractInfo(formattedData, med, i))
               }
               break;
             case 'Night':
               totalAmount[3]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[3]++;
+              } else {
+                notTakenMeds.night.push(extractInfo(formattedData, med, i))
               }
               break;
             default:
@@ -90,11 +116,13 @@ class Home extends React.Component {
           i++;
         })
       })
+
       thisRef.setState({
         totalAmount: totalAmount,
         doneAmount: doneAmount,
         originalDoneAmount: doneAmount.slice(), //copy by value, not reference
         data: formattedData,
+        notTakenMeds: notTakenMeds
       })
     });
   }
@@ -190,17 +218,11 @@ class Home extends React.Component {
     }
   }
 
-  writeAllInTimeCategory(i, st, callback){
-    let done = st.doneAmount
-    let o_done = st.originalDoneAmount
-    let tot = st.totalAmount
-    if(this.didRevert[i] ){
-      databaseTakeMedicines(new Date(), i, false, callback)
-    }else if(done[i] != o_done[i]){
-      databaseTakeMedicines(new Date(), i, true, callback)
-    } else {
-      callback()
-    }
+  writeAllInTimeCategory(notTakenMeds, time, takenVal){
+      notTakenMeds[time].forEach((med) => {
+        //console.log(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
+        databaseTakeMedicine(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
+      })
   }
 
   logAll(index){
@@ -209,7 +231,7 @@ class Home extends React.Component {
     let backgroundColorDropDown
     let dropDownTitle = ''
     let dropDownMessage = ''
-
+    let takenVal = true
 
     switch(index){
       case 0: iconDropDown = IMAGES.morningColorW; backgroundColorDropDown = COLOR.red; time = 'morning'; break;
@@ -227,6 +249,7 @@ class Home extends React.Component {
       backgroundColorDropDown = COLOR.PrimaryGray
       dropDownTitle = 'Undo for '+time+' medications'
       dropDownMessage = 'Touch and hold to revert logs of ALL '+time+' medications.'
+      takenVal = false
     } else {
       doneAmount[index] = this.state.totalAmount[index];
       dropDownMessage = 'All remaining '+time+' medications are taken!'
@@ -234,13 +257,8 @@ class Home extends React.Component {
     thisRef = this;
     let st = this.state
     this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
-    this.writeAllInTimeCategory(0, st,  () => {
-      this.writeAllInTimeCategory(1, st,  () => {
-        this.writeAllInTimeCategory(2, st,  () => {
-          this.writeAllInTimeCategory(3, st,  () => {})
-        })
-      })
-    }))
+      this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal)
+    )
   }
 
   revertAll(index){
@@ -261,7 +279,7 @@ class Home extends React.Component {
     dropDownTitle = time.charAt(0).toUpperCase() + time.substring(1) + ' Medications'
     if(this.state.totalAmount[index] == 0){
       dropDownMessage = 'No '+time+' medications are being tracked.'
-    } else if(this.state.originalDoneAmount[index] == 0){
+    } else if(this.state.doneAmount[index] == 0){
       dropDownMessage = 'No '+time+ ' medications to revert.'
     } else {
       doneAmount[index] = 0
@@ -271,14 +289,8 @@ class Home extends React.Component {
     }
     let st = this.state
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
-    this.writeAllInTimeCategory(0, st, () => {
-      this.writeAllInTimeCategory(1, st, () => {
-        this.writeAllInTimeCategory(2, st,() => {
-          this.writeAllInTimeCategory(3, st,  () => {})
-        })
-      })
-    }))
-
+      databaseTakeMedicines(new Date(), index, false)
+    )
   }
 
   render() {
