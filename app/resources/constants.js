@@ -24,7 +24,7 @@ export const IMAGES = {
   fatigue: require("./images/fatigue.png"),
   nausea: require("./images/nausea.png"),
   diarrhea: require("./images/diarrhea.png"),
-  dysgeusia: require("./images/popsicle.png"),
+  impaired_taste: require("./images/popsicle.png"),
   vomiting: require("./images/vomiting.png"),
   cognitive: require("./images/cognitive.png"),
   handpain: require("./images/hand.png"),
@@ -34,7 +34,7 @@ export const IMAGES = {
   plusSignMinimal: require("./images/plusSignMinimal.png"),
   profile: require("./images/profile.png"),
   profilePic: require("./images/profilePic.png"),
-  pulsatileTinnitus: require("./images/pulse.png"),
+  RingingInEars: require("./images/pulse.png"),
   scale: require("./images/scale.png"),
   settings: require("./images/settingsScreen.png"),
   stomachPain: require("./images/stomachPain.png"),
@@ -251,11 +251,11 @@ export default (constants = {
     backgroundColor: SYMPTOM_COLOR.lime,
     translucentColor: SYMPTOM_COLOR.lime+"80"
   },
-  DYSGEUSIA: {
-    image: IMAGES.dysgeusia,
-    title: "Dysgeusia",
-    backgroundColor: SYMPTOM_COLOR.yellow,
-    translucentColor: SYMPTOM_COLOR.yellow+"80"
+  IMPAIRED_TASTE: {
+    image: IMAGES.impaired_taste,
+    title: "Impaired Taste",
+    backgroundColor: "#FFEE93",
+    translucentColor: "#FFEE9380"
   },
   COGNITIVE_SLOWING: {
     image: IMAGES.cognitive,
@@ -305,11 +305,11 @@ export default (constants = {
     backgroundColor: SYMPTOM_COLOR.chestnut,
     translucentColor: SYMPTOM_COLOR.chestnut+"80"
   },
-  PULSATILE_TINNITUS: {
-    image: IMAGES.pulsatileTinnitus,
-    title: "Pulsatile Tinnitus",
-    backgroundColor: SYMPTOM_COLOR.purple2,
-    translucentColor: SYMPTOM_COLOR.purple2+"80"
+  RINGING_IN_EARS: {
+    image: IMAGES.RingingInEars,
+    title: "Ringing in Ears",
+    backgroundColor: "#79ADDC",
+    translucentColor: "#79ADDC80"
   },
   ELBOWPAIN: {
     title: "Elbow Pain",
@@ -350,7 +350,7 @@ export const symptoms = [
   constants.DIARRHEA,
   constants.VOMITING,
   constants.COGNITIVE_SLOWING,
-  constants.DYSGEUSIA,
+  constants.IMPAIRED_TASTE,
   constants.NAUSEA,
   constants.ELBOWPAIN,
   constants.FOOTPAIN,
@@ -360,7 +360,7 @@ export const symptoms = [
   constants.LEGPAIN,
   constants.NECKPAIN,
   constants.STOMACHPAIN,
-  constants.PULSATILE_TINNITUS
+  constants.RINGING_IN_EARS
 ];
 
 /**
