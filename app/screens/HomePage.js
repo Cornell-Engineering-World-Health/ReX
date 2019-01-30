@@ -50,6 +50,8 @@ class Home extends React.Component {
             icon: data.icon
         })
     })
+
+    this.didRevertAll = [false, false, false, false]
   }
 
   componentDidMount() {
@@ -252,11 +254,15 @@ class Home extends React.Component {
       doneAmount[index] = this.state.totalAmount[index];
       dropDownMessage = 'All remaining '+time+' medications are taken!'
     }
+
+
     thisRef = this;
     let st = this.state
-    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)},
-      this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal)
-    )
+    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {
+      this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)
+      if(this.didRevertAll[index]) databaseTakeMedicines(new Date(), index, takenVal)
+      else this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal)
+    })
   }
 
   revertAll(index){
@@ -265,7 +271,6 @@ class Home extends React.Component {
     let backgroundColorDropDown
     let dropDownTitle = ''
     let dropDownMessage = ''
-    let didRevert = false
 
     switch(index){
       case 0: iconDropDown = IMAGES.morningColorW; backgroundColorDropDown = COLOR.red; time = 'morning'; break;
@@ -284,15 +289,14 @@ class Home extends React.Component {
     } else {
       doneAmount[index] = 0
       originalDoneAmount[index] = 0
-      didRevert= true;
+      this.didRevertAll[index] = true;
       dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
 
     let st = this.state
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {
       this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)
-      console.log(didRevert)
-      if(didRevert) databaseTakeMedicines(new Date(), index, false)
+      if(this.didRevertAll[index]) databaseTakeMedicines(new Date(), index, false)
     })
   }
 
