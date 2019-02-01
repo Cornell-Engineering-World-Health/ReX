@@ -257,10 +257,10 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','4')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','1')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
@@ -1009,7 +1009,7 @@ export function asyncSettingUpdate(name, value) {
         inputArray,
         (f, c) => {
           tx.executeSql("Select * from settings_tbl", [], (a, b) => {
-            console.log("WRITES", inputArray, c.rows, b.rows);
+            console.log(b.rows);
           });
         }
       );
