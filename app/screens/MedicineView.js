@@ -91,10 +91,10 @@ class MedicineView extends React.Component {
    * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
    */
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
-      asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
-      new_title = "Fiih Medication Reminder";
-      new_body = "It's time to take " + title +"! (" + dosage + ")";
-      setMassNotification(start, end, new_title, new_body, time, () => {console.log("created reminders")});
+    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
+    new_title = "Fiih Medication Reminder";
+    new_body = "It's time to take " + title + "! (" + dosage + ")";
+    setMassNotification(start, end, new_title, new_body, time, () => {});
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
@@ -130,7 +130,7 @@ class MedicineView extends React.Component {
 
   // 0 is red, 1 is green, 2 is gray
   // returns tuple of [passed_index, color]
-  getPassedIndex = (a) => {
+  getPassedIndex = a => {
     var passed_index = 0;
     if (a.statuses) {
       for (var x = a.statuses.length - 1; x >= 0; x--) {
@@ -149,15 +149,15 @@ class MedicineView extends React.Component {
         }
         // if no taken or red, means we havent missed any and have taken some
       }
-    }else{
+    } else {
       passed_index = 0;
     }
-    if (shouldBeTakenNow(new Date(a.time[passed_index]))){
-      return [passed_index, 1]
-    }else{
-      return [passed_index, 2]
+    if (shouldBeTakenNow(new Date(a.time[passed_index]))) {
+      return [passed_index, 1];
+    } else {
+      return [passed_index, 2];
     }
-  }
+  };
 
   /**
    * custom sorting algorithm for medicine cards on the medicine view flatlist:
@@ -166,24 +166,24 @@ class MedicineView extends React.Component {
    * [Grey] Complete/Future Medications
    * sorted in ascending time order within each category
    */
-  compareCards = (a,b) => {
-    var passed_a = (this.getPassedIndex(a))[0]
-    var color_a  = (this.getPassedIndex(a))[1]
-    var passed_b = (this.getPassedIndex(b))[0]
-    var color_b  = (this.getPassedIndex(b))[1]
+  compareCards = (a, b) => {
+    var passed_a = this.getPassedIndex(a)[0];
+    var color_a = this.getPassedIndex(a)[1];
+    var passed_b = this.getPassedIndex(b)[0];
+    var color_b = this.getPassedIndex(b)[1];
 
-    if (color_a != color_b){
-      return color_a > color_b
-    }else {
+    if (color_a != color_b) {
+      return color_a > color_b;
+    } else {
       // Done for the Day must be last
-      if (passed_a == a.statuses.length){
-        return 1
-      // Compare times if same color
-      }else{
-        return (a.time[passed_a] > b.time[passed_b])
+      if (passed_a == a.statuses.length) {
+        return 1;
+        // Compare times if same color
+      } else {
+        return a.time[passed_a] > b.time[passed_b];
       }
     }
-  }
+  };
 
   /**
    * returns DoseCard component populated with appropriate medicine data
