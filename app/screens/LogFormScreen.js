@@ -194,16 +194,6 @@ export default class ChooseLogScreen extends React.Component {
         );
       } else if (prop == "TextInputType") {
         return (
-          // <TextInputType
-          //   key={key}
-          //   input_style={styles.input_container_green}
-          //   title_text_style={styles.title_text}
-          //   text={this.state.values[key]}
-          //   placeholder_text={'Type here...'}
-          //   title_text={this.state.value_labels[key]}
-          //   val_label={this.state.value_labels[key]}
-          //   valueChange={this.valueChange.bind(this)}
-          // />
           <ListInputType
             valueChange={(label, value) => {
               this._form.valueChange(label, value);

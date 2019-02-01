@@ -10,7 +10,7 @@ import {
   pullAgendaFromDatabase,
   asyncDeleteEvent
 } from "../databaseUtil/databaseUtil";
-import constants, { COLOR } from "../resources/constants";
+import constants from "../resources/constants";
 import Modal from "react-native-modal";
 import LogFormScreen from "./LogFormScreen";
 

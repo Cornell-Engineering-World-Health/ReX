@@ -11,7 +11,6 @@ import {
 import Card from "../Card/Card.js";
 import { COLOR, IMAGES } from "../../resources/constants";
 import Modal from "react-native-modal";
-import GestureRecognizer from "react-native-swipe-gestures";
 import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
 
 class Agenda extends Component {
@@ -126,23 +125,19 @@ class Agenda extends Component {
     }
     return (
       <View style={{ marginLeft: 5, flex: 1 }}>
-        <GestureRecognizer
-          onSwipeUp={() => this.setState({ expandVisible: true })}
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            alignItems: "center"
+          }}
         >
-          <View
-            style={{
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center"
-            }}
-          >
-            <Text style={styles.summaryText}>Summary</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={styles.dateText}>{this.props.date}</Text>
-              {renderExpandButton}
-            </View>
+          <Text style={styles.summaryText}>Summary</Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.dateText}>{this.props.date}</Text>
+            {renderExpandButton}
           </View>
-        </GestureRecognizer>
+        </View>
         <View style={{ flex: 1 }}>{page}</View>
         <Modal
           onBackdropPress={() => this.setState({ expandVisible: false })}
