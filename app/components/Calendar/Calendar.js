@@ -14,7 +14,6 @@ import styles from './styles/styles.js';
 import * as Animatable from 'react-native-animatable';
 import {
   pullFromDataBase,
-  pullMedicineFromDatabase
 } from '../../databaseUtil/databaseUtil';
 import constants from '../../resources/constants';
 import { getColor, getTranslucentColor } from '../../resources/constants';
