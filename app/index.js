@@ -5,7 +5,6 @@ import OnboardContent from "./components/Onboard/OnboardContent";
 import {
   createTables,
   intializeDatabase,
-  databaseFakeData,
   pullIsFirstFromDatabase,
   logIsFirst
 } from "./databaseUtil/databaseUtil";
@@ -21,7 +20,6 @@ class main extends React.Component {
 
     createTables();
     intializeDatabase();
-    databaseFakeData();
     pullIsFirstFromDatabase(is_f => {
       this.setState({ isOnboarded: is_f ? 0 : 1 });
     });

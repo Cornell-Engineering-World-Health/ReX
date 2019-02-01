@@ -135,61 +135,61 @@ export function intializeDatabase() {
 
       /* inserting default values into event_details_tbl with 1950 date for each event type*/
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "9","Duration": "40"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "N/A","Duration": "N/A"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (7,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (7,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (8,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (8,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (9,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (9,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (10,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (10,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (14,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (14,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (16,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (16,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (17,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (17,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (18,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (18,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (19,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (19,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (20,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (20,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
 
       /* inserting initial events into event table with 1950 date for each event type*/
@@ -284,20 +284,14 @@ export function intializeDatabase() {
       );
 
       /* medication reminder examples */
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
-    \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,1,1],"Time": ["09:00"],"Time Category": ["Morning"],"Taken": [true], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
-      );
+    //   tx.executeSql(
+    //     'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
+    // \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
+    //   );
+    //   tx.executeSql(
+    //     "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
+    //   );
+
       //Initialize first time app open tbl
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
@@ -336,97 +330,6 @@ export function formatData(data) {
   });
 
   return dataTemp;
-}
-
-export function databaseFakeData() {
-  Database.transaction(
-    tx => {
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (300,\'{"Intensity": "2","Duration": "40"}\')'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (300, 1,'2018-03-07 06:00:00', 300)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1500,\'{"Intensity": "5","Duration": "60"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (1500, 3,'2018-04-19 06:01:00', 1500)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (21,\'{"Intensity": "2","Duration": "10"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (21, 5,'2018-04-03 06:01:00', 21)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (22,\'{"Intensity": "9","Duration": "10"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (22, 5,'2019-01-31 06:01:00', 22)"
-      );
-      /* medication reminder fake data */
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (52,\
-               \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false,false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (52, 4,'2018-11-19 09:00:00', 52)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (53,\
-              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,1,0,0,0,0],"Taken": [false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (53, 4,'2018-11-19 09:00:00', 53)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (54,\
-              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false,false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (54, 4,'2018-11-19 09:00:00', 54)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (55,\
-              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-04-01","End Date": "2018-04-30","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,1,0,0,0],"Taken": [false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (55, 4,'2018-11-19 09:00:00', 55)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (56,\
-              \'{"Pill Name": "Tylenol","Dosage": "20mg",  "Start Date": "2018-08-01","End Date": "2018-09-30","Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [true,false], "Notification On": false}\' )'
-      );
-
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (56, 4,'2018-11-19 09:00:00', 56)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (57,\
-              \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-08-01","End Date": "2018-11-19","Time": ["09:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (57, 4,'2018-11-19 09:00:00', 57)"
-      );
-
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1800,\
-              \'{"Pill Name": "Crestor","Dosage": "400mg","Start Date": "2018-11-18","End Date": "2018-11-19","Time": ["12:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1800, 4,'2018-11-19 12:00:00', 1800)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1801,\
-              \'{"Pill Name": "Advair","Dosage": "400mg","Start Date": "2018-11-18","End Date": "2018-11-19","Time": ["18:00"],"Time Category": ["Morning"],"Days Of Week": [0,0,0,0,1,0,0],"Taken": [false], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (1801, 4,'2018-01-14 12:00:00', 1801)"
-      );
-    },
-    err => console.log(err)
-  );
 }
 
 /**
@@ -1017,10 +920,7 @@ export function asyncSettingUpdate(name, value) {
     tx => {
       tx.executeSql(
         "INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)",
-        inputArray,
-        (f, c) => {
-          tx.executeSql("Select * from settings_tbl", [], (a, b) => {});
-        }
+        inputArray
       );
     },
     err => console.log(err)
