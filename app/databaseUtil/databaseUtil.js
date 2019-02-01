@@ -396,6 +396,7 @@ function printAllEventDetails(){
         (tx, { rows }) => console.log(rows._array)
       ),
     err => console.log(err))
+}
 
 /**
 * Writes a symptom entry into the database.
