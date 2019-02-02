@@ -384,6 +384,7 @@ export function databaseFakeData() {
 function toDateString(date){
   let date_comp = date.toLocaleDateString().split('/')
   if(date_comp[0].length == 1) date_comp[0] = '0'+ date_comp[0]
+  if(date_comp[1].length == 1) date_comp[1] = '0'+ date_comp[1]
   return date_comp[2] + '-' + date_comp[0] + '-' + date_comp[1]
 }
 
