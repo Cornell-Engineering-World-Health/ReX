@@ -284,13 +284,13 @@ export function intializeDatabase() {
       );
 
       /* medication reminder examples */
-    //   tx.executeSql(
-    //     'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    // \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
-    //   );
-    //   tx.executeSql(
-    //     "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
-    //   );
+      //   tx.executeSql(
+      //     'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
+      // \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
+      //   );
+      //   tx.executeSql(
+      //     "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
+      //   );
 
       //Initialize first time app open tbl
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
@@ -330,6 +330,59 @@ export function formatData(data) {
   });
 
   return dataTemp;
+}
+
+export function databaseFakeData() {
+  console.log("faking data");
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (300,\'{"Intensity": "2","Duration": "40"}\')'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (300, 1,'2018-03-07 06:00:00', 300)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1500,\'{"Intensity": "5","Duration": "60"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (1500, 3,'2018-04-19 06:01:00', 1500)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (21,\'{"Intensity": "2","Duration": "10"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (21, 5,'2018-04-03 06:01:00', 21)"
+      );
+      tx.executeSql(
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (22,\'{"Intensity": "9","Duration": "10"}\' )'
+      );
+      tx.executeSql(
+        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (22, 5,'2019-01-31 06:01:00', 22)"
+      );
+      /* medication reminder fake data */
+    },
+    err => console.log(err)
+  );
+}
+
+/**
+ * function to just keep date format consistent with specs and Locale String
+ */
+function toDateString(date) {
+  let date_comp = date.toLocaleDateString().split("/");
+  if (date_comp[0].length == 1) date_comp[0] = "0" + date_comp[0];
+  return date_comp[2] + "-" + date_comp[0] + "-" + date_comp[1];
+}
+
+function printAllEventDetails() {
+  Database.transaction(
+    tx =>
+      tx.executeSql("select * from event_details_tbl", [], (tx, { rows }) =>
+        console.log(rows._array)
+      ),
+    err => console.log(err)
+  );
 }
 
 /**
@@ -665,7 +718,7 @@ function formatMedicineData(data) {
 
 export function pullMedicineFromDatabase(date, callback) {
   // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  let day = date.toISOString().substr(0, 10);
+  let day = toDateString(date);
   dayArray = [day];
 
   Database.transaction(tx => {
@@ -833,7 +886,7 @@ function updateMedicineData(data, time, takenVal, callback) {
           "Update event_details_tbl SET fields =? where event_details_id= ? ",
           queryArgs,
           (tx, results) => {
-            callback();
+            if (callback) callback();
           }
         );
       },
@@ -851,7 +904,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
         newTaken[idx] = takenVal;
         fields["Taken"] = newTaken;
         let newTakenTime = fields["Taken Time"].slice();
-        newTakenTime[idx] = Moment().format("HH:mm");
+        newTakenTime[idx] = takenVal == true ? Moment().format("HH:mm") : "";
         fields["Taken Time"] = newTakenTime;
         let newFields = JSON.stringify(fields);
         let queryArgs = [newFields, med.event_details_id];
@@ -874,7 +927,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
 export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
-  let day = date.toISOString().substr(0, 10);
+  let day = toDateString(date);
   dayArray = [day];
 
   Database.transaction(
@@ -895,8 +948,10 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
-  let day = date.toISOString().substr(0, 10);
+  // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
+  let day = toDateString(date);
   dayArray = [day];
+  // console.log('inside take medicine')
   Database.transaction(
     tx => {
       tx.executeSql(

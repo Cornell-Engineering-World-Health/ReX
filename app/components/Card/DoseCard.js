@@ -361,7 +361,7 @@ class Card extends PureComponent {
         shouldBeTaken(new Date(val), new Date())
       ) {
         circol = "#fa8b89";
-        taken_string = "Missed";
+        taken_string = shouldBeTakenNow(new Date(val)) ? "Take Now" : "Missed"  ;
       } else {
         circol = "#cccccc";
         taken_string = "Not taken";
