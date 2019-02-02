@@ -8,14 +8,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   AlertIOS
-} from 'react-native';
-import moment from 'moment';
-import Modal from 'react-native-modal';
-import TextInputType from '../LogInputTypes/TextInputType';
-import TimePicker from '../LogInputTypes/TimePicker';
-import Button from '../Button/Button';
-import ListViewer from '../HorizontalVariableListViewer/ListViewer';
-import NavigationHeader from '../NavigationHeader/NavigationHeader';
+} from "react-native";
+import moment from "moment";
+import Modal from "react-native-modal";
+import TextInputType from "../LogInputTypes/TextInputType";
+import TimePicker from "../LogInputTypes/TimePicker";
+import Button from "../Button/Button";
+import ListViewer from "../HorizontalVariableListViewer/ListViewer";
+import NavigationHeader from "../NavigationHeader/NavigationHeader";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
@@ -81,15 +81,9 @@ export default class MedicineAddForm extends React.Component {
    * If incomplete -> Callback for error dropdown, and force user to fix the form
    * If complete -> Callback for success dropdown, and callbacks to update the database and return to the Medicine View
    */
-<<<<<<< HEAD
   submit() {
     if (this.checkIfIncomplete()) {
-      this.props.errorOnSubmit();
-=======
-  submit (){
-    if(this.checkIfIncomplete()){
-      AlertIOS.alert('Form Incomplete', 'Please add any missing information')
->>>>>>> 268d64f70665055328bf68d2dfbe684812b79343
+      AlertIOS.alert("Form Incomplete", "Please add any missing information");
     } else {
       this.props.successOnSubmit();
       this.props.asyncDatabaseUpdate(
@@ -161,21 +155,12 @@ export default class MedicineAddForm extends React.Component {
     }
   }
 
-<<<<<<< HEAD
   timeToTimeCategory(time) {
-    let tc = ["10:00", "15:00", "19:00", "23:00"]; //temp boundaries
+    let tc = ["11:00", "15:00", "19:00", "23:00"]; //temp boundaries
     if (time < tc[0]) return "Morning";
     if (time < tc[1]) return "Afternoon";
     if (time < tc[2]) return "Evening";
     return "Night";
-=======
-  timeToTimeCategory(time){
-    let tc = ['11:00', '15:00', '19:00', '23:00'] //temp boundaries
-    if(time < tc[0]) return 'Morning'
-    if(time < tc[1]) return 'Afternoon'
-    if(time < tc[2]) return 'Evening'
-    return 'Night'
->>>>>>> 268d64f70665055328bf68d2dfbe684812b79343
   }
 
   /**
@@ -202,48 +187,28 @@ export default class MedicineAddForm extends React.Component {
   render() {
     let timeViewer = (
       <ListViewer
-<<<<<<< HEAD
         list={this.state.timeArray.map(v => {
           let time_split = v.split(":");
           let h = time_split[0];
           let m = time_split[1];
           if (parseInt(h) > 12) return parseInt(h) - 12 + ":" + m + " PM";
+          else if (parseInt(h) == 12) return "12:" + m + " PM";
           else if (parseInt(h) == 0) return "12:" + m + " AM";
           else return v + " AM";
-=======
-        list={this.state.timeArray.map((v) => {
-          let time_split = v.split(':')
-          let h = time_split[0]
-          let m = time_split[1]
-          if(parseInt(h) > 12) return ((parseInt(h)-12)+':'+m+' PM')
-          else if(parseInt(h) == 12) return ('12:'+m+' PM')
-          else if (parseInt(h) == 0) return ('12:'+m+' AM')
-          else return (v+' AM')
->>>>>>> 268d64f70665055328bf68d2dfbe684812b79343
         })}
         backgroundColor={COLOR.cyan}
       />
     );
     let timeViewerGray = (
       <ListViewer
-<<<<<<< HEAD
         list={this.state.timeArray.map(v => {
           let time_split = v.split(":");
           let h = time_split[0];
           let m = time_split[1];
           if (parseInt(h) > 12) return parseInt(h) - 12 + ":" + m + " PM";
+          else if (parseInt(h) == 12) return "12:" + m + " PM";
           else if (parseInt(h) == 0) return "12:" + m + " AM";
           else return v + " AM";
-=======
-        list={this.state.timeArray.map((v) => {
-          let time_split = v.split(':')
-          let h = time_split[0]
-          let m = time_split[1]
-          if(parseInt(h) > 12) return ((parseInt(h)-12)+':'+m+' PM')
-          else if(parseInt(h) == 12) return ('12:'+m+' PM')
-          else if (parseInt(h) == 0) return ('12:'+m+' AM')
-          else return (v+' AM')
->>>>>>> 268d64f70665055328bf68d2dfbe684812b79343
         })}
         backgroundColor={COLOR.PrimaryGray}
       />
