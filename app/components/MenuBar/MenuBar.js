@@ -73,6 +73,7 @@ class MenuBar extends React.Component {
     });
   }
   _renderScreen() {
+    StatusBar.setBarStyle('dark-content', false);
     switch (this.state.selectedID) {
       case HOME_PAGE:
         return <Home />;
@@ -97,7 +98,6 @@ class MenuBar extends React.Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         {page}
         <View
           style={styles.addButton}
