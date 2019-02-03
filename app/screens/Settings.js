@@ -154,7 +154,7 @@ class Settings extends Component {
               title="Contact"
               onPress={() => {
                 sendMail(
-                  [this.state.email],
+                  ["fiih.developers@gmail.com"],
                   "Comments on Your App",
                   "Dear Engineering World Health Body, \n",
                   null,
