@@ -303,7 +303,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    position: "absolute",
+    bottom: 0,
+    right: 20
   },
   searchImage: {
     width: 25,
