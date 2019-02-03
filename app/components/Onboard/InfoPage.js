@@ -108,6 +108,7 @@ class IntroPage extends React.Component {
         <View style={styles.profileWrapper}>
           <Profile
             settingsUpdate={(setting, value) => {
+              if (typeof value == "number") value = "" + value;
               this.settingsUpdate(setting, value);
               asyncSettingUpdate(setting, value);
             }}

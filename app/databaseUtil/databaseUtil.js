@@ -255,10 +255,10 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','4')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','0')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','1')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
@@ -372,6 +372,7 @@ export function databaseFakeData() {
 function toDateString(date) {
   let date_comp = date.toLocaleDateString().split("/");
   if (date_comp[0].length == 1) date_comp[0] = "0" + date_comp[0];
+  if (date_comp[1].length == 1) date_comp[1] = "0" + date_comp[1];
   return date_comp[2] + "-" + date_comp[0] + "-" + date_comp[1];
 }
 
@@ -975,7 +976,12 @@ export function asyncSettingUpdate(name, value) {
     tx => {
       tx.executeSql(
         "INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)",
-        inputArray
+        inputArray,
+        (f, c) => {
+          tx.executeSql("Select * from settings_tbl", [], (a, b) => {
+            console.log(b.rows);
+          });
+        }
       );
     },
     err => console.log(err)

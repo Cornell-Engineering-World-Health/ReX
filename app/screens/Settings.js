@@ -100,7 +100,7 @@ class Settings extends Component {
           <Text
             style={{
               alignSelf: "flex-start",
-              marginTop: 50,
+              marginTop: 35,
               marginLeft: 20,
               marginBottom: 10,
               fontWeight: "bold",

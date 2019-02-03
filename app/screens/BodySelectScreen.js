@@ -91,7 +91,7 @@ export default class BodySelectScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let h_lines = this.renderHorizontalLines();
     return (
-      <View style={{ flex: 1, paddingTop: 30, backgroundColor: "white" }}>
+      <View style={{ flex: 1, paddingTop: 40, backgroundColor: "white" }}>
         {h_lines}
         <View style={styles.header}>
           <Text style={styles.headerText}>
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   headerText: {
-    fontSize: 20
+    fontSize: 22
   },
   bodyVertical: {
     flex: 1,
@@ -303,7 +303,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    position: "absolute",
+    bottom: 0,
+    right: 20
   },
   searchImage: {
     width: 25,
