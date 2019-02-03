@@ -142,7 +142,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap"
   },
-  scrollView: {},
+  scrollView: {
+    flex: 0.7
+  },
   log_button: {
     margin: 10,
     alignItems: "bottom",
@@ -181,14 +183,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingRight: 25,
     paddingLeft: 25,
-    flex: 0.1,
+    flex: 0.15,
     justifyContent: "center",
     alignItems: "stretch",
-    backgroundColor: "white",
     flexDirection: "row"
   },
   backWrapper: {
-    flex: 0.1,
+    flex: 0.15,
     paddingTop: 25
   },
   lightShadow: {
