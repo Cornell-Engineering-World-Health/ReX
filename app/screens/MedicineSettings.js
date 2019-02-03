@@ -57,7 +57,7 @@ export default class MedicineSettings extends React.Component {
     });
   }
 
-  _keyExtractor = (item, index) => ""+index;
+  _keyExtractor = (item, index) => "" + index;
 
   /*
     Handles turning on/off notifications for each medicineData
@@ -65,7 +65,11 @@ export default class MedicineSettings extends React.Component {
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
-    databaseMedicineNotification(data[index].name, data[index].dosage, data[index].status)
+    databaseMedicineNotification(
+      data[index].name,
+      data[index].dosage,
+      data[index].status
+    );
     this.setState({ medicine: data });
   }
 
@@ -80,7 +84,7 @@ export default class MedicineSettings extends React.Component {
   _deleteMedicine() {
     data = this.state.medicine;
     let [med] = data.splice(this.state.selectedMedicineIndex, 1);
-    asyncDeleteMedicine(med.name)
+    asyncDeleteMedicine(med.name);
     this.setState({ modalOpen: false, medicine: data });
   }
 
@@ -347,7 +351,6 @@ const styles = StyleSheet.create({
     fontWeight: "200"
   },
   modalButton: {
-    padding: 20,
     flex: 1,
     borderRadius: 10,
     justifyContent: "center",
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   modalBody: {
-    flex: 0.5,
+    flex: 0.6,
     flexDirection: "column",
     justifyContent: "space-around"
   },
