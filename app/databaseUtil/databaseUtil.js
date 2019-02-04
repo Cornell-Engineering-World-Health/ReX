@@ -976,12 +976,7 @@ export function asyncSettingUpdate(name, value) {
     tx => {
       tx.executeSql(
         "INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)",
-        inputArray,
-        (f, c) => {
-          tx.executeSql("Select * from settings_tbl", [], (a, b) => {
-            console.log(b.rows);
-          });
-        }
+        inputArray
       );
     },
     err => console.log(err)
