@@ -27,28 +27,19 @@ const mapTypeToInitVal = {
   time: new Date()
 };
 
-<<<<<<< HEAD
+
 const SURVEY_DIR = FileSystem.documentDirectory + 'survey';
 const FILE_NAME = 'survey.csv';
-=======
-const SURVEY_DIR = FileSystem.documentDirectory + "test11";
-const FILE_NAME = "survey.csv";
->>>>>>> master
 
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
     this.initState()
   }
 
   initState(){
     let keysArray = survey['Questions'].map(q => q['QuestionType']);
     let titles = survey['Questions'].map(q => q['Title']);
-=======
-    let keysArray = survey["Questions"].map(q => q["QuestionType"]);
-    let titles = survey["Questions"].map(q => q["Title"]);
->>>>>>> master
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
     let valOptions = {};
     survey["Questions"].forEach((q, i) => {
@@ -102,20 +93,11 @@ export default class SurveyForm extends React.Component {
   }
 
   submit() {
-<<<<<<< HEAD
-    console.log(this.state.submit_vals);
     this.props.close();
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
           return FileSystem.makeDirectoryAsync(SURVEY_DIR); //make Directory if not exist
-=======
-    this.props.onSubmit();
-    FileSystem.getInfoAsync(SURVEY_DIR, {})
-      .then(e => {
-        if (!e.exists || !e.isDirectory) {
-          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
->>>>>>> master
         }
       })
       .then(e => {
