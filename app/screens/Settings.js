@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  NavigatorIOS
-} from "react-native";
+import { StyleSheet, View, Text, Image, NavigatorIOS } from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
 import Profile from "./EditProfile";
@@ -16,7 +10,7 @@ import { sendMail } from "../components/Mail/MailController";
 import { exportDataMailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase,
+  pullSettingsFromDatabase
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
@@ -78,7 +72,6 @@ class Settings extends Component {
 
   componentDidMount() {
     pullSettingsFromDatabase(data => {
-      console.log(data);
       this.setState({
         weight: data.weight,
         birthday: new Date(data.birthday),
@@ -89,7 +82,6 @@ class Settings extends Component {
         icon: data.icon,
         email: data.email
       });
-      console.log("PULL SETTINGS FROM DB", data);
     });
   }
 
@@ -162,7 +154,7 @@ class Settings extends Component {
               title="Contact"
               onPress={() => {
                 sendMail(
-                  [this.state.email],
+                  ["fiih.developers@gmail.com"],
                   "Comments on Your App",
                   "Dear Engineering World Health Body, \n",
                   null,
@@ -221,7 +213,6 @@ class Settings extends Component {
               this.setState({ isEditVisible: false });
             }}
             settingsUpdate={(setting, value) => {
-              console.log("entered settings update");
               this.settingsUpdate(setting, value);
             }}
             icon={this.state.icon}

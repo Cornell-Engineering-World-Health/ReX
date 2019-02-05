@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,11 @@ import {
   FlatList,
   TouchableOpacity,
   Image
-} from 'react-native';
-import Card from '../Card/Card.js';
-import { COLOR, IMAGES } from '../../resources/constants';
-import Modal from 'react-native-modal';
-import GestureRecognizer from 'react-native-swipe-gestures';
-import { asyncDeleteEvent } from '../../databaseUtil/databaseUtil';
+} from "react-native";
+import Card from "../Card/Card.js";
+import { COLOR, IMAGES } from "../../resources/constants";
+import Modal from "react-native-modal";
+import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
 
 class Agenda extends Component {
   static propTypes = {
@@ -48,7 +47,7 @@ class Agenda extends Component {
       return (
         <FlatList
           data={this.state.agendaInfo}
-          keyExtractor={item => ""+item.id}
+          keyExtractor={item => "" + item.id}
           extraData={this.state}
           renderItem={({ item, index }) => {
             return (
@@ -65,37 +64,9 @@ class Agenda extends Component {
                 buttonActive={!this.state.expandVisible}
                 iconName={item.iconName}
                 buttonsRight={[
-                  // {
-                  //   text: 'Edit',
-                  //   type: 'edit',
-                  //   onPress: () => {
-                  //     var timestamp = moment(
-                  //       this.props.date + ' ' + item.timeStamp,
-                  //       'MM/DD/YYYY hh:mm A'
-                  //     ).format('YYYY-MM-DD HH:mm:ss');
-                  //
-                  //     Database.transaction(
-                  //       tx =>
-                  //         tx.executeSql(
-                  //           'SELECT event_type_id FROM event_type_tbl \
-                  //         WHERE event_type_name = ?;',
-                  //           [item.cardData.title],
-                  //           (tx, { rows }) => {
-                  //             var eventType = JSON.parse(
-                  //               rows._array[0].event_type_id
-                  //             );
-                  //             this.props.toggleModal(timestamp, eventType);
-                  //           }
-                  //         ),
-                  //       err => console.log(err)
-                  //     );
-                  //
-                  //     /*force a render with new changes  */
-                  //   }
-                  // },
                   {
-                    text: 'Delete',
-                    type: 'delete',
+                    text: "Delete",
+                    type: "delete",
                     onPress: () => {
                       asyncDeleteEvent(item.id);
                       let a_info = this.state.agendaInfo;
@@ -126,8 +97,8 @@ class Agenda extends Component {
       );
     } else {
       return (
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center' }}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={{ fontSize: 20, textAlign: "center" }}>
             No Events Logged
           </Text>
         </View>
@@ -154,23 +125,19 @@ class Agenda extends Component {
     }
     return (
       <View style={{ marginLeft: 5, flex: 1 }}>
-        <GestureRecognizer
-          onSwipeUp={() => this.setState({ expandVisible: true })}
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            alignItems: "center"
+          }}
         >
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-          >
-            <Text style={styles.summaryText}>Summary</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.dateText}>{this.props.date}</Text>
-              {renderExpandButton}
-            </View>
+          <Text style={styles.summaryText}>Summary</Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.dateText}>{this.props.date}</Text>
+            {renderExpandButton}
           </View>
-        </GestureRecognizer>
+        </View>
         <View style={{ flex: 1 }}>{page}</View>
         <Modal
           onBackdropPress={() => this.setState({ expandVisible: false })}
@@ -182,27 +149,27 @@ class Agenda extends Component {
         >
           <View
             style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center'
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center"
             }}
           >
             <Text style={styles.summaryText}>Summary</Text>
             <View
-              style={{ flexDirection: 'row', alignItems: 'center', height: 50 }}
+              style={{ flexDirection: "row", alignItems: "center", height: 50 }}
             >
               <Text style={styles.summaryText}>{this.props.date}</Text>
             </View>
           </View>
-          <View style={{ flex: 1, alignItems: 'stretch' }}>{modalPage}</View>
+          <View style={{ flex: 1, alignItems: "stretch" }}>{modalPage}</View>
           <TouchableOpacity
             onPress={() => this.setState({ expandVisible: false })}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 50,
               padding: 5,
-              alignSelf: 'center',
-              transform: [{ rotate: '-90deg' }]
+              alignSelf: "center",
+              transform: [{ rotate: "-90deg" }]
             }}
           >
             <Image
@@ -223,18 +190,18 @@ const styles = StyleSheet.create({
   expandStyle: {
     width: 25,
     height: 25,
-    resizeMode: 'cover'
+    resizeMode: "cover"
   },
   summaryText: {
     fontSize: 25,
-    fontWeight: '400',
+    fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.summaryGray,
     marginLeft: 10
   },
   dateText: {
     fontSize: 15,
-    fontWeight: '400',
+    fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.cardNotes,
     marginRight: 3

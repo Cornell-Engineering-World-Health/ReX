@@ -64,11 +64,11 @@ export default class ChooseLogScreen extends React.Component {
             keysArray = Object.keys(json_rows);
 
             var valArray = [];
-            var submit_vals = {}
+            var submit_vals = {};
             for (let i = 0; i < keysArray.length; i++) {
               var input_types = [];
               valArray[i] = "N/A";
-              submit_vals[keysArray[i]] = "N/A"
+              submit_vals[keysArray[i]] = "N/A";
               Database.transaction(
                 tx =>
                   tx.executeSql(
@@ -110,7 +110,6 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   submit() {
-    console.log(this.state)
     if (this.state.nav) {
       // Log new symptoms
       this.props.navigation.state.params.onLog();
@@ -121,7 +120,7 @@ export default class ChooseLogScreen extends React.Component {
       let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
       event_details_id_count++;
       event_id_count++;
-      asyncCreateSymptomLogEvent(event_type_id, values, timestamp)
+      asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
 
       this.props.screenProps.successOnSubmit();
       this.props.navigation.navigate("Body", {});
@@ -153,7 +152,7 @@ export default class ChooseLogScreen extends React.Component {
       if (prop == "ScaleSlideInputType") {
         return (
           <ScaleSlideInputType
-            key={""+key}
+            key={"" + key}
             label_left={"No Pain"}
             label_right={"Severe"}
             value={parseInt(this.state.values[key]) - 1}
@@ -178,7 +177,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DosagePickerInputType") {
         return (
           <NumericalPickerInputType
-            key={""+key}
+            key={"" + key}
             input_style={styles.input_container_blue}
             title_text_style={styles.title_text}
             value={this.state.values[key]}
@@ -195,16 +194,6 @@ export default class ChooseLogScreen extends React.Component {
         );
       } else if (prop == "TextInputType") {
         return (
-          // <TextInputType
-          //   key={key}
-          //   input_style={styles.input_container_green}
-          //   title_text_style={styles.title_text}
-          //   text={this.state.values[key]}
-          //   placeholder_text={'Type here...'}
-          //   title_text={this.state.value_labels[key]}
-          //   val_label={this.state.value_labels[key]}
-          //   valueChange={this.valueChange.bind(this)}
-          // />
           <ListInputType
             valueChange={(label, value) => {
               this._form.valueChange(label, value);
@@ -215,7 +204,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DatePicker") {
         return (
           <DatePicker
-            key={""+key}
+            key={"" + key}
             input_style={styles.input_container_transparent_green}
             title_text_style={styles.title_text_green}
             value={this.state.values[key]}
@@ -229,7 +218,7 @@ export default class ChooseLogScreen extends React.Component {
       } else if (prop == "DayChooserInputType") {
         return (
           <ChecklistInputType
-            key={""+key}
+            key={"" + key}
             list_values={[
               "Sunday",
               "Monday",
@@ -251,12 +240,12 @@ export default class ChooseLogScreen extends React.Component {
         );
       } else if (prop == "TimeCategoryInputType") {
         return (
-          <View key={""+key}>
+          <View key={"" + key}>
             {this.state.values[key].map((prop, timeKey) => {
               return (
                 <TimePicker
                   key={
-                    ""+
+                    "" +
                     this.state.values.length +
                     timeKey +
                     this.state.values[key][timeKey]
