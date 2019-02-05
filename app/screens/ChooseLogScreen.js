@@ -95,35 +95,37 @@ export default class ChooseLogScreen extends React.Component {
             fuzzy={true}
           />
         </View>
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.log_container}>
-            {filteredSymptoms.map((prop, key) => {
-              if (filteredSymptoms[key].event_id != 4) {
-                return (
-                  <TouchableOpacity
-                    key={key}
-                    style={styles.log_button}
-                    onPress={() => {
-                      navigate("Form", {
-                        log_name: filteredSymptoms[key].event_type_name,
-                        onLog: this.returnToCal.bind(this),
-                        log_type: filteredSymptoms[key].event_id
-                      });
-                    }}
-                  >
-                    <Text style={styles.log_button_text}>
-                      {prop.event_type_name}
-                    </Text>
-                    <Image
-                      style={styles.log_button_img}
-                      source={getSource(prop.event_type_name)}
-                    />
-                  </TouchableOpacity>
-                );
-              }
-            })}
-          </View>
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <ScrollView>
+            <View style={styles.log_container}>
+              {filteredSymptoms.map((prop, key) => {
+                if (filteredSymptoms[key].event_id != 4) {
+                  return (
+                    <TouchableOpacity
+                      key={key}
+                      style={styles.log_button}
+                      onPress={() => {
+                        navigate("Form", {
+                          log_name: filteredSymptoms[key].event_type_name,
+                          onLog: this.returnToCal.bind(this),
+                          log_type: filteredSymptoms[key].event_id
+                        });
+                      }}
+                    >
+                      <Text style={styles.log_button_text}>
+                        {prop.event_type_name}
+                      </Text>
+                      <Image
+                        style={styles.log_button_img}
+                        source={getSource(prop.event_type_name)}
+                      />
+                    </TouchableOpacity>
+                  );
+                }
+              })}
+            </View>
+          </ScrollView>
+        </View>
       </ImageBackground>
     );
   }
@@ -139,12 +141,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
     flexWrap: "wrap"
   },
-  scrollView: {
-    flex: 0.7
-  },
+  scrollView: { flex: 1 },
   log_button: {
     margin: 10,
     alignItems: "bottom",
