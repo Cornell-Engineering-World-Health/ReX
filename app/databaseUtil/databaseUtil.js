@@ -332,40 +332,6 @@ export function formatData(data) {
   return dataTemp;
 }
 
-export function databaseFakeData() {
-  console.log("faking data");
-  Database.transaction(
-    tx => {
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (300,\'{"Intensity": "2","Duration": "40"}\')'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (300, 1,'2018-03-07 06:00:00', 300)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1500,\'{"Intensity": "5","Duration": "60"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (1500, 3,'2018-04-19 06:01:00', 1500)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (21,\'{"Intensity": "2","Duration": "10"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (21, 5,'2018-04-03 06:01:00', 21)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (22,\'{"Intensity": "9","Duration": "10"}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (22, 5,'2019-01-31 06:01:00', 22)"
-      );
-      /* medication reminder fake data */
-    },
-    err => console.log(err)
-  );
-}
-
 /**
  * function to just keep date format consistent with specs and Locale String
  */

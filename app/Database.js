@@ -4,4 +4,4 @@ let db_id = Math.random()
   .toString(36)
   .substring(7);
 
-module.exports = SQLite.openDatabase("db" + "NIDATEST" + ".db");
+module.exports = SQLite.openDatabase("db" + "NIDATESTAPP" + ".db");
