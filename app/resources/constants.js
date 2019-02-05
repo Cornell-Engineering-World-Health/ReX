@@ -24,7 +24,7 @@ export const IMAGES = {
   fatigue: require("./images/fatigue.png"),
   nausea: require("./images/nausea.png"),
   diarrhea: require("./images/diarrhea.png"),
-  dysgeusia: require("./images/popsicle.png"),
+  impaired_taste: require("./images/popsicle.png"),
   vomiting: require("./images/vomiting.png"),
   cognitive: require("./images/cognitive.png"),
   handpain: require("./images/hand.png"),
@@ -34,7 +34,7 @@ export const IMAGES = {
   plusSignMinimal: require("./images/plusSignMinimal.png"),
   profile: require("./images/profile.png"),
   profilePic: require("./images/profilePic.png"),
-  pulsatileTinnitus: require("./images/pulse.png"),
+  RingingInEars: require("./images/pulse.png"),
   scale: require("./images/scale.png"),
   settings: require("./images/settingsScreen.png"),
   stomachPain: require("./images/stomachPain.png"),
@@ -121,7 +121,8 @@ export const COLOR = {
   medicineCardChecked: "#e6ffe6",
   medicineCardUnchecked: "#ffc2b3",
   lightGreen: "#9cff6880",
-  green: "#9cff68"
+  green: "#9cff68",
+  yellow: "#FFEE93"
 };
 
 export const BODY_PARTS = {
@@ -131,6 +132,29 @@ export const BODY_PARTS = {
   HEAD: "HEAD",
   BODY: "BODY",
   ALL: "ALL"
+};
+
+const SYMPTOM_COLOR = {
+  blue: "#79ADDC",
+  purple: "#ab87b8",
+  cyan: "#7fdecb",
+  red: "#E85D75",
+  pink: '#FFCCF9',
+  green: '#AFF8DB',
+  lime: '#E7FFAC',
+  yellow: '#FFF5BA',
+  orange: '#FFCBC1',
+  redorange: '#FFABAB',
+  hotpink: '#FF9CEE',
+  lightblue: '#AFCBFF',
+  lightpink: '#FBE4FF',
+  lightpurple: '#ECD4FF',
+  lightbluegreen: '#C4FAF8',
+  chestnut: '#E7B5A5',
+  purple2: '#B28DFF',
+  brown: '#b29a86',
+  gold: '#E8BF8B',
+  orange2: '#FFB646',
 };
 
 // TODO: UPDATE VALUES THAT USE THESE DEFAULTS:
@@ -184,125 +208,126 @@ export default (constants = {
     backgroundColor: "#E85D75",
     translucentColor: "#E85D7580"
   },
+
   HEADACHE: {
     image: IMAGES.brain,
     title: "Headache",
-    backgroundColor: "#7fdecb",
-    translucentColor: "#7fdecb80"
+    backgroundColor: SYMPTOM_COLOR.cyan,
+    translucentColor: SYMPTOM_COLOR.cyan+"80"
   },
   DIZZINESS: {
     image: IMAGES.intensePain,
     title: "Dizziness",
-    backgroundColor: "#7fdecb",
-    translucentColor: "#7fdecb80"
+    backgroundColor: SYMPTOM_COLOR.blue,
+    translucentColor: SYMPTOM_COLOR.blue+"80"
   },
   BLURRED_VISION: {
     image: IMAGES.glasses,
     title: "Blurred Vision",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: SYMPTOM_COLOR.purple,
+    translucentColor: SYMPTOM_COLOR.purple+"80"
   },
   DOUBLE_VISION: {
     image: IMAGES.double_vision,
     title: "Double Vision",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: SYMPTOM_COLOR.red,
+    translucentColor: SYMPTOM_COLOR.red+"80"
   },
   HAND_PAIN: {
     image: IMAGES.handpain,
     title: "Hand Pain",
-    backgroundColor: "#ab87b8",
-    translucentColor: "#ab87b880"
+    backgroundColor: SYMPTOM_COLOR.pink,
+    translucentColor: SYMPTOM_COLOR.pink+"80"
   },
   NECKPAIN: {
     image: IMAGES.neckPain,
     title: "Neck Pain",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: SYMPTOM_COLOR.green,
+    translucentColor: SYMPTOM_COLOR.green+"80"
   },
   KNEEPAIN: {
     image: IMAGES.kneePain,
     title: "Knee Pain",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: SYMPTOM_COLOR.lime,
+    translucentColor: SYMPTOM_COLOR.lime+"80"
   },
-  DYSGEUSIA: {
-    image: IMAGES.dysgeusia,
-    title: "Dysgeusia",
+  IMPAIRED_TASTE: {
+    image: IMAGES.impaired_taste,
+    title: "Impaired Taste",
     backgroundColor: "#FFEE93",
     translucentColor: "#FFEE9380"
   },
   COGNITIVE_SLOWING: {
     image: IMAGES.cognitive,
     title: "Cognitive Slowing",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: SYMPTOM_COLOR.orange,
+    translucentColor: SYMPTOM_COLOR.orange+"80"
   },
   VOMITING: {
     image: IMAGES.vomiting,
     title: "Vomiting",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: SYMPTOM_COLOR.redorange,
+    translucentColor: SYMPTOM_COLOR.redorange+"80"
   },
   DIARRHEA: {
     image: IMAGES.diarrhea,
     title: "Diarrhea",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: SYMPTOM_COLOR.hotpink,
+    translucentColor: SYMPTOM_COLOR.hotpink+"80"
   },
   NAUSEA: {
     image: IMAGES.nausea,
     title: "Nausea",
-    backgroundColor: "#FFEE93",
-    translucentColor: "#FFEE9380"
+    backgroundColor: SYMPTOM_COLOR.lightblue,
+    translucentColor: SYMPTOM_COLOR.lightblue+"80"
   },
   FATIGUE: {
     image: IMAGES.fatigue,
     title: "Fatigue",
-    backgroundColor: "#79ADDC",
-    translucentColor: "#79ADDC80"
+    backgroundColor: SYMPTOM_COLOR.lightpink,
+    translucentColor: SYMPTOM_COLOR.lightpink+"80"
   },
   LEGPAIN: {
     image: IMAGES.legPain,
     title: "Leg Pain",
-    backgroundColor: "#f0924c",
-    translucentColor: "#f0924c80"
+    backgroundColor: SYMPTOM_COLOR.lightpurple,
+    translucentColor: SYMPTOM_COLOR.lightpurple+"80"
   },
   FOOTPAIN: {
     image: IMAGES.footPain,
     title: "Foot Pain",
-    backgroundColor: "#F7AEF8",
-    translucentColor: "#F7AEF880"
+    backgroundColor: SYMPTOM_COLOR.lightbluegreen,
+    translucentColor: SYMPTOM_COLOR.lightbluegreen+"80"
   },
   BACKPAIN: {
     title: "Back Pain",
     image: IMAGES.backPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: SYMPTOM_COLOR.chestnut,
+    translucentColor: SYMPTOM_COLOR.chestnut+"80"
   },
-  PULSATILE_TINNITUS: {
-    image: IMAGES.pulsatileTinnitus,
-    title: "Pulsatile Tinnitus",
+  RINGING_IN_EARS: {
+    image: IMAGES.RingingInEars,
+    title: "Ringing in Ears",
     backgroundColor: "#79ADDC",
     translucentColor: "#79ADDC80"
   },
   ELBOWPAIN: {
     title: "Elbow Pain",
     image: IMAGES.elbowPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: SYMPTOM_COLOR.brown,
+    translucentColor: SYMPTOM_COLOR.brown+"80"
   },
   HEARTPAIN: {
     title: "Heart Pain",
     image: IMAGES.heartPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: SYMPTOM_COLOR.gold,
+    translucentColor: SYMPTOM_COLOR.gold+"80"
   },
   STOMACHPAIN: {
     title: "Stomach Pain",
     image: IMAGES.stomachPain,
-    backgroundColor: defaultColor,
-    translucentColor: defaultColor
+    backgroundColor: SYMPTOM_COLOR.orange2,
+    translucentColor: SYMPTOM_COLOR.orange2+"80"
   },
   DEFAULT: {
     image: IMAGES.default,
@@ -325,7 +350,7 @@ export const symptoms = [
   constants.DIARRHEA,
   constants.VOMITING,
   constants.COGNITIVE_SLOWING,
-  constants.DYSGEUSIA,
+  constants.IMPAIRED_TASTE,
   constants.NAUSEA,
   constants.ELBOWPAIN,
   constants.FOOTPAIN,
@@ -335,7 +360,7 @@ export const symptoms = [
   constants.LEGPAIN,
   constants.NECKPAIN,
   constants.STOMACHPAIN,
-  constants.PULSATILE_TINNITUS
+  constants.RINGING_IN_EARS
 ];
 
 /**

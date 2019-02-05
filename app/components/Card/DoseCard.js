@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
@@ -361,7 +361,7 @@ class Card extends PureComponent {
         shouldBeTaken(new Date(val), new Date())
       ) {
         circol = "#fa8b89";
-        taken_string = "Missed";
+        taken_string = shouldBeTakenNow(new Date(val)) ? "Take Now" : "Missed"  ;
       } else {
         circol = "#cccccc";
         taken_string = "Not taken";
@@ -449,7 +449,7 @@ class Card extends PureComponent {
               backgroundColor: "white",
               padding: 20,
               borderRadius: 5,
-              flex: this.state.passed.length * 0.15
+              flex: Math.min(this.state.passed.length * 0.11 + .05, Dimensions.get('window').height)
             }}
           >
             <Text
@@ -558,7 +558,6 @@ const styles = StyleSheet.create({
     marginRight: 30
   },
   modalWrapper: {
-    flex: 1.0,
     alignItems: "stretch",
     justifyContent: "center"
   },

@@ -15,7 +15,8 @@ import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 import {
   pullMedicineFromDatabase,
-  asyncDeleteMedicine
+  asyncDeleteMedicine,
+  databaseMedicineNotification
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
 /*
@@ -60,14 +61,11 @@ export default class MedicineSettings extends React.Component {
 
   /*
     Handles turning on/off notifications for each medicineData
-
-
-    TODO: MUST CONNECT TO DATABASE (currently only affects state)
   */
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
-
+    databaseMedicineNotification(data[index].name, data[index].dosage, data[index].status)
     this.setState({ medicine: data });
   }
 

@@ -59,7 +59,7 @@ export default class ScaleSlideInputType extends React.Component {
       value: props.value,
       viewportWidth: 1,
       viewportHeight: 1,
-      selected: 0
+      selected: -1
     };
   }
 
@@ -165,6 +165,9 @@ export default class ScaleSlideInputType extends React.Component {
   }
 
   _renderFooterLabel() {
+    let selected = this.state.selected
+    if(selected == -1) selected = 0
+
     if (this.props.isIntensitySlider) {
       return (
         <View
@@ -172,12 +175,12 @@ export default class ScaleSlideInputType extends React.Component {
             styles.intensityLabelContainer,
             {
               width: this.state.viewportWidth,
-              backgroundColor: numericMetaInfo[this.state.selected][0]
+              backgroundColor: numericMetaInfo[selected][0]
             }
           ]}
         >
           <Text style={styles.intensityLabel}>
-            {numericMetaInfo[this.state.selected][1]}
+            {numericMetaInfo[selected][1]}
           </Text>
         </View>
       );

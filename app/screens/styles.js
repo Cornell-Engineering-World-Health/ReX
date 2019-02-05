@@ -24,8 +24,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between'
   },
   header: {
-    marginTop: 20,
-    padding: 20
+    marginLeft: 15
   },
   welcomeText: {
     color: COLOR.PrimaryGray,

@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  AlertIOS
 } from 'react-native';
 import moment from 'moment';
 import Modal from 'react-native-modal';
@@ -79,8 +80,7 @@ export default class MedicineAddForm extends React.Component {
    */
   submit (){
     if(this.checkIfIncomplete()){
-        this.props.errorOnSubmit()
-        console.log('error')
+      AlertIOS.alert('Form Incomplete', 'Please add any missing information')
     } else {
       this.props.successOnSubmit()
       this.props.asyncDatabaseUpdate(this.state.submit_vals['Pill Name'], this.state.submit_vals['Dosage'], new Date(this.state.submit_vals['Start Date']), new Date(this.state.submit_vals['End Date']), this.state.submit_vals['Time'], this.state.submit_vals['Time Category'])
@@ -133,7 +133,7 @@ export default class MedicineAddForm extends React.Component {
   }
 
   timeToTimeCategory(time){
-    let tc = ['10:00', '15:00', '19:00', '23:00'] //temp boundaries
+    let tc = ['11:00', '15:00', '19:00', '23:00'] //temp boundaries
     if(time < tc[0]) return 'Morning'
     if(time < tc[1]) return 'Afternoon'
     if(time < tc[2]) return 'Evening'
@@ -167,6 +167,7 @@ export default class MedicineAddForm extends React.Component {
           let h = time_split[0]
           let m = time_split[1]
           if(parseInt(h) > 12) return ((parseInt(h)-12)+':'+m+' PM')
+          else if(parseInt(h) == 12) return ('12:'+m+' PM')
           else if (parseInt(h) == 0) return ('12:'+m+' AM')
           else return (v+' AM')
         })}
@@ -180,6 +181,7 @@ export default class MedicineAddForm extends React.Component {
           let h = time_split[0]
           let m = time_split[1]
           if(parseInt(h) > 12) return ((parseInt(h)-12)+':'+m+' PM')
+          else if(parseInt(h) == 12) return ('12:'+m+' PM')
           else if (parseInt(h) == 0) return ('12:'+m+' AM')
           else return (v+' AM')
         })}
