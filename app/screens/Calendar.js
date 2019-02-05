@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, Dimensions, FlatList, StyleSheet } from 'react-native';
-import { itemWidth } from '../components/Calendar/styles/SliderEntry.style';
-import { SliderEntry } from '../components/Calendar';
-import Agenda from '../components/Agenda/Agenda';
-import Moment from 'moment';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { View, Text, Dimensions, FlatList, StyleSheet } from "react-native";
+import { itemWidth } from "../components/Calendar/styles/SliderEntry.style";
+import { SliderEntry } from "../components/Calendar";
+import Agenda from "../components/Agenda/Agenda";
+import Moment from "moment";
 import {
   pullFromDataBase,
   pullAgendaFromDatabase,
   asyncDeleteEvent
-} from '../databaseUtil/databaseUtil';
-import constants, { COLOR } from '../resources/constants';
-import Modal from 'react-native-modal';
-import LogFormScreen from './LogFormScreen';
+} from "../databaseUtil/databaseUtil";
+import constants from "../resources/constants";
+import Modal from "react-native-modal";
+import LogFormScreen from "./LogFormScreen";
 
 let t = new Date();
 let numOfMonths = (t.getFullYear() - 1969) * 12;
@@ -72,7 +72,7 @@ Generates a key that is in the form MM-DD-YYYY
 assumes date is a valid date object
 */
   _generateDateKey(date) {
-    return Moment(date).format('MM-DD-YYYY');
+    return Moment(date).format("MM-DD-YYYY");
   }
 
   /*
@@ -127,34 +127,32 @@ assumes date is a valid date object
   };
 
   _refreshCalendar = () => {
-    //console.log(this.currSymptomDisplay);
     this.calendarRef.initVisualization(this.currSymptomDisplay);
   };
 
   _renderItem = ({ item }) => {
     return (
       <View>
-      <SliderEntry
-        ref={ref => {
-          this.calendars[item.key] = ref;
-        }}
-        data={
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth() + parseInt(item.key, 10),
-            0
-          )
-        }
-        pickerHandler={this._pickerHandler.bind(this)}
-        onPressMonth={this._onPressMonth}
-      />
+        <SliderEntry
+          ref={ref => {
+            this.calendars[item.key] = ref;
+          }}
+          data={
+            new Date(
+              new Date().getFullYear(),
+              new Date().getMonth() + parseInt(item.key, 10),
+              0
+            )
+          }
+          pickerHandler={this._pickerHandler.bind(this)}
+          onPressMonth={this._onPressMonth}
+        />
       </View>
     );
   };
 
   _loadMore = (num, callback) => {
     if (!num) num = 20;
-    //console.log('loadingMore');
     newData = [];
     current = this.state.last;
     for (i = 1; i < num; i++) {
@@ -174,7 +172,6 @@ assumes date is a valid date object
   };
 
   calendarHeight = currMonth => {
-    //console.log(currMonth);
     var today = currMonth;
     var numberOfDays = new Date(
       today.getFullYear(),
@@ -191,14 +188,13 @@ assumes date is a valid date object
     var numberOfPrevious = first.getDay();
     var numberOfAfter = 6 - last.getDay();
     var total = numberOfDays + numberOfPrevious + numberOfAfter;
-    //console.log(numberOfDays, numberOfPrevious, numberOfAfter);
     if (total == 35) {
       this.setState({
-        flatlistHeight: Dimensions.get('window').height * 0.5
+        flatlistHeight: Dimensions.get("window").height * 0.5
       });
     } else {
       this.setState({
-        flatlistHeight: Dimensions.get('window').height * 0.56
+        flatlistHeight: Dimensions.get("window").height * 0.56
       });
     }
     // if (first.getDay() != 0){
@@ -248,11 +244,7 @@ assumes date is a valid date object
     this.flatListRef.scrollToIndex({ animated: false, index: 19 });
   };
 
-  _startScroll() {
-    //console.log('START')
-  }
   _disableScroll() {
-    //console.log('END')
     this.flatListRef.getScrollResponder().setNativeProps({
       scrollEnabled: false
     });
@@ -285,7 +277,7 @@ assumes date is a valid date object
     try {
       this.flatListRef.scrollToIndex({ animated: false, index: newIdx });
     } catch (err) {
-      if (err.name == 'Invariant Violation') {
+      if (err.name == "Invariant Violation") {
         thisRef = this;
         this._loadMore(newIdx - this.state.last, function() {
           thisRef.flatListRef.scrollToIndex({ animated: false, index: newIdx });
@@ -295,7 +287,6 @@ assumes date is a valid date object
   }
 
   toggleModal = (timestamp, logtype) => {
-    //console.log('hereeee');
     this.setState({
       isModalVisible: !this.state.isModalVisible,
       modalTimestamp: timestamp,
@@ -305,7 +296,7 @@ assumes date is a valid date object
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+      <View style={{ flex: 1, justifyContent: "flex-start" }}>
         <View>
           <FlatList
             height={this.state.flatlistHeight}
@@ -331,9 +322,6 @@ assumes date is a valid date object
             maxToRenderPerBatch={5}
             windowSize={5}
             viewabilityConfig={VIEWABILITY_CONFIG}
-            onScrollBeginDrag={() => {
-              this._startScroll();
-            }}
             onScrollEndDrag={() => {
               this._disableScroll();
             }}
@@ -365,7 +353,7 @@ assumes date is a valid date object
 
 const styles = StyleSheet.create({
   itemStyle: {
-    display: 'flex',
+    display: "flex",
     marginTop: 30
   }
 });

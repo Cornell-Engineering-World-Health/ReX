@@ -3,7 +3,6 @@ import Moment from "moment";
 import { getCardData } from "../resources/constants";
 
 export function createTables() {
-  console.log("creating tables");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -32,12 +31,11 @@ export function createTables() {
           ); */
     },
     err => console.log(err, "error creating tables"),
-    () => console.log("done creating tables.")
+    () => {}
   );
 }
 
 export function intializeDatabase() {
-  console.log("intializing database");
   date = new Date();
   Database.transaction(
     tx => {
@@ -137,61 +135,61 @@ export function intializeDatabase() {
 
       /* inserting default values into event_details_tbl with 1950 date for each event type*/
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "9","Duration": "40"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "N/A","Duration": "N/A"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (3,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (5,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (6,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (7,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (7,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (8,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (8,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (9,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (9,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (10,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (10,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (11,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (12,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (13,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (14,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (14,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (15,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (16,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (16,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (17,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (17,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (18,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (18,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (19,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (19,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (20,\'{"Duration": "40","Intensity": "3","Other": "NONE"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (20,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
 
       /* inserting initial events into event table with 1950 date for each event type*/
@@ -286,36 +284,27 @@ export function intializeDatabase() {
       );
 
       /* medication reminder examples */
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
-    \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
-      );
-      tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (51,\
-    \'{"Pill Name": "Aspirin","Dosage": "400mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,1,1],"Time": ["09:00"],"Time Category": ["Morning"],"Taken": [true], "Notification On": false}\' )'
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (51, 4,'1950-01-01 00:00:00', 51)"
-      );
+      //   tx.executeSql(
+      //     'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (50,\
+      // \'{"Pill Name": "Tylenol","Dosage": "20mg","Start Date": "2018-10-01","End Date": "2018-11-30","Days Of Week": [1,1,1,1,1,0,0],"Time": ["09:00","18:00"],"Time Category": ["Morning","Evening"],"Taken": [true,true], "Notification On": false}\' )'
+      //   );
+      //   tx.executeSql(
+      //     "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (50, 4,'1950-01-01 00:00:00', 50)"
+      //   );
+
       //Initialize first time app open tbl
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
     err => console.log(err, "error in initialization"),
-    () => console.log("intitialization complete")
+    () => {}
   );
 
   Database.transaction(
     tx => {
-      tx.executeSql("Select * from event_type_tbl;", [], (tx, { rows }) =>
-        console.log(JSON.stringify(rows))
-      );
+      tx.executeSql("Select * from event_type_tbl;", [], (tx, { rows }) => {});
     },
     err => console.log(err)
   );
-  // console.log(Database)
 }
 
 export function formatData(data) {
@@ -372,37 +361,39 @@ export function databaseFakeData() {
         "INSERT OR IGNORE INTO event_tbl (event_id, event_type_id, timestamp,event_details_id) VALUES (22, 5,'2019-01-31 06:01:00', 22)"
       );
       /* medication reminder fake data */
-
     },
     err => console.log(err)
   );
 }
 
 /**
-* function to just keep date format consistent with specs and Locale String
-*/
-function toDateString(date){
-  let date_comp = date.toLocaleDateString().split('/')
-  if(date_comp[0].length == 1) date_comp[0] = '0'+ date_comp[0]
-  if(date_comp[1].length == 1) date_comp[1] = '0'+ date_comp[1]
-  return date_comp[2] + '-' + date_comp[0] + '-' + date_comp[1]
+ * function to just keep date format consistent with specs and Locale String
+ */
+function toDateString(date) {
+  let date_comp = date.toLocaleDateString().split("/");
+  if (date_comp[0].length == 1) date_comp[0] = "0" + date_comp[0];
+  if (date_comp[1].length == 1) date_comp[1] = "0" + date_comp[1];
+  return date_comp[2] + "-" + date_comp[0] + "-" + date_comp[1];
 }
 
-function printAllEventDetails(){
+function printAllEventDetails() {
   Database.transaction(
     tx =>
-      tx.executeSql(
-        "select * from event_details_tbl",
-        [],
-        (tx, { rows }) => console.log(rows._array)
+      tx.executeSql("select * from event_details_tbl", [], (tx, { rows }) =>
+        console.log(rows._array)
       ),
-    err => console.log(err))
+    err => console.log(err)
+  );
 }
 
 /**
-* Writes a symptom entry into the database.
-*/
-export function asyncCreateSymptomLogEvent(event_type_id, detailsJson, timestamp){
+ * Writes a symptom entry into the database.
+ */
+export function asyncCreateSymptomLogEvent(
+  event_type_id,
+  detailsJson,
+  timestamp
+) {
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -411,20 +402,17 @@ export function asyncCreateSymptomLogEvent(event_type_id, detailsJson, timestamp
       );
       tx.executeSql(
         "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) " +
-        "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
+          "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
         [event_type_id, timestamp],
         (tx, { rows }) => {}
       );
     },
     err => console.log(err)
   );
-
 }
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  // console.log('pulling from database');
-
   formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
   Database.transaction(
@@ -444,14 +432,11 @@ export function pullFromDataBase(month, day, callback) {
 
 function formatDataForGraphs(data) {
   dataTemp = {};
-  //console.log('data for graphs ', data)
   data.forEach(function(ev) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
-    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
 
-    // console.log(intensity);
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
         frequency: 1,
@@ -468,7 +453,7 @@ function formatDataForGraphs(data) {
 /* aggregates data for each month in the year */
 function formatYearDataForGraphs(data) {
   dataTemp = {};
-  //console.log("data for graphs ", data);
+
   data.forEach(function(ev) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
@@ -510,7 +495,7 @@ export function pullSymptomForGraphs(month, symptom, callback) {
 /*month is a date object where only year is used, symptom is a string */
 export function pullYearlySymptomForGraphs(year, symptom, callback) {
   formattedYear = year.toISOString().substr(0, 4);
-  console.log(formattedYear);
+
   var params = [symptom, formattedYear];
   Database.transaction(
     tx =>
@@ -535,7 +520,8 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp", [],
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+        [],
         (_, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
@@ -550,7 +536,8 @@ export function pullAllMedicineData(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' ORDER BY timestamp", [],
+      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name = 'Medication Reminder' ORDER BY timestamp",
+        [],
         (_, { rows }) => callback(rows._array)
       ),
     err => console.log(err)
@@ -582,8 +569,6 @@ function sameDay(d1, d2) {
 }
 
 function formatAgenda(data) {
-  // console.log('reached formatAgenda')
-  // console.log(data)
   agendaFlatList = [];
   data.forEach(function(ele) {
     formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
@@ -604,28 +589,21 @@ function formatAgenda(data) {
       note2: note_value2
     };
 
-    // console.log(elementRecord)
-
     let d = new Date(ele.day);
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
 
     let foundDate = false;
     for (var i = 0; i < agendaFlatList.length; i++) {
       if (sameDay(agendaFlatList[i].date, d)) {
-        // console.log('adding event')
         agendaFlatList[i].data.push(elementRecord);
         foundDate = true;
         break;
       }
     }
-
     if (!foundDate) {
-      // console.log('adding a record to agendaFlatList')
       agendaFlatList.push({ date: d, data: [elementRecord] });
     }
   });
-
-  // console.log(agendaFlatList)
 
   return agendaFlatList;
 }
@@ -652,13 +630,13 @@ export function asyncDeleteEvent(id) {
       tx.executeSql(
         "DELETE FROM event_tbl WHERE event_details_id = ?",
         inputArray,
-        (tx, { rows }) => console.log("event has been deleted with id :", id),
+        (tx, { rows }) => {},
         err => console.log(err)
       );
       tx.executeSql(
         "DELETE FROM event_details_tbl WHERE event_details_id = ?",
         inputArray,
-        (tx, { rows }) => console.log("event has been deleted with id :", id),
+        (tx, { rows }) => {},
         err => console.log(err)
       );
     },
@@ -673,31 +651,32 @@ export function asyncDeleteMedicine(name) {
         "Select * from event_details_tbl",
         [],
         (tx, { rows }) => {
-          let removeIds = []
-          rows._array.forEach((med) => {
-            let fields = JSON.parse(med.fields)
-            if(fields['Pill Name'] == name){
-              removeIds.push(med['event_details_id'])
+          let removeIds = [];
+          rows._array.forEach(med => {
+            let fields = JSON.parse(med.fields);
+            if (fields["Pill Name"] == name) {
+              removeIds.push(med["event_details_id"]);
             }
-          })
+          });
 
-          deleteEventTblQuery = "DELETE FROM event_tbl WHERE "
-          deleteEventDetailTblQuery = "DELETE FROM event_details_tbl WHERE "
+          deleteEventTblQuery = "DELETE FROM event_tbl WHERE ";
+          deleteEventDetailTblQuery = "DELETE FROM event_details_tbl WHERE ";
 
           removeIds.forEach((id, idx, arr) => {
-            deleteEventTblQuery += "event_details_id = ?"
-            deleteEventDetailTblQuery += "event_details_id = ?"
-            if(idx != arr.length-1){
-              deleteEventTblQuery += " OR "
-              deleteEventDetailTblQuery += " OR "
+            deleteEventTblQuery += "event_details_id = ?";
+            deleteEventDetailTblQuery += "event_details_id = ?";
+            if (idx != arr.length - 1) {
+              deleteEventTblQuery += " OR ";
+              deleteEventDetailTblQuery += " OR ";
             }
-          })
+          });
 
           tx.executeSql(
             deleteEventTblQuery,
             removeIds,
             (tx, { rows }) => {
-              console.log("Medicine: "+name+" has been deleted. (1/2)")
+              {
+              }
             },
             err => console.log(err)
           );
@@ -705,7 +684,8 @@ export function asyncDeleteMedicine(name) {
             deleteEventDetailTblQuery,
             removeIds,
             (tx, { rows }) => {
-              console.log("Medicine: "+name+" has been deleted. (2/2)")
+              {
+              }
             },
             err => console.log(err)
           );
@@ -716,7 +696,6 @@ export function asyncDeleteMedicine(name) {
     err => console.log(err)
   );
 }
-
 
 function formatMedicineData(data) {
   dataTemp = {};
@@ -734,14 +713,15 @@ function formatMedicineData(data) {
       };
     }
   });
-  // console.log(dataTemp)
+
   return dataTemp;
 }
 
 export function pullMedicineFromDatabase(date, callback) {
   // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  let day = toDateString(date)
+  let day = toDateString(date);
   dayArray = [day];
+
   Database.transaction(tx => {
     tx.executeSql(
       "SELECT event_id,event_tbl.event_details_id,event_type_name, timestamp,fields,strftime('%Y-%m-%d',timestamp) as day FROM event_tbl \
@@ -761,14 +741,11 @@ export function getIds(rows, callback) {
   for (var i = 0; i < rows._array.length; i++) {
     if (rows._array[i]["id_name"] === "event_id") {
       event_id = rows._array[i]["id_value"];
-      //console.log('inside getIds event_id:', event_id);
     }
     if (rows._array[i]["id_name"] === "event_details_id") {
       event_details_id = rows._array[i]["id_value"];
-      //console.log('inside getIds event_id:', event_details_id);
     }
   }
-  console.log("before wrapper call");
   callback(event_id, event_details_id);
 }
 
@@ -834,7 +811,6 @@ export function asyncCreateMedicineEventsWrapper(
           "Taken Time": takenTimeInit,
           "Notification On": false
         };
-        //console.log("detailsjson: ",detailsJson)
         var inputArray = [
           String(event_details_id),
           JSON.stringify(detailsJson)
@@ -859,7 +835,6 @@ export function asyncCreateMedicineEventsWrapper(
           "INSERT OR REPLACE INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) VALUES (?, ?,?,?)",
           inputArray
         );
-        //console.log('incrementing id and details_id')
         event_id += 1;
         event_details_id += 1;
       }
@@ -888,7 +863,6 @@ function getAllIndexes(arr, val) {
 
 /*TODO: clean up updateMedicine functions*/
 function updateMedicineData(data, time, takenVal, callback) {
-  //console.log("ALL",data, time, takenVal)
   data.forEach(function(med) {
     var fields = JSON.parse(med.fields);
     var idx = getAllIndexes(fields["Time Category"], time);
@@ -905,11 +879,6 @@ function updateMedicineData(data, time, takenVal, callback) {
     fields["Taken"] = newTaken;
     fields["Taken Time"] = newTakenTime;
 
-    // console.log("issa idx :  " + idx)
-    // console.log("issa newtaken: " +newTaken)
-    // let newTakenTime = fields['Taken Time'].slice()
-    // newTakenTime[idx] = Moment().format('HH:mm')
-    // fields['Taken Time'] = newTakenTime
     let newFields = JSON.stringify(fields);
     let queryArgs = [newFields, med.event_details_id];
     Database.transaction(
@@ -918,7 +887,7 @@ function updateMedicineData(data, time, takenVal, callback) {
           "Update event_details_tbl SET fields =? where event_details_id= ? ",
           queryArgs,
           (tx, results) => {
-            if(callback) callback();
+            if (callback) callback();
           }
         );
       },
@@ -936,7 +905,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
         newTaken[idx] = takenVal;
         fields["Taken"] = newTaken;
         let newTakenTime = fields["Taken Time"].slice();
-        newTakenTime[idx] = (takenVal == true) ? Moment().format("HH:mm") : '';
+        newTakenTime[idx] = takenVal == true ? Moment().format("HH:mm") : "";
         fields["Taken Time"] = newTakenTime;
         let newFields = JSON.stringify(fields);
         let queryArgs = [newFields, med.event_details_id];
@@ -959,7 +928,7 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
 export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
-  let day = toDateString(date)
+  let day = toDateString(date);
   dayArray = [day];
 
   Database.transaction(
@@ -981,7 +950,7 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
   // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
-  let day = toDateString(date)
+  let day = toDateString(date);
   dayArray = [day];
   // console.log('inside take medicine')
   Database.transaction(
@@ -1007,12 +976,7 @@ export function asyncSettingUpdate(name, value) {
     tx => {
       tx.executeSql(
         "INSERT OR REPLACE INTO settings_tbl (setting_name,setting_value) VALUES (?,?)",
-        inputArray,
-        (f, c) => {
-          tx.executeSql("Select * from settings_tbl", [], (a, b) => {
-            console.log(b.rows);
-          });
-        }
+        inputArray
       );
     },
     err => console.log(err)
@@ -1056,15 +1020,8 @@ export function logIsFirst(callback) {
     tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)");
   });
   Database.transaction(tx => {
-    tx.executeSql(
-      "SELECT is_first FROM is_first_tbl",
-      [],
-      (_, { rows }) => {
-        console.log("new")
-        console.log(rows)
-      },
-    )
-  })
+    tx.executeSql("SELECT is_first FROM is_first_tbl", [], (_, { rows }) => {});
+  });
 }
 
 export function updateMedicineNotification(
@@ -1142,10 +1099,7 @@ timestamp:
 In place of ... are fields associated with that symptom
 */
 export function exportAllSymptoms(callBack) {
-  console.log("entered export all symptoms");
   pullAllSymptoms(symptoms => {
-    //console.log(symptoms);
-
     let formattedSymptoms = [];
 
     symptoms.map((symptom, index) => {

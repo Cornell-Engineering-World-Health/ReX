@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import { IMAGES } from '../../resources/constants';
+  Dimensions
+} from "react-native";
+import PropTypes from "prop-types";
+import { IMAGES } from "../../resources/constants";
 
 /**
  * Emulates the StackNavigator header.
@@ -25,12 +26,12 @@ const NavigationHeader = ({ onPressBack, title }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingLeft: 10,
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
     paddingBottom: 10,
     marginBottom: 10,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   img: {
     width: 30,
@@ -38,10 +39,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: '200'
+    fontWeight: "200"
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 20,
     top: 0
   }

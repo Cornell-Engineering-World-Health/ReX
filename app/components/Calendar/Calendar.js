@@ -1,5 +1,5 @@
-import React, { Component, PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Text,
@@ -7,33 +7,28 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity
-} from 'react-native';
-import Modal from 'react-native-modal';
-import { Button } from 'react-native-elements';
-import styles from './styles/styles.js';
-import * as Animatable from 'react-native-animatable';
-import {
-  pullFromDataBase,
-} from '../../databaseUtil/databaseUtil';
-import constants from '../../resources/constants';
-import { getColor, getTranslucentColor } from '../../resources/constants';
-import SelectedIndicator from './SelectedIndicator/SelectedIndicator';
-import PickerInputType from '../LogInputTypes/PickerInputType';
-import NumericalPickerInputType from '../LogInputTypes/NumericalPickerInputType';
-const { width } = Dimensions.get('window');
+} from "react-native";
+import Modal from "react-native-modal";
+import styles from "./styles/styles.js";
+import * as Animatable from "react-native-animatable";
+import { pullFromDataBase } from "../../databaseUtil/databaseUtil";
+import { getColor, getTranslucentColor } from "../../resources/constants";
+import SelectedIndicator from "./SelectedIndicator/SelectedIndicator";
+import PickerInputType from "../LogInputTypes/PickerInputType";
+import NumericalPickerInputType from "../LogInputTypes/NumericalPickerInputType";
 const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
 ];
 
 class Calendar extends PureComponent {
@@ -77,7 +72,7 @@ class Calendar extends PureComponent {
       dot1: dot1,
       dot2: dot2,
       dot3: dot3,
-      graphColor: 'rgba( 0, 0, 0, 0)',
+      graphColor: "rgba( 0, 0, 0, 0)",
       intensities: [0, 0],
       baseBars: baseBars,
       modalVisible: false
@@ -185,7 +180,7 @@ class Calendar extends PureComponent {
           }
           for (var j = 0; j < graphRefs.length; j++) {
             if (graphRefs[j]) {
-              graphRefs[j].transitionTo({ bottom: -50.0 }, 200, 'ease');
+              graphRefs[j].transitionTo({ bottom: -50.0 }, 200, "ease");
               if (j == last) {
                 setTimeout(() => {
                   thisRef.setState(
@@ -196,7 +191,7 @@ class Calendar extends PureComponent {
                     function() {
                       graphRefs.forEach(function(g) {
                         if (g) {
-                          g.transitionTo({ bottom: 0 }, 400, 'ease');
+                          g.transitionTo({ bottom: 0 }, 400, "ease");
                         }
                       });
                     }
@@ -291,9 +286,9 @@ class Calendar extends PureComponent {
   dateStyle = function(i) {
     return {
       margin: 2,
-      width: Dimensions.get('window').width / 7 - 9,
-      justifyContent: 'center',
-      alignItems: 'center',
+      width: Dimensions.get("window").width / 7 - 9,
+      justifyContent: "center",
+      alignItems: "center",
       height: 43,
       backgroundColor: this.state.backgroundColor[i]
     };
@@ -303,9 +298,9 @@ class Calendar extends PureComponent {
    * renderWeek(), renderMonth(), renderYear(), and renderDates() render the respective text components onto the calendar
    */
   renderWeek() {
-    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     return days.map(day => {
-      if (day == 'SUN') {
+      if (day == "SUN") {
         return (
           <View key={day} style={styles.weekItem}>
             <Text style={styles.weekAlt}>{day}</Text>
@@ -331,37 +326,37 @@ class Calendar extends PureComponent {
 
   renderDates() {
     const days = [
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '06',
-      '07',
-      '08',
-      '09',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30',
-      '31'
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31"
     ];
     var last = new Date(
       this.today.getFullYear(),
@@ -383,7 +378,7 @@ class Calendar extends PureComponent {
       var barHolder = [];
       let h = 0;
       if (this.state.intensities) {
-        h = (1.0/9.0) * (this.state.intensities[i] || 0);
+        h = (1.0 / 9.0) * (this.state.intensities[i] || 0);
       }
 
       return (
@@ -395,8 +390,7 @@ class Calendar extends PureComponent {
           <View style={styles.textBox}>
             <Text style={textStyle}>{day}</Text>
           </View>
-          <View style={styles.dayBox}
-          >
+          <View style={styles.dayBox}>
             <Animatable.View
               ref={b => {
                 this.graphRefs[i] = b;
@@ -404,7 +398,7 @@ class Calendar extends PureComponent {
               duration={400}
               animation="slideInUp"
               style={[
-                { backgroundColor: this.state.graphColor, flex: h},
+                { backgroundColor: this.state.graphColor, flex: h },
                 styles.bar
               ]}
             />
@@ -427,37 +421,37 @@ class Calendar extends PureComponent {
    */
   renderPreviousDates() {
     const days = [
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '06',
-      '07',
-      '08',
-      '09',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30',
-      '31'
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31"
     ];
     var first = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
     var firstDays = new Date(
@@ -490,37 +484,37 @@ class Calendar extends PureComponent {
    */
   renderNextDates() {
     const days = [
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '06',
-      '07',
-      '08',
-      '09',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30',
-      '31'
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31"
     ];
     var last = new Date(
       this.today.getFullYear(),
@@ -586,14 +580,14 @@ class Calendar extends PureComponent {
           <View
             style={{
               flex: 0.5,
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 10,
-              justifyContent: 'space-around'
+              justifyContent: "space-around"
             }}
           >
             <View style={{ flex: 0.1, padding: 10 }}>
               <Text
-                style={{ textAlign: 'center', fontSize: 25, fontWeight: '300' }}
+                style={{ textAlign: "center", fontSize: 25, fontWeight: "300" }}
               >
                 Select A Month
               </Text>
@@ -601,8 +595,8 @@ class Calendar extends PureComponent {
             <View
               style={{
                 flex: 0.8,
-                flexDirection: 'row',
-                justifyContent: 'center'
+                flexDirection: "row",
+                justifyContent: "center"
               }}
             >
               <PickerInputType
@@ -611,11 +605,11 @@ class Calendar extends PureComponent {
                 }}
                 input_style={{ width: 100 }}
                 title_text_style={{
-                  color: 'black'
+                  color: "black"
                 }}
                 value={monthNames[this.props.currMonth.getMonth()]}
                 picker_values={monthNames}
-                title_text={''}
+                title_text={""}
                 handleChange={() => {}}
               />
               <NumericalPickerInputType
@@ -623,12 +617,12 @@ class Calendar extends PureComponent {
                   this.yearPicker = y;
                 }}
                 input_style={{ width: 120 }}
-                title_text_style={{ color: 'white' }}
+                title_text_style={{ color: "white" }}
                 value={this.props.currMonth.getFullYear()}
                 min={1970}
                 max={this.props.currMonth.getFullYear() + 1000}
-                unit={''}
-                title_text={''}
+                unit={""}
+                title_text={""}
                 val_label={[]}
                 valueChange={() => {}}
               />
@@ -636,9 +630,9 @@ class Calendar extends PureComponent {
             <View
               style={{
                 flex: 0.2,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center'
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <TouchableOpacity

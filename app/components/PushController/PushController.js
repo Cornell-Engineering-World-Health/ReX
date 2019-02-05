@@ -1,10 +1,10 @@
 /*
 @flow
 */
-import React from 'react';
-import { Alert, Platform } from 'react-native';
-import { Notifications, Constants, Permissions } from 'expo';
-import Moment from 'moment';
+import React from "react";
+import { Alert, Platform } from "react-native";
+import { Notifications, Constants, Permissions } from "expo";
+import Moment from "moment";
 
 /*
 Cancel specific notification given an id
@@ -49,7 +49,6 @@ export function cancelMassNotifications(notificationIDS) {
 
 */
 export function setNotification(t, b, date, callBack) {
-    //console.log(date);
   d = {
     title: t,
     body: b
@@ -110,13 +109,17 @@ export function setMassNotification(
 ) {
   var id_bundle = [];
 
-  startDate.setTime(startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000) //fix time to correct timezone
-  endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60 * 1000) // as above
+  startDate.setTime(
+    startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
+  ); //fix time to correct timezone
+  endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60 * 1000); // as above
 
   let tempDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
-    startDate.getDate(), 0,0
+    startDate.getDate(),
+    0,
+    0
   );
 
   while (Moment(tempDate).isBefore(endDate)) {
@@ -131,7 +134,7 @@ export function setMassNotification(
         minutes
       );
 
-      if(!Moment(tempDateWithTime).isBefore((new Date()).toISOString())){
+      if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
         setNotification(t, b, tempDateWithTime, (i, d) => {
           let temp = { id: i, date: d };
           id_bundle.push(temp);
@@ -188,16 +191,15 @@ class PushController extends React.Component {
     this.listenForNotifications();
   }
   async getiOSNotificationPermission() {
-    console.log('entered ios notification permissions');
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    if (status !== 'granted') {
+    if (status !== "granted") {
       await Permissions.askAsync(Permissions.NOTIFICATIONS);
     }
   }
 
   listenForNotifications = () => {
     Notifications.addListener(notification => {
-      if (notification.origin === 'received' && Platform.OS === 'ios') {
+      if (notification.origin === "received" && Platform.OS === "ios") {
         Alert.alert(notification.data.title, notification.data.body);
       }
     });
