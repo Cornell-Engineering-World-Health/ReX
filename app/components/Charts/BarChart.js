@@ -3,7 +3,8 @@ import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { BarChart, YAxis, Grid } from "react-native-svg-charts";
 import moment from "moment";
 import constants from "../../resources/constants.js";
-import { G, Line } from "react-native-svg";
+import { Svg } from 'expo';
+const { G, Line } = Svg;
 
 /*Dual gridlines*/
 const CustomGrid = ({ x, y, data, ticks }) => (
