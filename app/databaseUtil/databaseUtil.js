@@ -436,7 +436,7 @@ function formatDataForGraphs(data) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
-
+    var intensity = parseInt(JSON.parse(ev.fields).Intensity);
     if (!dataTemp[monthString]) {
       dataTemp[monthString] = {
         frequency: 1,
