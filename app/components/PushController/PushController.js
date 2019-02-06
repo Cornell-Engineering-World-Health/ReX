@@ -107,6 +107,12 @@ export function setMassNotification(
   scheduledTime,
   callBack
 ) {
+  console.log("startdate", startDate);
+  console.log("enddate", endDate);
+  console.log("t", t);
+  console.log("b", b);
+  console.log("scheduled time", scheduledTime);
+
   var id_bundle = [];
 
   startDate.setTime(
@@ -122,7 +128,11 @@ export function setMassNotification(
     0
   );
 
-  while (Moment(tempDate).isBefore(endDate)) {
+  while (
+    Moment(tempDate).isBefore(endDate) ||
+    Moment(tempDate).isSame(endDate)
+  ) {
+    console.log("in while loop");
     for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
       let minutes = parseInt(scheduledTime[x].slice(3, 5));
@@ -142,23 +152,6 @@ export function setMassNotification(
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
-  }
-
-  for (var x = 0; x < scheduledTime.length; x++) {
-    let hours = parseInt(scheduledTime[x].slice(0, 2));
-    let minutes = parseInt(scheduledTime[x].slice(3, 5));
-    let tempDateWithTime = new Date(
-      tempDate.getFullYear(),
-      tempDate.getMonth(),
-      tempDate.getDate(),
-      hours,
-      minutes
-    );
-    setNotification(t, b, tempDateWithTime, (i, d) => {
-      let temp = { id: i, date: d, title: t, body: b };
-      id_bundle.push(temp);
-      callBack(id_bundle);
-    });
   }
 }
 /*
