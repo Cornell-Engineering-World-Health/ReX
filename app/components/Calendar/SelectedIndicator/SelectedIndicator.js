@@ -35,15 +35,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 3,
     height: height - (width - whitespace),
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     top: (width - whitespace) / 2 - 3
-  },
-  blackBottom: {
-    position: "absolute",
-    width: whitespace,
-    height: 3,
-    backgroundColor: "#C0C0C0",
-    bottom: -3
   }
 });
 

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Modal from 'react-native-modal';
-import SurveyForm from '../components/Survey/SurveyForm';
-import { IMAGES } from '../resources/constants';
-import ButtonWithImage from '../components/Button/ButtonWithImage';
+import React, { Component } from "react";
+import { StyleSheet, View } from "react-native";
+import Modal from "react-native-modal";
+import SurveyForm from "../components/Survey/SurveyForm";
+import { IMAGES } from "../resources/constants";
+import ButtonWithImage from "../components/Button/ButtonWithImage";
 
 const styles = StyleSheet.create({
   topSpace: {
     height: 40,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15
   }
@@ -21,7 +21,7 @@ class SurveyModal extends Component {
     super(props);
 
     this.state = {
-      surveyModalVisible: false
+      surveyModalVisible: true
     };
   }
 
@@ -53,7 +53,7 @@ class SurveyModal extends Component {
             width={30}
             height={30}
             imageSource={IMAGES.close}
-            styles={{ position: 'absolute', right: 0 }}
+            styles={{ position: "absolute", right: 0 }}
           />
         </View>
       </Modal>
