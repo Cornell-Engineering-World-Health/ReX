@@ -1,5 +1,5 @@
 # FISH
-<img src="https://drive.google.com/uc?export=view&id=1mP6DdkxEtkZFNZ9MQDVDY0oaEx2WcvkG" width="400">
+<img  align="left" src="https://drive.google.com/uc?export=view&id=1mP6DdkxEtkZFNZ9MQDVDY0oaEx2WcvkG" width="400">
 
 Welcome to Fish, a symptom tracking and medication reminder application, currently in Beta Testing for the App Store. In this app you can monitor one time or recurring symptoms, see symptom history over time, track medication usage, and recieve notifications as to when to take your next medication. 
 
