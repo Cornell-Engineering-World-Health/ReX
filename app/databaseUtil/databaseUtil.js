@@ -1134,13 +1134,13 @@ export function exportAllMedications(callBack) {
       tempMedFormatted.dosage = medInfo["Dosage"];
       //TODO: date
       tempMedFormatted.date = Moment(medInfo["Start Date"]).format('M/D/YY');
-      tempMedFormatted["time prescribed"] = medInfo["Time"];
+      tempMedFormatted["time prescribed"] = medInfo["Time"].join('; ');
 
       tempMedFormatted["time taken"] = medInfo["Taken Time"].map((time, index) =>
          time != "" ? time : 'N/A'
-      )
+      ).join('; ')
       tempMedFormatted['status'] = medInfo["Taken"].map((status, index) => status ?
-        'Taken' : 'Not Taken')
+        'Taken' : 'Not Taken').join('; ')
         formattedMedicine.push(tempMedFormatted);
     })
       callBack(formattedMedicine)
