@@ -7,7 +7,7 @@ import Profile from "./EditProfile";
 import Trends from "./Trends";
 import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
-import { exportDataMailFunc } from "../mailUtil/mailUtil.js";
+import { exportDataMailFunc, exportMedicationsMailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
@@ -182,7 +182,7 @@ class Settings extends Component {
               title="Export Data"
               onPress={() => {
                 //_mailFunc(this.state.email, this.state.name + "'s data");
-                exportDataMailFunc(
+                exportMedicationsMailFunc(
                   this.state.email,
                   this.state.name + "'s symptom history"
                 );

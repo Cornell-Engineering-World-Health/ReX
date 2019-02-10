@@ -1,5 +1,8 @@
 import { MailComposer, FileSystem } from "expo";
-import { exportAllSymptoms } from "../databaseUtil/databaseUtil";
+import {
+  exportAllSymptoms,
+  exportAllMedications
+} from "../databaseUtil/databaseUtil";
 import { SYMPTOM_FIELDS } from "../resources/constants.js";
 function convertArrayOfObjectsToCSV(args) {
   var result, ctr, keys, columnDelimiter, lineDelimiter, data;
@@ -33,6 +36,44 @@ function convertArrayOfObjectsToCSV(args) {
 }
 
 /*
+Opens a mail modal with the given email and subject with attached csv file for
+medicine information
+*/
+export function exportMedicationsMailFunc(email, subject) {
+  SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
+  FILE_NAME = "medicinelog.csv";
+  SHARED_KEYS = ["date", "dosage", "medicine", "status", "time prescribed" , "time taken"]; //all symptoms have these keys
+  //use database function to get an array of objects representing the data
+  exportAllMedications(medicines => {
+    FileSystem.getInfoAsync(SURVEY_DIR, {})
+      .then(e => {
+        if (!e.exists || !e.isDirectory) {
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+        }
+      })
+      .then(() => {
+        content = "";
+        content = convertArrayOfObjectsToCSV({
+          data: medicines,
+          keys: SHARED_KEYS //headers for csv file
+        });
+        return FileSystem.writeAsStringAsync(
+          SURVEY_DIR + "/" + FILE_NAME,
+          content
+        );
+      })
+      .then(e => {
+        MailComposer.composeAsync({
+          recipients: [email],
+          subject: subject,
+          body: "",
+          attachments: [SURVEY_DIR + "/" + FILE_NAME]
+        });
+      })
+      .catch(e => console.log(e));
+  });
+}
+/*
   Opens a mail modal with the given email and subject, and with the attachment of
   a csv file with all the symptoms.
 */
@@ -40,7 +81,6 @@ export function exportDataMailFunc(email, subject) {
   SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
   FILE_NAME = "history.csv";
   SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
-
   //use database function to get an array of objects representing the data
   exportAllSymptoms(symptoms => {
     FileSystem.getInfoAsync(SURVEY_DIR, {})

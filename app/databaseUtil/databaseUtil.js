@@ -1120,3 +1120,29 @@ export function exportAllSymptoms(callBack) {
     callBack(formattedSymptoms);
   });
 }
+/*
+Generates an array of objects with keys:
+medicine, dosage, date, time prescribed,time taken, status,
+*/
+export function exportAllMedications(callBack) {
+  pullAllMedicineData(medicineData => {
+    let formattedMedicine = [];
+    medicineData.forEach((element, index) => {
+      let tempMedFormatted = {};
+      let medInfo = JSON.parse(element.fields);
+      tempMedFormatted.medicine = medInfo["Pill Name"];
+      tempMedFormatted.dosage = medInfo["Dosage"];
+      //TODO: date
+      tempMedFormatted.date = Moment(medInfo["Start Date"]).format('M/D/YY');
+      tempMedFormatted["time prescribed"] = medInfo["Time"];
+
+      tempMedFormatted["time taken"] = medInfo["Taken Time"].map((time, index) =>
+         time != "" ? time : 'N/A'
+      )
+      tempMedFormatted['status'] = medInfo["Taken"].map((status, index) => status ?
+        'Taken' : 'Not Taken')
+        formattedMedicine.push(tempMedFormatted);
+    })
+      callBack(formattedMedicine)
+  });
+}
