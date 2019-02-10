@@ -77,9 +77,9 @@ export function exportMedicationsMailFunc(email, subject) {
   Opens a mail modal with the given email and subject, and with the attachment of
   a csv file with all the symptoms.
 */
-export function exportDataMailFunc(email, subject) {
+export function exportSymptomsMailFunc(email, subject) {
   SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
-  FILE_NAME = "history.csv";
+  FILE_NAME = "symptomhistory.csv";
   SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
   //use database function to get an array of objects representing the data
   exportAllSymptoms(symptoms => {

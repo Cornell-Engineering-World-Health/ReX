@@ -1,18 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, View, Text, Image, NavigatorIOS } from "react-native";
+import { StyleSheet, View, Text, Image, NavigatorIOS, TouchableOpacity, Dimensions } from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
 import Profile from "./EditProfile";
 import Trends from "./Trends";
 import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
-import { exportDataMailFunc, exportMedicationsMailFunc } from "../mailUtil/mailUtil.js";
+import { exportSymptomsMailFunc, exportMedicationsMailFunc } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
+
+
+let modal_ids = ['edit', 'export']
 
 class Settings extends Component {
   static propTypes = {
@@ -32,7 +35,7 @@ class Settings extends Component {
       height: "Height unknown",
       icon: "0",
       email: "Doctor's email unkown",
-      isEditVisible: false
+      modalVisible: ''
     };
   }
 
@@ -128,7 +131,7 @@ class Settings extends Component {
               titleInfo={"Edit" + "\n" + "Profile"}
               titleStyle={{ fontSize: 20, fontWeight: "bold" }}
               onPress={() => {
-                this.setState({ isEditVisible: true });
+                this.setState({ modalVisible: modal_ids[0] });
               }}
             />
             <SettingsList.Header headerStyle={{ marginTop: 10 }} />
@@ -181,11 +184,7 @@ class Settings extends Component {
               }
               title="Export Data"
               onPress={() => {
-                //_mailFunc(this.state.email, this.state.name + "'s data");
-                exportMedicationsMailFunc(
-                  this.state.email,
-                  this.state.name + "'s symptom history"
-                );
+                this.setState({modalVisible: modal_ids[1]})
               }}
             />
             <SettingsList.Item
@@ -205,12 +204,12 @@ class Settings extends Component {
           </SettingsList>
         </View>
         <Modal
-          isVisible={this.state.isEditVisible}
+          isVisible={this.state.modalVisible == modal_ids[0]}
           style={styles.editProfileWrapper}
         >
           <Profile
             exitModal={() => {
-              this.setState({ isEditVisible: false });
+              this.setState({ modalVisible: '' });
             }}
             settingsUpdate={(setting, value) => {
               this.settingsUpdate(setting, value);
@@ -225,8 +224,47 @@ class Settings extends Component {
             weight={this.state.weight}
             isInModal={true}
             baseColor={COLOR.black}
-            baseColor={COLOR.black}
           />
+        </Modal>
+        <Modal
+          isVisible={this.state.modalVisible == modal_ids[1]}
+          animationInTiming={500}
+          animationOutTiming={500}
+          onBackdropPress={() => {
+            this.setState({ modalVisible: "" });
+          }}
+          onSwipe={() => {
+            this.setState({ modalVisible: "" });
+          }}
+          swipDirection={"down"}
+          style={styles.modal}
+        >
+          <View style={styles.modalWrapper}>
+            <TouchableOpacity
+              style={[styles.modalButton, {backgroundColor: COLOR.purple}]}
+              onPress={() => {
+                this.setState({ modalVisible: "" });
+                exportMedicationsMailFunc(
+                  this.state.email,
+                  this.state.name + "'s medicine history"
+                );
+              }}
+            >
+              <Text style={styles.modalSubmitText}>Medicine History</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.modalButton, {backgroundColor: COLOR.cyan}]}
+              onPress={() => {
+                this.setState({ modalVisible: '' });
+                exportSymptomsMailFunc(
+                  this.state.email,
+                  this.state.name + "'s symptom history"
+                );
+              }}
+            >
+              <Text style={styles.modalSubmitText}>Symptom History</Text>
+            </TouchableOpacity>
+          </View>
         </Modal>
       </View>
     );
@@ -262,7 +300,30 @@ const styles = StyleSheet.create({
   titleInfoStyle: {
     fontSize: 16,
     color: "#8e8e93"
-  }
+  },
+  modal: {
+    justifyContent: "flex-end",
+    margin: 0
+  },
+  modalWrapper: {
+    flex: 0.2,
+    alignItems: "stretch",
+    justifyContent:'center',
+    backgroundColor:'white'
+  },
+  modalButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#aedfe1",
+    flex: 1,
+  },
+  modalSubmitText: {
+    fontWeight: "bold",
+    textAlign: 'center',
+    color: "black",
+    fontSize: 15,
+
+  },
 });
 const ProfileRoute = {
   component: Profile,

@@ -1130,6 +1130,13 @@ export function exportAllMedications(callBack) {
     medicineData.forEach((element, index) => {
       let tempMedFormatted = {};
       let medInfo = JSON.parse(element.fields);
+
+      //need to check if medicine is before the current time
+      let tempDate = medInfo["Start Date"];
+      if(!Moment(tempDate).isBefore(new Date())){
+        return;
+      }
+
       tempMedFormatted.medicine = medInfo["Pill Name"];
       tempMedFormatted.dosage = medInfo["Dosage"];
       //TODO: date
