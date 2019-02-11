@@ -1,21 +1,31 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, View, Text, Image, NavigatorIOS, TouchableOpacity, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  NavigatorIOS,
+  TouchableOpacity,
+  Dimensions
+} from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
 import Profile from "./EditProfile";
 import Trends from "./Trends";
 import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
-import { exportSymptomsMailFunc, exportMedicationsMailFunc } from "../mailUtil/mailUtil.js";
+import {
+  exportSymptomsMailFunc,
+  exportMedicationsMailFunc
+} from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
   pullSettingsFromDatabase
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
-
-let modal_ids = ['edit', 'export']
+let modal_ids = ["edit", "export"];
 
 class Settings extends Component {
   static propTypes = {
@@ -35,7 +45,7 @@ class Settings extends Component {
       height: "Height unknown",
       icon: "0",
       email: "Doctor's email unkown",
-      modalVisible: ''
+      modalVisible: ""
     };
   }
 
@@ -184,7 +194,7 @@ class Settings extends Component {
               }
               title="Export Data"
               onPress={() => {
-                this.setState({modalVisible: modal_ids[1]})
+                this.setState({ modalVisible: modal_ids[1] });
               }}
             />
             <SettingsList.Item
@@ -209,7 +219,7 @@ class Settings extends Component {
         >
           <Profile
             exitModal={() => {
-              this.setState({ modalVisible: '' });
+              this.setState({ modalVisible: "" });
             }}
             settingsUpdate={(setting, value) => {
               this.settingsUpdate(setting, value);
@@ -241,21 +251,22 @@ class Settings extends Component {
         >
           <View style={styles.modalWrapper}>
             <TouchableOpacity
-              style={[styles.modalButton, {backgroundColor: COLOR.purple}]}
+              style={[styles.modalButton, { backgroundColor: COLOR.purple }]}
               onPress={() => {
-                this.setState({ modalVisible: "" });
-                exportMedicationsMailFunc(
-                  this.state.email,
-                  this.state.name + "'s medicine history"
+                this.setState({ modalVisible: "" }, () =>
+                  exportMedicationsMailFunc(
+                    this.state.email,
+                    this.state.name + "'s medicine history"
+                  )
                 );
               }}
             >
               <Text style={styles.modalSubmitText}>Medicine History</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.modalButton, {backgroundColor: COLOR.cyan}]}
+              style={[styles.modalButton, { backgroundColor: COLOR.cyan }]}
               onPress={() => {
-                this.setState({ modalVisible: '' });
+                this.setState({ modalVisible: "" });
                 exportSymptomsMailFunc(
                   this.state.email,
                   this.state.name + "'s symptom history"
@@ -285,7 +296,7 @@ const styles = StyleSheet.create({
     margin: 7
   },
   editProfileWrapper: {
-    borderRadius: 10,
+    borderRadius: 10
   },
   imageStyle: {
     marginLeft: 5,
@@ -306,22 +317,21 @@ const styles = StyleSheet.create({
   modalWrapper: {
     flex: 0.2,
     alignItems: "stretch",
-    justifyContent:'center',
-    backgroundColor:'white'
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   modalButton: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#aedfe1",
-    flex: 1,
+    flex: 1
   },
   modalSubmitText: {
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
     color: "black",
-    fontSize: 15,
-
-  },
+    fontSize: 15
+  }
 });
 const ProfileRoute = {
   component: Profile,

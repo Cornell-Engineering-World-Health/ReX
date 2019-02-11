@@ -1,4 +1,5 @@
 import { MailComposer, FileSystem } from "expo";
+import { Linking, Alert } from "react-native";
 import {
   exportAllSymptoms,
   exportAllMedications
@@ -42,7 +43,14 @@ medicine information
 export function exportMedicationsMailFunc(email, subject) {
   SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
   FILE_NAME = "medicinelog.csv";
-  SHARED_KEYS = ["date", "dosage", "medicine", "status", "time prescribed" , "time taken"]; //all symptoms have these keys
+  SHARED_KEYS = [
+    "date",
+    "dosage",
+    "medicine",
+    "status",
+    "time prescribed",
+    "time taken"
+  ]; //all symptoms have these keys
   //use database function to get an array of objects representing the data
   exportAllMedications(medicines => {
     FileSystem.getInfoAsync(SURVEY_DIR, {})
@@ -106,8 +114,17 @@ export function exportSymptomsMailFunc(email, subject) {
           subject: subject,
           body: "",
           attachments: [SURVEY_DIR + "/" + FILE_NAME]
+        }).catch(e => {
+          setTimeout(
+            () =>
+              Alert.alert(
+                "Sorry, the iOS mail app is not detected on your phone.",
+                "To send attachments you must redownload that application."
+              ),
+            501
+          );
         });
       })
-      .catch(e => console.log(e));
+      .catch(e => {});
   });
 }
