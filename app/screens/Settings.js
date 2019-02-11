@@ -277,7 +277,7 @@ class Settings extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#EFEFF4",
-    flex: 0.9
+    flex: 1
   },
   avatar: {
     height: 100,
@@ -285,8 +285,7 @@ const styles = StyleSheet.create({
     margin: 7
   },
   editProfileWrapper: {
-    backgroundColor: "white",
-    borderRadius: 10
+    borderRadius: 10,
   },
   imageStyle: {
     marginLeft: 5,

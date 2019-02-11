@@ -388,8 +388,10 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   container: {
-    backgroundColor: "transparent",
-    flex: 1,
+    backgroundColor: "white",
+    paddingTop: 5,
+    paddingBottom: 5, 
+    flex: 0.9,
     justifyContent: "space-between",
     alignItems: "stretch",
     borderRadius: 20
