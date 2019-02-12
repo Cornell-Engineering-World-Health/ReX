@@ -755,7 +755,8 @@ export function asyncCreateMedicineEvents(
   startDate,
   endDate,
   timeArray,
-  timeCategories
+  timeCategories,
+  notifKeyData
 ) {
   Database.transaction(
     tx => {
@@ -768,6 +769,7 @@ export function asyncCreateMedicineEvents(
             endDate,
             timeArray,
             timeCategories,
+            notifKeyData,
             event_id,
             event_details_id
           )
@@ -785,6 +787,7 @@ export function asyncCreateMedicineEventsWrapper(
   endDate,
   timeArray,
   timeCategories,
+  notifKeyData,
   event_id,
   event_details_id
 ) {
@@ -809,6 +812,7 @@ export function asyncCreateMedicineEventsWrapper(
           "Time Category": timeCategories,
           Taken: taken,
           "Taken Time": takenTimeInit,
+          "Notification Keys": notifKeyData[dateString],
           "Notification On": false
         };
         var inputArray = [

@@ -91,37 +91,40 @@ class MedicineView extends React.Component {
    * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
    */
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
-    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
+    let thisRef = this;
     new_title = "Fiih Medication Reminder";
     new_body = "It's time to take " + title + "! (" + dosage + ")";
-    setMassNotification(start, end, new_title, new_body, time, () => {});
-    endNew = Moment(end);
-    endNew.date(endNew.date() + 1);
-    if (Moment().isBetween(start, endNew)) {
-      medicineData = this.state.data;
-      for (var i = 0; i < medicineData.length; i++) {
-        if (medicineData[i].title == title) {
-          medicineData.splice(i, 1);
+
+    setMassNotification(start, end, new_title, new_body, time, (notifKD) => {
+      asyncCreateMedicineEvents(title, dosage, start, end, time, time_category, notifKD);
+      endNew = Moment(end);
+      endNew.date(endNew.date() + 1);
+      if (Moment().isBetween(start, endNew)) {
+        medicineData = thisRef.state.data;
+        for (var i = 0; i < medicineData.length; i++) {
+          if (medicineData[i].title == title) {
+            medicineData.splice(i, 1);
+          }
         }
+        var formattedTimes = time.map(
+          t => Moment().format("MMMM DD YYYY") + " " + t
+        );
+        var taken = time.map(t => false);
+        var takenTime = time.map(t => "");
+        medicineData.push({
+          title: title,
+          time: formattedTimes,
+          timeVal: time,
+          dosage: dosage,
+          statuses: taken,
+          takenTime: takenTime
+        });
+        thisRef.setState({
+          toggle_add: false,
+          data: medicineData
+        });
       }
-      var formattedTimes = time.map(
-        t => Moment().format("MMMM DD YYYY") + " " + t
-      );
-      var taken = time.map(t => false);
-      var takenTime = time.map(t => "");
-      medicineData.push({
-        title: title,
-        time: formattedTimes,
-        timeVal: time,
-        dosage: dosage,
-        statuses: taken,
-        takenTime: takenTime
-      });
-      this.setState({
-        toggle_add: false,
-        data: medicineData
-      });
-    }
+    });
   };
 
   componentDidMount = () => {

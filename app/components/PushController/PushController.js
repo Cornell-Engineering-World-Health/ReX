@@ -42,13 +42,10 @@ export function cancelMassNotifications(notificationIDS) {
   b: body of the notification  //string
   date: time/date to send notification // date object with correct time and date
 
-  callBack: function to be called after the notification is set.
-    Notification id (string?) and date the notification will be sent (date object)
-    will be passed in as parameters. This notification id can be used to cancel
-    this notification in the future.
+  returns: a promise that resolves to a notification ID
 
 */
-export function setNotification(t, b, date, callBack) {
+export function setNotification(t, b, date) {
   d = {
     title: t,
     body: b
@@ -61,6 +58,7 @@ export function setNotification(t, b, date, callBack) {
       sound: true
     }
   };
+  //TODO: CHECK IF DATE IS LOCAL TIME!
   schedulingOptions = {
     time: date
   };
@@ -68,9 +66,7 @@ export function setNotification(t, b, date, callBack) {
     localNotification,
     schedulingOptions
   );
-  p.then(id => {
-    callBack(id, date);
-  });
+  return p;
 }
 
 /*
@@ -105,7 +101,7 @@ export function setMassNotification(
   t,
   b,
   scheduledTime,
-  callBack
+  callback
 ) {
   console.log("startdate", startDate);
   console.log("enddate", endDate);
@@ -113,7 +109,6 @@ export function setMassNotification(
   console.log("b", b);
   console.log("scheduled time", scheduledTime);
 
-  var id_bundle = [];
 
   startDate.setTime(
     startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
@@ -128,6 +123,8 @@ export function setMassNotification(
     0
   );
 
+  let notifTimes = [];
+  let notifPromises = [];
   while (
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
@@ -143,16 +140,27 @@ export function setMassNotification(
         hours,
         minutes
       );
-
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        setNotification(t, b, tempDateWithTime, (i, d) => {
-          let temp = { id: i, date: d };
-          id_bundle.push(temp);
-        });
+        notifTimes.push(Moment(tempDateWithTime).format('YYYY-MM-DD'));
+        notifPromises.push(setNotification(t, b, tempDateWithTime));
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
+
+  Promise.all(notifPromises).then(function(notifKeys) {
+    notifKeyData = {}
+    let i = 0
+    notifTimes.forEach((dateString) => {
+      if(notifKeyData[dateString] == undefined){
+        notifKeyData[dateString] = []
+      }
+      notifKeyData[dateString].push(notifKeys[i])
+      i++
+    })
+    
+    callback(notifKeyData)
+  });
 }
 /*
 //New
