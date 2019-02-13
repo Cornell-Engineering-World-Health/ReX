@@ -11,7 +11,12 @@ import {
 import Database from "../Database";
 import SearchInput, { createFilter } from "react-native-search-filter";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
-import { getSource, IMAGES, BODY_PARTS } from "../resources/constants";
+import {
+  getSource,
+  IMAGES,
+  BODY_PARTS,
+  getColor
+} from "../resources/constants";
 const KEYS_TO_FILTERS = ["event_type_name", "event_type_category"];
 
 export default class ChooseLogScreen extends React.Component {
@@ -103,7 +108,11 @@ export default class ChooseLogScreen extends React.Component {
                   return (
                     <TouchableOpacity
                       key={key}
-                      style={styles.log_button}
+                      style={[
+                        styles.log_button,
+                        styles.lightShadow,
+                        { backgroundColor: getColor(prop.event_type_name) }
+                      ]}
                       onPress={() => {
                         navigate("Form", {
                           log_name: filteredSymptoms[key].event_type_name,
@@ -150,21 +159,18 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     alignItems: "center",
-    backgroundColor: "#bf5252",
     padding: 15,
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#bf5252"
+    borderRadius: 10
   },
   log_button_text: {
-    color: "white",
+    color: "#161616",
     fontSize: 15
   },
   log_button_img: {
     marginTop: 15,
     height: 75,
     width: 75,
-    tintColor: "white"
+    tintColor: "#161616"
   },
   searchInput: {
     padding: 10,
@@ -179,20 +185,18 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     marginTop: 10,
-    marginBottom: 10,
     paddingRight: 25,
     paddingLeft: 25,
     flex: 0.15,
-    justifyContent: "center",
-    alignItems: "stretch",
-    flexDirection: "row"
+    justifyContent: "flex-start",
+    alignItems: "stretch"
   },
   backWrapper: {
     flex: 0.15,
     paddingTop: 25
   },
   lightShadow: {
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: { width: 3, height: 3 },
     shadowColor: "#808080",
     shadowOpacity: 0.2
   },
