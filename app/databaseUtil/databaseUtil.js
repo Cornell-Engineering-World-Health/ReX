@@ -29,6 +29,9 @@ export function createTables() {
       /* tx.executeSql(
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `notifications_tbl` (`name` TEXT NOT NULL, `dosage` TEXT NOT NULL, `time` TEXT NOT NULL, `notificationKey` NOT NULL UNIQUE, PRIMARY KEY(`name`, `dosage`, `time`));"
+      );
     },
     err => console.log(err, "error creating tables"),
     () => {}
@@ -755,8 +758,7 @@ export function asyncCreateMedicineEvents(
   startDate,
   endDate,
   timeArray,
-  timeCategories,
-  notifKeyData
+  timeCategories
 ) {
   Database.transaction(
     tx => {
@@ -769,7 +771,6 @@ export function asyncCreateMedicineEvents(
             endDate,
             timeArray,
             timeCategories,
-            notifKeyData,
             event_id,
             event_details_id
           )
@@ -787,7 +788,6 @@ export function asyncCreateMedicineEventsWrapper(
   endDate,
   timeArray,
   timeCategories,
-  notifKeyData,
   event_id,
   event_details_id
 ) {
@@ -812,7 +812,6 @@ export function asyncCreateMedicineEventsWrapper(
           "Time Category": timeCategories,
           Taken: taken,
           "Taken Time": takenTimeInit,
-          "Notification Keys": notifKeyData[dateString],
           "Notification On": false
         };
         var inputArray = [
@@ -972,6 +971,34 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
     },
     err => console.log(err)
   );
+}
+
+export function asyncCreateNotifications(name, dosage, time, notifKey){
+  let args = [name, dosage, time, notifKey]
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "INSERT OR IGNORE INTO notifications_tbl (name,dosage,time,notificationKey) VALUES (?,?,?,?)",
+        args,
+        () => {
+          tx.executeSql(
+            "SELECT * FROM notifications_tbl",
+            [],
+            (a,b) => {
+              console.log(b)
+            },
+            err => console.log(err)
+          );
+        },
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+export function asyncDeleteNotifications(name, dosage){
+
 }
 
 export function asyncSettingUpdate(name, value) {

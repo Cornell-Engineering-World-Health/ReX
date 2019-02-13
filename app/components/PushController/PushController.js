@@ -4,6 +4,7 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import { Notifications, Constants, Permissions } from "expo";
+import {asyncCreateNotifications } from "../../databaseUtil/databaseUtil";
 import Moment from "moment";
 
 /*
@@ -98,11 +99,13 @@ callBack: function to be called after the notification is set.
 export function setMassNotification(
   startDate,
   endDate,
-  t,
-  b,
-  scheduledTime,
-  callback
+  name,
+  dosage,
+  scheduledTime
 ) {
+  let t = "Fiih Medication Reminder";
+  let b = "It's time to take " + name + "! (" + dosage + ")";
+
   console.log("startdate", startDate);
   console.log("enddate", endDate);
   console.log("t", t);
@@ -123,8 +126,6 @@ export function setMassNotification(
     0
   );
 
-  let notifTimes = [];
-  let notifPromises = [];
   while (
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
@@ -141,26 +142,13 @@ export function setMassNotification(
         minutes
       );
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        notifTimes.push(Moment(tempDateWithTime).format('YYYY-MM-DD'));
-        notifPromises.push(setNotification(t, b, tempDateWithTime));
+        setNotification(t, b, tempDateWithTime).then((id) => {
+            asyncCreateNotifications(name, dosage, Moment(tempDateWithTime).format(),id)
+          });
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
-
-  Promise.all(notifPromises).then(function(notifKeys) {
-    notifKeyData = {}
-    let i = 0
-    notifTimes.forEach((dateString) => {
-      if(notifKeyData[dateString] == undefined){
-        notifKeyData[dateString] = []
-      }
-      notifKeyData[dateString].push(notifKeys[i])
-      i++
-    })
-    
-    callback(notifKeyData)
-  });
 }
 /*
 //New
