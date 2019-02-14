@@ -1,6 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity
+} from "react-native";
+import Autocomplete from "react-native-autocomplete-input";
+import SearchInput, { createFilter } from "react-native-search-filter";
 export default class TextInputType extends React.Component {
   constructor(props) {
     super(props);
@@ -16,22 +23,42 @@ export default class TextInputType extends React.Component {
   }
 
   render() {
+    let fakeData = ["hello", "world", "not", "helloworld"];
+    const filteredMed = fakeData.filter(createFilter(this.state.text));
+    console.log(filteredMed);
     return (
-      <View style={this.state.input_style}>
+      <View style={[this.state.input_style]}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <TextInput
-          ref={(t) => {this.textInput = t}}
+        <Autocomplete
+          ref={t => {
+            this.textInput = t;
+          }}
           style={[styles.text, this.state.input_text_style]}
-          value={this.state.text == 'NONE' ? '' : this.state.text}
+          value={this.state.text == "NONE" ? "" : this.state.text}
           onChangeText={text => {
             this.setState({ text: text });
             this.props.valueChange(this.props.val_label, text);
           }}
+          autoCorrect={false}
+          hideResults={this.state.text == 0}
+          data={filteredMed}
+          inputContainerStyle={{ borderWidth: 0 }}
           blurOnSubmit={this.props.blurOnSubmit}
-          returnKeyType = { this.props.returnKeyType }
-          onSubmitEditing={() => {this.props.onSubmitEditing()}}
+          returnKeyType={this.props.returnKeyType}
+          onSubmitEditing={() => {
+            this.props.onSubmitEditing();
+          }}
           placeholder={this.state.placeholder_text}
           keyboardType={this.props.keyboardType}
+          listStyle={{ backgroundColor: "white" }}
+          renderItem={item => (
+            <TouchableOpacity
+              style={styles.dropItem}
+              onPress={() => this.setState({ text: item })}
+            >
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          )}
         />
       </View>
     );
@@ -41,6 +68,11 @@ export default class TextInputType extends React.Component {
 const styles = StyleSheet.create({
   text: {
     fontSize: 30,
-    color: 'white'
+    color: "white",
+    borderWidth: 0
+  },
+  dropItem: {
+    backgroundColor: "white",
+    borderWidth: 0
   }
 });

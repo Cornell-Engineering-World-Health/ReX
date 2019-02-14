@@ -28,6 +28,7 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
     "react-native-animatable": "^1.2.4",
+    "react-native-autocomplete-input": "^3.6.0",
     "react-native-calendars": "^1.21.0",
     "react-native-dropdownalert": "^3.4.0",
     "react-native-material-textfield": "^0.12.0",

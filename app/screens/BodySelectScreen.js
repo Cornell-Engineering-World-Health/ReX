@@ -260,7 +260,6 @@ const styles = StyleSheet.create({
   },
   vertical: {
     flexDirection: "column"
-    // justifyContent: 'center'
   },
   legs: {
     width: width / 4,
@@ -285,14 +284,6 @@ const styles = StyleSheet.create({
   },
   empty_top: {
     height: height / 8
-  },
-  otherButton: {
-    margin: 10,
-    alignItems: "center",
-    borderColor: COLOR.blue,
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 30
   },
 
   searchButton: {

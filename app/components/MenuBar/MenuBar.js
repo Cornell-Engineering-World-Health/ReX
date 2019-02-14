@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, View, StatusBar } from "react-native";
 import ButtonWithImage from "../Button/ButtonWithImage";
 import { IMAGES } from "../../resources/constants";
 import Home from "../../screens/HomePage";
@@ -13,7 +9,7 @@ import Calendar from "../../screens/Calendar";
 import ChooseLogScreen from "../../screens/Log";
 import PushController from "../PushController/PushController";
 import SurveyModal from "../../screens/SurveyModal";
-
+import ButtonSelector from "./ButtonSelector";
 const MEDICINE_PAGE = "medicine";
 const SETTINGS_PAGE = "settings";
 const HOME_PAGE = "home";
@@ -21,9 +17,8 @@ const CALENDAR_PAGE = "calendar";
 const SYMPTOMS_LIST = "flatlistcard";
 const SYMPTOM_LOG_CHOOSER = "symptomlog";
 
-const SELECTED_BACKGROUND_COLOR = "#cc99ff";
-const DEFAULT_BACKGROUND_COLOR = "#ffffff";
-const QUICK_LOG_COLOR = "#cc99ff";
+const SELECTED_BACKGROUND_COLOR = "#953cd8";
+const DEFAULT_BACKGROUND_COLOR = "#000";
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +68,7 @@ class MenuBar extends React.Component {
     });
   }
   _renderScreen() {
-    StatusBar.setBarStyle('dark-content', false);
+    StatusBar.setBarStyle("dark-content", false);
     switch (this.state.selectedID) {
       case HOME_PAGE:
         return <Home />;
@@ -95,7 +90,6 @@ class MenuBar extends React.Component {
 
   render() {
     let page = this._renderScreen();
-
     return (
       <View style={styles.container}>
         {page}
@@ -107,7 +101,7 @@ class MenuBar extends React.Component {
             });
           }}
         >
-          <ButtonWithImage
+          <ButtonSelector
             imageSource={IMAGES.homeIcon}
             width={50}
             height={50}
@@ -122,7 +116,7 @@ class MenuBar extends React.Component {
             }}
           />
 
-          <ButtonWithImage
+          <ButtonSelector
             imageSource={IMAGES.calendar}
             selectedImageSource={IMAGES.calendar2}
             width={50}
@@ -137,19 +131,21 @@ class MenuBar extends React.Component {
               });
             }}
           />
-          <ButtonWithImage
+          <ButtonSelector
             shadow
             rounded
             imageSource={IMAGES.plusSign}
             width={50}
             height={50}
+            defaultBackgroundColor={DEFAULT_BACKGROUND_COLOR}
+            selected={this.state.selectedID == SYMPTOM_LOG_CHOOSER}
             onPress={() => {
               this.setState({
                 selectedID: SYMPTOM_LOG_CHOOSER
               });
             }}
           />
-          <ButtonWithImage
+          <ButtonSelector
             imageSource={IMAGES.pillBottle}
             width={50}
             height={50}
@@ -163,7 +159,7 @@ class MenuBar extends React.Component {
               });
             }}
           />
-          <ButtonWithImage
+          <ButtonSelector
             imageSource={IMAGES.settings}
             width={50}
             height={50}
