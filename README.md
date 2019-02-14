@@ -51,9 +51,9 @@ This app is maintained by [Cornell Engineering World Health](https://ewh.enginee
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-TODO
+FISH is made available under the terms of the GPLv3.
+
+See the LICENSE file that accompanies this distribution for the full text of the license.
 
 ## Acknowledgments
 
-TODO
