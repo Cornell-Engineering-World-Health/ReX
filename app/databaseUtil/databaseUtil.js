@@ -712,7 +712,9 @@ function formatMedicineData(data) {
         time: fields["Time"],
         timeCategory: fields["Time Category"],
         taken: fields["Taken"],
-        takenTime: fields["Taken Time"]
+        takenTime: fields["Taken Time"],
+        startDate: fields["Start Date"],
+        endDate: fields["End Date"]
       };
     }
   });
@@ -973,6 +975,9 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
   );
 }
 
+/**
+* Given unique (medication name, dosage, time, notification key), writes it to storage
+*/
 export function asyncCreateNotifications(name, dosage, time, notifKey){
   let args = [name, dosage, time, notifKey]
   Database.transaction(
@@ -980,16 +985,7 @@ export function asyncCreateNotifications(name, dosage, time, notifKey){
       tx.executeSql(
         "INSERT OR IGNORE INTO notifications_tbl (name,dosage,time,notificationKey) VALUES (?,?,?,?)",
         args,
-        () => {
-          tx.executeSql(
-            "SELECT * FROM notifications_tbl",
-            [],
-            (a,b) => {
-              console.log(b)
-            },
-            err => console.log(err)
-          );
-        },
+        () => {},
         err => console.log(err)
       );
     },
@@ -997,9 +993,62 @@ export function asyncCreateNotifications(name, dosage, time, notifKey){
   );
 }
 
-export function asyncDeleteNotifications(name, dosage){
-
+/**
+* Given medication name, dosage, and time, calls callback on SINGLE notification key
+*/
+export function asyncGetNotificationKey(name, dosage, time, callback){
+  let args = [name, dosage, time]
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT notificationKey from notifications_tbl WHERE name = ? AND dosage = ? AND time = ?",
+        args,
+        (_,{rows}) => { callback((rows._array.length == 1) ? rows._array[0].notificationKey : "")},
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
 }
+
+/**
+* Given SINGLE (medication name, dosage, time), removes it from storage.
+*/
+export function asyncDeleteNotifications(name, dosage, time){
+  let args = [name, dosage, time]
+  console.log(args)
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "DELETE FROM notifications_tbl WHERE name = ? AND dosage = ? AND time = ?",
+        args,
+        (a,b) => {},
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+/**
+*
+*/
+export function printAllNotifications(){
+
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from notifications_tbl",
+        [],
+        (_,{rows}) => { console.log(rows._array)},
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+printAllNotifications()
+
 
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];

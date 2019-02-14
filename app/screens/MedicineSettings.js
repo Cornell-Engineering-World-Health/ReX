@@ -16,9 +16,12 @@ import Modal from "react-native-modal";
 import {
   pullMedicineFromDatabase,
   asyncDeleteMedicine,
-  databaseMedicineNotification
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
+import {
+  setMassNotification,
+  cancelMassNotification
+} from "../components/PushController/PushController.js";
 /*
 Allows users to edit medicine
 */
@@ -48,7 +51,9 @@ export default class MedicineSettings extends React.Component {
           timeVal: medObj.time,
           dosage: medObj.dosage,
           statuses: medObj.taken,
-          notificationStatus: false
+          notificationStatus: false,
+          startDate: medObj.startDate,
+          endDate:  medObj.endDate
         });
       });
       this.setState({ medicine: medicineData }, () => {});
@@ -63,11 +68,16 @@ export default class MedicineSettings extends React.Component {
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
-    databaseMedicineNotification(
-      data[index].name,
-      data[index].dosage,
-      data[index].status
-    );
+    let name = data[index].name;
+    let dosage = data[index].dosage;
+    let times = data[index].time.map((t) => Moment(new Date(t)).format('HH:mm'))
+    if(data[index].status){//turned ON
+      setMassNotification(new Date(), new Date(data[index].endDate), name,
+          dosage, times);
+    } else { //turned OFF
+      cancelMassNotification(new Date(data[index].startDate),
+        new Date(data[index].endDate), name, dosage, times)
+    }
     this.setState({ medicine: data });
   }
 
