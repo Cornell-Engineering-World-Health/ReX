@@ -702,14 +702,16 @@ function formatMedicineData(data) {
   data.forEach(function(med) {
     let earliestTime = new Date(med.timestamp.replace(" ", "T"));
     let fields = JSON.parse(med.fields);
-
     if (!dataTemp[fields["Pill Name"]]) {
       dataTemp[fields["Pill Name"]] = {
         dosage: fields["Dosage"],
         time: fields["Time"],
         timeCategory: fields["Time Category"],
         taken: fields["Taken"],
-        takenTime: fields["Taken Time"]
+        takenTime: fields["Taken Time"],
+        endDate: fields["End Date"],
+        startDate: fields["Start Date"],
+        notificationStatus: fields["Notification On"]
       };
     }
   });
@@ -1133,23 +1135,24 @@ export function exportAllMedications(callBack) {
 
       //need to check if medicine is before the current time
       let tempDate = medInfo["Start Date"];
-      if(!Moment(tempDate).isBefore(new Date())){
+      if (!Moment(tempDate).isBefore(new Date())) {
         return;
       }
 
       tempMedFormatted.medicine = medInfo["Pill Name"];
       tempMedFormatted.dosage = medInfo["Dosage"];
       //TODO: date
-      tempMedFormatted.date = Moment(medInfo["Start Date"]).format('M/D/YY');
-      tempMedFormatted["time prescribed"] = medInfo["Time"].join('; ');
+      tempMedFormatted.date = Moment(medInfo["Start Date"]).format("M/D/YY");
+      tempMedFormatted["time prescribed"] = medInfo["Time"].join("; ");
 
-      tempMedFormatted["time taken"] = medInfo["Taken Time"].map((time, index) =>
-         time != "" ? time : 'N/A'
-      ).join('; ')
-      tempMedFormatted['status'] = medInfo["Taken"].map((status, index) => status ?
-        'Taken' : 'Not Taken').join('; ')
-        formattedMedicine.push(tempMedFormatted);
-    })
-      callBack(formattedMedicine)
+      tempMedFormatted["time taken"] = medInfo["Taken Time"]
+        .map((time, index) => (time != "" ? time : "N/A"))
+        .join("; ");
+      tempMedFormatted["status"] = medInfo["Taken"]
+        .map((status, index) => (status ? "Taken" : "Not Taken"))
+        .join("; ");
+      formattedMedicine.push(tempMedFormatted);
+    });
+    callBack(formattedMedicine);
   });
 }
