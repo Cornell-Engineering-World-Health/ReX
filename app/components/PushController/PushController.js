@@ -7,7 +7,8 @@ import { Notifications, Constants, Permissions } from "expo";
 import {
   asyncCreateNotifications,
   asyncGetNotificationKey,
-  asyncDeleteNotifications
+  asyncDeleteNotifications,
+  databaseMedicineNotification
 } from "../../databaseUtil/databaseUtil";
 import Moment from "moment";
 
@@ -41,8 +42,8 @@ export function cancelMassNotification(
   dosage,
   scheduledTime
 ) {
+  databaseMedicineNotification(name, dosage, false);
 
-  console.log(scheduledTime)
   let tempDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
@@ -67,6 +68,8 @@ export function cancelMassNotification(
 
       let dateTimeString = Moment(tempDateWithTime).format()
       asyncGetNotificationKey(name, dosage, dateTimeString, (id) => {
+
+            console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
         cancelNotification(id);
         asyncDeleteNotifications(name, dosage, dateTimeString)
       })
@@ -107,6 +110,7 @@ export function setNotification(t, b, date) {
     localNotification,
     schedulingOptions
   );
+
   return p;
 }
 
@@ -143,7 +147,7 @@ export function setMassNotification(
   dosage,
   scheduledTime
 ) {
-
+  databaseMedicineNotification(name, dosage, true)
   let t = "Fiih Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
 
@@ -175,6 +179,7 @@ export function setMassNotification(
         minutes
       );
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
+        console.log('SET NOTIFICATIONS:', name, dosage, Moment(tempDateWithTime).format())
         setNotification(t, b, tempDateWithTime).then((id) => {
             asyncCreateNotifications(name, dosage, Moment(tempDateWithTime).format(),id)
           });
@@ -182,6 +187,7 @@ export function setMassNotification(
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
+
 }
 /*
 //New

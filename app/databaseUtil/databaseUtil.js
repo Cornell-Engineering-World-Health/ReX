@@ -814,7 +814,7 @@ export function asyncCreateMedicineEventsWrapper(
           "Time Category": timeCategories,
           Taken: taken,
           "Taken Time": takenTimeInit,
-          "Notification On": false
+          "Notification On": true
         };
         var inputArray = [
           String(event_details_id),
@@ -1016,7 +1016,6 @@ export function asyncGetNotificationKey(name, dosage, time, callback){
 */
 export function asyncDeleteNotifications(name, dosage, time){
   let args = [name, dosage, time]
-  console.log(args)
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1046,7 +1045,6 @@ export function printAllNotifications(){
     err => console.log(err)
   );
 }
-
 printAllNotifications()
 
 
@@ -1111,6 +1109,7 @@ export function updateMedicineNotification(
   newIsOn,
   callback
 ) {
+
   data.forEach(function(med) {
     var fields = JSON.parse(med.fields);
     if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {

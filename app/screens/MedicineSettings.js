@@ -72,9 +72,11 @@ export default class MedicineSettings extends React.Component {
     let dosage = data[index].dosage;
     let times = data[index].time.map((t) => Moment(new Date(t)).format('HH:mm'))
     if(data[index].status){//turned ON
+      console.log("ON!")
       setMassNotification(new Date(), new Date(data[index].endDate), name,
           dosage, times);
     } else { //turned OFF
+      console.log("OFF!")
       cancelMassNotification(new Date(data[index].startDate),
         new Date(data[index].endDate), name, dosage, times)
     }
