@@ -258,10 +258,10 @@ export function intializeDatabase() {
       );
       /* necessary default settings */
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','4')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_feet','5')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','1')"
+        "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('height_inches','5')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO settings_tbl (setting_name,setting_value) VALUES ('weight','0')"
@@ -574,13 +574,14 @@ function sameDay(d1, d2) {
 function formatAgenda(data) {
   agendaFlatList = [];
   data.forEach(function(ele) {
+
     formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
       "h:mm A"
     );
     j = JSON.parse(ele.fields);
     note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1];
     note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2];
-
+    note_value3 = "Other" + ": " + j["Other"];
     // TODO: should have error checking here incase json is malformatted
     // TODO: should use event_type_name for cardData
 
@@ -589,7 +590,8 @@ function formatAgenda(data) {
       cardData: getCardData(ele.event_type_name),
       timeStamp: formattedTime,
       note1: note_value1,
-      note2: note_value2
+      note2: note_value2,
+      note3: note_value3
     };
 
     let d = new Date(ele.day);
