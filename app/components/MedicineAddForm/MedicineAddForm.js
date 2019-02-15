@@ -290,6 +290,7 @@ export default class MedicineAddForm extends React.Component {
               <Text style={styles.headerTitle}>{"Add a New Medicine!"}</Text>
             </View>
             <TextInputType
+              zIndex={1}
               ref={t => {
                 this.name = t;
               }}
@@ -308,6 +309,7 @@ export default class MedicineAddForm extends React.Component {
               }}
             />
             <TextInputType
+              zIndex={-1}
               ref={t => {
                 this.dosage = t;
               }}
@@ -329,6 +331,7 @@ export default class MedicineAddForm extends React.Component {
               keyboardType={"number-pad"}
             />
             <Button
+              zIndex={-1}
               text={dateText}
               rounded={true}
               width={viewportWidth - 30}
@@ -339,6 +342,7 @@ export default class MedicineAddForm extends React.Component {
               }}
             />
             <Button
+              zIndex={-1}
               text={timeText}
               rounded={true}
               width={viewportWidth - 30}

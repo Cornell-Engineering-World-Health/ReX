@@ -59,6 +59,7 @@ class Agenda extends Component {
                 timeStamp={item.timeStamp}
                 note1={item.note1}
                 note2={item.note2}
+                note3= {item.note3}
                 backgroundColor={item.backgroundColor}
                 swiperActive={true}
                 buttonActive={!this.state.expandVisible}

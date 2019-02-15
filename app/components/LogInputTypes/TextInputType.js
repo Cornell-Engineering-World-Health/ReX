@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import SearchInput, { createFilter } from "react-native-search-filter";
+import medicine_data from "../../resources/drugs.json";
 export default class TextInputType extends React.Component {
   constructor(props) {
     super(props);
@@ -23,12 +24,12 @@ export default class TextInputType extends React.Component {
   }
 
   render() {
-    let fakeData = ["hello", "world", "not", "helloworld"];
-    const filteredMed = fakeData.filter(createFilter(this.state.text));
-    console.log(filteredMed);
+    let medicineData = medicine_data.drugs;
+    const filteredMed = medicineData.filter(createFilter(this.state.text));
     return (
       <View style={[this.state.input_style]}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
+
         <Autocomplete
           ref={t => {
             this.textInput = t;
@@ -39,8 +40,13 @@ export default class TextInputType extends React.Component {
             this.setState({ text: text });
             this.props.valueChange(this.props.val_label, text);
           }}
+          containerStyle={styles.autocompleteContainer}
           autoCorrect={false}
-          hideResults={this.state.text == 0}
+          hideResults={
+            this.state.text == 0 ||
+            this.props.keyboardType == "number-pad" ||
+            true
+          }
           data={filteredMed}
           inputContainerStyle={{ borderWidth: 0 }}
           blurOnSubmit={this.props.blurOnSubmit}
@@ -50,13 +56,13 @@ export default class TextInputType extends React.Component {
           }}
           placeholder={this.state.placeholder_text}
           keyboardType={this.props.keyboardType}
-          listStyle={{ backgroundColor: "white" }}
+          listStyle={{ backgroundColor: "white", height: 150 }}
           renderItem={item => (
             <TouchableOpacity
               style={styles.dropItem}
               onPress={() => this.setState({ text: item })}
             >
-              <Text>{item}</Text>
+              <Text style={styles.itemText}>{item}</Text>
             </TouchableOpacity>
           )}
         />
@@ -72,7 +78,21 @@ const styles = StyleSheet.create({
     borderWidth: 0
   },
   dropItem: {
-    backgroundColor: "white",
+    backgroundColor: "cyan",
     borderWidth: 0
+  },
+  autocompleteContainer: {
+    marginLeft: 10,
+    marginRight: 10
+  },
+  itemText: {
+    fontSize: 18,
+    margin: 2
+  },
+  descriptionContainer: {
+    // `backgroundColor` needs to be set otherwise the
+    // autocomplete input will disappear on text input.
+    backgroundColor: "#F5FCFF",
+    marginTop: 8
   }
 });

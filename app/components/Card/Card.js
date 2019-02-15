@@ -78,6 +78,7 @@ class Card extends PureComponent {
     timeStamp: PropTypes.string,
     note1: PropTypes.string,
     note2: PropTypes.string,
+    note3: PropTypes.string,
     image: PropTypes.number,
     backgroundColor: PropTypes.string,
     buttonActive: PropTypes.bool,
@@ -132,6 +133,7 @@ class Card extends PureComponent {
                   <Text style={styles.titleText}>{title}</Text>
                   <Text style={styles.note}> {this.props.note1} </Text>
                   <Text style={styles.note}> {this.props.note2} </Text>
+                  <Text style={styles.note}> {this.props.note3} </Text>
                 </View>
                 <View style={styles.timeContainer}>
                   <Text style={styles.timeStamp}>{this.props.timeStamp}</Text>
