@@ -168,8 +168,8 @@ export default class Profile extends Component {
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
-                  this.props.settingsUpdate("height_feet", 4);
-                  this.props.settingsUpdate("height_inches", 1);
+                  this.props.settingsUpdate("height_feet", 5);
+                  this.props.settingsUpdate("height_inches", 5);
                 }}
               >
                 <TextField
@@ -264,6 +264,7 @@ export default class Profile extends Component {
                   this.props.settingsUpdate("height_inches", itemValue);
                 }}
               >
+                <Picker.Item label="0" value="0" />
                 <Picker.Item label="1" value="1" />
                 <Picker.Item label="2" value="2" />
                 <Picker.Item label="3" value="3" />
