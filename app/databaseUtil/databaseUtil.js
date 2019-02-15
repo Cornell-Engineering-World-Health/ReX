@@ -571,8 +571,7 @@ function sameDay(d1, d2) {
 function formatAgenda(data) {
   agendaFlatList = [];
   data.forEach(function(ele) {
-    console.log(":(")
-    console.log(ele)
+
     formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
       "h:mm A"
     );
