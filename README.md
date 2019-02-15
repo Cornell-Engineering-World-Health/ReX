@@ -1,7 +1,16 @@
 # FISH
 <img  align="left" src="https://drive.google.com/uc?export=view&id=1mP6DdkxEtkZFNZ9MQDVDY0oaEx2WcvkG" width="400">
 
-Welcome to Fish, a symptom tracking and medication reminder application, currently in Beta Testing for the App Store. In this app you can monitor one time or recurring symptoms, see symptom history over time, track medication usage, and recieve notifications as to when to take your next medication. 
+Welcome to FISH™, a symptom tracking and medication reminder application, currently in Beta Testing for the App Store. In this app you can monitor one time or recurring symptoms, see symptom history over time, track medication usage, and recieve notifications as to when to take your next medication. 
+
+<space>Features:<br />
+<space> - Track your medication and symptoms over extended periods of time <br />
+<space> - Set custom reminders for taking your medications <br />
+<space> - View customizable charts displaying symptom history by frequency and intensity <br />
+<space> - Export your medication and symptom history as a CSV to share with your doctor<br />
+<space> - Quicky log multiple medications at once from the home screen<br />
+<space> - Use the interactive calendar view to monitor logged symptoms by frequency<br />
+
 
 Note: although this app is written in React Native, it is currently only optimized for iPhones, not Android devices.
 
@@ -51,9 +60,9 @@ This app is maintained by [Cornell Engineering World Health](https://ewh.enginee
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-TODO
+FISH is made available under the terms of the GPLv3.
+
+See the LICENSE file that accompanies this distribution for the full text of the license.
 
 ## Acknowledgments
 
-TODO
