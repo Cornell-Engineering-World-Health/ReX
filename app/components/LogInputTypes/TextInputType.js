@@ -62,11 +62,15 @@ export default class TextInputType extends React.Component {
           onChangeText={text => {
             this.setState({ text: text });
 
-            if (
-              shouldExpand &&
-              text.length > 0 &&
-              medicineData.filter(createFilter(text)).length > 0
-            ) {
+            let temp_f = medicineData.filter(createFilter(text));
+
+            if (this.props.autocomplete) {
+              console.log("isTyping", this.state.isTyping);
+              console.log("autcom", this.props.autocomplete);
+              console.log("text length", this.state.text.length);
+              console.log("tempfil", temp_f.length);
+            }
+            if (shouldExpand && text.length > 0 && temp_f.length > 0) {
               this.expand();
             } else {
               this.contract();
@@ -107,12 +111,13 @@ export default class TextInputType extends React.Component {
               return (
                 <TouchableOpacity
                   style={styles.acButton}
-                  onPress={() =>
+                  onPress={() => {
                     this.setState(
                       { isTyping: false, text: item },
                       this.contract
-                    )
-                  }
+                    );
+                    this.textInput.blur();
+                  }}
                 >
                   <Text style={styles.acButtonText}>{item}</Text>
                 </TouchableOpacity>
