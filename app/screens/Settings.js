@@ -7,6 +7,7 @@ import {
   Image,
   NavigatorIOS,
   TouchableOpacity,
+  Switch,
   Dimensions
 } from "react-native";
 import Modal from "react-native-modal";
@@ -21,11 +22,13 @@ import {
 } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
-  pullSettingsFromDatabase
+  pullSettingsFromDatabase,
+  databaseSetSurveyIsOn,
+  databaseGetSurveyIsOn
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
-let modal_ids = ["edit", "export"];
+let modal_ids = ["edit", "export", "experiment"];
 
 class Settings extends Component {
   static propTypes = {
@@ -45,8 +48,20 @@ class Settings extends Component {
       height: "Height unknown",
       icon: "0",
       email: "Doctor's email unkown",
-      modalVisible: ""
+      modalVisible: "",
+      toggle: false,
     };
+  }
+
+  _handleToggle = () => {
+    if (this.state.toggle == false) {
+      this.setState({toggle: true})
+      databaseSetSurveyIsOn(true)
+    }
+    else {
+      this.setState({toggle: false})
+      databaseSetSurveyIsOn(false)
+    }
   }
 
   settingsUpdate(setting, value) {
@@ -96,6 +111,11 @@ class Settings extends Component {
         email: data.email
       });
     });
+    databaseGetSurveyIsOn((isOn) => {
+      this.setState({
+        toggle: isOn
+      })
+    })
   }
 
   render() {
@@ -211,6 +231,20 @@ class Settings extends Component {
                 this.props.navigator.push(MedicineSettingsPage);
               }}
             />
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={60}
+                  resizeMode="contain"
+                  source={IMAGES.chemical}
+                />
+              }
+              title="Experimental Settings"
+              onPress={() => {
+                this.setState({ modalVisible: modal_ids[2] });
+              }}
+            />
           </SettingsList>
         </View>
         <Modal
@@ -237,6 +271,27 @@ class Settings extends Component {
           />
         </Modal>
         <Modal
+          isVisible={this.state.modalVisible == modal_ids[2]}
+          animationInTiming={500}
+          animationOutTiming={500}
+          onBackdropPress={() => {
+            this.setState({ modalVisible: "" });
+          }}
+          onSwipe={() => {
+            this.setState({ modalVisible: "" });
+          }}
+          swipeDirection={"down"}
+          style={styles.editProfileWrapper}
+        >
+        <View style={styles.modalExperiment}>
+        <Text style = {styles.nidaInfo}>NIDA Survey</Text>
+        <Switch value={this.state.toggle} onValueChange={() => {
+          this._handleToggle();
+        }} />
+        </View>
+        </Modal>
+
+        <Modal
           isVisible={this.state.modalVisible == modal_ids[1]}
           animationInTiming={500}
           animationOutTiming={500}
@@ -246,7 +301,7 @@ class Settings extends Component {
           onSwipe={() => {
             this.setState({ modalVisible: "" });
           }}
-          swipDirection={"down"}
+          swipeDirection={"down"}
           style={styles.modal}
         >
           <View style={styles.modalWrapper}>
@@ -310,6 +365,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#8e8e93"
   },
+  nidaInfo: {
+    fontSize: 16,
+    marginRight: 10,
+  },
   modal: {
     justifyContent: "flex-end",
     margin: 0
@@ -318,7 +377,7 @@ const styles = StyleSheet.create({
     flex: 0.2,
     alignItems: "stretch",
     justifyContent: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   modalButton: {
     alignItems: "center",
@@ -331,6 +390,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "black",
     fontSize: 15
+  },
+  modalExperiment: {
+    flex: 0.1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 10,
   }
 });
 const ProfileRoute = {

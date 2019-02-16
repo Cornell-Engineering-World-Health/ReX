@@ -32,6 +32,9 @@ export function createTables() {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `notifications_tbl` (`name` TEXT NOT NULL, `dosage` TEXT NOT NULL, `time` TEXT NOT NULL, `notificationKey` NOT NULL UNIQUE, PRIMARY KEY(`name`, `dosage`, `time`));"
       );
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `survey_tbl` (`surveyIsOn` INTEGER NOT NULL PRIMARY KEY UNIQUE);"
+      );
     },
     err => console.log(err, "error creating tables"),
     () => {}
@@ -1236,4 +1239,51 @@ export function exportAllMedications(callBack) {
     });
     callBack(formattedMedicine);
   });
+}
+
+/**
+* getter for experimental survey setting
+*/
+export function databaseGetSurveyIsOn(callback){
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from survey_tbl",
+        [],
+        (_, { rows }) => {
+          if(callback){
+            callback(rows._array.length > 0)
+          }
+        },
+        err => console.log(err, "surveyIsOn")
+      );
+    },
+    err => console.log(err, "surveyIsOn")
+  );
+}
+
+/**
+* setter for experimental survey setting
+*/
+export function databaseSetSurveyIsOn(newIsOn){
+  Database.transaction(
+    tx => {
+      if(newIsOn){
+        tx.executeSql(
+          "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)",
+          [],
+          ()=> {},
+          err => console.log(err, "surveyIsOn")
+        );
+      } else {
+        tx.executeSql(
+          "DELETE FROM survey_tbl",
+          [],
+          () => {},
+          err => console.log(err, "surveyIsOn")
+        );
+      }
+    },
+    err => console.log(err, "surveyIsOn")
+  );
 }
