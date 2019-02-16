@@ -1270,10 +1270,9 @@ export function databaseSetSurveyIsOn(newIsOn){
     tx => {
       if(newIsOn){
         tx.executeSql(
-          "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)"
+          "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)",
           [],
-          ()=> {}
-          },
+          ()=> {},
           err => console.log(err, "surveyIsOn")
         );
       } else {
