@@ -40,7 +40,7 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: 'No symptoms are currently logged.'
+      message: 'Welcome to FIIH Health!'
     };
     this.generatePositiveMessage()
     //TODO: make one function that only pulls name from database
