@@ -38,13 +38,13 @@ export default class MedicineSettings extends React.Component {
     let medicineData = [];
     //fill medicine state with those from the database
     pullMedicineFromDatabase(new Date(), formattedData => {
-      console.log(formattedData);
+      console.log(formattedData, 'formatted data');
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-        console.log(medObj);
+        console.log(medObj, 'medObj');
         medicineData.push({
           name: med,
           time: formattedTimes,
@@ -210,7 +210,6 @@ title --> String
 onDelete --> function
 */
 const ModalCard = props => {
-  console.log(props.data);
   return (
     <Modal
       isVisible={props.isOpen}

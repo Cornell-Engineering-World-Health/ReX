@@ -34,13 +34,15 @@ export default class TextInputType extends React.Component {
           ref={t => {
             this.textInput = t;
           }}
+          listStyle={{ backgroundColor: "pink", flex: 1 }}
+          inputContainerStyle={{ borderWidth: 0 }}
+          containerStyle={[styles.autocompleteContainer]}
           style={[styles.text, this.state.input_text_style]}
           value={this.state.text == "NONE" ? "" : this.state.text}
           onChangeText={text => {
             this.setState({ text: text });
             this.props.valueChange(this.props.val_label, text);
           }}
-          containerStyle={styles.autocompleteContainer}
           autoCorrect={false}
           hideResults={
             this.state.text == 0 ||
@@ -48,7 +50,6 @@ export default class TextInputType extends React.Component {
             true
           }
           data={filteredMed}
-          inputContainerStyle={{ borderWidth: 0 }}
           blurOnSubmit={this.props.blurOnSubmit}
           returnKeyType={this.props.returnKeyType}
           onSubmitEditing={() => {
@@ -56,7 +57,6 @@ export default class TextInputType extends React.Component {
           }}
           placeholder={this.state.placeholder_text}
           keyboardType={this.props.keyboardType}
-          listStyle={{ backgroundColor: "white", height: 150 }}
           renderItem={item => (
             <TouchableOpacity
               style={styles.dropItem}
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
   },
   dropItem: {
     backgroundColor: "cyan",
-    borderWidth: 0
+    borderWidth: 0,
+    margin: 5
   },
   autocompleteContainer: {
     marginLeft: 10,
