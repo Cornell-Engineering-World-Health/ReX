@@ -16,10 +16,13 @@ import Modal from "react-native-modal";
 
 import {
   pullMedicineFromDatabase,
-  asyncDeleteMedicine,
-  databaseMedicineNotification
+  asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
+import {
+  setMassNotification,
+  cancelMassNotification
+} from "../components/PushController/PushController.js";
 /*
 Allows users to edit medicine
 */
@@ -38,13 +41,13 @@ export default class MedicineSettings extends React.Component {
     let medicineData = [];
     //fill medicine state with those from the database
     pullMedicineFromDatabase(new Date(), formattedData => {
-      console.log(formattedData, 'formatted data');
+      console.log(formattedData, "formatted data");
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-        console.log(medObj, 'medObj');
+        console.log(medObj, "medObj");
         medicineData.push({
           name: med,
           time: formattedTimes,
@@ -53,8 +56,7 @@ export default class MedicineSettings extends React.Component {
           statuses: medObj.taken,
           status: medObj.notificationStatus,
           startDate: medObj.startDate,
-          endDate: medObj.endDate,
-          timeCategory: medObj.timeCategory
+          endDate: medObj.endDate
         });
       });
       this.setState({ medicine: medicineData });
@@ -69,11 +71,30 @@ export default class MedicineSettings extends React.Component {
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
-    databaseMedicineNotification(
-      data[index].name,
-      data[index].dosage,
-      data[index].status
-    );
+    let name = data[index].name;
+    let dosage = data[index].dosage;
+    let times = data[index].time.map(t => Moment(new Date(t)).format("HH:mm"));
+    if (data[index].status) {
+      //turned ON
+      console.log("ON!");
+      setMassNotification(
+        new Date(),
+        new Date(data[index].endDate),
+        name,
+        dosage,
+        times
+      );
+    } else {
+      //turned OFF
+      console.log("OFF!");
+      cancelMassNotification(
+        new Date(data[index].startDate),
+        new Date(data[index].endDate),
+        name,
+        dosage,
+        times
+      );
+    }
     this.setState({ medicine: data });
   }
 
