@@ -21,7 +21,7 @@ class SurveyModal extends Component {
     super(props);
 
     this.state = {
-      surveyModalVisible: true
+      surveyModalVisible: false
     };
   }
 
@@ -37,9 +37,8 @@ class SurveyModal extends Component {
         onBackdropPress={() => {
           this._toggleSurveyModal();
         }}
-
       >
-        <View style={{flex:0.9}}>
+        <View style={{ flex: 0.9 }}>
           <View style={styles.topSpace} />
           <SurveyForm
             onSubmit={() => {
