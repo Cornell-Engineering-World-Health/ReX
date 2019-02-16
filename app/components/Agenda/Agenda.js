@@ -98,9 +98,11 @@ class Agenda extends Component {
       );
     } else {
       return (
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           <Text style={{ fontSize: 20, textAlign: "center" }}>
-            No Events Logged
+            No symptoms logged for today!
           </Text>
         </View>
       );

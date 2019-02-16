@@ -37,8 +37,9 @@ class SurveyModal extends Component {
         onBackdropPress={() => {
           this._toggleSurveyModal();
         }}
+
       >
-        <View style={{ flex: 1 }}>
+        <View style={{flex:0.9}}>
           <View style={styles.topSpace} />
           <SurveyForm
             onSubmit={() => {

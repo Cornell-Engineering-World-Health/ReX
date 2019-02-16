@@ -13,12 +13,16 @@ import Moment from "moment";
 import { LinearGradient } from "expo";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
+
 import {
   pullMedicineFromDatabase,
-  asyncDeleteMedicine,
-  databaseMedicineNotification
+  asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
+import {
+  setMassNotification,
+  cancelMassNotification
+} from "../components/PushController/PushController.js";
 /*
 Allows users to edit medicine
 */
@@ -42,16 +46,19 @@ export default class MedicineSettings extends React.Component {
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
+
         medicineData.push({
           name: med,
           time: formattedTimes,
-          timeVal: medObj.time,
+          timeVal: medObj.time.join(", "),
           dosage: medObj.dosage,
           statuses: medObj.taken,
-          notificationStatus: false
+          status: medObj.notificationStatus,
+          startDate: medObj.startDate,
+          endDate: medObj.endDate
         });
       });
-      this.setState({ medicine: medicineData }, () => {});
+      this.setState({ medicine: medicineData });
     });
   }
 
@@ -63,11 +70,31 @@ export default class MedicineSettings extends React.Component {
   _handleToggle(index) {
     data = this.state.medicine;
     data[index].status = !data[index].status;
-    databaseMedicineNotification(
-      data[index].name,
-      data[index].dosage,
-      data[index].status
-    );
+    let name = data[index].name;
+    let dosage = data[index].dosage;
+    let times = data[index].time.map(t => Moment(new Date(t)).format("HH:mm"));
+    if (data[index].status) {
+      //turned ON
+      console.log("ON!");
+
+      setMassNotification(
+        new Date(data[index].startDate),
+        new Date(data[index].endDate),
+        name,
+        dosage,
+        times
+      );
+    } else {
+      //turned OFF
+      console.log("OFF!");
+      cancelMassNotification(
+        new Date(data[index].startDate),
+        new Date(data[index].endDate),
+        name,
+        dosage,
+        times
+      );
+    }
     this.setState({ medicine: data });
   }
 
@@ -82,7 +109,19 @@ export default class MedicineSettings extends React.Component {
   _deleteMedicine() {
     data = this.state.medicine;
     let [med] = data.splice(this.state.selectedMedicineIndex, 1);
+
+    let times = med.time.map(t => Moment(new Date(t)).format("HH:mm"));
+
     asyncDeleteMedicine(med.name);
+    cancelMassNotification(
+      new Date(med.startDate),
+      new Date(med.endDate),
+      med.name,
+      med.dosage,
+      times
+    );
+
+
     this.setState({ modalOpen: false, medicine: data });
   }
 
@@ -102,6 +141,7 @@ export default class MedicineSettings extends React.Component {
       />
     );
   }
+
   /*
     If there are no medicines in the database, log a friendly message
     Ex)
@@ -224,7 +264,24 @@ const ModalCard = props => {
               {props.data ? props.data.dosage.toString() : null}
             </Text>
           </View>
-
+          <ModalBody
+            title={"Start Date"}
+            data={
+              props.data
+                ? Moment(props.data.startDate).format("MM/DD/YY")
+                : null
+            }
+          />
+          <ModalBody
+            title={"End Date"}
+            data={
+              props.data ? Moment(props.data.endDate).format("MM/DD/YY") : null
+            }
+          />
+          <ModalBody
+            title={"Set times"}
+            data={props.data ? props.data.timeVal : null}
+          />
           <View style={styles.modalNotificationContainer}>
             <View>
               <Text style={styles.modalNotification}>Allow Notifications:</Text>
@@ -244,7 +301,7 @@ const ModalCard = props => {
               onPress={props.modalSubmit}
               style={[styles.modalButton, { backgroundColor: "#34ace7" }]}
             >
-              <Text style={styles.modalButtonText}>Submit</Text>
+              <Text style={styles.modalButtonText}>Return</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.modalDeleteButtonWrapper}>
@@ -273,6 +330,15 @@ const ModalCard = props => {
         </View>
       </View>
     </Modal>
+  );
+};
+
+const ModalBody = props => {
+  return (
+    <View style={styles.modalDosageContainer}>
+      <Text style={styles.modalDosage}>{props.title}</Text>
+      <Text style={styles.modalDosage}>{props.data}</Text>
+    </View>
   );
 };
 
@@ -335,7 +401,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   modalContainer: {
-    flex: 0.5,
+    flex: 0.6,
     backgroundColor: "white",
     alignItems: "stretch",
     justifyContent: "space-between",
@@ -386,12 +452,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center"
   },
-  dosageInput: {
-    padding: 10,
-    borderColor: "#e0e0e0",
-    fontSize: 20,
-    borderBottomWidth: 1
-  },
   modalNotificationContainer: {
     flex: 1,
     flexDirection: "row",
@@ -400,7 +460,7 @@ const styles = StyleSheet.create({
   },
   modalDosage: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "200"
   },
   modalNotification: {

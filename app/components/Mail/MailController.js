@@ -1,11 +1,5 @@
-import { MailComposer} from 'expo';
-
-const saveOptions = {
-  recipients: ['navinr13@gmail.com'],
-  subject: 'Test Subject',
-  body: 'Test Body, this was sent through Mail Composer',
-  attachments: null
-};
+import { MailComposer } from "expo";
+import { Linking } from "react-native";
 
 /*
 recipients: array of e-mail addresses of reciepients (!!! could be user + doctor)
@@ -28,11 +22,14 @@ export async function sendMail(
     subject: subject,
     body: body
   };
-  if (attachments) options.attachments = attachments;
-  let p = MailComposer.composeAsync(options);
-  if (callBack) {
-    p.then(obj => {
-      callBack;
-    });
-  }
+  Linking.openURL(
+    "mailto:" + recipients[0] + "?subject=" + subject + "&body=" + body
+  );
+  // if (attachments) options.attachments = attachments;
+  // let p = MailComposer.composeAsync(options).catch(e => {});
+  // if (callBack) {
+  //   p.then(obj => {
+  //     callBack;
+  //   });
+  // }
 }

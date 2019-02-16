@@ -65,7 +65,7 @@ export default class ScaleSlideInputType extends React.Component {
   */
   _setGlobalHeightAndWidth(nativeEvent) {
     this.setState({ viewportHeight: nativeEvent.layout.height });
-    this.setState({ viewportWidth: nativeEvent.layout.width }, () => {});
+    this.setState({ viewportWidth: nativeEvent.layout.width * 0.9 }, () => {});
   }
 
   change(value) {
@@ -80,8 +80,8 @@ export default class ScaleSlideInputType extends React.Component {
       let width = this.state.viewportWidth / arr.length;
 
       return (
+        <View key={i} style={{paddingLeft: this.props.isIntensitySlider ? 0 : 2}}>
         <TouchableOpacity
-          key={i}
           onPress={() => {
             this.change(i);
             this.setState({ selected: i });
@@ -89,7 +89,7 @@ export default class ScaleSlideInputType extends React.Component {
           style={[
             styles.button,
             {
-              borderRadius: 0,
+              borderRadius: this.props.isIntensitySlider ? 0 : 2,
               backgroundColor: this.props.isIntensitySlider
                 ? numericMetaInfo[i]
                 : "rgb(140, 234, 255)",
@@ -100,6 +100,7 @@ export default class ScaleSlideInputType extends React.Component {
         >
           <Text style={[styles.buttonText]}>{i}</Text>
         </TouchableOpacity>
+        </View>
       );
     });
 
@@ -134,7 +135,6 @@ export default class ScaleSlideInputType extends React.Component {
           style={[
             styles.intensityLabelContainer,
             {
-              width: this.state.viewportWidth,
               backgroundColor: numericMetaInfo[this.state.selected][0]
             }
           ]}
@@ -177,8 +177,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   bottomHalf: {
-    alignItems: "stretch"
+    alignItems: "stretch",
+
   },
+
   questionText: {
     fontSize: 40,
     fontWeight: "100",
@@ -202,11 +204,11 @@ const styles = StyleSheet.create({
     fontWeight: "100"
   },
   buttonText: {
-    fontSize: 15,
-    textAlign: "center"
+    fontSize: 16,
+    textAlign: "center",
   },
   intensityLabelContainer: {
-    height: 50,
+    padding: 10,
     justifyContent: "center",
     alignItems: "center"
   },

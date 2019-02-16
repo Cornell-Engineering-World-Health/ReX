@@ -29,6 +29,9 @@ export function createTables() {
       /* tx.executeSql(
            'CREATE TABLE IF NOT EXISTS view_to_component_tbl ( view_id INTEGER NOT NULL PRIMARY KEY UNIQUE, view_name TEXT NOT NULL UNIQUE, component` TEXT NOT NULL)'
           ); */
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `notifications_tbl` (`name` TEXT NOT NULL, `dosage` TEXT NOT NULL, `time` TEXT NOT NULL, `notificationKey` NOT NULL UNIQUE, PRIMARY KEY(`name`, `dosage`, `time`));"
+      );
     },
     err => console.log(err, "error creating tables"),
     () => {}
@@ -571,7 +574,6 @@ function sameDay(d1, d2) {
 function formatAgenda(data) {
   agendaFlatList = [];
   data.forEach(function(ele) {
-
     formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
       "h:mm A"
     );
@@ -704,14 +706,16 @@ function formatMedicineData(data) {
   data.forEach(function(med) {
     let earliestTime = new Date(med.timestamp.replace(" ", "T"));
     let fields = JSON.parse(med.fields);
-
     if (!dataTemp[fields["Pill Name"]]) {
       dataTemp[fields["Pill Name"]] = {
         dosage: fields["Dosage"],
         time: fields["Time"],
         timeCategory: fields["Time Category"],
         taken: fields["Taken"],
-        takenTime: fields["Taken Time"]
+        takenTime: fields["Taken Time"],
+        startDate: fields["Start Date"],
+        endDate: fields["End Date"],
+        notificationStatus: fields["Notification On"]
       };
     }
   });
@@ -811,7 +815,7 @@ export function asyncCreateMedicineEventsWrapper(
           "Time Category": timeCategories,
           Taken: taken,
           "Taken Time": takenTimeInit,
-          "Notification On": false
+          "Notification On": true
         };
         var inputArray = [
           String(event_details_id),
@@ -972,6 +976,83 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
   );
 }
 
+/**
+ * Given unique (medication name, dosage, time, notification key), writes it to storage
+ */
+export function asyncCreateNotifications(name, dosage, time, notifKey) {
+  let args = [name, dosage, time, notifKey];
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "INSERT OR IGNORE INTO notifications_tbl (name,dosage,time,notificationKey) VALUES (?,?,?,?)",
+        args,
+        () => {},
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+/**
+ * Given medication name, dosage, and time, calls callback on SINGLE notification key
+ */
+export function asyncGetNotificationKey(name, dosage, time, callback) {
+  let args = [name, dosage, time];
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT notificationKey from notifications_tbl WHERE name = ? AND dosage = ? AND time = ?",
+        args,
+        (_, { rows }) => {
+          callback(
+            rows._array.length == 1 ? rows._array[0].notificationKey : ""
+          );
+        },
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+
+/**
+ * Given SINGLE (medication name, dosage, time), removes it from storage.
+ */
+export function asyncDeleteNotifications(name, dosage, time) {
+  let args = [name, dosage, time];
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "DELETE FROM notifications_tbl WHERE name = ? AND dosage = ? AND time = ?",
+        args,
+        (a, b) => {},
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+/**
+ *
+ */
+export function printAllNotifications() {
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from notifications_tbl",
+        [],
+        (_, { rows }) => {
+          console.log(rows._array);
+        },
+        err => console.log(err)
+      );
+    },
+    err => console.log(err)
+  );
+}
+printAllNotifications();
+
 export function asyncSettingUpdate(name, value) {
   inputArray = [name, value];
   Database.transaction(
@@ -1120,5 +1201,39 @@ export function exportAllSymptoms(callBack) {
       }
     });
     callBack(formattedSymptoms);
+  });
+}
+/*
+Generates an array of objects with keys:
+medicine, dosage, date, time prescribed,time taken, status,
+*/
+export function exportAllMedications(callBack) {
+  pullAllMedicineData(medicineData => {
+    let formattedMedicine = [];
+    medicineData.forEach((element, index) => {
+      let tempMedFormatted = {};
+      let medInfo = JSON.parse(element.fields);
+
+      //need to check if medicine is before the current time
+      let tempDate = medInfo["Start Date"];
+      if (!Moment(tempDate).isBefore(new Date())) {
+        return;
+      }
+
+      tempMedFormatted.medicine = medInfo["Pill Name"];
+      tempMedFormatted.dosage = medInfo["Dosage"];
+      //TODO: date
+      tempMedFormatted.date = Moment(medInfo["Start Date"]).format("M/D/YY");
+      tempMedFormatted["time prescribed"] = medInfo["Time"].join("; ");
+
+      tempMedFormatted["time taken"] = medInfo["Taken Time"]
+        .map((time, index) => (time != "" ? time : "N/A"))
+        .join("; ");
+      tempMedFormatted["status"] = medInfo["Taken"]
+        .map((status, index) => (status ? "Taken" : "Not Taken"))
+        .join("; ");
+      formattedMedicine.push(tempMedFormatted);
+    });
+    callBack(formattedMedicine);
   });
 }

@@ -103,7 +103,7 @@ export default class Profile extends Component {
   render() {
     let header = this._renderHeader();
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         <View style={styles.headerWrapper}>
           {!this.state.choosingAvatar && this.props.isInModal ? (
             <TouchableOpacity
@@ -389,8 +389,10 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   container: {
-    backgroundColor: "transparent",
-    flex: 1,
+    backgroundColor: "white",
+    paddingTop: 5,
+    paddingBottom: 5,
+    flex: 0.95,
     justifyContent: "space-between",
     alignItems: "stretch",
     borderRadius: 20

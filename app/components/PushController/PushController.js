@@ -4,6 +4,12 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import { Notifications, Constants, Permissions } from "expo";
+import {
+  asyncCreateNotifications,
+  asyncGetNotificationKey,
+  asyncDeleteNotifications,
+  databaseMedicineNotification
+} from "../../databaseUtil/databaseUtil";
 import Moment from "moment";
 
 /*
@@ -29,9 +35,46 @@ Cancels all notifications listed in the given array of notification IDS
 Precondition: notificationIDS is an array with every element being a notificationID given
 after the notification was first scheduled.
 */
-export function cancelMassNotifications(notificationIDS) {
-  for (var x = 0; x < notificationIDS.length; x++) {
-    cancelNotification(notificationIDS[x]);
+export function cancelMassNotification(
+  startDate,
+  endDate,
+  name,
+  dosage,
+  scheduledTime
+) {
+  databaseMedicineNotification(name, dosage, false);
+
+  let tempDate = new Date(
+    startDate.getFullYear(),
+    startDate.getMonth(),
+    startDate.getDate(),
+    0,
+    0
+  );
+  while (
+    Moment(tempDate).isBefore(endDate) ||
+    Moment(tempDate).isSame(endDate)
+  ) {
+    for (var x = 0; x < scheduledTime.length; x++) {
+      let hours = parseInt(scheduledTime[x].slice(0, 2));
+      let minutes = parseInt(scheduledTime[x].slice(3, 5));
+      let tempDateWithTime = new Date(
+        tempDate.getFullYear(),
+        tempDate.getMonth(),
+        tempDate.getDate(),
+        hours,
+        minutes
+      );
+
+      let dateTimeString = Moment(tempDateWithTime).format()
+      asyncGetNotificationKey(name, dosage, dateTimeString, (id) => {
+
+        console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
+        cancelNotification(id);
+        asyncDeleteNotifications(name, dosage, dateTimeString)
+      })
+    }
+    tempDate.setDate(tempDate.getDate() + 1);
   }
 }
 
@@ -42,13 +85,10 @@ export function cancelMassNotifications(notificationIDS) {
   b: body of the notification  //string
   date: time/date to send notification // date object with correct time and date
 
-  callBack: function to be called after the notification is set.
-    Notification id (string?) and date the notification will be sent (date object)
-    will be passed in as parameters. This notification id can be used to cancel
-    this notification in the future.
+  returns: a promise that resolves to a notification ID
 
 */
-export function setNotification(t, b, date, callBack) {
+export function setNotification(t, b, date) {
   d = {
     title: t,
     body: b
@@ -61,16 +101,17 @@ export function setNotification(t, b, date, callBack) {
       sound: true
     }
   };
+  //TODO: CHECK IF DATE IS LOCAL TIME!
   schedulingOptions = {
     time: date
   };
+
   var p = Notifications.scheduleLocalNotificationAsync(
     localNotification,
     schedulingOptions
   );
-  p.then(id => {
-    callBack(id, date);
-  });
+
+  return p;
 }
 
 /*
@@ -102,23 +143,19 @@ callBack: function to be called after the notification is set.
 export function setMassNotification(
   startDate,
   endDate,
-  t,
-  b,
-  scheduledTime,
-  callBack
+  name,
+  dosage,
+  scheduledTime
 ) {
-  console.log("startdate", startDate);
-  console.log("enddate", endDate);
-  console.log("t", t);
-  console.log("b", b);
-  console.log("scheduled time", scheduledTime);
-
-  var id_bundle = [];
+  databaseMedicineNotification(name, dosage, true)
+  let t = "Fiih Medication Reminder";
+  let b = "It's time to take " + name + "! (" + dosage + ")";
 
   startDate.setTime(
     startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
   ); //fix time to correct timezone
   endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60 * 1000); // as above
+
 
   let tempDate = new Date(
     startDate.getFullYear(),
@@ -127,12 +164,10 @@ export function setMassNotification(
     0,
     0
   );
-
   while (
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
   ) {
-    console.log("in while loop");
     for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
       let minutes = parseInt(scheduledTime[x].slice(3, 5));
@@ -143,16 +178,16 @@ export function setMassNotification(
         hours,
         minutes
       );
-
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        setNotification(t, b, tempDateWithTime, (i, d) => {
-          let temp = { id: i, date: d };
-          id_bundle.push(temp);
-        });
+        console.log('SET NOTIFICATIONS:', name, dosage, Moment(tempDateWithTime).format())
+        setNotification(t, b, tempDateWithTime).then((id) => {
+            asyncCreateNotifications(name, dosage, Moment(tempDateWithTime).format(),id)
+          });
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
+
 }
 /*
 //New

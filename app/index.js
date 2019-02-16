@@ -8,6 +8,7 @@ import {
   pullIsFirstFromDatabase,
   logIsFirst
 } from "./databaseUtil/databaseUtil";
+import { cancelAllNotifications } from "./components/PushController/PushController";
 
 class main extends React.Component {
   constructor(props) {
@@ -21,6 +22,9 @@ class main extends React.Component {
     createTables();
     intializeDatabase();
     pullIsFirstFromDatabase(is_f => {
+      if(is_f){
+        cancelAllNotifications()
+      }
       this.setState({ isOnboarded: is_f ? 0 : 1 });
     });
   }

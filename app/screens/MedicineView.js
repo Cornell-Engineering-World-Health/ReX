@@ -91,14 +91,14 @@ class MedicineView extends React.Component {
    * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
    */
   asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
+    let thisRef = this;
+
+    setMassNotification(start, end, title, dosage, time);
     asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
-    new_title = "Fiih Medication Reminder";
-    new_body = "It's time to take " + title + "! (" + dosage + ")";
-    setMassNotification(start, end, new_title, new_body, time, () => {});
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
-      medicineData = this.state.data;
+      medicineData = thisRef.state.data;
       for (var i = 0; i < medicineData.length; i++) {
         if (medicineData[i].title == title) {
           medicineData.splice(i, 1);
@@ -117,7 +117,7 @@ class MedicineView extends React.Component {
         statuses: taken,
         takenTime: takenTime
       });
-      this.setState({
+      thisRef.setState({
         toggle_add: false,
         data: medicineData
       });

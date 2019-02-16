@@ -27,6 +27,7 @@ class ButtonWithImage extends Component {
     text: PropTypes.string,
     onPress: PropTypes.func,
     imageSource: PropTypes.number,
+    imageStyle: PropTypes.object,
     backgroundColor: PropTypes.string,
     color: PropTypes.string,
     width: PropTypes.number,
@@ -45,9 +46,8 @@ class ButtonWithImage extends Component {
   render() {
     const containerStyle = [styles.container];
     const textStyle = [styles.text];
-    const imageStyle = [{ resizeMode: 'cover' }];
+    const imageStyle = [{ resizeMode: 'cover' }, this.props.imageStyle];
     const shadowStyle = [styles.shadowWrapper];
-
     containerStyle.push({
       backgroundColor: this.props.backgroundColor
     });
