@@ -41,13 +41,12 @@ export default class MedicineSettings extends React.Component {
     let medicineData = [];
     //fill medicine state with those from the database
     pullMedicineFromDatabase(new Date(), formattedData => {
-      console.log(formattedData, "formatted data");
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-        console.log(medObj, "medObj");
+
         medicineData.push({
           name: med,
           time: formattedTimes,
@@ -77,8 +76,9 @@ export default class MedicineSettings extends React.Component {
     if (data[index].status) {
       //turned ON
       console.log("ON!");
+
       setMassNotification(
-        new Date(),
+        new Date(data[index].startDate),
         new Date(data[index].endDate),
         name,
         dosage,
@@ -109,7 +109,19 @@ export default class MedicineSettings extends React.Component {
   _deleteMedicine() {
     data = this.state.medicine;
     let [med] = data.splice(this.state.selectedMedicineIndex, 1);
+
+    let times = med.time.map(t => Moment(new Date(t)).format("HH:mm"));
+
     asyncDeleteMedicine(med.name);
+    cancelMassNotification(
+      new Date(med.startDate),
+      new Date(med.endDate),
+      med.name,
+      med.dosage,
+      times
+    );
+
+
     this.setState({ modalOpen: false, medicine: data });
   }
 
