@@ -69,7 +69,7 @@ export function cancelMassNotification(
       let dateTimeString = Moment(tempDateWithTime).format()
       asyncGetNotificationKey(name, dosage, dateTimeString, (id) => {
 
-            console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
+        console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
         cancelNotification(id);
         asyncDeleteNotifications(name, dosage, dateTimeString)
       })

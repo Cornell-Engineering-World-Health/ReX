@@ -78,7 +78,8 @@ export const IMAGES = {
   exportcsv: require("./images/exportcsv.png"),
   search: require("./images/search.png"),
   fiih: require("./images/fiih_logo.png"),
-  intro_background: require("./images/intro_background.png")
+  intro_background: require("./images/intro_background.png"),
+  chemical: require("./images/chemical.png"),
 };
 export const profile_icons = [
   IMAGES.iconWolf,
