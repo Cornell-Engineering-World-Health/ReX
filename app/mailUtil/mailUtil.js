@@ -40,7 +40,7 @@ function convertArrayOfObjectsToCSV(args) {
 Opens a mail modal with the given email and subject with attached csv file for
 medicine information
 */
-export function exportMedicationsMailFunc(email, subject) {
+export function exportMedicationsMailFunc(email, subject, name) {
   SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
   FILE_NAME = "medicinelog.csv";
   SHARED_KEYS = [
@@ -85,7 +85,7 @@ export function exportMedicationsMailFunc(email, subject) {
   Opens a mail modal with the given email and subject, and with the attachment of
   a csv file with all the symptoms.
 */
-export function exportSymptomsMailFunc(email, subject) {
+export function exportSymptomsMailFunc(email, subject, name) {
   SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
   FILE_NAME = "symptomhistory.csv";
   SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
