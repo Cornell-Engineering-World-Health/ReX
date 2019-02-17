@@ -63,13 +63,13 @@ export default class TextInputType extends React.Component {
             this.setState({ text: text });
 
             let temp_f = medicineData.filter(createFilter(text));
-
-            if (this.props.autocomplete) {
-              console.log("isTyping", this.state.isTyping);
-              console.log("autcom", this.props.autocomplete);
-              console.log("text length", this.state.text.length);
-              console.log("tempfil", temp_f.length);
-            }
+            //
+            // if (this.props.autocomplete) {
+            //   console.log("isTyping", this.state.isTyping);
+            //   console.log("autcom", this.props.autocomplete);
+            //   console.log("text length", this.state.text.length);
+            //   console.log("tempfil", temp_f.length);
+            // }
             if (shouldExpand && text.length > 0 && temp_f.length > 0) {
               this.expand();
             } else {
