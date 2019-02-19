@@ -66,13 +66,12 @@ export function cancelMassNotification(
         minutes
       );
 
-      let dateTimeString = Moment(tempDateWithTime).format()
-      asyncGetNotificationKey(name, dosage, dateTimeString, (id) => {
-
-        console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
+      let dateTimeString = Moment(tempDateWithTime).format();
+      asyncGetNotificationKey(name, dosage, dateTimeString, id => {
+        //console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
         cancelNotification(id);
-        asyncDeleteNotifications(name, dosage, dateTimeString)
-      })
+        asyncDeleteNotifications(name, dosage, dateTimeString);
+      });
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
@@ -147,7 +146,7 @@ export function setMassNotification(
   dosage,
   scheduledTime
 ) {
-  databaseMedicineNotification(name, dosage, true)
+  databaseMedicineNotification(name, dosage, true);
   let t = "Fiih Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
 
@@ -155,7 +154,6 @@ export function setMassNotification(
     startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
   ); //fix time to correct timezone
   endDate.setTime(endDate.getTime() + endDate.getTimezoneOffset() * 60 * 1000); // as above
-
 
   let tempDate = new Date(
     startDate.getFullYear(),
@@ -179,15 +177,19 @@ export function setMassNotification(
         minutes
       );
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        console.log('SET NOTIFICATIONS:', name, dosage, Moment(tempDateWithTime).format())
-        setNotification(t, b, tempDateWithTime).then((id) => {
-            asyncCreateNotifications(name, dosage, Moment(tempDateWithTime).format(),id)
-          });
+        //console.log('SET NOTIFICATIONS:', name, dosage, Moment(tempDateWithTime).format())
+        setNotification(t, b, tempDateWithTime).then(id => {
+          asyncCreateNotifications(
+            name,
+            dosage,
+            Moment(tempDateWithTime).format(),
+            id
+          );
+        });
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
-
 }
 /*
 //New
