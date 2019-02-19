@@ -53,6 +53,9 @@ export function exportMedicationsMailFunc(email, subject, name) {
   ]; //all symptoms have these keys
   //use database function to get an array of objects representing the data
   exportAllMedications(medicines => {
+
+    console.log('medicine', medicines)
+
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {

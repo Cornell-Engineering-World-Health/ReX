@@ -141,7 +141,7 @@ export function intializeDatabase() {
 
       /* inserting default values into event_details_tbl with 1950 date for each event type*/
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "N/A","Duration": "N/A"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
