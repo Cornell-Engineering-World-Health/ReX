@@ -40,6 +40,18 @@ export default class Profile extends Component {
     };
   }
 
+  convert_to_BMI = (height, inches, weight) => {
+    var BMI = "";
+    var weight_int = parseInt(weight);
+    var total_inches = parseInt(height) * 12 + parseInt(inches);
+    console.log("total inches: " + total_inches);
+    console.log("total weight: " + weight);
+    var bmi_num = (weight_int / Math.pow(total_inches,2) ) * 703;
+    bmi_num = Math.round( bmi_num * 10 ) / 10;
+    BMI = "" + bmi_num ;
+    return BMI;
+  };
+
   _renderHeader() {
     if (!this.state.choosingAvatar) {
       return (
@@ -205,6 +217,14 @@ export default class Profile extends Component {
                   textColor={this.props.textColor}
                 />
               </TouchableOpacity>
+                <TextField
+                  editable={false}
+                  pointerEvents={"none"}
+                  label={"BMI"}
+                  value={ this.convert_to_BMI(this.props.height_feet, this.props.height_inches, this.props.weight)}
+                  baseColor={this.props.baseColor}
+                  textColor={this.props.textColor}
+                />
             </View>
           </ScrollView>
         </View>
