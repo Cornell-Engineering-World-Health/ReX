@@ -172,6 +172,8 @@ export function exportSymptomsMailFunc(email, subject, date) {
           );
         });
       })
-      .catch(e => {});
+      .catch(e => {
+        throwAlert("Cannot export!", "No symptoms to export.");
+      });
   });
 }
