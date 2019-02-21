@@ -80,6 +80,7 @@ export const IMAGES = {
   fiih: require("./images/fiih_logo.png"),
   intro_background: require("./images/intro_background.png"),
   chemical: require("./images/chemical.png"),
+  tingling: require("./images/tingle.png"),
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -223,9 +224,9 @@ export default (constants = {
     backgroundColor: SYMPTOM_COLOR.red,
     translucentColor: SYMPTOM_COLOR.red + "80"
   },
-  HAND_PAIN: {
-    image: IMAGES.handpain,
-    title: "Hand Pain",
+  TINGLING: {
+    image: IMAGES.tingling,
+    title: "Tingling",
     backgroundColor: SYMPTOM_COLOR.pink,
     translucentColor: SYMPTOM_COLOR.pink + "80"
   },
@@ -241,9 +242,9 @@ export default (constants = {
     backgroundColor: SYMPTOM_COLOR.lime,
     translucentColor: SYMPTOM_COLOR.lime + "80"
   },
-  IMPAIRED_TASTE: {
+  CHANGE_IN_TASTE: {
     image: IMAGES.impaired_taste,
-    title: "Impaired Taste",
+    title: "Change in Taste",
     backgroundColor: "#FFEE93",
     translucentColor: "#FFEE9380"
   },
@@ -297,7 +298,7 @@ export default (constants = {
   },
   RINGING_IN_EARS: {
     image: IMAGES.RingingInEars,
-    title: "Ringing in Ears",
+    title: "Noise in the Ear",
     backgroundColor: "#79ADDC",
     translucentColor: "#79ADDC80"
   },
@@ -334,13 +335,13 @@ export const symptoms = [
   constants.BACKPAIN,
   constants.BLURRED_VISION,
   constants.DOUBLE_VISION,
-  constants.HAND_PAIN,
+  constants.TINGLING,
   constants.DIZZINESS,
   constants.FATIGUE,
   constants.DIARRHEA,
   constants.VOMITING,
   constants.COGNITIVE_SLOWING,
-  constants.IMPAIRED_TASTE,
+  constants.CHANGE_IN_TASTE,
   constants.NAUSEA,
   constants.ELBOWPAIN,
   constants.FOOTPAIN,

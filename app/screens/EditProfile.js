@@ -217,14 +217,6 @@ export default class Profile extends Component {
                   textColor={this.props.textColor}
                 />
               </TouchableOpacity>
-                <TextField
-                  editable={false}
-                  pointerEvents={"none"}
-                  label={"BMI"}
-                  value={ this.convert_to_BMI(this.props.height_feet, this.props.height_inches, this.props.weight)}
-                  baseColor={this.props.baseColor}
-                  textColor={this.props.textColor}
-                />
             </View>
           </ScrollView>
         </View>
