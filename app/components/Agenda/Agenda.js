@@ -42,7 +42,7 @@ class Agenda extends Component {
       editVisible: false,
       changeToForceRender: 1,
       agendaInfo: [],
-      currentCard: {},
+      currentCard: {note1: ":  0"},
       currentCardTitle: "",
       selected: 0,
     };
@@ -87,10 +87,19 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
+                      let intense = this.state.currentCard.note1
+                      let currentIntensity = intense.slice(intense.indexOf(":")+2)
+                      if (currentIntensity !== "N/A"){
+                        // console.log(parseInt(currentIntensity))
+                        this.setState({ selected: parseInt(currentIntensity) })
+                      }
                       this.setState({ currentCardTitle: item.cardData.title, currentCard: item})
                       this.props.refreshCalendar();
-                      this.setState({ editVisible: true })
+                      this.setState({
+                        changeToForceRender: this.state.changeToForceRender + 1
+                      });
                       this.setState({ state: this.state })
+                      this.setState({ editVisible: true })
                       console.log("we have a functional edit button bois")
                     }
                   },
@@ -175,6 +184,7 @@ class Agenda extends Component {
     </View>
     <View style={{alignItems: "stretch"}}>
         <View style={styles.body}>{body}</View>
+        {console.log(this.state.selected)}
         <View
         style={[
           styles.intensityLabelContainer,
@@ -191,6 +201,10 @@ class Agenda extends Component {
     </View>
     )
   }
+
+  // _renderOther() {
+  //   let other_notes = this.state.currentCard.
+  // }
 
   render() {
     let page = this._renderAgenda();
