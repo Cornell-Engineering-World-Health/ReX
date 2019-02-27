@@ -66,6 +66,13 @@ class Agenda extends Component {
                 iconName={item.iconName}
                 buttonsRight={[
                   {
+                    text: "Edit",
+                    type: "edit",
+                    onPress: () => {
+                      console.log("we have a functional edit button bois")
+                    }
+                  },
+                  {
                     text: "Delete",
                     type: "delete",
                     onPress: () => {
