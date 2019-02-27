@@ -25,6 +25,7 @@ class Agenda extends Component {
     super(props);
     this.state = {
       expandVisible: false,
+      editVisible: false,
       changeToForceRender: 1,
       agendaInfo: []
     };
@@ -38,6 +39,10 @@ class Agenda extends Component {
   }
 
   _keyExtractor = (item, index) => item.id;
+
+  editModal = () => {
+
+  }
 
   /**
    * renders agenda
@@ -69,6 +74,7 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
+                      this.setState({ editVisible: true })
                       console.log("we have a functional edit button bois")
                     }
                   },
@@ -79,7 +85,7 @@ class Agenda extends Component {
                       asyncDeleteEvent(item.id);
                       let a_info = this.state.agendaInfo;
 
-                      /* find object with correct id and delte it from agendaInfo */
+                      /* find object with correct id and delete it from agendaInfo */
                       for (var i = 0; i < a_info.length; i++) {
                         if (a_info[i].id === item.id) {
                           a_info.splice(i, 1);
@@ -174,6 +180,29 @@ class Agenda extends Component {
           <View style={{ flex: 1, alignItems: "stretch" }}>{modalPage}</View>
           <TouchableOpacity
             onPress={() => this.setState({ expandVisible: false })}
+            style={{
+              backgroundColor: "white",
+              borderRadius: 50,
+              padding: 5,
+              alignSelf: "center",
+              transform: [{ rotate: "-90deg" }]
+            }}
+          >
+            <Image
+              source={IMAGES.headerBack}
+              style={{ width: 50, height: 50 }}
+            />
+          </TouchableOpacity>
+        </Modal>
+        <Modal
+          isVisible={this.state.editVisible}
+          style={styles.modalStyle}
+          backdropOpacity={0.8}
+          animationOutTiming={300}
+          animationInTiming={300}
+        >
+        <TouchableOpacity
+            onPress={() => this.setState({ editVisible: false })}
             style={{
               backgroundColor: "white",
               borderRadius: 50,
