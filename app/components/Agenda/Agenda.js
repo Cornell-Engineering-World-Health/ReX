@@ -44,6 +44,7 @@ class Agenda extends Component {
       agendaInfo: [],
       currentCard: {},
       currentCardTitle: "",
+      selected: 0,
     };
   }
 
@@ -147,6 +148,7 @@ class Agenda extends Component {
           onPress={() => {
             console.log("wassup")
             console.log(i)
+            this.setState({ selected: i });
             // this.change(i);
             // this.setState({ selected: i });
           }}
@@ -166,7 +168,28 @@ class Agenda extends Component {
       );
     });
 
-    return <View style={styles.body}>{body}</View>;
+    return (
+    <View>
+    <View style = {{alignItems: "center", marginBottom: 10}}>
+    <Text style={[styles.summaryText, {fontSize:20}]}>Intensity</Text>
+    </View>
+    <View style={{alignItems: "stretch"}}>
+        <View style={styles.body}>{body}</View>
+        <View
+        style={[
+          styles.intensityLabelContainer,
+          {
+            backgroundColor: numericMetaInfo[this.state.selected][0]
+          }
+        ]}
+      >
+        <Text style={styles.intensityLabel}>
+          {numericMetaInfo[this.state.selected][1]}
+        </Text>
+      </View>
+    </View>
+    </View>
+    )
   }
 
   render() {
@@ -255,7 +278,24 @@ class Agenda extends Component {
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
+        <View style={{
+          flex: 1,
+          alignItems: "stretch",
+        }}>
         {this._renderIntensity()}
+        </View>
+        <View style={{
+          flex: 1,
+          alignItems: "stretch",
+        }}>
+        {this._renderIntensity()}
+        </View>
+        <View style={{
+          flex: 1,
+          alignItems: "stretch",
+        }}>
+        {this._renderIntensity()}
+        </View>
         <TouchableOpacity
             onPress={() => this.setState({ editVisible: false })}
             style={{
@@ -314,6 +354,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
+  intensityLabelContainer: {
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  intensityLabel: {
+    fontSize: 25,
+    fontWeight: "200",
+    color: "white"
+  }
 });
 
 export default Agenda;
