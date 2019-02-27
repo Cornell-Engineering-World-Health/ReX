@@ -13,6 +13,20 @@ import { COLOR, IMAGES } from "../../resources/constants";
 import Modal from "react-native-modal";
 import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
 
+const numericMetaInfo = [
+  ["rgb(140, 234, 255)", "No Pain"],
+  ["rgb(105, 183, 140)", "Minimal"],
+  ["rgb(122, 208, 105)", "Mild"],
+  ["rgb(155, 232, 77)", "Uncomfortable"],
+  ["rgb(195, 237, 71)", "Moderate"],
+  ["rgb(240, 196, 46)", "Distracting"],
+  ["rgb(233, 161, 38)", "Distressing"],
+  ["rgb(226, 114, 38)", "Unmanageable"],
+  ["rgb(221, 63, 31)", "Intense"],
+  ["rgb(187, 1, 1)", "Severe"],
+  ["rgb(125, 1, 1)", "Unable to Move"]
+]; //find 10 colors that show intensity
+
 class Agenda extends Component {
   static propTypes = {
     onPressAgenda: PropTypes.func,
@@ -41,10 +55,6 @@ class Agenda extends Component {
   }
 
   _keyExtractor = (item, index) => item.id;
-
-  editModal = () => {
-
-  }
 
   /**
    * renders agenda
@@ -125,6 +135,38 @@ class Agenda extends Component {
         </View>
       );
     }
+  }
+
+  _renderIntensity() {
+    let body = null;
+    body = ([0,1,2,3,4,5,6,7,8,9,10]).map((option, i, arr) => {
+
+      return (
+        <View key={i} style={{paddingLeft: 2}}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("wassup")
+            console.log(i)
+            // this.change(i);
+            // this.setState({ selected: i });
+          }}
+          style={[
+            styles.button,
+            {
+              borderRadius: 2,
+              backgroundColor: numericMetaInfo[i],
+              height: 30,
+              width: 30
+            }
+          ]}
+        >
+          <Text style={[styles.buttonText]}>{i}</Text>
+        </TouchableOpacity>
+        </View>
+      );
+    });
+
+    return <View style={styles.body}>{body}</View>;
   }
 
   render() {
@@ -213,6 +255,7 @@ class Agenda extends Component {
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
+        {this._renderIntensity()}
         <TouchableOpacity
             onPress={() => this.setState({ editVisible: false })}
             style={{
@@ -256,7 +299,21 @@ const styles = StyleSheet.create({
     letterSpacing: 1.0,
     color: COLOR.cardNotes,
     marginRight: 3
-  }
+  },
+  body: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "stretch"
+  },
+  button: {
+    padding: 0,
+    borderRadius: 50,
+    justifyContent: "center"
+  },
+  buttonText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
 export default Agenda;
