@@ -27,7 +27,9 @@ class Agenda extends Component {
       expandVisible: false,
       editVisible: false,
       changeToForceRender: 1,
-      agendaInfo: []
+      agendaInfo: [],
+      currentCard: {},
+      currentCardTitle: "",
     };
   }
 
@@ -74,7 +76,10 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
+                      this.setState({ currentCardTitle: item.cardData.title, currentCard: item})
+                      this.props.refreshCalendar();
                       this.setState({ editVisible: true })
+                      this.setState({ state: this.state })
                       console.log("we have a functional edit button bois")
                     }
                   },
@@ -201,6 +206,13 @@ class Agenda extends Component {
           animationOutTiming={300}
           animationInTiming={300}
         >
+        <View style={{
+              justifyContent: "center",
+              flexDirection: "row",
+              flex: 1,
+            }}>
+        <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
+        </View>
         <TouchableOpacity
             onPress={() => this.setState({ editVisible: false })}
             style={{
@@ -215,7 +227,7 @@ class Agenda extends Component {
               source={IMAGES.headerBack}
               style={{ width: 50, height: 50 }}
             />
-          </TouchableOpacity>
+        </TouchableOpacity>
         </Modal>
       </View>
     );
