@@ -40,6 +40,18 @@ export default class Profile extends Component {
     };
   }
 
+  convert_to_BMI = (height, inches, weight) => {
+    var BMI = "";
+    var weight_int = parseInt(weight);
+    var total_inches = parseInt(height) * 12 + parseInt(inches);
+    console.log("total inches: " + total_inches);
+    console.log("total weight: " + weight);
+    var bmi_num = (weight_int / Math.pow(total_inches,2) ) * 703;
+    bmi_num = Math.round( bmi_num * 10 ) / 10;
+    BMI = "" + bmi_num ;
+    return BMI;
+  };
+
   _renderHeader() {
     if (!this.state.choosingAvatar) {
       return (
