@@ -8,7 +8,8 @@ import {
   NavigatorIOS,
   TouchableOpacity,
   Switch,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
@@ -28,8 +29,16 @@ import {
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
 
-let modal_ids = ["edit", "export", "experiment"];
-
+const modal_ids = ["edit", "export", "experiment"];
+const export_ids = [
+  "Past 3 Months",
+  "Past 6 Month",
+  "Past Year",
+  "All Time",
+  "Past Month"
+];
+const MEDICINE_HISTORY = "medhist";
+const SYMPTOM_HISTORY = "symphist";
 class Settings extends Component {
   static propTypes = {
     navigator: PropTypes.object
@@ -50,6 +59,7 @@ class Settings extends Component {
       email: "Doctor's email unkown",
       modalVisible: "",
       toggle: false,
+      exportButtonsVisible: false
     };
   }
 
@@ -67,14 +77,13 @@ class Settings extends Component {
 
   _handleToggle = () => {
     if (this.state.toggle == false) {
-      this.setState({toggle: true})
-      databaseSetSurveyIsOn(true)
+      this.setState({ toggle: true });
+      databaseSetSurveyIsOn(true);
+    } else {
+      this.setState({ toggle: false });
+      databaseSetSurveyIsOn(false);
     }
-    else {
-      this.setState({toggle: false})
-      databaseSetSurveyIsOn(false)
-    }
-  }
+  };
 
   settingsUpdate(setting, value) {
     switch (setting) {
@@ -123,11 +132,38 @@ class Settings extends Component {
         email: data.email
       });
     });
-    databaseGetSurveyIsOn((isOn) => {
+    databaseGetSurveyIsOn(isOn => {
       this.setState({
         toggle: isOn
-      })
-    })
+      });
+    });
+  }
+
+  _requestHistory(export_id, exportFunction) {
+    let temp = new Date();
+
+    switch (export_id) {
+      case export_ids[0]:
+        temp.setMonth(temp.getMonth() - 3);
+        break;
+      case export_ids[1]:
+        temp.setMonth(temp.getMonth() - 6);
+        break;
+      case export_ids[2]:
+        temp.setFullYear(temp.getFullYear() - 1);
+        break;
+      case export_ids[3]:
+        temp.setFullYear(1971);
+      case export_ids[4]:
+        temp.setMonth(temp.getMonth() - 1);
+        break;
+      default:
+        console.log("uh oh something went wrong in request symptom history");
+    }
+
+    this.setState({ modalVisible: "" }, () =>
+      exportFunction(this.state.email, export_id + " medicine history", temp)
+    );
   }
 
   render() {
@@ -308,12 +344,15 @@ class Settings extends Component {
           swipeDirection={"down"}
           style={styles.editProfileWrapper}
         >
-        <View style={styles.modalExperiment}>
-        <Text style = {styles.nidaInfo}>NIDA Survey</Text>
-        <Switch value={this.state.toggle} onValueChange={() => {
-          this._handleToggle();
-        }} />
-        </View>
+          <View style={styles.modalExperiment}>
+            <Text style={styles.nidaInfo}>NIDA Survey</Text>
+            <Switch
+              value={this.state.toggle}
+              onValueChange={() => {
+                this._handleToggle();
+              }}
+            />
+          </View>
         </Modal>
 
         <Modal
@@ -329,31 +368,40 @@ class Settings extends Component {
           swipeDirection={"down"}
           style={styles.modal}
         >
-          <View style={styles.modalWrapper}>
+          <View style={[styles.modalWrapper, { flex: 0.3 }]}>
             <TouchableOpacity
               style={[styles.modalButton, { backgroundColor: COLOR.purple }]}
               onPress={() => {
-                this.setState({ modalVisible: "" }, () =>
-                  exportMedicationsMailFunc(
-                    this.state.email,
-                    this.state.name + "'s medicine history"
-                  )
-                );
+                this.setState({ exportButtonsVisible: MEDICINE_HISTORY });
               }}
+              disabled={this.state.exportButtonsVisible == MEDICINE_HISTORY}
             >
               <Text style={styles.modalSubmitText}>Medicine History</Text>
+              {this.state.exportButtonsVisible == MEDICINE_HISTORY && (
+                <ExportButtons
+                  onPress={date => {
+                    this.setState({ exportButtonsVisible: "" });
+                    this._requestHistory(date, exportMedicationsMailFunc);
+                  }}
+                />
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modalButton, { backgroundColor: COLOR.cyan }]}
-              onPress={() => {
-                this.setState({ modalVisible: "" });
-                exportSymptomsMailFunc(
-                  this.state.email,
-                  this.state.name + "'s symptom history"
-                );
-              }}
+              onPress={() =>
+                this.setState({ exportButtonsVisible: SYMPTOM_HISTORY })
+              }
+              disabled={this.state.exportButtonsVisible == SYMPTOM_HISTORY}
             >
               <Text style={styles.modalSubmitText}>Symptom History</Text>
+              {this.state.exportButtonsVisible == SYMPTOM_HISTORY && (
+                <ExportButtons
+                  onPress={date => {
+                    this.setState({ exportButtonsVisible: "" });
+                    this._requestHistory(date, exportSymptomsMailFunc);
+                  }}
+                />
+              )}
             </TouchableOpacity>
           </View>
         </Modal>
@@ -364,6 +412,44 @@ class Settings extends Component {
     this.setState({ switchValue: value });
   }
 }
+
+const ExportButtons = props => {
+  props = props ? props : () => {};
+  return (
+    <View style={{ flexDirection: "row", marginTop: 10 }}>
+      <TouchableOpacity
+        onPress={() => props.onPress(export_ids[4])}
+        style={styles.modalMiniButton}
+      >
+        <Text>1 Month</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.onPress(export_ids[0])}
+        style={styles.modalMiniButton}
+      >
+        <Text>3 Months</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.onPress(export_ids[1])}
+        style={styles.modalMiniButton}
+      >
+        <Text>6 Months</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.onPress(export_ids[2])}
+        style={styles.modalMiniButton}
+      >
+        <Text>Year</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.onPress(export_ids[3])}
+        style={styles.modalMiniButton}
+      >
+        <Text>All Time</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -392,7 +478,21 @@ const styles = StyleSheet.create({
   },
   nidaInfo: {
     fontSize: 16,
-    marginRight: 10,
+    marginRight: 10
+  },
+  modalMiniButton: {
+    backgroundColor: "#ffffff60",
+    borderRadius: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginLeft: 3,
+    marginRight: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    width: 60
   },
   modal: {
     justifyContent: "flex-end",
@@ -402,13 +502,14 @@ const styles = StyleSheet.create({
     flex: 0.2,
     alignItems: "stretch",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   modalButton: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#aedfe1",
-    flex: 1
+    flex: 1,
+    paddingLeft: 10
   },
   modalSubmitText: {
     fontWeight: "bold",
@@ -423,7 +524,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 10
   }
 });
 const ProfileRoute = {

@@ -5,6 +5,7 @@ import {
   exportAllMedications
 } from "../databaseUtil/databaseUtil";
 import { SYMPTOM_FIELDS } from "../resources/constants.js";
+import Moment from "moment";
 function convertArrayOfObjectsToCSV(args) {
   var result, ctr, keys, columnDelimiter, lineDelimiter, data;
   var DEFAULT_VALUE = "N/A";
@@ -39,8 +40,13 @@ function convertArrayOfObjectsToCSV(args) {
 /*
 Opens a mail modal with the given email and subject with attached csv file for
 medicine information
+
+email: email to send the message todo
+subject: subject of the email
+date: retrieve all information after this date
+
 */
-export function exportMedicationsMailFunc(email, subject) {
+export function exportMedicationsMailFunc(email, subject, date) {
   SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
   FILE_NAME = "medicinelog.csv";
   SHARED_KEYS = [
@@ -53,6 +59,20 @@ export function exportMedicationsMailFunc(email, subject) {
   ]; //all symptoms have these keys
   //use database function to get an array of objects representing the data
   exportAllMedications(medicines => {
+    let filtered_medicines = filterByDate(
+      medicines,
+      "date",
+      date,
+      "MM/DD/YYYY"
+    );
+    if (filtered_medicines.length == 0) {
+      throwAlert(
+        "Unable to export!",
+        "You have no symptoms to export from this period."
+      );
+      return;
+    }
+
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
@@ -62,7 +82,7 @@ export function exportMedicationsMailFunc(email, subject) {
       .then(() => {
         content = "";
         content = convertArrayOfObjectsToCSV({
-          data: medicines,
+          data: filtered_medicines,
           keys: SHARED_KEYS //headers for csv file
         });
         return FileSystem.writeAsStringAsync(
@@ -81,16 +101,47 @@ export function exportMedicationsMailFunc(email, subject) {
       .catch(e => console.log(e));
   });
 }
+
+function filterByDate(list, dateKey, date, format) {
+  return list.filter((d, i) => {
+    return (
+      !Moment(d[dateKey], format).isBefore(date, "day") ||
+      Moment(d[dateKey], format).isSame(date, "day")
+    );
+  });
+}
+
+function throwAlert(label1, label2) {
+  setTimeout(
+    () => Alert.alert(label1, label2),
+    550 //must delay it because it crashes if rendered over the modal
+  );
+}
+
 /*
   Opens a mail modal with the given email and subject, and with the attachment of
   a csv file with all the symptoms.
+
+email: email to send the message todo
+subject: subject of the email
+date: retrieve all information after this date
 */
-export function exportSymptomsMailFunc(email, subject) {
+export function exportSymptomsMailFunc(email, subject, date) {
   SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
   FILE_NAME = "symptomhistory.csv";
   SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
   //use database function to get an array of objects representing the data
   exportAllSymptoms(symptoms => {
+    let filtered_symptoms = filterByDate(symptoms, "timestamp", date);
+    if (filtered_symptoms.length == 0) {
+      throwAlert(
+        "Unable to export!",
+        "You have no symptoms to export from this period."
+      );
+
+      return;
+    }
+
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
@@ -100,7 +151,7 @@ export function exportSymptomsMailFunc(email, subject) {
       .then(() => {
         content = "";
         content = convertArrayOfObjectsToCSV({
-          data: symptoms,
+          data: filtered_symptoms,
           keys: SHARED_KEYS.concat(SYMPTOM_FIELDS) //headers for csv file
         });
         return FileSystem.writeAsStringAsync(
@@ -115,16 +166,14 @@ export function exportSymptomsMailFunc(email, subject) {
           body: "",
           attachments: [SURVEY_DIR + "/" + FILE_NAME]
         }).catch(e => {
-          setTimeout(
-            () =>
-              Alert.alert(
-                "Sorry, the iOS mail app is not detected on your phone.",
-                "To send attachments you must redownload that application."
-              ),
-            501
+          throwAlert(
+            "Sorry, the iOS mail app is not detected on your phone.",
+            "To send attachments you must redownload that application."
           );
         });
       })
-      .catch(e => {});
+      .catch(e => {
+        throwAlert("Cannot export!", "No symptoms to export.");
+      });
   });
 }

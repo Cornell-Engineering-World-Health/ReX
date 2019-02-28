@@ -79,7 +79,6 @@ export default class Trends extends React.Component {
 
   componentDidMount() {
     this._setSymptoms(this._setData);
-
   }
 
   /*
@@ -136,11 +135,14 @@ export default class Trends extends React.Component {
   _setSymptoms(callBack) {
     pullAllLoggedSymptomsTypes(symptoms => {
       let symptomsTemp = symptoms.map(item => item.event_type_name);
-      this.setState({
-        symptoms: symptomsTemp,
-        selectedSymptom: symptomsTemp.length != 0 ? symptomsTemp[0] : null,
-        hasSymptoms: symptomsTemp.length != 0
-      }, callBack);
+      this.setState(
+        {
+          symptoms: symptomsTemp,
+          selectedSymptom: symptomsTemp.length != 0 ? symptomsTemp[0] : null,
+          hasSymptoms: symptomsTemp.length != 0
+        },
+        callBack
+      );
     });
   }
 
@@ -163,24 +165,20 @@ export default class Trends extends React.Component {
   }
 
   _setData() {
-    console.log('setting data')
     let month = new Date(this.state.selectedYear, this.state.selectedMonth);
     this.setState({ selectedBar: -1 });
     if (this.state.selectedView == VIEWS[0]) {
-      console.log('setting month data')
       /*need month, symptom, and callback*/
       let month = new Date(this.state.selectedYear, this.state.selectedMonth);
-      console.log('state', this.state)
+
       pullSymptomForGraphs(
         month,
         this.state.selectedSymptom,
         unformattedData => {
-          console.log(unformattedData,'ud')
           this._setDataHelperMonth(unformattedData);
         }
       );
     } else if (this.state.selectedView == VIEWS[1]) {
-      console.log('setting year data')
       pullYearlySymptomForGraphs(
         month,
         this.state.selectedSymptom,

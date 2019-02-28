@@ -132,7 +132,7 @@ export function intializeDatabase() {
 
       /* inserting default values into event_details_tbl with 1950 date for each event type*/
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "N/A","Duration": "N/A"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
@@ -330,7 +330,7 @@ export function formatData(data) {
 }
 
 export function databaseFakeData() {
-  console.log("faking data");
+  //console.log("faking data");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1233,17 +1233,17 @@ export function exportAllMedications(callBack) {
 }
 
 /**
-* getter for experimental survey setting
-*/
-export function databaseGetSurveyIsOn(callback){
+ * getter for experimental survey setting
+ */
+export function databaseGetSurveyIsOn(callback) {
   Database.transaction(
     tx => {
       tx.executeSql(
         "SELECT * from survey_tbl",
         [],
         (_, { rows }) => {
-          if(callback){
-            callback(rows._array.length > 0)
+          if (callback) {
+            callback(rows._array.length > 0);
           }
         },
         err => console.log(err, "surveyIsOn")
@@ -1254,16 +1254,16 @@ export function databaseGetSurveyIsOn(callback){
 }
 
 /**
-* setter for experimental survey setting
-*/
-export function databaseSetSurveyIsOn(newIsOn){
+ * setter for experimental survey setting
+ */
+export function databaseSetSurveyIsOn(newIsOn) {
   Database.transaction(
     tx => {
-      if(newIsOn){
+      if (newIsOn) {
         tx.executeSql(
           "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)",
           [],
-          ()=> {},
+          () => {},
           err => console.log(err, "surveyIsOn")
         );
       } else {
