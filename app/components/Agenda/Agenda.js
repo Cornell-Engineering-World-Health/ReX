@@ -124,6 +124,30 @@ class Agenda extends Component {
     }
   }
 
+  _renderDuration() {
+    return (
+      <View>
+      <View style = {{alignItems: "center", marginBottom: 10}}>
+      <Text style={[styles.summaryText, {fontSize:20}]}>Duration</Text>
+      </View>
+      <View style={{alignItems: "stretch"}}>
+          <View
+          style={[
+            styles.intensityLabelContainer,
+            {
+              backgroundColor: numericMetaInfo[this.state.selected][0]
+            }
+          ]}
+        >
+          <Text style={styles.intensityLabel}>
+            {numericMetaInfo[this.state.selected][1]}
+          </Text>
+        </View>
+      </View>
+      </View>
+      )
+  }
+
   _renderIntensity() {
     let body = null;
     body = ([0,1,2,3,4,5,6,7,8,9,10]).map((option, i, arr) => {
