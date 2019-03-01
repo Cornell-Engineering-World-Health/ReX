@@ -44,6 +44,7 @@ class Agenda extends Component {
       currentCard: {note1: ":  0"},
       currentCardTitle: "",
       selected: 0,
+      duration: "N/A"
     };
   }
 
@@ -85,11 +86,16 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
+                      console.log(item)
                       let intense = item.note1
+                      let duration = item.note2
                       let currentIntensity = intense.slice(intense.indexOf(":")+2)
+                      let currentDuration = duration.slice(duration.indexOf(":")+2)
+
                       if (currentIntensity !== "N/A"){
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
+                      this.setState({ duration: currentDuration })
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -140,7 +146,7 @@ class Agenda extends Component {
           ]}
         >
           <Text style={styles.intensityLabel}>
-            {numericMetaInfo[this.state.selected][1]}
+            {this.state.duration}
           </Text>
         </View>
       </View>
