@@ -5,13 +5,18 @@ import {
   Text,
   StyleSheet,
   FlatList,
+  Dimensions,
   TouchableOpacity,
+  Picker,
   Image
 } from "react-native";
 import Card from "../Card/Card.js";
 import { COLOR, IMAGES } from "../../resources/constants";
 import Modal from "react-native-modal";
 import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
+  'window'
+);
 
 const numericMetaInfo = [
   ["rgb(140, 234, 255)", "No Pain"],
@@ -40,11 +45,14 @@ class Agenda extends Component {
     this.state = {
       expandVisible: false,
       editVisible: false,
+      durationVisible: false,
       agendaInfo: [],
       currentCard: {note1: ":  0"},
       currentCardTitle: "",
       selected: 0,
-      duration: "N/A"
+      duration: "N/A",
+      hourChoice: 0,
+      minuteChoice: 0,
     };
   }
 
@@ -130,18 +138,107 @@ class Agenda extends Component {
     }
   }
 
+  _renderTimePicker() {
+    const MAX_HOURS = 48;
+    let hours_arr = [];
+    let mins_arr = [];
+    for (var x = 0; x < MAX_HOURS; x++) {
+      hours_arr.push(<Picker.Item key={x} label={x + ''} value={x} />);
+    }
+
+    for (var y = 0; y < 60; y += 5) {
+      mins_arr.push(<Picker.Item key={y} label={y + ''} value={y} />);
+    }
+
+    return (
+      <View style={styles.pickerWrapper}>
+        <Picker
+          style={styles.pickerStyle}
+          selectedValue={this.state.hourChoice}
+          onValueChange={val => {
+            this.setState({ hourChoice: val });
+          }}
+        >
+          {hours_arr}
+        </Picker>
+        <Text>Hours</Text>
+        <Picker
+          style={styles.pickerStyle}
+          selectedValue={this.state.minuteChoice}
+          onValueChange={val => {
+            this.setState({ minuteChoice: val });
+          }}
+        >
+          {mins_arr}
+        </Picker>
+        <Text> Minutes </Text>
+      </View>
+    );
+  }
+
+  _renderDurationPicker() {
+    return (
+      <Modal
+      isVisible={this.state.durationVisible}
+      animationInTiming={500}
+      animationOutTiming={500}
+      onBackdropPress={() => {
+        this.setState({ durationVisible: false });
+      }}
+      style={styles.smallModal}
+    >
+      <View
+        style={{
+          flex: 0.35,
+          backgroundColor: '#ffffff'
+        }}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
+            onPress={() => {
+              this.setState({ durationVisible: false, selected: 4 });
+              // this.handleMoreSpecificChange();
+            }}
+            alignItems="center"
+          >
+            <Text style={styles.text}>Confirm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalSubmitButton}
+            onPress={() => {
+              this.setState({ durationVisible: false });
+            }}
+            alignItems="center"
+          >
+            <Text style={styles.text}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+        {this._renderTimePicker()}
+      </View>
+    </Modal>
+    )
+  }
+
   _renderDuration() {
     return (
       <View>
       <View style = {{alignItems: "center", marginBottom: 10}}>
       <Text style={[styles.summaryText, {fontSize:20}]}>Duration</Text>
       </View>
-      <View style={{alignItems: "stretch"}}>
+      <TouchableOpacity
+      onPress = {() => {
+        this.setState({ durationVisible: true });
+      }}
+      style={{alignItems: "stretch"}}
+      >
           <View
           style={[
             styles.intensityLabelContainer,
             {
-              backgroundColor: numericMetaInfo[this.state.selected][0]
+              backgroundColor: "transparent",
+              borderWidth: 5,
+              borderColor: numericMetaInfo[0][0]
             }
           ]}
         >
@@ -149,7 +246,8 @@ class Agenda extends Component {
             {this.state.duration}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
+      {this._renderDurationPicker()}
       </View>
       )
   }
@@ -295,7 +393,7 @@ class Agenda extends Component {
           flex: 1,
           alignItems: "stretch",
         }}>
-        {this._renderIntensity()}
+        {this._renderDuration()}
         </View>
         <View style={{
           flex: 1,
@@ -331,8 +429,19 @@ class Agenda extends Component {
 }
 
 const styles = StyleSheet.create({
+  smallModal: {
+    justifyContent: 'flex-end',
+    margin: 0
+  },
   modalStyle: {
     flex: 1
+  },
+  modalSubmitButton: {
+    width: viewportWidth / 2,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#aedfe1'
   },
   expandStyle: {
     width: 25,
@@ -376,6 +485,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "200",
     color: "white"
+  },
+  text: {
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'black',
+    fontSize: 15
+  },
+  pickerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+  },
+  pickerStyle: {
+    flex: 1
   }
 });
 
