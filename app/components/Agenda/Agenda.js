@@ -25,7 +25,7 @@ const numericMetaInfo = [
   ["rgb(221, 63, 31)", "Intense"],
   ["rgb(187, 1, 1)", "Severe"],
   ["rgb(125, 1, 1)", "Unable to Move"]
-]; //find 10 colors that show intensity
+];
 
 class Agenda extends Component {
   static propTypes = {
@@ -65,7 +65,6 @@ class Agenda extends Component {
         <FlatList
           data={this.props.agendaInfo}
           keyExtractor={item => "" + item.id}
-            // extraData={this.state}
           renderItem={({ item, index }) => {
             return (
               <Card
@@ -89,12 +88,10 @@ class Agenda extends Component {
                       let intense = item.note1
                       let currentIntensity = intense.slice(intense.indexOf(":")+2)
                       if (currentIntensity !== "N/A"){
-                        // console.log(parseInt(currentIntensity))
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
-                      console.log("we have a functional edit button bois")
                     }
                   },
                   {
@@ -136,8 +133,6 @@ class Agenda extends Component {
         <TouchableOpacity
           onPress={() => {
             this.setState({ selected: i });
-            // this.change(i);
-            // this.setState({ selected: i });
           }}
           style={[
             styles.button,
@@ -179,10 +174,6 @@ class Agenda extends Component {
     </View>
     )
   }
-
-  // _renderOther() {
-  //   let other_notes = this.state.currentCard.
-  // }
 
   render() {
     let page = this._renderAgenda();
