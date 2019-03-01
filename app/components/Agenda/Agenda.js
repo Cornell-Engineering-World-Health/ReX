@@ -53,6 +53,7 @@ class Agenda extends Component {
       duration: "N/A",
       hourChoice: 0,
       minuteChoice: 0,
+      other: "",
     };
   }
 
@@ -64,6 +65,10 @@ class Agenda extends Component {
   }
 
   _keyExtractor = (item, index) => item.id;
+
+  // _onSubmit = () => {
+  //   asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
+  // }
 
   /**
    * renders agenda
@@ -197,7 +202,7 @@ class Agenda extends Component {
           <TouchableOpacity
             style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
             onPress={() => {
-              this.setState({ durationVisible: false, selected: 4 });
+              this.setState({ durationVisible: false });
               // this.handleMoreSpecificChange();
             }}
             alignItems="center"
@@ -401,27 +406,14 @@ class Agenda extends Component {
         }}>
         {this._renderIntensity()}
         </View>
-        <View style={{
-          flex: 1,
-          alignItems: "stretch",
-        }}>
-        {this._renderIntensity()}
-        </View>
-        <TouchableOpacity
-            onPress={() => this.setState({ editVisible: false })}
-            style={{
-              backgroundColor: "white",
-              borderRadius: 50,
-              padding: 5,
-              alignSelf: "center",
-              transform: [{ rotate: "-90deg" }]
-            }}
-          >
-            <Image
-              source={IMAGES.headerBack}
-              style={{ width: 50, height: 50 }}
-            />
-        </TouchableOpacity>
+          <View style={styles.submitWrapper}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => this.setState({ editVisible: false })}
+            >
+              <Text style={styles.text}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </Modal>
       </View>
     );
@@ -501,7 +493,19 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     flex: 1
-  }
+  },
+  submitButton: {
+    width: 200,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#aedfe1"
+  },
+  submitWrapper: {
+    padding: 20,
+    alignItems: "center"
+  },
 });
 
 export default Agenda;

@@ -120,6 +120,10 @@ export default class ChooseLogScreen extends React.Component {
       let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
       event_details_id_count++;
       event_id_count++;
+      console.log("write info")
+      console.log(event_type_id)
+      console.log(values)
+      console.log(timestamp)
       asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
 
       this.props.screenProps.successOnSubmit();
