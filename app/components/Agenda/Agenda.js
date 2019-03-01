@@ -40,7 +40,6 @@ class Agenda extends Component {
     this.state = {
       expandVisible: false,
       editVisible: false,
-      changeToForceRender: 1,
       agendaInfo: [],
       currentCard: {note1: ":  0"},
       currentCardTitle: "",
@@ -61,12 +60,12 @@ class Agenda extends Component {
    * renders agenda
    */
   _renderAgenda() {
-    if (this.state.agendaInfo && this.state.agendaInfo.length != 0) {
+    if (this.props.agendaInfo && this.props.agendaInfo.length != 0) {
       return (
         <FlatList
-          data={this.state.agendaInfo}
+          data={this.props.agendaInfo}
           keyExtractor={item => "" + item.id}
-          extraData={this.state}
+            // extraData={this.state}
           renderItem={({ item, index }) => {
             return (
               <Card
@@ -87,18 +86,13 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
-                      let intense = this.state.currentCard.note1
+                      let intense = item.note1
                       let currentIntensity = intense.slice(intense.indexOf(":")+2)
                       if (currentIntensity !== "N/A"){
                         // console.log(parseInt(currentIntensity))
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
-                      this.setState({ currentCardTitle: item.cardData.title, currentCard: item})
                       this.props.refreshCalendar();
-                      this.setState({
-                        changeToForceRender: this.state.changeToForceRender + 1
-                      });
-                      this.setState({ state: this.state })
                       this.setState({ editVisible: true })
                       console.log("we have a functional edit button bois")
                     }
@@ -108,21 +102,7 @@ class Agenda extends Component {
                     type: "delete",
                     onPress: () => {
                       asyncDeleteEvent(item.id);
-                      let a_info = this.state.agendaInfo;
-
-                      /* find object with correct id and delete it from agendaInfo */
-                      for (var i = 0; i < a_info.length; i++) {
-                        if (a_info[i].id === item.id) {
-                          a_info.splice(i, 1);
-                          break;
-                        }
-                      }
                       this.props.refreshCalendar();
-                      this.setState({
-                        changeToForceRender: this.state.changeToForceRender + 1
-                      });
-                      this.setState({ state: this.state });
-                      this.setState({ agendaInfo: a_info });
                     }
                   }
                 ]}
@@ -155,8 +135,6 @@ class Agenda extends Component {
         <View key={i} style={{paddingLeft: 2}}>
         <TouchableOpacity
           onPress={() => {
-            console.log("wassup")
-            console.log(i)
             this.setState({ selected: i });
             // this.change(i);
             // this.setState({ selected: i });
