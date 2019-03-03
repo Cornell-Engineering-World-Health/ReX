@@ -17,6 +17,12 @@ import {
   pullAllSymptoms,
   pullAllMedicineData
 } from '../databaseUtil/databaseUtil';
+import {
+  setOurNotification,
+  cancelOurNotification,
+  setNotificationList,
+  cancelNotificationList
+} from '../components/PushController/PushController'
 import Moment from 'moment'
 const MEDICINE_BUTTON_BACKGROUND_COLOR = '#ff99ff';
 const POSITIVE_MESSAGE_TIME_DIFF = 4.32 * Math.pow(10, 8); //3 days
@@ -220,9 +226,47 @@ class Home extends React.Component {
 
   writeAllInTimeCategory(notTakenMeds, time, takenVal){
       notTakenMeds[time].forEach((med) => {
-        //console.log(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
         databaseTakeMedicine(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
+        //notifications:
+        let date = new Date()
+        date.setHours(med.time.substring(0,2))
+        date.setMinutes(med.time.substring(3))
+        let date_time = Moment(date).format()
+        if(takenVal){
+          cancelOurNotification(med.name, med.dosage, date_time)
+        } else {
+          setOurNotification(med.name, med.dosage, date_time)
+        }
       })
+  }
+
+  getAffectedMedicineInfo(state, index){
+    let data = state.data
+    let keys = Object.keys(data)
+
+    let times_of_day = ["Morning", "Afternoon", "Evening", "Night"]
+
+    let medName_lst = []
+    let dosage_lst = []
+    let date_time_lst = []
+
+    keys.forEach((k) => {
+      let rel_index = data[k].timeCategory.indexOf(times_of_day[index])
+
+      if(rel_index != -1){
+        medName_lst.push(k)
+        dosage_lst.push(data[k].dosage)
+        let hr = data[k].time[rel_index].substring(0,2)
+        let min = data[k].time[rel_index].substring(3)
+        let d = new Date()
+        d.setHours(hr)
+        d.setMinutes(min)
+        let d_t = Moment(d).format()
+        date_time_lst.push(d_t)
+      }
+    })
+
+    return [medName_lst, dosage_lst, date_time_lst]
   }
 
   logAll(index){
@@ -260,7 +304,12 @@ class Home extends React.Component {
     let st = this.state
     this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {
       this.dropdown.close(); this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)
-      if(this.didRevertAll[index]) databaseTakeMedicines(new Date(), index, takenVal)
+      if(this.didRevertAll[index]) {
+        databaseTakeMedicines(new Date(), index, takenVal)
+        let args = thisRef.getAffectedMedicineInfo(st, index)
+        if(takenVal) cancelNotificationList(args[0], args[1], args[2])
+        else setNotificationList(args[0], args[1], args[2])
+      }
       else this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal)
     })
   }
@@ -296,7 +345,11 @@ class Home extends React.Component {
     let st = this.state
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {
       this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)
-      if(this.didRevertAll[index]) databaseTakeMedicines(new Date(), index, false)
+      if(this.didRevertAll[index]) {
+        databaseTakeMedicines(new Date(), index, false)
+        let args = thisRef.getAffectedMedicineInfo(st, index)
+        setNotificationList(args[0], args[1], args[2])
+      }
     })
   }
 

@@ -13,7 +13,7 @@ import {
 import Moment from "moment";
 
 /*
-Cancel specific notification given an id
+Cancel specific push notification given an id
 
 Precondition: notficationID must be the one given when it was first scheduled
 */
@@ -23,11 +23,20 @@ export function cancelNotification(notificationID) {
 }
 
 /*
-Cancel all scheduled notifications.
+Cancel all scheduled push notifications.
 */
 export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
+
+export function cancelOurNotification(name, dosage, date_time){
+  asyncGetNotificationKey(name, dosage, date_time, id => {
+    console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
+    cancelNotification(id);
+    asyncDeleteNotifications(name, dosage, date_time);
+  });
+}
+
 
 /*
 Cancels all notifications listed in the given array of notification IDS
@@ -67,11 +76,7 @@ export function cancelMassNotification(
       );
 
       let dateTimeString = Moment(tempDateWithTime).format();
-      asyncGetNotificationKey(name, dosage, dateTimeString, id => {
-        //console.log('CANCEL NOTIFICATIONS:', name, dosage, dateTimeString)
-        cancelNotification(id);
-        asyncDeleteNotifications(name, dosage, dateTimeString);
-      });
+      cancelOurNotification(name, dosage, dateTimeString)
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
@@ -87,7 +92,7 @@ export function cancelMassNotification(
   returns: a promise that resolves to a notification ID
 
 */
-export function setNotification(t, b, date) {
+export function setPushNotification(t, b, date) {
   d = {
     title: t,
     body: b
@@ -111,6 +116,22 @@ export function setNotification(t, b, date) {
   );
 
   return p;
+}
+
+
+export function setOurNotification(name, dosage, date_time){
+  let t = "Fiih Medication Reminder";
+  let b = "It's time to take " + name + "! (" + dosage + ")";
+
+  console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format())
+  setPushNotification(t, b, date_time).then(id => {
+    asyncCreateNotifications(
+      name,
+      dosage,
+      Moment(date_time).format(),
+      id
+    );
+  });
 }
 
 /*
@@ -147,8 +168,6 @@ export function setMassNotification(
   scheduledTime
 ) {
   databaseMedicineNotification(name, dosage, true);
-  let t = "Fiih Medication Reminder";
-  let b = "It's time to take " + name + "! (" + dosage + ")";
 
   startDate.setTime(
     startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
@@ -177,19 +196,23 @@ export function setMassNotification(
         minutes
       );
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        //console.log('SET NOTIFICATIONS:', name, dosage, Moment(tempDateWithTime).format())
-        setNotification(t, b, tempDateWithTime).then(id => {
-          asyncCreateNotifications(
-            name,
-            dosage,
-            Moment(tempDateWithTime).format(),
-            id
-          );
-        });
+        setOurNotification(name, dosage, tempDateWithTime)
       }
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
+}
+
+export function setNotificationList(medName_lst, dosage_lst, date_time_lst){
+  medName_lst.forEach((med, i) => {
+    setOurNotification(med, dosage_lst[i], date_time_lst[i])
+  })
+}
+
+export function cancelNotificationList(medName_lst, dosage_lst, date_time_lst){
+  medName_lst.forEach((med, i) => {
+    cancelOurNotification(med, dosage_lst[i], date_time_lst[i])
+  })
 }
 /*
 //New
