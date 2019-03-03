@@ -28,6 +28,8 @@ class main extends React.Component {
       }
       this.setState({ isOnboarded: is_f ? 0 : 1 });
     });
+
+    const uuid = require('uuid/v4')()     // random unique id number
   }
 
   render() {
