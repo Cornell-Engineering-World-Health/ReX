@@ -225,6 +225,7 @@ class Home extends React.Component {
   }
 
   writeAllInTimeCategory(notTakenMeds, time, takenVal){
+      console.log(notTakenMeds)
       notTakenMeds[time].forEach((med) => {
         databaseTakeMedicine(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
         //notifications:
@@ -342,6 +343,7 @@ class Home extends React.Component {
       dropDownMessage = 'ALL '+time+' medications logs have been reverted!'
     }
 
+    let thisRef = this
     let st = this.state
     this.setState({ doneAmount, originalDoneAmount, iconDropDown, backgroundColorDropDown }, () => {
       this.dropdown.alertWithType('custom', dropDownTitle, dropDownMessage)

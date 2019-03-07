@@ -30,6 +30,8 @@ export function cancelAllNotifications() {
 }
 
 export function cancelOurNotification(name, dosage, date_time){
+  date_time = Moment(date_time).format('YYYY-MM-DDTHH:mm')
+
   asyncGetNotificationKey(name, dosage, date_time, id => {
     console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
     cancelNotification(id);
@@ -107,7 +109,7 @@ export function setPushNotification(t, b, date) {
   };
   //TODO: CHECK IF DATE IS LOCAL TIME!
   schedulingOptions = {
-    time: date
+    time: new Date(date)
   };
 
   var p = Notifications.scheduleLocalNotificationAsync(
@@ -122,16 +124,17 @@ export function setPushNotification(t, b, date) {
 export function setOurNotification(name, dosage, date_time){
   let t = "Fiih Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
-
-  console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format())
-  setPushNotification(t, b, date_time).then(id => {
-    asyncCreateNotifications(
-      name,
-      dosage,
-      Moment(date_time).format(),
-      id
-    );
-  });
+  if(Moment(date_time) > Moment()){
+    console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format())
+    setPushNotification(t, b, date_time).then(id => {
+      asyncCreateNotifications(
+        name,
+        dosage,
+        Moment(date_time).format('YYYY-MM-DDTHH:mm'),
+        id
+      );
+    });
+  }
 }
 
 /*
