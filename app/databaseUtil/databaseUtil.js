@@ -1291,11 +1291,11 @@ export function databaseGetUUID(callback) {
   Database.transaction(
     tx => {
       tx.executeSql(
-        "SELECT * from survey_tbl",
+        "SELECT * from uuid_tbl",
         [],
         (_, { rows }) => {
           if (callback) {
-            callback(rows._array.length > 0 ? rows._array.length[0]:'');
+            callback(rows._array.length > 0 ? rows._array[0].uuid :'');
           }
         },
         err => console.log(err, "uuid_tbl")
@@ -1309,19 +1309,21 @@ export function databaseGetUUID(callback) {
  * setter for UUID
  */
 export function databaseSetUUID(uuid) {
-  Database.transaction(
-    tx => {
-      databaseGetUUID((uuid) => {
-        if(uuid == ""){ //is not defined
+  let id_arg = [uuid]
+
+  databaseGetUUID((id) => {
+    if(id == ""){ //is not defined
+      Database.transaction(
+        tx => {
           tx.executeSql(
-            "INSERT OR IGNORE INTO uuid_tbl (uuid) values (?)",
-            [uuid],
-            () => {},
+            "INSERT OR IGNORE INTO uuid_tbl (uuid) VALUES (?)",
+            id_arg,
+            (a,b) => {console.log("@@", b)},
             err => console.log(err, "UUID")
           );
-        }
-      })
-    },
-    err => console.log(err, "UUID")
-  );
+        },
+        err => console.log(err, "UUID")
+      );
+    }
+  })
 }
