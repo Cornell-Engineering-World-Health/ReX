@@ -1298,7 +1298,7 @@ export function databaseGetUUID(callback) {
             callback(rows._array.length > 0 ? rows._array[0].uuid :'');
           }
         },
-        err => console.log(err, "uuid_tbl")
+        err => console.log(err, "UUID")
       );
     },
     err => console.log(err, "UUID")
@@ -1318,7 +1318,7 @@ export function databaseSetUUID(uuid) {
           tx.executeSql(
             "INSERT OR IGNORE INTO uuid_tbl (uuid) VALUES (?)",
             id_arg,
-            (a,b) => {console.log("@@", b)},
+            () => {},
             err => console.log(err, "UUID")
           );
         },
