@@ -225,10 +225,10 @@ class Home extends React.Component {
   }
 
   writeAllInTimeCategory(notTakenMeds, time, takenVal){
-      console.log(notTakenMeds)
-      notTakenMeds[time].forEach((med) => {
-        databaseTakeMedicine(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
-        //notifications:
+    notTakenMeds[time].forEach((med) => {
+      databaseTakeMedicine(new Date(), med.name, med.dosage, med.time, takenVal, med.idx)
+      //notifications:
+      if(this.state.data[med.name].notificationStatus){ //if notificaiton on
         let date = new Date()
         date.setHours(med.time.substring(0,2))
         date.setMinutes(med.time.substring(3))
@@ -238,7 +238,8 @@ class Home extends React.Component {
         } else {
           setOurNotification(med.name, med.dosage, date_time)
         }
-      })
+      }
+    })
   }
 
   getAffectedMedicineInfo(state, index){
@@ -253,17 +254,18 @@ class Home extends React.Component {
 
     keys.forEach((k) => {
       let rel_index = data[k].timeCategory.indexOf(times_of_day[index])
-
       if(rel_index != -1){
-        medName_lst.push(k)
-        dosage_lst.push(data[k].dosage)
-        let hr = data[k].time[rel_index].substring(0,2)
-        let min = data[k].time[rel_index].substring(3)
-        let d = new Date()
-        d.setHours(hr)
-        d.setMinutes(min)
-        let d_t = Moment(d).format()
-        date_time_lst.push(d_t)
+        if(data[k].notificationStatus){//if notification feature is on
+          medName_lst.push(k)
+          dosage_lst.push(data[k].dosage)
+          let hr = data[k].time[rel_index].substring(0,2)
+          let min = data[k].time[rel_index].substring(3)
+          let d = new Date()
+          d.setHours(hr)
+          d.setMinutes(min)
+          let d_t = Moment(d).format()
+          date_time_lst.push(d_t)
+        }
       }
     })
 

@@ -125,7 +125,7 @@ export function setOurNotification(name, dosage, date_time){
   let t = "Fiih Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
   if(Moment(date_time) > Moment()){
-    console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format())
+    console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
     setPushNotification(t, b, date_time).then(id => {
       asyncCreateNotifications(
         name,

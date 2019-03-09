@@ -52,7 +52,8 @@ class MedicineView extends React.Component {
           timeVal: medObj.time,
           dosage: medObj.dosage,
           statuses: medObj.taken,
-          takenTime: medObj.takenTime
+          takenTime: medObj.takenTime,
+          notificationStatus: medObj.notificationStatus
         });
       });
       that.setState({
@@ -115,7 +116,8 @@ class MedicineView extends React.Component {
         timeVal: time,
         dosage: dosage,
         statuses: taken,
-        takenTime: takenTime
+        takenTime: takenTime,
+        notificationStatus: true
       });
       thisRef.setState({
         toggle_add: false,
@@ -199,6 +201,7 @@ class MedicineView extends React.Component {
           dosage={item.dosage}
           passed={item.statuses}
           imageData={this.updateData}
+          notificationStatus={item.notificationStatus}
           buttonsRight={[
             {
               text: "Edit",
