@@ -49,7 +49,7 @@ export default class TextInputType extends React.Component {
     let medicineData = medicine_data.drugs;
     const filteredMed = medicineData.filter(createFilter(this.state.text));
     let shouldExpand = this.state.isTyping && this.props.autocomplete;
-
+    console.log(this.state.text, "TEXXT" + this.props.title_text);
     return (
       <View style={[this.state.input_style]}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
@@ -61,14 +61,14 @@ export default class TextInputType extends React.Component {
           style={[styles.text, this.state.input_text_style]}
           value={this.state.text == "NONE" ? "" : this.state.text}
           onChangeText={text => {
-            this.setState({ text: text });
+            this.setState({ text: text }, () => console.log(this.state.text));
+            this.props.valueChange(this.props.val_label, text);
             let temp_f = medicineData.filter(createFilter(text));
             if (shouldExpand && text.length > 0 && temp_f.length > 0) {
               this.expand();
             } else {
               this.contract();
             }
-            this.props.valueChange(this.props.val_label, text);
           }}
           onFocus={() => {
             let func =
@@ -105,10 +105,11 @@ export default class TextInputType extends React.Component {
                 <TouchableOpacity
                   style={styles.acButton}
                   onPress={() => {
-                    this.setState(
-                      { isTyping: false, text: item },
-                      this.contract
-                    );
+                    this.props.valueChange(this.props.val_label, item);
+                    this.setState({ isTyping: false, text: item }, () => {
+                      this.contract();
+                      console.log(this.state.text);
+                    });
                     this.textInput.blur();
                   }}
                 >
