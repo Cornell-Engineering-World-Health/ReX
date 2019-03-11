@@ -448,7 +448,7 @@ class Agenda extends Component {
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
-        {/* <View style={{
+        <View style={{
           flex: 1,
           alignItems: "stretch",
         }}>
@@ -459,7 +459,7 @@ class Agenda extends Component {
           alignItems: "stretch",
         }}>
         {this._renderIntensity()}
-        </View> */}
+        </View>
         <View style = {{justifyContent: "center", flexDirection: "column", flex: 1}}>
           {this._renderOther()}
           </View>
