@@ -14,6 +14,7 @@ import Card from "../Card/Card.js";
 import { COLOR, IMAGES } from "../../resources/constants";
 import Modal from "react-native-modal";
 import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
+import ListItem from "../Card/ListItem";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -54,6 +55,8 @@ class Agenda extends Component {
       hourChoice: 0,
       minuteChoice: 0,
       other: "",
+      otherSymptoms: ['LAST_ELEMENT'],
+      overlayOpenIndex: -1
     };
   }
 
@@ -308,6 +311,57 @@ class Agenda extends Component {
     )
   }
 
+  _setOverlayStatus(index) {
+    this.setState({ overlayOpenIndex: index });
+  }
+
+  _deleteItem(index) {
+    console.log("wassup wassup")
+  }
+
+  _renderOtherItem = ({item, index}) => {
+    return (
+      <ListItem
+      isOverlayOpen={this.state.overlayOpenIndex == index}
+      setOverlay={isOpen => {
+        this._setOverlayStatus(isOpen ? index : -1);
+      }}
+      onDelete={() => {
+        this._deleteItem(index);
+      }}
+      text={item}
+      style={{
+        backgroundColor:
+          index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
+        justifyContent: 'center'
+      }}
+    />
+    )
+  }
+
+  _renderOther() {
+    return (
+      <View>
+        <Text style={styles.questionText}>{'Other?'}</Text>
+        <View style={{ padding: 15 }}>
+          <FlatList
+            ref={flatlist => {
+              this._list = flatlist;
+            }}
+            getItemLayout={(data, index) => ({
+              length: 55,
+              offset: 55 * index,
+              index
+            })}
+            data={this.state.otherSymptoms}
+            extraData={this.state}
+            renderItem={this._renderOtherItem}
+          />
+      </View>
+      </View>
+    )
+  }
+
   render() {
     let page = this._renderAgenda();
     let modalPage = page;
@@ -394,7 +448,7 @@ class Agenda extends Component {
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
-        <View style={{
+        {/* <View style={{
           flex: 1,
           alignItems: "stretch",
         }}>
@@ -405,7 +459,10 @@ class Agenda extends Component {
           alignItems: "stretch",
         }}>
         {this._renderIntensity()}
-        </View>
+        </View> */}
+        <View style = {{justifyContent: "center", flexDirection: "column", flex: 1}}>
+          {this._renderOther()}
+          </View>
           <View style={styles.submitWrapper}>
             <TouchableOpacity
               style={styles.submitButton}
@@ -505,6 +562,33 @@ const styles = StyleSheet.create({
   submitWrapper: {
     padding: 20,
     alignItems: "center"
+  },
+  itemTextStyle: {
+    textAlign: 'center',
+    fontWeight: '100',
+    fontSize: 18
+  },
+  itemWrapper: {
+    margin: 1,
+    alignItems: 'center',
+    height: 55,
+    backgroundColor: COLOR.blue,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  otherHeader: {
+    flex: 0.2
+  },
+  questionText: {
+    fontSize: 25,
+    fontWeight: '100',
+    textAlign: 'center',
+    color: 'white'
+  },
+  otherWrapper: {
+    flex: 1,
+    alignItems: 'stretch'
   },
 });
 
