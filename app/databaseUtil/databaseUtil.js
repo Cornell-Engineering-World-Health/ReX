@@ -310,11 +310,10 @@ export function intializeDatabase() {
 export function formatData(data) {
   dataTemp = {};
   data.forEach(function(ev) {
-    let d = new Date(ev.timestamp.replace(" ", "T"));
-    let day = d.getDate() - 1;
+    let d = Moment(ev.timestamp).format('DD');
+    let day = d - 1;
     let symptom = ev.event_type_name;
     let intensity = parseInt(JSON.parse(ev.fields).Intensity);
-
     if (!dataTemp[symptom]) {
       dataTemp[symptom] = {
         intensities: [],
