@@ -39,6 +39,8 @@ export default class ChooseLogScreen extends React.Component {
     var timestamp = "1950-01-01 00:00:00";
     if (this.props.log_type) {
       log_type = this.props.log_type;
+      console.log("hwo did this work")
+      console.log(log_type)
       log_name = this.props.log_name;
       nav = false;
       if (this.props.timestamp) {
@@ -46,6 +48,8 @@ export default class ChooseLogScreen extends React.Component {
       }
     } else {
       log_type = this.props.navigation.state.params.log_type;
+      console.log("how did this work")
+      console.log(log_type)
       log_name = this.props.navigation.state.params.log_name;
     }
 

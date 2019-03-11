@@ -11,7 +11,7 @@ import {
   Image
 } from "react-native";
 import Card from "../Card/Card.js";
-import { COLOR, IMAGES } from "../../resources/constants";
+import { COLOR, IMAGES, SYMPTOM_IDS } from "../../resources/constants";
 import Modal from "react-native-modal";
 import { asyncDeleteEvent, asyncCreateSymptomLogEvent } from "../../databaseUtil/databaseUtil";
 import ListItem from "../Card/ListItem";
@@ -62,6 +62,7 @@ class Agenda extends Component {
       overlayOpenIndex: -1,
       deleteId: -1,
       saveTime: "",
+      logType: -1,
     };
   }
 
@@ -123,6 +124,7 @@ class Agenda extends Component {
                       this.setState({ otherSymptoms: otherSymptoms })
                       this.setState({ deleteId: item.id })
                       this.setState({ saveTime: item.timeStamp})
+                      this.setState({ logType: SYMPTOM_IDS[item.cardData.title] })
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -407,7 +409,9 @@ class Agenda extends Component {
     let values = JSON.stringify(submit_vals);
     
     let parseTime = this.props.date.split('/')
-    let flipTime = parseTime[2] + parseTime[1] + parseTime[0]
+    let year = parseTime[2]
+    let month = parseTime[0]
+    let day = parseTime[1]
 
     let hour = parseInt(this.state.saveTime.slice(0, this.state.saveTime.indexOf(":")))
     let minute = this.state.saveTime.slice(this.state.saveTime.indexOf(":")+1, this.state.saveTime.length)
@@ -418,9 +422,17 @@ class Agenda extends Component {
         hour = 0
       }
     }
+
+    if (parseInt(month) < 10) {
+      month = "0" + month
+    }
+    if (parseInt(day) < 10) {
+      day = "0" + day
+    }
+
     let newMinute = parseInt(minute)
     let minString = minute.toString()
-    if (newMinute < 10) {
+    if (newMinute < 10 && newMinute > 0) {
       minString = "0" + minString
     }
     let hourString = hour.toString()
@@ -429,17 +441,18 @@ class Agenda extends Component {
     }
     console.log(hourString)
     console.log(minString)
-    let timestamp = flipTime + "T" + hourString + minString;
+    let timestamp = year + "-" + month + "-" + day + " " + hourString + ":" + minString + ":00";
 
     console.log(timestamp)
-    let correctTime = moment(timestamp)
+    let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
 
     console.log("new write info")
     console.log(values)
     console.log(correctTime)
+    console.log(this.state.logType)
 
     asyncDeleteEvent(this.state.deleteId);
-    asyncCreateSymptomLogEvent(2, values, correctTime);
+    asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);
     this.setState({ editVisible: false })
   }
 
