@@ -27,7 +27,7 @@ export default class AddItem extends React.Component {
         onChangeText={text => {
           console.log(text);
         }}
-        value={props.value}
+        value={0}
         placeholder={'Add More'}
         onSubmitEditing={() => {
           console.log("SUBMIT");

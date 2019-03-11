@@ -357,21 +357,22 @@ class Agenda extends Component {
 
   _renderOtherItem = ({item, index}) => {
     return (
-      <ListItem
-      isOverlayOpen={this.state.overlayOpenIndex == index}
-      setOverlay={isOpen => {
-        this._setOverlayStatus(isOpen ? index : -1);
-      }}
-      onDelete={() => {
-        this._deleteItem(index);
-      }}
-      text={item}
-      style={{
-        backgroundColor:
-          index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
-        justifyContent: 'center'
-      }}
-    />
+      <AddItem />
+    //   <ListItem
+    //   isOverlayOpen={this.state.overlayOpenIndex == index}
+    //   setOverlay={isOpen => {
+    //     this._setOverlayStatus(isOpen ? index : -1);
+    //   }}
+    //   onDelete={() => {
+    //     this._deleteItem(index);
+    //   }}
+    //   text={item}
+    //   style={{
+    //     backgroundColor:
+    //       index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
+    //     justifyContent: 'center'
+    //   }}
+    // />
     )
   }
 
