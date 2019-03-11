@@ -117,6 +117,12 @@ class Agenda extends Component {
                       let currentDuration = duration.slice(duration.indexOf(":")+2)
                       let tempOther = other.slice(other.indexOf(":") + 2)
                       let otherSymptoms = tempOther.split(',')
+                      if (this.state.otherSymptoms.length == 1) {
+                        otherSymptoms = [...otherSymptoms, ...this.state.otherSymptoms]
+                      }
+                      else {
+                        otherSymptoms = [...otherSymptoms, 'LAST_ELEMENT']
+                      }
                       if (currentIntensity !== "N/A"){
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
@@ -356,24 +362,30 @@ class Agenda extends Component {
   }
 
   _renderOtherItem = ({item, index}) => {
-    return (
-      <AddItem />
-    //   <ListItem
-    //   isOverlayOpen={this.state.overlayOpenIndex == index}
-    //   setOverlay={isOpen => {
-    //     this._setOverlayStatus(isOpen ? index : -1);
-    //   }}
-    //   onDelete={() => {
-    //     this._deleteItem(index);
-    //   }}
-    //   text={item}
-    //   style={{
-    //     backgroundColor:
-    //       index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
-    //     justifyContent: 'center'
-    //   }}
-    // />
-    )
+      if (index === this.state.otherSymptoms.length - 1) {
+        return (
+          <AddItem />
+        )
+      }
+      else {
+        return (
+        <ListItem
+        isOverlayOpen={this.state.overlayOpenIndex == index}
+        setOverlay={isOpen => {
+          this._setOverlayStatus(isOpen ? index : -1);
+        }}
+        onDelete={() => {
+          this._deleteItem(index);
+        }}
+        text={item}
+        style={{
+          backgroundColor:
+            index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
+          justifyContent: 'center'
+        }}
+      />
+      )
+      }
   }
 
   _renderOther() {
@@ -405,8 +417,8 @@ class Agenda extends Component {
     let submit_vals = {}
     submit_vals["Duration"] = this.state.duration
     submit_vals["Intensity"] = this.state.selected
-    submit_vals["Other"] = this.state.otherSymptoms.join()
-
+    submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join()
+    console.log(submit_vals["Other"])
     let values = JSON.stringify(submit_vals);
     
     let parseTime = this.props.date.split('/')
