@@ -46,7 +46,6 @@ export default class AddItem extends React.Component {
         onChangeText={text => {
           this.setState({addText: text})
         }}
-        value={0}
         placeholder={'Add More'}
         onSubmitEditing={() => {
           this.onAddSubmit()

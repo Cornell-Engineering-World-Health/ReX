@@ -117,7 +117,12 @@ class Agenda extends Component {
                       let currentDuration = duration.slice(duration.indexOf(":")+2)
                       let tempOther = other.slice(other.indexOf(":") + 2)
                       let otherSymptoms = tempOther.split(',')
-                      if (this.state.otherSymptoms.length == 1) {
+                      console.log("other")
+                      console.log(otherSymptoms)
+                      if (otherSymptoms[0] === "") {
+                        otherSymptoms = ['LAST_ELEMENT']
+                      }
+                      else if (this.state.otherSymptoms.length == 1) {
                         otherSymptoms = [...otherSymptoms, ...this.state.otherSymptoms]
                       }
                       else {
@@ -127,10 +132,12 @@ class Agenda extends Component {
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
                       this.setState({ duration: currentDuration })
+                      console.log(otherSymptoms)
                       this.setState({ otherSymptoms: otherSymptoms })
                       this.setState({ deleteId: item.id })
                       this.setState({ saveTime: item.timeStamp})
                       this.setState({ logType: SYMPTOM_IDS[item.cardData.title] })
+                      this.setState({ currentCardTitle: item.cardData.title})
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -400,8 +407,10 @@ class Agenda extends Component {
   _renderOther() {
     return (
       <View>
-        <Text style={styles.questionText}>{'Other?'}</Text>
-        <View style={{ padding: 15 }}>
+        <View style = {{alignItems: "center", marginBottom: 10}}>
+        <Text style={[styles.summaryText, {fontSize:20}]}>Other</Text>
+        </View>
+        <View style={{ paddingLeft: 15, paddingRight: 15 }}>
           <FlatList
             ref={flatlist => {
               this._list = flatlist;
@@ -413,6 +422,7 @@ class Agenda extends Component {
             })}
             data={this.state.otherSymptoms}
             extraData={this.state}
+            keyExtractor={(item, index) => ""+index}
             renderItem={this._renderOtherItem}
           />
       </View>
@@ -426,7 +436,7 @@ class Agenda extends Component {
     let submit_vals = {}
     submit_vals["Duration"] = this.state.duration
     submit_vals["Intensity"] = this.state.selected
-    submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join()
+    submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join(', ')
     console.log(submit_vals["Other"])
     let values = JSON.stringify(submit_vals);
     
@@ -561,23 +571,23 @@ class Agenda extends Component {
         <View style={{
               justifyContent: "center",
               flexDirection: "row",
-              flex: 1,
+              marginBottom: 50
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
         <View style={{
-          flex: 1,
+          marginBottom: 50,
           alignItems: "stretch",
         }}>
         {this._renderDuration()}
         </View>
         <View style={{
-          flex: 1,
+          marginBottom: 50,
           alignItems: "stretch",
         }}>
         {this._renderIntensity()}
         </View>
-        <View style = {{justifyContent: "center", flexDirection: "column", flex: 1}}>
+        <View style = {{justifyContent: "center", flexDirection: "column", flex: 0.8}}>
           {this._renderOther()}
           </View>
           <View style={styles.submitWrapper}>
@@ -619,7 +629,8 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.summaryGray,
-    marginLeft: 10
+    marginLeft: 10,
+    margin: 0
   },
   dateText: {
     fontSize: 15,
@@ -678,6 +689,7 @@ const styles = StyleSheet.create({
   },
   submitWrapper: {
     padding: 20,
+    marginTop: 50,
     alignItems: "center"
   },
   itemTextStyle: {
