@@ -13,8 +13,11 @@ import {
 import Card from "../Card/Card.js";
 import { COLOR, IMAGES } from "../../resources/constants";
 import Modal from "react-native-modal";
-import { asyncDeleteEvent } from "../../databaseUtil/databaseUtil";
+import { asyncDeleteEvent, asyncCreateSymptomLogEvent } from "../../databaseUtil/databaseUtil";
 import ListItem from "../Card/ListItem";
+import AddItem from "../Card/AddItem";
+import { isMoment } from "../../../node_modules/moment";
+import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   'window'
 );
@@ -56,7 +59,9 @@ class Agenda extends Component {
       minuteChoice: 0,
       other: "",
       otherSymptoms: ['LAST_ELEMENT'],
-      overlayOpenIndex: -1
+      overlayOpenIndex: -1,
+      deleteId: -1,
+      saveTime: "",
     };
   }
 
@@ -116,6 +121,8 @@ class Agenda extends Component {
                       }
                       this.setState({ duration: currentDuration })
                       this.setState({ otherSymptoms: otherSymptoms })
+                      this.setState({ deleteId: item.id })
+                      this.setState({ saveTime: item.timeStamp})
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -188,6 +195,21 @@ class Agenda extends Component {
     );
   }
 
+  handleMoreSpecificChange() {
+    let hour = this.state.hourChoice;
+    let minute = this.state.minuteChoice;
+
+    let hourSuffix = hour == 1 ? ' hour' : ' hours';
+    let minuteSuffix = minute == 1 ? ' minute' : ' minutes';
+    let label = '';
+    if (minute == 0) {
+      label = hour + hourSuffix;
+    } else {
+      label = hour + hourSuffix + ', ' + minute + minuteSuffix;
+    }
+    this.setState({ duration: label });
+  }
+
   _renderDurationPicker() {
     return (
       <Modal
@@ -210,7 +232,7 @@ class Agenda extends Component {
             style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
             onPress={() => {
               this.setState({ durationVisible: false });
-              // this.handleMoreSpecificChange();
+              this.handleMoreSpecificChange();
             }}
             alignItems="center"
           >
@@ -374,6 +396,53 @@ class Agenda extends Component {
     )
   }
 
+  _handleSubmit = () => {
+    console.log("IN HERE")
+    console.log(this.props.date)
+    let submit_vals = {}
+    submit_vals["Duration"] = this.state.duration
+    submit_vals["Intensity"] = this.state.selected
+    submit_vals["Other"] = this.state.otherSymptoms.join()
+
+    let values = JSON.stringify(submit_vals);
+    
+    let parseTime = this.props.date.split('/')
+    let flipTime = parseTime[2] + parseTime[1] + parseTime[0]
+
+    let hour = parseInt(this.state.saveTime.slice(0, this.state.saveTime.indexOf(":")))
+    let minute = this.state.saveTime.slice(this.state.saveTime.indexOf(":")+1, this.state.saveTime.length)
+    minute = minute.slice(0, minute.indexOf(" "))
+    if (this.state.saveTime.includes("P")) {
+      hour = hour + 12
+      if (hour == 24) {
+        hour = 0
+      }
+    }
+    let newMinute = parseInt(minute)
+    let minString = minute.toString()
+    if (newMinute < 10) {
+      minString = "0" + minString
+    }
+    let hourString = hour.toString()
+    if (hour < 10) {
+      hourString = "0" + hourString
+    }
+    console.log(hourString)
+    console.log(minString)
+    let timestamp = flipTime + "T" + hourString + minString;
+
+    console.log(timestamp)
+    let correctTime = moment(timestamp)
+
+    console.log("new write info")
+    console.log(values)
+    console.log(correctTime)
+
+    asyncDeleteEvent(this.state.deleteId);
+    asyncCreateSymptomLogEvent(2, values, correctTime);
+    this.setState({ editVisible: false })
+  }
+
   render() {
     let page = this._renderAgenda();
     let modalPage = page;
@@ -478,7 +547,7 @@ class Agenda extends Component {
           <View style={styles.submitWrapper}>
             <TouchableOpacity
               style={styles.submitButton}
-              onPress={() => this.setState({ editVisible: false })}
+              onPress={this._handleSubmit}
             >
               <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
