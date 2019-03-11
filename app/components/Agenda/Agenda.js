@@ -92,7 +92,7 @@ class Agenda extends Component {
                 timeStamp={item.timeStamp}
                 note1={item.note1}
                 note2={item.note2}
-                note3= {item.note3}
+                note3={item.note3}
                 backgroundColor={item.backgroundColor}
                 swiperActive={true}
                 buttonActive={!this.state.expandVisible}
@@ -103,15 +103,19 @@ class Agenda extends Component {
                     type: "edit",
                     onPress: () => {
                       console.log(item)
+                      console.log(item)
                       let intense = item.note1
                       let duration = item.note2
+                      let other = item.note3
                       let currentIntensity = intense.slice(intense.indexOf(":")+2)
                       let currentDuration = duration.slice(duration.indexOf(":")+2)
-
+                      let tempOther = other.slice(other.indexOf(":") + 2)
+                      let otherSymptoms = tempOther.split(',')
                       if (currentIntensity !== "N/A"){
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
                       this.setState({ duration: currentDuration })
+                      this.setState({ otherSymptoms: otherSymptoms })
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -316,7 +320,15 @@ class Agenda extends Component {
   }
 
   _deleteItem(index) {
-    console.log("wassup wassup")
+    data = this.state.otherSymptoms;
+
+    if (index < 0 || index > data.length) {
+      return;
+    }
+    data.splice(index, 1);
+
+    this.setState({ otherSymptoms: data, overlayOpenIndex: -1 });
+
   }
 
   _renderOtherItem = ({item, index}) => {
