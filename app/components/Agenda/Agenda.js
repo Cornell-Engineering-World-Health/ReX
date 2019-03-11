@@ -361,10 +361,19 @@ class Agenda extends Component {
 
   }
 
+  addOther(text) {
+    newOther = this.state.otherSymptoms
+    newOther = [...newOther.slice(0, newOther.length - 1), text]
+    newOther.push('LAST_ELEMENT')
+    this.setState({
+      otherSymptoms: newOther
+    })
+  }
+
   _renderOtherItem = ({item, index}) => {
       if (index === this.state.otherSymptoms.length - 1) {
         return (
-          <AddItem />
+          <AddItem valueChange = {(text) => this.addOther(text)}/>
         )
       }
       else {

@@ -14,9 +14,28 @@ import { COLOR, IMAGES } from '../../resources/constants.js';
 const ITEM_HEIGHT = 55;
 
 export default class AddItem extends React.Component {
+    static propTypes = {
+        valueChange: PropTypes.func
+      };
+
     constructor(props) {
       super(props);
+
+      this.state = {
+        addText: '',
+      };
     }
+
+    onAddSubmit() {
+        if (this.state.addText != '') {
+        //   data = this.state.symptoms;
+        //   console.log("this the data")
+        //   console.log(data)
+        //   data.splice(data.length - 1, 0, this.state.addText);
+          this.props.valueChange(this.state.addText);
+          this.setState({ addText: '' });    
+        }
+      }
   
     render() {
       return (
@@ -25,18 +44,18 @@ export default class AddItem extends React.Component {
         maxLength={35}
         style={styles.textInputStyle}
         onChangeText={text => {
-          console.log(text);
+          this.setState({addText: text})
         }}
         value={0}
         placeholder={'Add More'}
         onSubmitEditing={() => {
-          console.log("SUBMIT");
+          this.onAddSubmit()
         }}
       />
       <TouchableOpacity
         style={styles.imageWrapper}
         onPress={() => {
-          console.log("OTHER SUBMIT");
+          this.onAddSubmit()
         }}
       >
         <Image style={styles.plusSignStyle} source={IMAGES.plusSignMinimal} />
@@ -121,4 +140,3 @@ export default class AddItem extends React.Component {
       backgroundColor: '#00000075'
     }
   };
-  
