@@ -453,7 +453,8 @@ class Agenda extends Component {
 
     asyncDeleteEvent(this.state.deleteId);
     asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);
-    this.setState({ editVisible: false })
+    this.setState({ editVisible: false });
+    this.props.refreshCalendar();
   }
 
   render() {
