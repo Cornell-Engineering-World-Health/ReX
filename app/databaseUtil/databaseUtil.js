@@ -393,6 +393,7 @@ export function asyncCreateSymptomLogEvent(
   detailsJson,
   timestamp
 ) {
+  console.log("WE WROTE SOMETHING BOYS")
   Database.transaction(
     tx => {
       tx.executeSql(

@@ -22,7 +22,6 @@ onDelete: function to delete current from list
 */
 export default class Duration extends React.Component {
   static propTypes = {
-    buttonTitles: PropTypes.array, // array of strings
     valueChange: PropTypes.func
   };
 
@@ -87,6 +86,8 @@ Called when person clicks enter every time they type another entry
   _onSubmit() {
     if (this.state.addText != '') {
       data = this.state.symptoms;
+      console.log("this the data")
+      console.log(data)
       data.splice(data.length - 1, 0, this.state.addText);
       this.setState({ data: data, addText: '' });
 
