@@ -11,7 +11,7 @@ import {
   Image
 } from "react-native";
 import Card from "../Card/Card.js";
-import { COLOR, IMAGES } from "../../resources/constants";
+import { COLOR, IMAGES, SYMPTOM_IDS } from "../../resources/constants";
 import Modal from "react-native-modal";
 import { asyncDeleteEvent, asyncCreateSymptomLogEvent } from "../../databaseUtil/databaseUtil";
 import ListItem from "../Card/ListItem";
@@ -62,6 +62,7 @@ class Agenda extends Component {
       overlayOpenIndex: -1,
       deleteId: -1,
       saveTime: "",
+      logType: -1,
     };
   }
 
@@ -116,13 +117,27 @@ class Agenda extends Component {
                       let currentDuration = duration.slice(duration.indexOf(":")+2)
                       let tempOther = other.slice(other.indexOf(":") + 2)
                       let otherSymptoms = tempOther.split(',')
+                      console.log("other")
+                      console.log(otherSymptoms)
+                      if (otherSymptoms[0] === "") {
+                        otherSymptoms = ['LAST_ELEMENT']
+                      }
+                      else if (this.state.otherSymptoms.length == 1) {
+                        otherSymptoms = [...otherSymptoms, ...this.state.otherSymptoms]
+                      }
+                      else {
+                        otherSymptoms = [...otherSymptoms, 'LAST_ELEMENT']
+                      }
                       if (currentIntensity !== "N/A"){
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
                       this.setState({ duration: currentDuration })
+                      console.log(otherSymptoms)
                       this.setState({ otherSymptoms: otherSymptoms })
                       this.setState({ deleteId: item.id })
                       this.setState({ saveTime: item.timeStamp})
+                      this.setState({ logType: SYMPTOM_IDS[item.cardData.title] })
+                      this.setState({ currentCardTitle: item.cardData.title})
                       this.props.refreshCalendar();
                       this.setState({ editVisible: true })
                     }
@@ -353,31 +368,49 @@ class Agenda extends Component {
 
   }
 
+  addOther(text) {
+    newOther = this.state.otherSymptoms
+    newOther = [...newOther.slice(0, newOther.length - 1), text]
+    newOther.push('LAST_ELEMENT')
+    this.setState({
+      otherSymptoms: newOther
+    })
+  }
+
   _renderOtherItem = ({item, index}) => {
-    return (
-      <ListItem
-      isOverlayOpen={this.state.overlayOpenIndex == index}
-      setOverlay={isOpen => {
-        this._setOverlayStatus(isOpen ? index : -1);
-      }}
-      onDelete={() => {
-        this._deleteItem(index);
-      }}
-      text={item}
-      style={{
-        backgroundColor:
-          index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
-        justifyContent: 'center'
-      }}
-    />
-    )
+      if (index === this.state.otherSymptoms.length - 1) {
+        return (
+          <AddItem valueChange = {(text) => this.addOther(text)}/>
+        )
+      }
+      else {
+        return (
+        <ListItem
+        isOverlayOpen={this.state.overlayOpenIndex == index}
+        setOverlay={isOpen => {
+          this._setOverlayStatus(isOpen ? index : -1);
+        }}
+        onDelete={() => {
+          this._deleteItem(index);
+        }}
+        text={item}
+        style={{
+          backgroundColor:
+            index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
+          justifyContent: 'center'
+        }}
+      />
+      )
+      }
   }
 
   _renderOther() {
     return (
       <View>
-        <Text style={styles.questionText}>{'Other?'}</Text>
-        <View style={{ padding: 15 }}>
+        <View style = {{alignItems: "center", marginBottom: 10}}>
+        <Text style={[styles.summaryText, {fontSize:20}]}>Other</Text>
+        </View>
+        <View style={{ paddingLeft: 15, paddingRight: 15 }}>
           <FlatList
             ref={flatlist => {
               this._list = flatlist;
@@ -389,6 +422,7 @@ class Agenda extends Component {
             })}
             data={this.state.otherSymptoms}
             extraData={this.state}
+            keyExtractor={(item, index) => ""+index}
             renderItem={this._renderOtherItem}
           />
       </View>
@@ -402,12 +436,14 @@ class Agenda extends Component {
     let submit_vals = {}
     submit_vals["Duration"] = this.state.duration
     submit_vals["Intensity"] = this.state.selected
-    submit_vals["Other"] = this.state.otherSymptoms.join()
-
+    submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join(', ')
+    console.log(submit_vals["Other"])
     let values = JSON.stringify(submit_vals);
     
     let parseTime = this.props.date.split('/')
-    let flipTime = parseTime[2] + parseTime[1] + parseTime[0]
+    let year = parseTime[2]
+    let month = parseTime[0]
+    let day = parseTime[1]
 
     let hour = parseInt(this.state.saveTime.slice(0, this.state.saveTime.indexOf(":")))
     let minute = this.state.saveTime.slice(this.state.saveTime.indexOf(":")+1, this.state.saveTime.length)
@@ -418,9 +454,17 @@ class Agenda extends Component {
         hour = 0
       }
     }
+
+    if (parseInt(month) < 10) {
+      month = "0" + month
+    }
+    if (parseInt(day) < 10) {
+      day = "0" + day
+    }
+
     let newMinute = parseInt(minute)
     let minString = minute.toString()
-    if (newMinute < 10) {
+    if (newMinute < 10 && newMinute > 0) {
       minString = "0" + minString
     }
     let hourString = hour.toString()
@@ -429,18 +473,20 @@ class Agenda extends Component {
     }
     console.log(hourString)
     console.log(minString)
-    let timestamp = flipTime + "T" + hourString + minString;
+    let timestamp = year + "-" + month + "-" + day + " " + hourString + ":" + minString + ":00";
 
     console.log(timestamp)
-    let correctTime = moment(timestamp)
+    let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
 
     console.log("new write info")
     console.log(values)
     console.log(correctTime)
+    console.log(this.state.logType)
 
     asyncDeleteEvent(this.state.deleteId);
-    asyncCreateSymptomLogEvent(2, values, correctTime);
-    this.setState({ editVisible: false })
+    asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);
+    this.setState({ editVisible: false });
+    this.props.refreshCalendar();
   }
 
   render() {
@@ -525,23 +571,23 @@ class Agenda extends Component {
         <View style={{
               justifyContent: "center",
               flexDirection: "row",
-              flex: 1,
+              marginBottom: 50
             }}>
         <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
         </View>
         <View style={{
-          flex: 1,
+          marginBottom: 50,
           alignItems: "stretch",
         }}>
         {this._renderDuration()}
         </View>
         <View style={{
-          flex: 1,
+          marginBottom: 50,
           alignItems: "stretch",
         }}>
         {this._renderIntensity()}
         </View>
-        <View style = {{justifyContent: "center", flexDirection: "column", flex: 1}}>
+        <View style = {{justifyContent: "center", flexDirection: "column", flex: 0.8}}>
           {this._renderOther()}
           </View>
           <View style={styles.submitWrapper}>
@@ -583,7 +629,8 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.summaryGray,
-    marginLeft: 10
+    marginLeft: 10,
+    margin: 0
   },
   dateText: {
     fontSize: 15,
@@ -642,6 +689,7 @@ const styles = StyleSheet.create({
   },
   submitWrapper: {
     padding: 20,
+    marginTop: 50,
     alignItems: "center"
   },
   itemTextStyle: {
