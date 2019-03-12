@@ -35,6 +35,9 @@ export function createTables() {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `survey_tbl` (`surveyIsOn` INTEGER NOT NULL PRIMARY KEY UNIQUE);"
       );
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `uuid_tbl` (`uuid` TEXT NOT NULL PRIMARY KEY UNIQUE);"
+      );
     },
     err => console.log(err, "error creating tables"),
     () => {}
@@ -972,6 +975,7 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
 
 /**
  * Given unique (medication name, dosage, time, notification key), writes it to storage
+ * Time entries are in moment 'YYYY-MM-DDTHH:mm' format
  */
 export function asyncCreateNotifications(name, dosage, time, notifKey) {
   let args = [name, dosage, time, notifKey];
@@ -990,6 +994,7 @@ export function asyncCreateNotifications(name, dosage, time, notifKey) {
 
 /**
  * Given medication name, dosage, and time, calls callback on SINGLE notification key
+ * Time entries must be in moment 'YYYY-MM-DDTHH:mm' format
  */
 export function asyncGetNotificationKey(name, dosage, time, callback) {
   let args = [name, dosage, time];
@@ -1277,4 +1282,48 @@ export function databaseSetSurveyIsOn(newIsOn) {
     },
     err => console.log(err, "surveyIsOn")
   );
+}
+
+/**
+ * getter for experimental survey setting
+ */
+export function databaseGetUUID(callback) {
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from uuid_tbl",
+        [],
+        (_, { rows }) => {
+          if (callback) {
+            callback(rows._array.length > 0 ? rows._array[0].uuid :'');
+          }
+        },
+        err => console.log(err, "UUID")
+      );
+    },
+    err => console.log(err, "UUID")
+  );
+}
+
+/**
+ * setter for UUID
+ */
+export function databaseSetUUID(uuid) {
+  let id_arg = [uuid]
+
+  databaseGetUUID((id) => {
+    if(id == ""){ //is not defined
+      Database.transaction(
+        tx => {
+          tx.executeSql(
+            "INSERT OR IGNORE INTO uuid_tbl (uuid) VALUES (?)",
+            id_arg,
+            () => {},
+            err => console.log(err, "UUID")
+          );
+        },
+        err => console.log(err, "UUID")
+      );
+    }
+  })
 }
