@@ -39,6 +39,8 @@ export default class ChooseLogScreen extends React.Component {
     var timestamp = "1950-01-01 00:00:00";
     if (this.props.log_type) {
       log_type = this.props.log_type;
+      console.log("hwo did this work")
+      console.log(log_type)
       log_name = this.props.log_name;
       nav = false;
       if (this.props.timestamp) {
@@ -46,6 +48,8 @@ export default class ChooseLogScreen extends React.Component {
       }
     } else {
       log_type = this.props.navigation.state.params.log_type;
+      console.log("how did this work")
+      console.log(log_type)
       log_name = this.props.navigation.state.params.log_name;
     }
 
@@ -120,6 +124,10 @@ export default class ChooseLogScreen extends React.Component {
       let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
       event_details_id_count++;
       event_id_count++;
+      console.log("write info")
+      console.log(event_type_id)
+      console.log(values)
+      console.log(timestamp)
       asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
 
       this.props.screenProps.successOnSubmit();

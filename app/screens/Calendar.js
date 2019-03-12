@@ -128,6 +128,7 @@ assumes date is a valid date object
 
   _refreshCalendar = () => {
     this.calendarRef.initVisualization(this.currSymptomDisplay);
+    this._updateAgendaByDatabase();
   };
 
   _renderItem = ({ item }) => {

@@ -125,6 +125,28 @@ export const BODY_PARTS = {
   ALL: "ALL"
 };
 
+export const SYMPTOM_IDS = {
+  "Headache": 1,
+  "Dizziness": 2,
+  "Blurred Vision": 3,
+  "Knee Pain": 5,
+  "Back Pain": 6,
+  "Double Vision": 7,
+  "Ringing in Ears": 8,
+  "Neck Pain": 9,
+  "Stomach Pain": 10,
+  "Foot Pain": 11,
+  "Elbow Pain": 12,
+  "Hand Pain": 13,
+  "Nausea": 14,
+  "Fatigue": 15,
+  "Cognitive Slowing": 16,
+  "Impaired Taste": 17,
+  "Diarrhea": 18,
+  "Vomiting": 19,
+  "Heart Pain": 20,
+}
+
 const SYMPTOM_COLOR = {
   blue: "#79ADDC",
   purple: "#ab87b8",
