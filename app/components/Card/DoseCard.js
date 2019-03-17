@@ -193,15 +193,15 @@ class Card extends PureComponent {
       );
 
       if (
-        shouldBeTaken(
-          new Date(this.props.time[this.state.passed_index - 1]),
-          new Date()
+        !shouldBeTakenNow(
+          new Date(this.props.time[this.state.passed_index - 1])
         )
       ) {
         circleColor = "#fa8b89";
         taken_string = "Missed";
       } else {
         circleColor = "#cccccc";
+        taken_string = "Not taken";
       }
       tempData[this.state.passed_index - 1].title = taken_string;
       tempData[this.state.passed_index - 1].circleColor = circleColor;
