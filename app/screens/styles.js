@@ -1,27 +1,27 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { COLOR } from '../resources/constants';
+import { StyleSheet, Dimensions } from "react-native";
+import { COLOR } from "../resources/constants";
 
-const width = Dimensions.get('window').width;
+const width = Dimensions.get("window").width;
 const circleWidth = width * 0.8;
-const height = Dimensions.get('window').height;
+const height = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   topInfo: {
     height: height - circleWidth - 75,
     marginLeft: 2,
     marginRight: 2,
-    flexDirection: 'column'
+    flexDirection: "column"
   },
   separator: {
     //backgroundColor: '#f2f2f2',
-    backgroundColor: 'black',
+    backgroundColor: "black",
     height: StyleSheet.hairlineWidth,
     marginLeft: 40,
     marginRight: 40
   },
   pageContainer: {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: "space-between"
   },
   header: {
     marginLeft: 15
@@ -31,29 +31,29 @@ export default StyleSheet.create({
     fontSize: 30
   },
   nameText: {
-    color: 'black',
+    color: "black",
     fontSize: 28,
-    fontWeight: '800'
+    fontWeight: "800"
   },
   middleMessage: {
     marginLeft: 20,
     marginRight: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1
   },
   middleMessageText: {
     fontSize: 20,
     color: COLOR.PrimaryGray,
-    textAlign: 'center'
+    textAlign: "center"
   },
   subHeader: {
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   subHeaderText: {
     color: COLOR.PrimaryGray,
@@ -62,5 +62,17 @@ export default StyleSheet.create({
   imageStyle: {
     width: 100,
     height: 100
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "stretch",
+    flex: 1
+  },
+  modalContainer: {
+    justifyContent: "center",
+    alignItems: "stretch",
+    backgroundColor: "white",
+    flex: 0.5,
+    borderRadius: 10
   }
 });
