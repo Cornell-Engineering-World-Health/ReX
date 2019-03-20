@@ -6,9 +6,14 @@ import {
   createTables,
   intializeDatabase,
   pullIsFirstFromDatabase,
-  logIsFirst
+  logIsFirst,
+  databaseFakeData,
+  databaseGetUUID,
+  databaseSetUUID
 } from "./databaseUtil/databaseUtil";
 import { cancelAllNotifications } from "./components/PushController/PushController";
+
+const uuid = require('uuid/v4')() // random unique id number
 
 class main extends React.Component {
   constructor(props) {
@@ -22,8 +27,9 @@ class main extends React.Component {
     createTables();
     intializeDatabase();
     pullIsFirstFromDatabase(is_f => {
-      if(is_f){
-        cancelAllNotifications()
+      if (is_f) {
+        cancelAllNotifications();
+        databaseSetUUID(uuid)
       }
       this.setState({ isOnboarded: is_f ? 0 : 1 });
     });

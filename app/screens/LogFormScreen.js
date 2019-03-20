@@ -153,7 +153,7 @@ export default class ChooseLogScreen extends React.Component {
   }
 
   render() {
-    var SCALE_LABELS = ["", "", "", "", "", "", "", "", "", ""];
+    var SCALE_LABELS = ["", "", "", "", "", "", "", "", "", "", ""];
     var MEDICATION_SCALE_LABELS = ["Morning", "Afternoon", "Evening"];
 
     let component_array = this.state.input_type_array.map((prop, key) => {

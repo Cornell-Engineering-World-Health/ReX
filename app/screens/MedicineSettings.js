@@ -75,7 +75,7 @@ export default class MedicineSettings extends React.Component {
     let times = data[index].time.map(t => Moment(new Date(t)).format("HH:mm"));
     if (data[index].status) {
       //turned ON
-      console.log("ON!");
+      //console.log("ON!");
 
       setMassNotification(
         new Date(data[index].startDate),
@@ -86,7 +86,7 @@ export default class MedicineSettings extends React.Component {
       );
     } else {
       //turned OFF
-      console.log("OFF!");
+      //console.log("OFF!");
       cancelMassNotification(
         new Date(data[index].startDate),
         new Date(data[index].endDate),
@@ -120,7 +120,6 @@ export default class MedicineSettings extends React.Component {
       med.dosage,
       times
     );
-
 
     this.setState({ modalOpen: false, medicine: data });
   }

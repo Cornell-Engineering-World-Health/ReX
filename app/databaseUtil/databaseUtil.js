@@ -35,6 +35,9 @@ export function createTables() {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `survey_tbl` (`surveyIsOn` INTEGER NOT NULL PRIMARY KEY UNIQUE);"
       );
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `uuid_tbl` (`uuid` TEXT NOT NULL PRIMARY KEY UNIQUE);"
+      );
     },
     err => console.log(err, "error creating tables"),
     () => {}
@@ -67,7 +70,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name, event_type_icon,card_field_id1,card_field_id2,event_type_category) values (7, 'Double Vision', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (8, 'Ringing in Ears', 'image.png', 'Intensity','Duration','HEAD')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (8, 'Noise in the Ear', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (9, 'Neck Pain', 'image.png', 'Intensity','Duration','HEAD')"
@@ -82,7 +85,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (12, 'Elbow Pain', 'image.png', 'Intensity','Duration','ARMS')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (13, 'Hand Pain', 'image.png', 'Intensity','Duration','ARMS')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (13, 'Tingling', 'image.png', 'Intensity','Duration','BODY')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (14, 'Nausea', 'image.png', 'Intensity','Duration','BODY')"
@@ -94,16 +97,7 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (16, 'Cognitive Slowing', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (17, 'Impaired Taste', 'image.png', 'Intensity','Duration','HEAD')"
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (18, 'Diarrhea', 'image.png', 'Intensity','Duration','BODY')"
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (19, 'Vomiting', 'image.png', 'Intensity','Duration','TORSO')"
-      );
-      tx.executeSql(
-        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (20, 'Heart Pain', 'image.png', 'Intensity','Duration','TORSO')"
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (17, 'Change in Taste', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
         "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, 'Intensity', 'ScaleSlideInputType')"
@@ -141,7 +135,7 @@ export function intializeDatabase() {
 
       /* inserting default values into event_details_tbl with 1950 date for each event type*/
       tx.executeSql(
-        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Intensity": "N/A","Duration": "N/A"}\' )'
+        'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (1,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
       );
       tx.executeSql(
         'INSERT OR IGNORE INTO event_details_tbl (event_details_id,fields) VALUES (2,\'{"Duration": "N/A","Intensity": "N/A","Other": "NONE"}\' )'
@@ -316,11 +310,10 @@ export function intializeDatabase() {
 export function formatData(data) {
   dataTemp = {};
   data.forEach(function(ev) {
-    let d = new Date(ev.timestamp.replace(" ", "T"));
-    let day = d.getDate() - 1;
+    let d = Moment(ev.timestamp).format('DD');
+    let day = d - 1;
     let symptom = ev.event_type_name;
     let intensity = parseInt(JSON.parse(ev.fields).Intensity);
-
     if (!dataTemp[symptom]) {
       dataTemp[symptom] = {
         intensities: [],
@@ -339,7 +332,7 @@ export function formatData(data) {
 }
 
 export function databaseFakeData() {
-  console.log("faking data");
+  //console.log("faking data");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -982,6 +975,7 @@ export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
 
 /**
  * Given unique (medication name, dosage, time, notification key), writes it to storage
+ * Time entries are in moment 'YYYY-MM-DDTHH:mm' format
  */
 export function asyncCreateNotifications(name, dosage, time, notifKey) {
   let args = [name, dosage, time, notifKey];
@@ -1000,6 +994,7 @@ export function asyncCreateNotifications(name, dosage, time, notifKey) {
 
 /**
  * Given medication name, dosage, and time, calls callback on SINGLE notification key
+ * Time entries must be in moment 'YYYY-MM-DDTHH:mm' format
  */
 export function asyncGetNotificationKey(name, dosage, time, callback) {
   let args = [name, dosage, time];
@@ -1243,17 +1238,17 @@ export function exportAllMedications(callBack) {
 }
 
 /**
-* getter for experimental survey setting
-*/
-export function databaseGetSurveyIsOn(callback){
+ * getter for experimental survey setting
+ */
+export function databaseGetSurveyIsOn(callback) {
   Database.transaction(
     tx => {
       tx.executeSql(
         "SELECT * from survey_tbl",
         [],
         (_, { rows }) => {
-          if(callback){
-            callback(rows._array.length > 0)
+          if (callback) {
+            callback(rows._array.length > 0);
           }
         },
         err => console.log(err, "surveyIsOn")
@@ -1264,16 +1259,16 @@ export function databaseGetSurveyIsOn(callback){
 }
 
 /**
-* setter for experimental survey setting
-*/
-export function databaseSetSurveyIsOn(newIsOn){
+ * setter for experimental survey setting
+ */
+export function databaseSetSurveyIsOn(newIsOn) {
   Database.transaction(
     tx => {
-      if(newIsOn){
+      if (newIsOn) {
         tx.executeSql(
           "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)",
           [],
-          ()=> {},
+          () => {},
           err => console.log(err, "surveyIsOn")
         );
       } else {
@@ -1287,4 +1282,48 @@ export function databaseSetSurveyIsOn(newIsOn){
     },
     err => console.log(err, "surveyIsOn")
   );
+}
+
+/**
+ * getter for experimental survey setting
+ */
+export function databaseGetUUID(callback) {
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from uuid_tbl",
+        [],
+        (_, { rows }) => {
+          if (callback) {
+            callback(rows._array.length > 0 ? rows._array[0].uuid :'');
+          }
+        },
+        err => console.log(err, "UUID")
+      );
+    },
+    err => console.log(err, "UUID")
+  );
+}
+
+/**
+ * setter for UUID
+ */
+export function databaseSetUUID(uuid) {
+  let id_arg = [uuid]
+
+  databaseGetUUID((id) => {
+    if(id == ""){ //is not defined
+      Database.transaction(
+        tx => {
+          tx.executeSql(
+            "INSERT OR IGNORE INTO uuid_tbl (uuid) VALUES (?)",
+            id_arg,
+            () => {},
+            err => console.log(err, "UUID")
+          );
+        },
+        err => console.log(err, "UUID")
+      );
+    }
+  })
 }

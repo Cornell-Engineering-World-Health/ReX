@@ -6,6 +6,11 @@ import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
 import { initializeRegistryWithDefinitions } from "react-native-animatable";
 import { shouldBeTaken, shouldBeTakenNow } from '../../resources/helpers';
+import {
+  setOurNotification,
+  cancelOurNotification
+} from '../PushController/PushController';
+import Moment from 'moment'
 
 var background = ["#ffffff", "#ecfaf7", "#fcf0f2"];
 var border = ["#ffffff", "#7fdecb", "#f8ced5"];
@@ -47,7 +52,7 @@ class Card extends PureComponent {
     this._handleRenderText();
   };
 
-  
+
      // 0 is gray, 1 is green, 2 is red
   getPassedIndexandColor = () => {
       var passed_index = 0;
@@ -118,8 +123,8 @@ class Card extends PureComponent {
    * Update visual properties and write to database when medication is logged or unlogged from medicine view
    */
   _handleClick = () => {
+    console.log(this.props)
     that = this;
-
     var thisMed = new Date(this.props.time[this.state.passed_index]);
     var newPassed = this.state.passed;
     var newInd = 0;
@@ -127,6 +132,12 @@ class Card extends PureComponent {
 
     // can click forward, it you are clicking a red time that you need to take, must go forward
     if (shouldBeTaken(thisMed, new Date())) {
+      //make notification changes
+      if(this.props.notificationStatus){//notification function on
+        cancelOurNotification(this.props.title, this.props.dosage,
+          Moment(new Date(this.props.time[this.state.passed_index])).format())
+      }
+
       newPassed[this.state.passed_index] = true;
       newInd = this.state.passed_index + 1;
 
@@ -155,12 +166,17 @@ class Card extends PureComponent {
           that._handleRenderText();
         }
       );
-
       // can click backward
     } else if (
       newPassed.length > 0 &&
       this.state.passed_index > this.state.init_passed
     ) {
+
+      //make notification changes
+      if(this.props.notificationStatus){//notification function on
+        setOurNotification(this.props.title, this.props.dosage,
+          Moment(new Date(this.props.time[this.state.passed_index-1])).format())
+      }
       var taken_string = "Not taken";
       newPassed[this.state.passed_index - 1] = false;
       var circleColor = border[1];
@@ -177,15 +193,15 @@ class Card extends PureComponent {
       );
 
       if (
-        shouldBeTaken(
-          new Date(this.props.time[this.state.passed_index - 1]),
-          new Date()
+        !shouldBeTakenNow(
+          new Date(this.props.time[this.state.passed_index - 1])
         )
       ) {
         circleColor = "#fa8b89";
         taken_string = "Missed";
       } else {
         circleColor = "#cccccc";
+        taken_string = "Not taken";
       }
       tempData[this.state.passed_index - 1].title = taken_string;
       tempData[this.state.passed_index - 1].circleColor = circleColor;
