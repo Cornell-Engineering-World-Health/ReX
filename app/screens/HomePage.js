@@ -9,6 +9,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { profile_icons } from '../resources/constants';
 import {IMAGES, COLOR} from '../resources/constants';
 import { HomeMedicineLogger } from '../components/HomeMedicineLogger';
+import Modal from "react-native-modal";
 import {
   pullMedicineFromDatabase,
   pullSettingsFromDatabase,
@@ -32,7 +33,7 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      modalVisible: null,
+      modalVisible: false,
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
@@ -40,7 +41,7 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: 'Welcome to FIIH Health!'
+      message: 'Welcome to FIIH Health!',
     };
     this.generatePositiveMessage()
     //TODO: make one function that only pulls name from database
@@ -124,6 +125,7 @@ class Home extends React.Component {
         data: formattedData,
         notTakenMeds: notTakenMeds
       })
+      console.log('not taken meds', notTakenMeds)
     });
   }
 
@@ -354,7 +356,7 @@ class Home extends React.Component {
               onPress={button => {
                 this._onPress(button);
               }}
-              handlerMorning={(isLongPress) => {if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}}
+              handlerMorning={(isLongPress) => {this.setState({modalVisible:true})/*if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}*/}}
               handlerAfternoon={(isLongPress) => {if(!isLongPress){this.logAll(1)}else{this.revertAll(1)}}}
               handlerEvening={(isLongPress) => {if(!isLongPress){this.logAll(2)}else{this.revertAll(2)}}}
               handlerNight={(isLongPress) => {if(!isLongPress){this.logAll(3)}else{this.revertAll(3)}}}
