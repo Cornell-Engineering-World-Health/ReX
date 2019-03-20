@@ -535,7 +535,9 @@ class Home extends React.Component {
         />
         <Modal style={styles.modal} isVisible={this.state.modalVisible}>
           <View style={styles.modalContainer}>
-            <Text>Hello katy</Text>
+            <View style={styles.modalHeader} />
+            <View style={styles.modalBody} />
+            <View style={styles.modalFooter} />
           </View>
         </Modal>
       </ImageBackground>

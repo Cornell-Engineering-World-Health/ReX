@@ -74,5 +74,14 @@ export default StyleSheet.create({
     backgroundColor: "white",
     flex: 0.5,
     borderRadius: 10
+  },
+  modalHeader: {
+    flex: 0.2
+  },
+  modalBody: {
+    flex: 0.8
+  },
+  modalFooter: {
+    flex: 0.2
   }
 });
