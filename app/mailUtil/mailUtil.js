@@ -73,7 +73,7 @@ export function exportMedicationsMailFunc(email, subject, date) {
       if (filtered_medicines.length == 0) {
         throwAlert(
           "Unable to export!",
-          "You have no symptoms to export from this period."
+          "You have no medication record to export from this period."
         );
         return;
       }
@@ -144,7 +144,7 @@ export function exportSymptomsMailFunc(email, subject, date) {
       if (filtered_symptoms.length == 0) {
         throwAlert(
           "Unable to export!",
-          "You have no symptoms to export from this period."
+          "You have no symptom record to export from this period."
         );
 
         return;
@@ -184,5 +184,55 @@ export function exportSymptomsMailFunc(email, subject, date) {
           throwAlert("Cannot export!", "No symptoms to export.");
         });
     });
+  })
+}
+
+
+
+
+/*
+  Opens a mail modal with the given email and subject, and with the attachment of
+  a csv file with all the survey responses.
+
+email: email to send the message todo
+subject: subject of the email
+*/
+export function exportSurveyMailFunc(email, subject) {
+  databaseGetUUID((id) => {
+    SURVEY_DIR = FileSystem.documentDirectory + "test_survey";
+    let date_time = Moment().format('YYYY-MM-DDTHH:mm')
+    DATA_FILE_NAME = 'survey.csv';
+    NEW_FILE_NAME =  id + "_" + date_time + "_" + "survey.csv";
+    
+    FileSystem.getInfoAsync(SURVEY_DIR, {})
+      .then(e => {
+        if (!e.exists || !e.isDirectory) {
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+        }
+      })
+      .then(() => {
+        return FileSystem.readAsStringAsync(SURVEY_DIR + "/" + DATA_FILE_NAME)
+      }).then(content => {
+        return FileSystem.writeAsStringAsync(
+          SURVEY_DIR + "/" + NEW_FILE_NAME,
+          content
+        );
+      })
+      .then(e => {
+        MailComposer.composeAsync({
+          recipients: [email],
+          subject: subject,
+          body: "",
+          attachments: [SURVEY_DIR + "/" + NEW_FILE_NAME]
+        }).catch(e => {
+          throwAlert(
+            "Sorry, the iOS mail app is not detected on your phone.",
+            "To send attachments you must redownload that application."
+          );
+        });
+      })
+      .catch(e => {
+        throwAlert("Cannot export!", "No symptoms to export.");
+      });
   })
 }

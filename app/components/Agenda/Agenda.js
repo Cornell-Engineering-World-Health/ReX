@@ -108,8 +108,6 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
-                      console.log(item)
-                      console.log(item)
                       let intense = item.note1
                       let duration = item.note2
                       let other = item.note3
@@ -117,8 +115,6 @@ class Agenda extends Component {
                       let currentDuration = duration.slice(duration.indexOf(":")+2)
                       let tempOther = other.slice(other.indexOf(":") + 2)
                       let otherSymptoms = tempOther.split(',')
-                      console.log("other")
-                      console.log(otherSymptoms)
                       if (otherSymptoms[0] === "") {
                         otherSymptoms = ['LAST_ELEMENT']
                       }
@@ -132,7 +128,6 @@ class Agenda extends Component {
                         this.setState({ selected: parseInt(currentIntensity) })
                       }
                       this.setState({ duration: currentDuration })
-                      console.log(otherSymptoms)
                       this.setState({ otherSymptoms: otherSymptoms })
                       this.setState({ deleteId: item.id })
                       this.setState({ saveTime: item.timeStamp})
@@ -334,7 +329,6 @@ class Agenda extends Component {
     </View>
     <View style={{alignItems: "stretch"}}>
         <View style={styles.body}>{body}</View>
-        {console.log(this.state.selected)}
         <View
         style={[
           styles.intensityLabelContainer,
@@ -431,15 +425,13 @@ class Agenda extends Component {
   }
 
   _handleSubmit = () => {
-    console.log("IN HERE")
-    console.log(this.props.date)
     let submit_vals = {}
     submit_vals["Duration"] = this.state.duration
     submit_vals["Intensity"] = this.state.selected
     submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join(', ')
-    console.log(submit_vals["Other"])
+
     let values = JSON.stringify(submit_vals);
-    
+
     let parseTime = this.props.date.split('/')
     let year = parseTime[2]
     let month = parseTime[0]
@@ -471,17 +463,10 @@ class Agenda extends Component {
     if (hour < 10) {
       hourString = "0" + hourString
     }
-    console.log(hourString)
-    console.log(minString)
+
     let timestamp = year + "-" + month + "-" + day + " " + hourString + ":" + minString + ":00";
 
-    console.log(timestamp)
     let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
-
-    console.log("new write info")
-    console.log(values)
-    console.log(correctTime)
-    console.log(this.state.logType)
 
     asyncDeleteEvent(this.state.deleteId);
     asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);

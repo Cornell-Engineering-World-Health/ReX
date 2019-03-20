@@ -9,6 +9,9 @@ import DatePicker from "../LogInputTypes/DatePicker";
 import moment from "moment";
 import Form from "../LogInputTypes/Form";
 import survey from "../../survey/questions.json";
+import {
+  databaseSetSurveyDate
+} from "../../databaseUtil/databaseUtil.js";
 
 const mapTypeToComponent = {
   scale: "ScaleSlideInputType",
@@ -27,14 +30,19 @@ const mapTypeToInitVal = {
   time: new Date()
 };
 
-const SURVEY_DIR = FileSystem.documentDirectory + "test11";
-const FILE_NAME = "survey.csv";
+
+const SURVEY_DIR = FileSystem.documentDirectory + 'test_survey';
+const FILE_NAME = 'survey.csv';
 
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
-    let keysArray = survey["Questions"].map(q => q["QuestionType"]);
-    let titles = survey["Questions"].map(q => q["Title"]);
+    this.initState()
+  }
+
+  initState(){
+    let keysArray = survey['Questions'].map(q => q['QuestionType']);
+    let titles = survey['Questions'].map(q => q['Title']);
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
     let valOptions = {};
     survey["Questions"].forEach((q, i) => {
@@ -88,11 +96,11 @@ export default class SurveyForm extends React.Component {
   }
 
   submit() {
-    this.props.onSubmit();
+    this.props.close();
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
-          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR); //make Directory if not exist
         }
       })
       .then(e => {
@@ -116,12 +124,17 @@ export default class SurveyForm extends React.Component {
       .then(() => {
         return FileSystem.readAsStringAsync(SURVEY_DIR + "/" + FILE_NAME);
       })
-      .then(content => {})
+      .then(content => {
+        console.log(content)
+        databaseSetSurveyDate((new Date()).toLocaleDateString())
+      })
       .catch(e => console.log(e));
   }
 
   state_to_csv() {
-    let content = "Survey Name," + this.state.surveyId + "\n";
+    let content = 'Survey Name,' + this.state.surveyId + '\n' +
+                  'Date,' + (new Date()).toLocaleDateString() +
+                  ',' + (new Date()).toLocaleTimeString() + '\n';
     let keys = Object.keys(this.state.submit_vals);
     keys.forEach(k => {
       if (
