@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ImageBackground, Image } from "react-native";
+import { View, Text, ImageBackground, Image, TouchableOpacity } from "react-native";
 import DropdownAlert from "react-native-dropdownalert";
 import { profile_icons } from "../resources/constants";
 import { IMAGES, COLOR } from "../resources/constants";
@@ -537,7 +537,14 @@ class Home extends React.Component {
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader} />
             <View style={styles.modalBody} />
-            <View style={styles.modalFooter} />
+            <View style={styles.modalFooter} >
+              <TouchableOpacity style ={[styles.modalButton,{backgroundColor: COLOR.white}]} onPress = {() => this.setState({modalVisible:false})} >
+                <Text style = {[styles.ButtonText,{color:COLOR.blue}]}> Cancel </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style ={[styles.modalButton,{backgroundColor: COLOR.blue}]} onPress = {() => this.setState({modalVisible:false})}>
+                <Text style = {[styles.ButtonText,{color:COLOR.white}]}> Submit </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       </ImageBackground>

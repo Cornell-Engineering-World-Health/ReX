@@ -82,6 +82,32 @@ export default StyleSheet.create({
     flex: 0.8
   },
   modalFooter: {
-    flex: 0.2
+    flex: 0.2,
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  submit: {
+    backgroundColor: COLOR.blue,
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: COLOR.blue,
+    borderRadius: 10,
+    borderWidth: 1,
+    flex:1,
+    margin:10
+  },
+  modalButton: {
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: COLOR.blue,
+    borderRadius:10,
+    borderWidth: 1,
+    flex:1,
+    margin:10
+  },
+  ButtonText: {
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "500"
   }
 });
