@@ -8,7 +8,7 @@ import ChecklistInputType from "../LogInputTypes/ChecklistInputType";
 import DatePicker from "../LogInputTypes/DatePicker";
 import moment from "moment";
 import Form from "../LogInputTypes/Form";
-import survey from "../../survey/questions.json";
+//import survey from "../../survey/questions.json";
 import {
   databaseSetSurveyDate
 } from "../../databaseUtil/databaseUtil.js";
@@ -38,10 +38,26 @@ const FILE_NAME = 'survey.csv';
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
-    this.initState()
+    fetch ('https://www.dropbox.com/s/dl/6zz7xhixelstq2c/a.json?dl=1')
+    .then((response)=> {return response.json()})
+    .then((surveyjson) => {
+        return this.initState(surveyjson)
+      })
+     .catch ((error) => {
+        console.log (error)
+      });
+      this.state = {
+      input_type_array: [],
+      value_labels: [], //my type labels - question
+      values: [], //current value - 0
+      submit_vals: {}, //pairs of question: value {q: a}
+      valOptions: [], //for questions with params, gives bounds
+      surveyId: "" //survey name
+    };
+
   }
 
-  initState(){
+  initState(survey){
     let keysArray = survey['Questions'].map(q => q['QuestionType']);
     let titles = survey['Questions'].map(q => q['Title']);
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
@@ -80,14 +96,23 @@ export default class SurveyForm extends React.Component {
       }
     });
 
-    this.state = {
-      input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+    // this.state = {
+    //   input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+    //   value_labels: titles, //my type labels - question
+    //   values: valArray, //current value - 0
+    //   submit_vals: submit_vals, //pairs of question: value {q: a}
+    //   valOptions: valOptions, //for questions with params, gives bounds
+    //   surveyId: survey["SurveyName"] //survey name
+    // };
+    this.setState({
+        input_type_array: inputTypes, //types compoment - NumericalPickerInputType
       value_labels: titles, //my type labels - question
       values: valArray, //current value - 0
       submit_vals: submit_vals, //pairs of question: value {q: a}
       valOptions: valOptions, //for questions with params, gives bounds
       surveyId: survey["SurveyName"] //survey name
-    };
+    }
+    )
   }
 
   valueChange(label, value) {
