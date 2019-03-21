@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ImageBackground, Image } from "react-native";
+import { View, Text, ImageBackground, Image, ScrollView } from "react-native";
 import DropdownAlert from "react-native-dropdownalert";
 import { profile_icons } from "../resources/constants";
 import { IMAGES, COLOR } from "../resources/constants";
@@ -42,7 +42,9 @@ class Home extends React.Component {
       name: "Navin",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: "Welcome to FIIH Health!"
+      message: "Welcome to FIIH Health!",
+      selectedPeriod: "",
+      notTakenMeds: {}
     };
     this.generatePositiveMessage();
     //TODO: make one function that only pulls name from database
@@ -439,6 +441,28 @@ class Home extends React.Component {
     );
   }
 
+  _generateModalCards() {
+    if (
+      !this.state.notTakenMeds ||
+      !this.state.notTakenMeds[this.state.selectedPeriod]
+    ) {
+      return;
+    }
+    let cards = [];
+    this.state.notTakenMeds[this.state.selectedPeriod].forEach((med, index) => {
+      console.log("med", med);
+      cards.push(
+        <Card
+          key={med + "med" + index}
+          name={med.name}
+          dosage={med.dosage}
+          time={med.time}
+        />
+      );
+    });
+    return cards;
+  }
+
   render() {
     let currentDate = new Date();
 
@@ -497,7 +521,8 @@ class Home extends React.Component {
               }}
               handlerMorning={isLongPress => {
                 this.setState({
-                  modalVisible: true
+                  modalVisible: true,
+                  selectedPeriod: "morning"
                 }); /*if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}*/
               }}
               handlerAfternoon={isLongPress => {
@@ -533,10 +558,22 @@ class Home extends React.Component {
             backgroundColor: this.state.backgroundColorDropDown
           }}
         />
-        <Modal style={styles.modal} isVisible={this.state.modalVisible}>
+        <Modal
+          style={styles.modal}
+          isVisible={this.state.modalVisible}
+          onBackdropPress={() => {
+            this.setState({ modalVisible: false });
+          }}
+        >
           <View style={styles.modalContainer}>
-            <View style={styles.modalHeader} />
-            <View style={styles.modalBody} />
+            <View style={[styles.modalHeader, styles.lightShadow]}>
+              <Text style={styles.modalHeaderText}>
+                Confirm taking these medications?
+              </Text>
+            </View>
+            <View style={styles.modalBody}>
+              <ScrollView>{this._generateModalCards()}</ScrollView>
+            </View>
             <View style={styles.modalFooter} />
           </View>
         </Modal>
@@ -544,4 +581,23 @@ class Home extends React.Component {
     );
   }
 }
+
+const Card = props => {
+  //props should contain name, dosage, timeString to take
+  return (
+    <View style={[styles.cardWrapper]}>
+      <View style={[styles.cardContainer, styles.darkShadow]}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardHeaderText}>
+            {props.name + " " + props.dosage}
+          </Text>
+        </View>
+        <View style={styles.cardBody}>
+          <Text style={styles.cardBodyText}>{props.time}</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
 export default Home;
