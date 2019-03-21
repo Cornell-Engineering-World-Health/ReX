@@ -102,7 +102,6 @@ export default StyleSheet.create({
   },
   cardHeader: {
     flex: 0.8,
-    backgroundColor: "#d2ffce",
     borderTopRightRadius: 3,
     borderTopLeftRadius: 3,
     justifyContent: "center",
@@ -136,5 +135,11 @@ export default StyleSheet.create({
     shadowOffset: { width: 3, height: 3 },
     shadowColor: "#808080",
     shadowOpacity: 0.2
+  },
+  cardIsConfirm: {
+    backgroundColor: "#d2ffce"
+  },
+  cardIsUndo: {
+    backgroundColor: "#ffafaf"
   }
 });

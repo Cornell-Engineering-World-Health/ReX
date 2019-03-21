@@ -34,7 +34,6 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      modalVisible: false,
       data: [],
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
@@ -43,8 +42,11 @@ class Home extends React.Component {
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
       message: "Welcome to FIIH Health!",
+      notTakenMeds: {},
+      //fields for modal
+      modalVisible: false,
       selectedPeriod: "",
-      notTakenMeds: {}
+      confirming: false //true if the user is confirming medicine logs, false if the user is undoing
     };
     this.generatePositiveMessage();
     //TODO: make one function that only pulls name from database
@@ -440,7 +442,11 @@ class Home extends React.Component {
       }
     );
   }
-
+  /*
+  Returns an array of card components that hold the medicine to be taken's name,
+  dosage, and time. isConfirmCard is a boolean that if true, will use cardIsConfirm
+  styles while if false will use cardIsUndo
+  */
   _generateModalCards() {
     if (
       !this.state.notTakenMeds ||
@@ -457,6 +463,9 @@ class Home extends React.Component {
           name={med.name}
           dosage={med.dosage}
           time={med.time}
+          style={
+            this.state.confirming ? styles.cardIsConfirm : styles.cardIsUndo
+          }
         />
       );
     });
@@ -522,7 +531,8 @@ class Home extends React.Component {
               handlerMorning={isLongPress => {
                 this.setState({
                   modalVisible: true,
-                  selectedPeriod: "morning"
+                  selectedPeriod: "morning",
+                  confirming: !isLongPress
                 }); /*if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}*/
               }}
               handlerAfternoon={isLongPress => {
@@ -562,13 +572,15 @@ class Home extends React.Component {
           style={styles.modal}
           isVisible={this.state.modalVisible}
           onBackdropPress={() => {
-            this.setState({ modalVisible: false });
+            this.setState({ modalVisible: false, selectedPeriod: "" });
           }}
         >
           <View style={styles.modalContainer}>
             <View style={[styles.modalHeader, styles.lightShadow]}>
               <Text style={styles.modalHeaderText}>
-                Confirm taking these medications?
+                {this.state.confirming
+                  ? "Confirm taking these medications?"
+                  : "Undo taking these medications?"}
               </Text>
             </View>
             <View style={styles.modalBody}>
@@ -584,10 +596,11 @@ class Home extends React.Component {
 
 const Card = props => {
   //props should contain name, dosage, timeString to take
+  console.log("props", props);
   return (
     <View style={[styles.cardWrapper]}>
       <View style={[styles.cardContainer, styles.darkShadow]}>
-        <View style={styles.cardHeader}>
+        <View style={[styles.cardHeader, props.style]}>
           <Text style={styles.cardHeaderText}>
             {props.name + " " + props.dosage}
           </Text>
