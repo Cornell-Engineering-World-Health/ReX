@@ -88,10 +88,9 @@ export default StyleSheet.create({
     flex: 0.8
   },
   modalFooter: {
-<<<<<<< HEAD
     flex: 0.2,
     flexDirection: "row",
-    alignItems: "stretch",
+    alignItems: "stretch"
   },
   submit: {
     backgroundColor: COLOR.blue,
@@ -116,8 +115,6 @@ export default StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     fontWeight: "500"
-=======
-    flex: 0.2
   },
   cardWrapper: {
     justifyContent: "center",
@@ -165,6 +162,5 @@ export default StyleSheet.create({
     shadowOffset: { width: 3, height: 3 },
     shadowColor: "#808080",
     shadowOpacity: 0.2
->>>>>>> 6d77e367fb82dbec0efb8a26edc2c9b3ab64fdea
   }
 });

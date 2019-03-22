@@ -1,9 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
-import { View, Text, ImageBackground, Image, TouchableOpacity } from "react-native";
-=======
-import { View, Text, ImageBackground, Image, ScrollView } from "react-native";
->>>>>>> 6d77e367fb82dbec0efb8a26edc2c9b3ab64fdea
+import { View, Text, ImageBackground, Image, TouchableOpacity,ScrollView } from "react-native";
 import DropdownAlert from "react-native-dropdownalert";
 import { profile_icons } from "../resources/constants";
 import { IMAGES, COLOR } from "../resources/constants";
