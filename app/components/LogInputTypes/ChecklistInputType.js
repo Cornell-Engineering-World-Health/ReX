@@ -54,7 +54,7 @@ export default class ChecklistInputType extends React.Component {
 
 const styles = StyleSheet.create({
   checkbox_area: {
-    flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
