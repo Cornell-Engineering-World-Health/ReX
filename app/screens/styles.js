@@ -78,17 +78,43 @@ export default StyleSheet.create({
   modalHeader: {
     flex: 0.2,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor:COLOR.blue + "20", 
   },
   modalHeaderText: {
     fontSize: 20,
     fontWeight: "300"
   },
   modalBody: {
-    flex: 0.8
+    flex: 0.8,
   },
   modalFooter: {
-    flex: 0.2
+
+    flex: 0.2,
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  submit: {
+    backgroundColor: COLOR.blue,
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: COLOR.blue,
+    borderRadius: 10,
+    borderWidth: 1,
+    flex:1,
+    margin:10
+  },
+  modalButton: {
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: COLOR.blue,
+    borderBottomRightRadius:10,
+    flex:1,
+  },
+  ButtonText: {
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "200"
   },
   cardWrapper: {
     justifyContent: "center",

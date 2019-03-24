@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, ImageBackground, Image, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import DropdownAlert from "react-native-dropdownalert";
 import { profile_icons } from "../resources/constants";
 import { IMAGES, COLOR } from "../resources/constants";
@@ -27,6 +34,14 @@ const ENCOURAGEMENT_TEXT = [
   "Keep it going!",
   "You're doing great."
 ];
+
+const time_index_map = {
+  morning: 0,
+  afternoon: 1,
+  evening: 2,
+  night: 3
+};
+
 import styles from "./styles";
 
 class Home extends React.Component {
@@ -533,28 +548,28 @@ class Home extends React.Component {
                   modalVisible: true,
                   selectedPeriod: "morning",
                   confirming: !isLongPress
-                }); /*if(!isLongPress){this.logAll(0)} else{this.revertAll(0)}}*/
+                });
               }}
               handlerAfternoon={isLongPress => {
-                if (!isLongPress) {
-                  this.logAll(1);
-                } else {
-                  this.revertAll(1);
-                }
+                this.setState({
+                  modalVisible: true,
+                  selectedPeriod: "afternoon",
+                  confirming: !isLongPress
+                });
               }}
               handlerEvening={isLongPress => {
-                if (!isLongPress) {
-                  this.logAll(2);
-                } else {
-                  this.revertAll(2);
-                }
+                this.setState({
+                  modalVisible: true,
+                  selectedPeriod: "evening",
+                  confirming: !isLongPress
+                });
               }}
               handlerNight={isLongPress => {
-                if (!isLongPress) {
-                  this.logAll(3);
-                } else {
-                  this.revertAll(3);
-                }
+                this.setState({
+                  modalVisible: true,
+                  selectedPeriod: "night",
+                  confirming: !isLongPress
+                });
               }}
               amtArr={remaining}
             />
@@ -586,7 +601,33 @@ class Home extends React.Component {
             <View style={styles.modalBody}>
               <ScrollView>{this._generateModalCards()}</ScrollView>
             </View>
-            <View style={styles.modalFooter} />
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: COLOR.white }]}
+                onPress={() =>
+                  this.setState({ modalVisible: false, selectedPeriod: "" })
+                }
+              >
+                <Text style={[styles.ButtonText, { color: COLOR.blue }]}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: COLOR.blue }]}
+                onPress={() => {
+                  if (this.state.confirming) {
+                    this.logAll(time_index_map[this.state.selectedPeriod]);
+                  } else {
+                    this.revertAll(time_index_map[this.state.selectedPeriod]);
+                  }
+                  this.setState({ modalVisible: false, selectedPeriod: "" });
+                }}
+              >
+                <Text style={[styles.ButtonText, { color: COLOR.white }]}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       </ImageBackground>
