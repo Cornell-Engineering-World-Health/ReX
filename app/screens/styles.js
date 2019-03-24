@@ -79,7 +79,7 @@ export default StyleSheet.create({
     flex: 0.2,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:COLOR.blue + "20", 
+    backgroundColor:COLOR.blue + "20",
   },
   modalHeaderText: {
     fontSize: 20,
@@ -92,7 +92,7 @@ export default StyleSheet.create({
 
     flex: 0.2,
     flexDirection: "row",
-    alignItems: "stretch",
+    alignItems: "stretch"
   },
   submit: {
     backgroundColor: COLOR.blue,
