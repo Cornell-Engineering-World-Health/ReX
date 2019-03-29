@@ -188,8 +188,6 @@ export function exportSymptomsMailFunc(email, subject, date) {
 }
 
 
-
-
 /*
   Opens a mail modal with the given email and subject, and with the attachment of
   a csv file with all the survey responses.
@@ -197,13 +195,13 @@ export function exportSymptomsMailFunc(email, subject, date) {
 email: email to send the message todo
 subject: subject of the email
 */
-export function exportSurveyMailFunc(email, subject) {
+export function exportSurveyMailFunc(email, subject, date) {
   databaseGetUUID((id) => {
     SURVEY_DIR = FileSystem.documentDirectory + "test_survey";
     let date_time = Moment().format('YYYY-MM-DDTHH:mm')
     DATA_FILE_NAME = 'survey.csv';
     NEW_FILE_NAME =  id + "_" + date_time + "_" + "survey.csv";
-    
+
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {

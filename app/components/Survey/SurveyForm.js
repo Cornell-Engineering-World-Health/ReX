@@ -12,6 +12,7 @@ import survey from "../../survey/questions.json";
 import {
   databaseSetSurveyDate
 } from "../../databaseUtil/databaseUtil.js";
+import MultiChoice from '../LogInputTypes/MultiChoice';
 
 const mapTypeToComponent = {
   scale: "ScaleSlideInputType",
@@ -31,7 +32,7 @@ const mapTypeToInitVal = {
 };
 
 
-const SURVEY_DIR = FileSystem.documentDirectory + 'test_survey';
+const SURVEY_DIR = FileSystem.documentDirectory + 'test_survey2';
 const FILE_NAME = 'survey.csv';
 
 export default class SurveyForm extends React.Component {
@@ -240,6 +241,15 @@ export default class SurveyForm extends React.Component {
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
             value={this.state.values[key]}
+            valueChange={this.valueChange.bind(this)}
+          />
+        );
+      } else if (prop == "MultiChoiceInputType") {
+        return (
+          <MultiChoice
+            key={key}
+            buttonTitles={['a', 'b', 'c']}
+            val_label={this.state.value_labels[key]}
             valueChange={this.valueChange.bind(this)}
           />
         );
