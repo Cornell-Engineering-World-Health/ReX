@@ -244,15 +244,6 @@ export default class SurveyForm extends React.Component {
             valueChange={this.valueChange.bind(this)}
           />
         );
-      } else if (prop == "MultiChoiceInputType") {
-        return (
-          <MultiChoice
-            key={key}
-            buttonTitles={['a', 'b', 'c']}
-            val_label={this.state.value_labels[key]}
-            valueChange={this.valueChange.bind(this)}
-          />
-        );
       }
     });
 

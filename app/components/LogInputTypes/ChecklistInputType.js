@@ -39,7 +39,6 @@ export default class ChecklistInputType extends React.Component {
     return (
       <View style={this.state.input_style}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
-        <ScrollView horizontal>
           <View style={styles.checkbox_area}>
             {this.state.list_values.map((prop, key) => {
               return <ColorButton key={key} button_text={prop}
@@ -48,7 +47,6 @@ export default class ChecklistInputType extends React.Component {
                       />;
             })}
           </View>
-        </ScrollView>
       </View>
     );
   }
@@ -57,10 +55,6 @@ export default class ChecklistInputType extends React.Component {
 const styles = StyleSheet.create({
   checkbox_area: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    height: 200
+    justifyContent: 'center'
   }
 });
