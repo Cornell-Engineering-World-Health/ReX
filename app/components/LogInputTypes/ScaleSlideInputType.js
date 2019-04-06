@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { IMAGES, COLOR } from "../../resources/constants";
 
 const SELECTED_COLOR = COLOR.blue;
-const TITLE = "How intense is your pain?";
+const TITLE = "How severe is your symptom?";
 const numericImageChoices = [
   IMAGES.zero,
   IMAGES.one,
