@@ -324,9 +324,9 @@ class Home extends React.Component {
   }
 
   checkTime(index){
-    var time_date = new Date();
-    let tc = ["11:00", "15:00", "19:00", "23:00"]; //temp boundaries TODO: put on setting?
-    var time = time_date.getHours() + ":" + time_date.getMinutes()
+    var time = Moment().format('HH:MM')
+    let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries TODO: put on setting?
+    console.log(time)
     switch(index){
       case 0: return (time < tc[0])
       case 1: return (time >= tc[0] && time < tc[1])
