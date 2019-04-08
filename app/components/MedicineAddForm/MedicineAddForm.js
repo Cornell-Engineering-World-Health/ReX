@@ -96,7 +96,7 @@ export default class MedicineAddForm extends React.Component {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
     } 
     else if(!this.checkNoDuplicates()){
-      AlertIOS.alert("Duplicate Medication", "This medication has already been added. Please add another.");
+      AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
     }else {
       this.props.successOnSubmit();
       this.props.asyncDatabaseUpdate(
