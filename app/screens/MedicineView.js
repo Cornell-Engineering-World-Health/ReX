@@ -187,6 +187,14 @@ class MedicineView extends React.Component {
     }
   };
 
+  getTitles = () => {
+    var titles = [""];
+    for (var i = 0; i < this.state.data.length; i++) {
+        titles.push(this.state.data[i].title);
+    }
+    return titles
+  };
+
   /**
    * returns DoseCard component populated with appropriate medicine data
    */
@@ -273,6 +281,7 @@ class MedicineView extends React.Component {
           backdropOpacity={1}
         >
           <MedicineAddForm
+            titles ={this.getTitles()}
             exitModal={() => {
               this.setState({ toggle_add: false });
             }}
