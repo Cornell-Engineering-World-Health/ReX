@@ -42,6 +42,13 @@ const time_index_map = {
   night: 3
 };
 
+const index_time_map = {
+  0: "morning",
+  1: "afternoon",
+  2: "evening",
+  3: "night"
+};
+
 import styles from "./styles";
 
 class Home extends React.Component {
@@ -53,7 +60,7 @@ class Home extends React.Component {
       totalAmount: [0, 0, 0, 0],
       doneAmount: [0, 0, 0, 0],
       originalDoneAmount: [0, 0, 0, 0],
-      name: "Navin",
+      name: "",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
       message: "Welcome to FIIH Health!",
@@ -96,6 +103,12 @@ class Home extends React.Component {
         evening: [],
         night: []
       };
+      let takenMeds = {
+        morning: [],
+        afternoon: [],
+        evening: [],
+        night: []
+      };
       Object.keys(formattedData).forEach(function(med) {
         let i = 0;
         formattedData[med].timeCategory.forEach(function(time) {
@@ -104,6 +117,7 @@ class Home extends React.Component {
               totalAmount[0]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[0]++;
+                takenMeds.morning.push(extractInfo(formattedData, med, i));
               } else {
                 notTakenMeds.morning.push(extractInfo(formattedData, med, i));
               }
@@ -112,6 +126,7 @@ class Home extends React.Component {
               totalAmount[1]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[1]++;
+                takenMeds.afternoon.push(extractInfo(formattedData, med, i));
               } else {
                 notTakenMeds.afternoon.push(extractInfo(formattedData, med, i));
               }
@@ -120,6 +135,7 @@ class Home extends React.Component {
               totalAmount[2]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[2]++;
+                takenMeds.evening.push(extractInfo(formattedData, med, i));
               } else {
                 notTakenMeds.evening.push(extractInfo(formattedData, med, i));
               }
@@ -128,6 +144,7 @@ class Home extends React.Component {
               totalAmount[3]++;
               if (formattedData[med].taken[i]) {
                 doneAmount[3]++;
+                takenMeds.night.push(extractInfo(formattedData, med, i));
               } else {
                 notTakenMeds.night.push(extractInfo(formattedData, med, i));
               }
@@ -143,7 +160,8 @@ class Home extends React.Component {
         doneAmount: doneAmount,
         originalDoneAmount: doneAmount.slice(), //copy by value, not reference
         data: formattedData,
-        notTakenMeds: notTakenMeds
+        notTakenMeds: notTakenMeds,
+        takenMeds: takenMeds
       });
       console.log("not taken meds", notTakenMeds);
     });
@@ -311,14 +329,17 @@ class Home extends React.Component {
     return [medName_lst, dosage_lst, date_time_lst];
   }
 
-  logAll(index) {
+  /**
+  * checkValidPress(index) returns {canPress: bool, dropDownTitle: string,
+  * dropDownMessage: string, iconDropDown: IMAGE, backgroundColorDropDown: COLOR}
+  */
+  checkValidPress(index){
     let time;
     let iconDropDown;
     let backgroundColorDropDown;
     let dropDownTitle = "";
     let dropDownMessage = "";
-    let takenVal = true;
-    let forbidTake = false;
+    let canTake = true;
 
     switch (index) {
       case 0:
@@ -342,40 +363,96 @@ class Home extends React.Component {
         time = "afternoon";
     }
 
-    doneAmount = this.state.doneAmount;
     dropDownTitle =
       time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
-    if (this.state.originalDoneAmount[index] == this.state.totalAmount[index]) {
-      dropDownMessage = "No " + time + " medications to be taken!";
-    } else if (!this.checkTime(index)) {
+
+    if (!this.checkTime(index)) {
       dropDownMessage =
         "Your " + time + " medications cannot be taken at this time of day!";
-      forbidTake = true;
-    } else if (doneAmount[index] == this.state.totalAmount[index]) {
-      doneAmount[index] = this.state.originalDoneAmount[index];
-      backgroundColorDropDown = COLOR.PrimaryGray;
-      dropDownTitle = "Undo for " + time + " medications";
-      dropDownMessage =
-        "Touch and hold to revert logs of ALL " + time + " medications.";
-      takenVal = false;
-    } else {
-      doneAmount[index] = this.state.totalAmount[index];
-      dropDownMessage = "All remaining " + time + " medications are taken!";
+      canTake = false;
+    } else if (this.state.originalDoneAmount[index] == this.state.totalAmount[index]) {
+      dropDownMessage = "No " + time + " medications to be taken!";
+      canTake = false;
     }
 
-    thisRef = this;
-    let st = this.state;
-    this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {
+    let res = {
+      canPress: canTake,
+      dropDownTitle: dropDownTitle,
+      dropDownMessage: dropDownMessage,
+      iconDropDown: iconDropDown,
+      backgroundColorDropDown: backgroundColorDropDown
+    }
+
+    return res
+  }
+
+  /**
+  * Either blocks attempt with a dropdown alert or opens modal to log
+  */
+  tryLogAll(index) {
+    canTakeInfo = this.checkValidPress(index)
+    if(canTakeInfo.canPress){
+      this.setState({
+        modalVisible: true,
+        selectedPeriod: index_time_map[index],
+        confirming: true
+      });
+    }
+
+    iconDropDown = canTakeInfo.iconDropDown
+    backgroundColorDropDown = canTakeInfo.backgroundColorDropDown
+    this.setState({ iconDropDown, backgroundColorDropDown }, () => {
+      if(!canTakeInfo.canPress){
+        this.dropdown.close();
+        this.dropdown.alertWithType("custom", canTakeInfo.dropDownTitle, canTakeInfo.dropDownMessage);
+      }
+    });
+
+
+    doneAmount = this.state.doneAmount;
+
+
+    // thisRef = this;
+    // let st = this.state;
+    // this.setState({ doneAmount, iconDropDown, backgroundColorDropDown }, () => {
+    //   this.dropdown.close();
+    //   this.dropdown.alertWithType("custom", dropDownTitle, dropDownMessage);
+    //   if (!forbidTake) {
+    //     if (this.didRevertAll[index]) {
+    //       databaseTakeMedicines(new Date(), index, takenVal);
+    //       let args = thisRef.getAffectedMedicineInfo(st, index);
+    //       if (takenVal) cancelNotificationList(args[0], args[1], args[2]);
+    //       else setNotificationList(args[0], args[1], args[2]);
+    //     } else this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal);
+    //   }
+    // });
+  }
+
+  /**
+  * Writes to DB. if isSubset is true, then only log from notTakenMeds
+  */
+  logAll(index, isSubset){
+    doneAmount = this.state.doneAmount;
+    doneAmount[index] = this.state.totalAmount[index];
+
+    time = index_time_map[index]
+    dropDownTitle =
+      time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
+    dropDownMessage = "All remaining " + time + " medications are taken!";
+
+    thisRef = this
+    st = this.state
+    this.setState({ doneAmount }, () => {
       this.dropdown.close();
       this.dropdown.alertWithType("custom", dropDownTitle, dropDownMessage);
-      if (!forbidTake) {
-        if (this.didRevertAll[index]) {
-          databaseTakeMedicines(new Date(), index, takenVal);
-          let args = thisRef.getAffectedMedicineInfo(st, index);
-          if (takenVal) cancelNotificationList(args[0], args[1], args[2]);
-          else setNotificationList(args[0], args[1], args[2]);
-        } else this.writeAllInTimeCategory(st.notTakenMeds, time, takenVal);
+
+      if (!isSubset) {
+        databaseTakeMedicines(new Date(), index, true);
+        let args = thisRef.getAffectedMedicineInfo(st, index);
+        cancelNotificationList(args[0], args[1], args[2]);
       }
+      else this.writeAllInTimeCategory(st.notTakenMeds, time, true);
+
     });
   }
 
@@ -463,14 +540,21 @@ class Home extends React.Component {
   styles while if false will use cardIsUndo
   */
   _generateModalCards() {
+    data = {}
+    if(this.state.confirming){
+      data = this.state.notTakenMeds
+    } else {
+      data = this.state.takenMeds
+    }
+
     if (
-      !this.state.notTakenMeds ||
-      !this.state.notTakenMeds[this.state.selectedPeriod]
+      !data ||
+      !data[this.state.selectedPeriod]
     ) {
       return;
     }
     let cards = [];
-    this.state.notTakenMeds[this.state.selectedPeriod].forEach((med, index) => {
+    data[this.state.selectedPeriod].forEach((med, index) => {
       console.log("med", med);
       cards.push(
         <Card
@@ -543,34 +627,10 @@ class Home extends React.Component {
               onPress={button => {
                 this._onPress(button);
               }}
-              handlerMorning={isLongPress => {
-                this.setState({
-                  modalVisible: true,
-                  selectedPeriod: "morning",
-                  confirming: !isLongPress
-                });
-              }}
-              handlerAfternoon={isLongPress => {
-                this.setState({
-                  modalVisible: true,
-                  selectedPeriod: "afternoon",
-                  confirming: !isLongPress
-                });
-              }}
-              handlerEvening={isLongPress => {
-                this.setState({
-                  modalVisible: true,
-                  selectedPeriod: "evening",
-                  confirming: !isLongPress
-                });
-              }}
-              handlerNight={isLongPress => {
-                this.setState({
-                  modalVisible: true,
-                  selectedPeriod: "night",
-                  confirming: !isLongPress
-                });
-              }}
+              handlerMorning={(isLongPress) => {if(!isLongPress){this.tryLogAll(0)} else{this.revertAll(0)}}}
+              handlerAfternoon={(isLongPress) => {if(!isLongPress){this.tryLogAll(1)}else{this.revertAll(1)}}}
+              handlerEvening={(isLongPress) => {if(!isLongPress){this.tryLogAll(2)}else{this.revertAll(2)}}}
+              handlerNight={(isLongPress) => {if(!isLongPress){this.tryLogAll(3)}else{this.revertAll(3)}}}
               amtArr={remaining}
             />
           </View>
@@ -597,6 +657,28 @@ class Home extends React.Component {
                   ? "Confirm taking these medications?"
                   : "Undo taking these medications?"}
               </Text>
+              <View style={{flex: 1, flexDirection: 'row', padding: 10}}>
+                <TouchableOpacity
+                  style={[styles.modalTab, { backgroundColor: COLOR.blue }]}
+                  onPress={() => {
+                    this.setState({confirming: true})
+                  }}
+                >
+                  <Text style={[styles.modalTabText, { color: COLOR.white }]}>
+                    Quick Log All
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalTab, { backgroundColor: COLOR.blue }]}
+                  onPress={() => {
+                    this.setState({confirming: false})
+                  }}
+                >
+                  <Text style={[styles.modalTabText, { color: COLOR.white }]}>
+                    Quick Undo All
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.modalBody}>
               <ScrollView>{this._generateModalCards()}</ScrollView>

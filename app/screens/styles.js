@@ -79,6 +79,7 @@ export default StyleSheet.create({
     flex: 0.2,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 15,
     backgroundColor:COLOR.blue + "20",
   },
   modalHeaderText: {
@@ -89,8 +90,7 @@ export default StyleSheet.create({
     flex: 0.8,
   },
   modalFooter: {
-
-    flex: 0.2,
+    flex: 0.15,
     flexDirection: "row",
     alignItems: "stretch"
   },
@@ -167,5 +167,17 @@ export default StyleSheet.create({
   },
   cardIsUndo: {
     backgroundColor: "#ffafaf"
+  },
+  modalTab: {
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: COLOR.blue,
+    margin: 5,
+    flex:1,
+  },
+  modalTabText: {
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "200"
   }
 });
