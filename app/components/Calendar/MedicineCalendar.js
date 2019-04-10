@@ -28,7 +28,7 @@ export default class MedicineCalendar extends React.Component {
           dayTextColor: "#2d4150",
           textMonthFontWeight: "bold",
           textDayFontSize: 19,
-          textMonthFontSize: 25,
+          textMonthFontSize: 24,
           textDayHeaderFontSize: 15
         }}
         onDayPress={day => {

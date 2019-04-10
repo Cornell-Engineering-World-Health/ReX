@@ -17,13 +17,20 @@ import {
 } from "../databaseUtil/databaseUtil";
 
 import Moment from "moment";
-import { asyncCreateMedicineEvents } from "../databaseUtil/databaseUtil";
+import {
+  asyncCreateMedicineEvents,
+  databaseTakeMedicine
+} from "../databaseUtil/databaseUtil";
 import DropdownAlert from "react-native-dropdownalert";
 import { COLOR, IMAGES, timeFormatter } from "../resources/constants";
 import { shouldBeTaken, shouldBeTakenNow } from "../resources/helpers";
 import { setMassNotification } from "../components/PushController/PushController.js";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 import MedicineCalendar from "../components/Calendar/MedicineCalendar";
+import {
+  setOurNotification,
+  cancelOurNotification
+} from "../components/PushController/PushController";
 class MedicineView extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
@@ -69,6 +76,10 @@ class MedicineView extends React.Component {
       });
     });
 
+    this.updateMedicineState();
+  };
+
+  updateMedicineState() {
     pullAllMedicineData(data => {
       let formattedData = {};
       data.forEach((element, index) => {
@@ -87,7 +98,7 @@ class MedicineView extends React.Component {
 
       this.setState({ medicine: this.initializeStyles(formattedData) });
     });
-  };
+  }
 
   /*
   given an object where each key is a date in the form 1999-01-01, this adds a
@@ -124,11 +135,11 @@ class MedicineView extends React.Component {
         container: {
           backgroundColor: this.getColor(totalTaken / totalMeds),
           borderWidth: isToday ? 1 : 0,
-          borderColor: "#e0e0e0"
+          borderColor: "#e0e0e0",
+          borderRadius: 0
         }
       };
     });
-
     return allMedicine;
   }
 
@@ -139,7 +150,7 @@ class MedicineView extends React.Component {
   getColor(num) {
     if (num > 1) console.warn("invalid domain.");
 
-    if (num === 1) {
+    if (num == 1) {
       return "#b7ffca";
     } else {
       return "rgba(255, 88, 66," + (1 - num) + " )";
@@ -208,6 +219,8 @@ class MedicineView extends React.Component {
         data: medicineData
       });
     }
+
+    setTimeout(() => this.updateMedicineState(), 2000);
   };
 
   componentDidMount = () => {
@@ -302,8 +315,80 @@ class MedicineView extends React.Component {
     );
   };
 
-  toggleMedicine(med) {
-    // console.log(med);
+  toggleMedicine(medObj, time, taken) {
+    /*
+    databaseTakeMedicine(
+      new Date(),
+      this.props.title,
+      this.props.dosage,
+      hhmm_time,
+      true,
+      index
+    );*/
+
+    // first update state
+    let allMedicine = this.state.medicine;
+    let index = -1;
+    //find index of this time in the medicine object
+    for (let x = 0; x < medObj["Time"].length; x++) {
+      if (medObj["Time"][x] === time) {
+        index = x;
+        break;
+      }
+    }
+
+    let medIndex = -1;
+    //find index of this medicine in the medicine object
+
+    for (let x = 0; x < allMedicine[medObj["date"]].meds.length; x++) {
+      let med = allMedicine[medObj["date"]].meds[x];
+      if (med["Pill Name"] === medObj["Pill Name"]) {
+        medIndex = x;
+        break;
+      }
+    }
+
+    let hhmm_time = taken ? "" : new Date().toTimeString().substring(0, 5);
+
+    allMedicine[medObj["date"]].meds[medIndex]["Taken"][index] = !taken;
+    allMedicine[medObj["date"]].meds[medIndex]["Taken Time"][index] = hhmm_time;
+
+    this.setState({ medicine: this.initializeStyles(allMedicine) }, () =>
+      console.log("")
+    );
+
+    //now update database and notification
+
+    if (!taken) {
+      //we are taking it now
+      databaseTakeMedicine(
+        new Date(),
+        medObj["Pill Name"],
+        medObj["Dosage"],
+        time,
+        true,
+        index
+      );
+      cancelOurNotification(
+        medObj["Pill Name"],
+        medObj["Dosage"],
+        Moment(new Date(Moment().format("MMMM DD YYYY") + " " + time)).format()
+      );
+    } else {
+      databaseTakeMedicine(
+        new Date(),
+        medObj["Pill Name"],
+        medObj["Dosage"],
+        time,
+        false,
+        index
+      );
+      setOurNotification(
+        medObj["Pill Name"],
+        medObj["Dosage"],
+        Moment(new Date(Moment().format("MMMM DD YYYY") + " " + time)).format()
+      );
+    }
   }
 
   _generateMedicineCards(date, filter) {
@@ -314,7 +399,10 @@ class MedicineView extends React.Component {
     dayData.meds.forEach((d, i) => {
       cards.push(
         <View
-          style={[{ paddingLeft: 30, paddingRight: 30, paddingBottom: 10}, styles.lightShadow]}
+          style={[
+            { paddingLeft: 30, paddingRight: 30, paddingBottom: 10 },
+            styles.lightShadow
+          ]}
           key={"i" + i + "gencards"}
         >
           <View style={[styles.modalCardWrapper]}>
@@ -328,11 +416,29 @@ class MedicineView extends React.Component {
     return cards;
   }
 
-  isAfterNow(startdate, time) {
+  generateDate(startdate, time) {
     let currTime = new Date(startdate);
     currTime.setHours(parseInt(time.slice(0, 2)));
     currTime.setMinutes(parseInt(time.slice(3, 5)));
-    return Moment(currTime).isAfter(new Date());
+    return currTime;
+  }
+
+  isAfterNow(startdate, time) {
+    return Moment(this.generateDate(startdate, time)).isAfter(new Date());
+  }
+
+  /*
+  Returns true if the given startdate & time is nearby tot he current time
+
+  interval in minutes
+  */
+  isClose(startdate, time, interval) {
+    let date = this.generateDate(startdate, time);
+
+    let now = new Date();
+    let start = new Date(date - interval * 60 * 1000);
+    let end = new Date(interval * 60 * 1000 + (date - 0));
+    return Moment(now).isAfter(start) && Moment(now).isBefore(end);
   }
 
   /*
@@ -344,19 +450,25 @@ only show up to 1 medication in the future
     let numInFuture = 0;
     medObj["Time"].forEach((d, i) => {
       let taken = medObj["Taken"][i];
-      let takenText = taken ? "Taken at " : "Not taken";
+      let takenText = taken ? "Taken at " : "Missed";
 
       if (filter && (taken || numInFuture >= 1)) return;
 
-      let currTime = new Date(medObj["Start Date"]);
-      currTime.setHours(parseInt(d.slice(0, 2)));
-      currTime.setMinutes(parseInt(d.slice(3, 5)));
+      let currTime = this.generateDate(medObj["Start Date"], d);
+
       let cardStyle = null;
       if (medObj["Taken"][i]) {
         cardStyle = {
           backgroundColor: "#ecfaf7",
           borderColor: "#7fdecb"
         };
+      } else if (this.isClose(medObj["Start Date"], d, 15)) {
+        cardStyle = {
+          backgroundColor: "#42f4bf80",
+          borderColor: "#42f4bf"
+        };
+        takenText = "Take now!";
+        numInFuture++;
       } else if (this.isAfterNow(medObj["Start Date"], d)) {
         cardStyle = {
           backgroundColor: "#efefef",
@@ -373,8 +485,9 @@ only show up to 1 medication in the future
 
       cards.push(
         <TouchableOpacity
+          disabled={takenText == ""}
           style={[styles.modalCardContainer, cardStyle]}
-          onPress={() => this.toggleMedicine(d)}
+          onPress={() => this.toggleMedicine(medObj, d, taken)}
           key={i + "genmedcard" + d}
         >
           <Text style={styles.modalCardName}>
@@ -388,12 +501,14 @@ only show up to 1 medication in the future
       );
     });
 
-    if(cards.length == 0) {
+    if (cards.length == 0) {
       return (
         <View>
-          <Text style={[styles.modalCardHeaderText, {color: "#e0e0e0"}]}>Done for today!</Text>
+          <Text style={[styles.modalCardHeaderText, { color: "#e0e0e0" }]}>
+            Done for today!
+          </Text>
         </View>
-      )
+      );
     }
 
     return cards;
@@ -419,12 +534,13 @@ only show up to 1 medication in the future
     currentMonths = monthNames[currentDate.getMonth()];
     currentYear = currentDate.getYear();
     currentDay = currentDate.getDay();
+    console.log(this.state.medicine);
     return (
       <View style={styles.wrapper}>
         <View style={[styles.darkShadow, styles.calendarContainer]}>
           <MedicineCalendar
             style={styles.calendar}
-            medicine={this.state.medicine}
+            medicine={JSON.parse(JSON.stringify(this.state.medicine))}
             onDayPress={day => {
               if (this.state.medicine[day.dateString]) {
                 this.setState({
@@ -435,9 +551,12 @@ only show up to 1 medication in the future
             }}
           />
         </View>
-        <View style={{marginTop: 4}}/>
+        <View style={{ marginTop: 9 }} />
         <ScrollView>
-          {this._generateMedicineCards(Moment(new Date()).format("YYYY-MM-DD"), true)}
+          {this._generateMedicineCards(
+            Moment(new Date()).format("YYYY-MM-DD"),
+            true
+          )}
         </ScrollView>
         <Modal isVisible={this.state.toggle_add} style={styles.addFormWrapper}>
           <MedicineAddForm
@@ -616,7 +735,7 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontSize: 18,
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: "white"
   },
   lightShadow: {
     shadowOffset: { width: 1, height: 1 },
@@ -635,7 +754,7 @@ const styles = StyleSheet.create({
     right: 15
   },
   calendarContainer: {
-    marginTop: 30
+    marginTop: 20
   }
 });
 

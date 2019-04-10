@@ -20,16 +20,16 @@ export default StyleSheet.create({
   date: {
     textAlign: "center",
     fontWeight: "200",
-    fontSize: 20
+    fontSize: 19
   },
   altDate: {
     textAlign: "center",
-    fontWeight: "500",
-    fontSize: 20,
+    fontWeight: "200",
+    fontSize: 19,
     color: "#ffffff"
   },
   dateGray: {
-    fontWeight: "500",
+    fontWeight: "200",
     fontSize: 20,
     color: "#b8b8b8"
   },
@@ -122,7 +122,8 @@ export default StyleSheet.create({
     top: 0,
     bottom: 0,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    fontSize: 19
   },
   bar: {
     width: (Dimensions.get("window").width / 7 - 9) * 0.65

@@ -11,7 +11,6 @@ import {
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
-import { initializeRegistryWithDefinitions } from "react-native-animatable";
 import { shouldBeTaken, shouldBeTakenNow } from "../../resources/helpers";
 import {
   setOurNotification,
