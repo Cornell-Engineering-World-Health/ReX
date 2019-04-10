@@ -551,7 +551,7 @@ only show up to 1 medication in the future
             }}
           />
         </View>
-        <View style={{ marginTop: 9 }} />
+
         <ScrollView>
           {this._generateMedicineCards(
             Moment(new Date()).format("YYYY-MM-DD"),
@@ -716,7 +716,8 @@ const styles = StyleSheet.create({
   },
   modalCardWrapper: {
     borderColor: "#e2e2e2",
-    borderRadius: 3
+    borderRadius: 3,
+    marginTop: 9
   },
   modalHeader: {
     height: 75,
@@ -735,7 +736,9 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontSize: 18,
     padding: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#e5e5e5"
   },
   lightShadow: {
     shadowOffset: { width: 1, height: 1 },
@@ -754,7 +757,9 @@ const styles = StyleSheet.create({
     right: 15
   },
   calendarContainer: {
-    marginTop: 20
+    marginTop: 20,
+    borderBottomWidth: 1,
+    borderColor: "#e5e5e5"
   }
 });
 
