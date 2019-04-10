@@ -407,7 +407,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "white",
     paddingTop: 30
   },
   container: {
