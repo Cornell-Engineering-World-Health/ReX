@@ -459,7 +459,6 @@ class Home extends React.Component {
     var time_date = new Date();
     let tc = ["11:00", "15:00", "19:00", "23:00"]; //temp boundaries TODO: put on setting?
     var time = time_date.getHours() + ":" + time_date.getMinutes();
-    return true
     switch (index) {
       case 0:
         return time < tc[0];
@@ -543,7 +542,6 @@ class Home extends React.Component {
     }
     let cards = [];
     data[this.state.selectedPeriod].forEach((med, index) => {
-      console.log('card!')
       cards.push(
         <Card
           key={med + "med" + index}
