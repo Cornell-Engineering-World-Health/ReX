@@ -7,7 +7,8 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
-  AlertIOS
+  AlertIOS,
+  Picker
 } from "react-native";
 import moment from "moment";
 import Modal from "react-native-modal";
@@ -24,6 +25,8 @@ import { COLOR } from "../../resources/constants";
 
 const CALENDAR_ID = "CALENDAR";
 const TIME_ID = "TIME";
+const GRAN_ID = "GRANULARITY";
+const FREQ_ID = "FREQUENCY";
 
 export default class MedicineAddForm extends React.Component {
   constructor(props) {
@@ -63,13 +66,15 @@ export default class MedicineAddForm extends React.Component {
    */
   checkIfIncomplete() {
     if (
-      Object.keys(this.state.submit_vals).length < 6 ||
+      Object.keys(this.state.submit_vals).length < 8 ||
       this.state.submit_vals["Pill Name"] == "" ||
       this.state.submit_vals["Dosage"] == "" ||
       this.state.submit_vals["Start Date"] == "" ||
       this.state.submit_vals["End Date"] == "" ||
       this.state.submit_vals["Time"] == [] ||
-      this.state.submit_vals["Time Category"] == []
+      this.state.submit_vals["Time Category"] == [] ||
+      this.state.submit_vals["Granularity"] == "" ||
+      this.state.submit_vals["Frequency"] == ""
     ) {
       return true;
     }
@@ -86,13 +91,18 @@ export default class MedicineAddForm extends React.Component {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
     } else {
       this.props.successOnSubmit();
+      console.log("VALS")
+      console.log(this.state.submit_vals["Granularity"])
+      console.log(this.state.submit_vals["Frequency"])
       this.props.asyncDatabaseUpdate(
         this.state.submit_vals["Pill Name"],
         this.state.submit_vals["Dosage"],
         new Date(this.state.submit_vals["Start Date"]),
         new Date(this.state.submit_vals["End Date"]),
         this.state.submit_vals["Time"],
-        this.state.submit_vals["Time Category"]
+        this.state.submit_vals["Time Category"],
+        this.state.submit_vals["Granularity"],
+        this.state.submit_vals["Frequency"]
       );
       this.props.exitModal();
     }
@@ -100,6 +110,16 @@ export default class MedicineAddForm extends React.Component {
 
   nextFocus() {
     this.dosage.textInput.focus();
+  }
+
+  freqItems() {
+    items = [];
+    for (var i = 1; i <100; i++) {
+      items.push(i);
+    }
+    return items.map((val) => {
+      return <Picker.Item label={val.toString()} value={val.toString()} />
+    })
   }
 
   /**
@@ -255,11 +275,33 @@ export default class MedicineAddForm extends React.Component {
           />
         </View>
       );
+    modalContent = this.state.modalID == GRAN_ID ? (
+       <View style={{ flex: 1, width: viewportWidth }}>
+       <Picker
+       selectedValue = {this.state.submit_vals["Granularity"]}
+       onValueChange={(gran) => {this.valueChange("Granularity", gran)}}>
+       <Picker.Item label="Daily" value="Daily" />
+       <Picker.Item label="Weekly" value="Weekly" />
+       <Picker.Item label="Monthly" value="Monthly" />
+       </Picker>
+       </View>) : modalContent;
+    modalContent = this.state.modalID == FREQ_ID ? (
+       <View style={{ flex: 1, width: viewportWidth }}>
+       <Picker
+       selectedValue = {this.state.submit_vals["Frequency"]}
+       onValueChange={(freq) => {this.valueChange("Frequency", freq)}}>
+       {this.freqItems()}
+       </Picker>
+       </View>) : modalContent;
     let modalTitle =
       this.state.modalID == CALENDAR_ID
         ? "Select Date Range"
         : "Select Prescription Time";
+    modalTitle = this.state.modalID == GRAN_ID ? "Select Time Granularity" : modalTitle;
+    modalTitle = this.state.modalID == FREQ_ID ? "Select Frequency" : modalTitle;
     let modalHeight = this.state.modalID == CALENDAR_ID ? 0.65 : 0.6;
+    modalHeight = this.state.modalID == GRAN_ID ? 0.4 : modalHeight;
+    modalHeight = this.state.modalID == FREQ_ID ? 0.4 : modalHeight;
     let dateText = "";
     if (this.state.submit_vals["Start Date"]) {
       dateText =
@@ -275,6 +317,17 @@ export default class MedicineAddForm extends React.Component {
       timeContent = timeViewerGray;
     } else {
       timeText = "Enter Your Prescription Time";
+    }
+    let granText = "Enter Granularity"
+    if (this.state.submit_vals["Granularity"]) {
+      granText = this.state.submit_vals["Granularity"]
+    }
+    let freqText = "Enter Frequency"
+    if (this.state.submit_vals["Frequency"] == "1") {
+      freqText = "Every"
+    }
+    else if (this.state.submit_vals["Frequency"]) {
+      freqText = "Every " + this.state.submit_vals["Frequency"]
     }
 
     return (
@@ -329,6 +382,26 @@ export default class MedicineAddForm extends React.Component {
               }}
               keyboardType={"number-pad"}
             />
+            <View style = {{flexDirection: 'row'}}>
+            <Button 
+            text={granText}
+            rounded={true}
+            width={(viewportWidth - 30) / 2}
+            borderColor={COLOR.purple}
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({ modalID: GRAN_ID });
+            }}/>
+            <Button 
+            text={freqText}
+            rounded={true}
+            width={(viewportWidth - 30) / 2}
+            borderColor={COLOR.purple}
+            onPress={() => {
+              Keyboard.dismiss();
+              this.setState({ modalID: FREQ_ID });
+            }}/>
+            </View>
             <Button
               text={dateText}
               rounded={true}

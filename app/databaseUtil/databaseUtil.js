@@ -758,7 +758,9 @@ export function asyncCreateMedicineEvents(
   startDate,
   endDate,
   timeArray,
-  timeCategories
+  timeCategories,
+  granularity,
+  frequency,
 ) {
   Database.transaction(
     tx => {
@@ -772,7 +774,9 @@ export function asyncCreateMedicineEvents(
             timeArray,
             timeCategories,
             event_id,
-            event_details_id
+            event_details_id,
+            granularity,
+            frequency,
           )
         )
       );
@@ -789,13 +793,33 @@ export function asyncCreateMedicineEventsWrapper(
   timeArray,
   timeCategories,
   event_id,
-  event_details_id
+  event_details_id,
+  granularity,
+  frequency,
 ) {
   Database.transaction(
     tx => {
+      var skip = 1;
+      console.log(frequency)
+      if (granularity == "Daily") {
+        skip = 1 * parseInt(frequency)
+      }
+      else if (granularity == "Weekly") {
+        skip = 7 * parseInt(frequency)
+      }
+      else {
+        skip = 30 * parseInt(frequency)
+      }
+
+      var iterSkip = 1;
+
       for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
         dateString = d.toISOString().substr(0, 10);
-
+        if (iterSkip != 1) {
+          iterSkip = iterSkip - 1;
+          continue;
+        }
+        iterSkip = skip;
         /* inserting event_details record */
         var taken = timeArray.map(t => {
           return false;
