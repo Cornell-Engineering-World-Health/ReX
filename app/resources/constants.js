@@ -23,7 +23,7 @@ export const IMAGES = {
   neckPain: require("./images/neckPain.png"),
   fatigue: require("./images/fatigue.png"),
   nausea: require("./images/nausea.png"),
-  diarrhea: require("./images/diarrhea.png"),
+  diarrhea: require("./images/vomiting.png"),
   impaired_taste: require("./images/popsicle.png"),
   vomiting: require("./images/vomiting.png"),
   cognitive: require("./images/cognitive.png"),
