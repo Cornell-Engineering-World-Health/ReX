@@ -49,7 +49,6 @@ export default class TextInputType extends React.Component {
     let medicineData = medicine_data.drugs;
     const filteredMed = medicineData.filter(createFilter(this.state.text));
     let shouldExpand = this.state.isTyping && this.props.autocomplete;
-
     return (
       <View style={[this.state.input_style]}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>

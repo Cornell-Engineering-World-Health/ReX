@@ -100,6 +100,9 @@ export function intializeDatabase() {
         "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (17, 'Change in Taste', 'image.png', 'Intensity','Duration','HEAD')"
       );
       tx.executeSql(
+        "INSERT OR IGNORE INTO event_type_tbl (event_type_id,event_type_name,event_type_icon,card_field_id1,card_field_id2,event_type_category) values (18, 'Diarrhea', 'image.png', 'Intensity','Duration','BODY')"
+      );
+      tx.executeSql(
         "INSERT OR IGNORE INTO field_to_view_tbl (field_id,field_name,view_name) values (1, 'Intensity', 'ScaleSlideInputType')"
       );
       tx.executeSql(

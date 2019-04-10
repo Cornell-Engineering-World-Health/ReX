@@ -156,7 +156,7 @@ export default class MedicineAddForm extends React.Component {
   }
 
   timeToTimeCategory(time) {
-    let tc = ["11:00", "15:00", "19:00", "23:00"]; //temp boundaries
+    let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries
     if (time < tc[0]) return "Morning";
     if (time < tc[1]) return "Afternoon";
     if (time < tc[2]) return "Evening";
