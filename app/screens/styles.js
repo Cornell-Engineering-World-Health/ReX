@@ -142,8 +142,8 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   cardHeaderText: {
-    fontSize: 25,
-    fontWeight: "100",
+    fontSize: 22,
+    fontWeight: "200",
     flexWrap: "wrap",
     textAlign: "center"
   },
@@ -178,6 +178,5 @@ export default StyleSheet.create({
   modalTabText: {
     fontSize: 20,
     textAlign: "center",
-    fontWeight: "200"
   }
 });
