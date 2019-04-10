@@ -458,7 +458,6 @@ class Home extends React.Component {
   checkTime(index){
     var time = Moment().format('HH:MM')
     let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries TODO: put on setting?
-    console.log(time)
     switch(index){
       case 0: return (time < tc[0])
       case 1: return (time >= tc[0] && time < tc[1])
@@ -532,9 +531,20 @@ class Home extends React.Component {
 
     if (
       !data ||
-      !data[this.state.selectedPeriod]
+      !data[this.state.selectedPeriod] ||
+      data[this.state.selectedPeriod].length == 0
     ) {
-      return;
+      msg = this.state.confirming ? '~ No medications to take ~' : '~ No medications to undo ~'
+
+      return (
+        <View style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1
+        }}>
+          <Text style={{fontSize: 16, color: COLOR.PrimaryGray}}>{msg}</Text>
+        </View>
+      )
     }
     let cards = [];
     data[this.state.selectedPeriod].forEach((med, index) => {
@@ -550,7 +560,9 @@ class Home extends React.Component {
         />
       );
     });
-    return cards;
+    return (
+      <ScrollView>{cards}</ScrollView>
+    );
   }
 
   render() {
@@ -667,7 +679,7 @@ class Home extends React.Component {
               </View>
             </View>
             <View style={styles.modalBody}>
-              <ScrollView>{this._generateModalCards()}</ScrollView>
+              {this._generateModalCards()}
             </View>
             <View style={styles.modalFooter}>
               <TouchableOpacity
