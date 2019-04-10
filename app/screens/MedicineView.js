@@ -406,7 +406,9 @@ class MedicineView extends React.Component {
           key={"i" + i + "gencards"}
         >
           <View style={[styles.modalCardWrapper]}>
-            <Text style={[styles.modalCardHeaderText]}>{d["Pill Name"]}</Text>
+            <Text style={[styles.modalCardHeaderText]}>
+              {d["Pill Name"]} {d["Dosage"]}
+            </Text>
             {this._generateMedicineCard(d, filter)}
           </View>
         </View>
@@ -464,8 +466,10 @@ only show up to 1 medication in the future
         };
       } else if (this.isClose(medObj["Start Date"], d, 15)) {
         cardStyle = {
-          backgroundColor: "#42f4bf80",
-          borderColor: "#42f4bf"
+          // backgroundColor: "#42f4bf80",
+          // borderColor: "#42f4bf"
+          backgroundColor: "#fffbbf",
+          borderColor: "#fff43d"
         };
         takenText = "Take now!";
         numInFuture++;
@@ -614,7 +618,7 @@ only show up to 1 medication in the future
           onBackdropPress={() => this.setState({ summaryVisible: false })}
         >
           <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
+            <View style={[styles.modalHeader, styles.lightShadow]}>
               <Text style={styles.modalHeaderText}>
                 {this.state.selectedDate}
               </Text>
@@ -721,7 +725,9 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     height: 75,
-    justifyContent: "center"
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderColor: "#e5e5e550"
   },
   modalBody: {
     flex: 1,
@@ -737,7 +743,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 10,
     backgroundColor: "white",
-    borderWidth: 1,
     borderColor: "#e5e5e5"
   },
   lightShadow: {
