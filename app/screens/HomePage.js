@@ -525,7 +525,7 @@ class Home extends React.Component {
       } else if(this.state.doneAmount[index] == 0){ //none
         data = emptyData
       } else {//subset
-        data = this.state.notTakenMeds
+        data = this.state.takenMeds
       }
     }
 

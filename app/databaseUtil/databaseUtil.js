@@ -313,7 +313,7 @@ export function intializeDatabase() {
 export function formatData(data) {
   dataTemp = {};
   data.forEach(function(ev) {
-    let d = Moment(ev.timestamp).format('DD');
+    let d = Moment(ev.timestamp).format("DD");
     let day = d - 1;
     let symptom = ev.event_type_name;
     let intensity = parseInt(JSON.parse(ev.fields).Intensity);
@@ -335,7 +335,6 @@ export function formatData(data) {
 }
 
 export function databaseFakeData() {
-  //console.log("faking data");
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -382,7 +381,7 @@ function printAllEventDetails() {
   Database.transaction(
     tx =>
       tx.executeSql("select * from event_details_tbl", [], (tx, { rows }) =>
-        console.log(rows._array)
+        console.log("rows", rows._array)
       ),
     err => console.log(err)
   );
@@ -396,7 +395,6 @@ export function asyncCreateSymptomLogEvent(
   detailsJson,
   timestamp
 ) {
-  console.log("WE WROTE SOMETHING BOYS")
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -979,10 +977,8 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
-  // console.log("name:" + name + ". time: "+ time + ". takenVal:" + takenVal )
   let day = toDateString(date);
   dayArray = [day];
-  // console.log('inside take medicine')
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1248,7 +1244,6 @@ export function exportAllMedications(callBack) {
 
       tempMedFormatted.medicine = medInfo["Pill Name"];
       tempMedFormatted.dosage = medInfo["Dosage"];
-      //TODO: date
       tempMedFormatted.date = Moment(medInfo["Start Date"]).format("M/D/YY");
       tempMedFormatted["time prescribed"] = medInfo["Time"].join("; ");
 
@@ -1322,7 +1317,7 @@ export function databaseGetUUID(callback) {
         [],
         (_, { rows }) => {
           if (callback) {
-            callback(rows._array.length > 0 ? rows._array[0].uuid :'');
+            callback(rows._array.length > 0 ? rows._array[0].uuid : "");
           }
         },
         err => console.log(err, "UUID")
@@ -1336,10 +1331,11 @@ export function databaseGetUUID(callback) {
  * setter for UUID
  */
 export function databaseSetUUID(uuid) {
-  let id_arg = [uuid]
+  let id_arg = [uuid];
 
-  databaseGetUUID((id) => {
-    if(id == ""){ //is not defined
+  databaseGetUUID(id => {
+    if (id == "") {
+      //is not defined
       Database.transaction(
         tx => {
           tx.executeSql(
@@ -1352,5 +1348,5 @@ export function databaseSetUUID(uuid) {
         err => console.log(err, "UUID")
       );
     }
-  })
+  });
 }
