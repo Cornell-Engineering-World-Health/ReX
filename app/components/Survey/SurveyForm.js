@@ -8,7 +8,11 @@ import ChecklistInputType from "../LogInputTypes/ChecklistInputType";
 import DatePicker from "../LogInputTypes/DatePicker";
 import moment from "moment";
 import Form from "../LogInputTypes/Form";
-import survey from "../../survey/questions.json";
+//import survey from "../../survey/questions.json";
+import {
+  databaseSetSurveyDate
+} from "../../databaseUtil/databaseUtil.js";
+import MultiChoice from '../LogInputTypes/MultiChoice';
 
 const mapTypeToComponent = {
   scale: "ScaleSlideInputType",
@@ -27,14 +31,35 @@ const mapTypeToInitVal = {
   time: new Date()
 };
 
-const SURVEY_DIR = FileSystem.documentDirectory + "test11";
-const FILE_NAME = "survey.csv";
+
+const SURVEY_DIR = FileSystem.documentDirectory + 'test_survey2';
+const FILE_NAME = 'survey.csv';
 
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
-    let keysArray = survey["Questions"].map(q => q["QuestionType"]);
-    let titles = survey["Questions"].map(q => q["Title"]);
+    fetch ('https://www.dropbox.com/s/dl/6zz7xhixelstq2c/a.json?dl=1')
+    .then((response)=> {return response.json()})
+    .then((surveyjson) => {
+        return this.initState(surveyjson)
+      })
+     .catch ((error) => {
+        console.log (error)
+      });
+      this.state = {
+      input_type_array: [],
+      value_labels: [], //my type labels - question
+      values: [], //current value - 0
+      submit_vals: {}, //pairs of question: value {q: a}
+      valOptions: [], //for questions with params, gives bounds
+      surveyId: "" //survey name
+    };
+
+  }
+
+  initState(survey){
+    let keysArray = survey['Questions'].map(q => q['QuestionType']);
+    let titles = survey['Questions'].map(q => q['Title']);
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
     let valOptions = {};
     survey["Questions"].forEach((q, i) => {
@@ -71,14 +96,23 @@ export default class SurveyForm extends React.Component {
       }
     });
 
-    this.state = {
-      input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+    // this.state = {
+    //   input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+    //   value_labels: titles, //my type labels - question
+    //   values: valArray, //current value - 0
+    //   submit_vals: submit_vals, //pairs of question: value {q: a}
+    //   valOptions: valOptions, //for questions with params, gives bounds
+    //   surveyId: survey["SurveyName"] //survey name
+    // };
+    this.setState({
+        input_type_array: inputTypes, //types compoment - NumericalPickerInputType
       value_labels: titles, //my type labels - question
       values: valArray, //current value - 0
       submit_vals: submit_vals, //pairs of question: value {q: a}
       valOptions: valOptions, //for questions with params, gives bounds
       surveyId: survey["SurveyName"] //survey name
-    };
+    }
+    )
   }
 
   valueChange(label, value) {
@@ -88,11 +122,11 @@ export default class SurveyForm extends React.Component {
   }
 
   submit() {
-    this.props.onSubmit();
+    this.props.close();
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {
         if (!e.exists || !e.isDirectory) {
-          return FileSystem.makeDirectoryAsync(SURVEY_DIR);
+          return FileSystem.makeDirectoryAsync(SURVEY_DIR); //make Directory if not exist
         }
       })
       .then(e => {
@@ -116,12 +150,17 @@ export default class SurveyForm extends React.Component {
       .then(() => {
         return FileSystem.readAsStringAsync(SURVEY_DIR + "/" + FILE_NAME);
       })
-      .then(content => {})
+      .then(content => {
+        console.log(content)
+        databaseSetSurveyDate((new Date()).toLocaleDateString())
+      })
       .catch(e => console.log(e));
   }
 
   state_to_csv() {
-    let content = "Survey Name," + this.state.surveyId + "\n";
+    let content = 'Survey Name,' + this.state.surveyId + '\n' +
+                  'Date,' + (new Date()).toLocaleDateString() +
+                  ',' + (new Date()).toLocaleTimeString() + '\n';
     let keys = Object.keys(this.state.submit_vals);
     keys.forEach(k => {
       if (
@@ -227,6 +266,15 @@ export default class SurveyForm extends React.Component {
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
             value={this.state.values[key]}
+            valueChange={this.valueChange.bind(this)}
+          />
+        );
+      } else if (prop == "MultiChoiceInputType") {
+        return (
+          <MultiChoice
+            key={key}
+            buttonTitles={['a', 'b', 'c']}
+            val_label={this.state.value_labels[key]}
             valueChange={this.valueChange.bind(this)}
           />
         );

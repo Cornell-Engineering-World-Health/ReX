@@ -14,7 +14,7 @@
 		},
 		{
 			"Title": "If I started using opiates now I would be able to stop.",
-			"QuestionType": "scale",
+			"QuestionType": "checklist",
       "Values" : ["0","1", "2", "3", "4", "5", "6"]
 		},
 		{
