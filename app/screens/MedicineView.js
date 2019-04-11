@@ -316,6 +316,7 @@ class MedicineView extends React.Component {
   };
 
   toggleMedicine(medObj, time, taken) {
+    console.log(medObj);
     /*
     databaseTakeMedicine(
       new Date(),
@@ -361,8 +362,10 @@ class MedicineView extends React.Component {
 
     if (!taken) {
       //we are taking it now
+      console.log("database take medicine");
+
       databaseTakeMedicine(
-        new Date(),
+        new Date(medObj["Start Date"]),
         medObj["Pill Name"],
         medObj["Dosage"],
         time,
@@ -372,11 +375,12 @@ class MedicineView extends React.Component {
       cancelOurNotification(
         medObj["Pill Name"],
         medObj["Dosage"],
-        Moment(new Date(Moment().format("MMMM DD YYYY") + " " + time)).format()
+        Moment(new Date(Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time)).format()
       );
     } else {
+      console.log("database remove taken medicine");
       databaseTakeMedicine(
-        new Date(),
+        new Date(medObj["Start Date"]),
         medObj["Pill Name"],
         medObj["Dosage"],
         time,
@@ -386,7 +390,7 @@ class MedicineView extends React.Component {
       setOurNotification(
         medObj["Pill Name"],
         medObj["Dosage"],
-        Moment(new Date(Moment().format("MMMM DD YYYY") + " " + time)).format()
+        Moment(new Date(Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time)).format()
       );
     }
   }
@@ -538,7 +542,6 @@ only show up to 1 medication in the future
     currentMonths = monthNames[currentDate.getMonth()];
     currentYear = currentDate.getYear();
     currentDay = currentDate.getDay();
-    console.log(this.state.medicine);
     return (
       <View style={styles.wrapper}>
         <View style={[styles.darkShadow, styles.calendarContainer]}>
@@ -555,7 +558,6 @@ only show up to 1 medication in the future
             }}
           />
         </View>
-
         <ScrollView>
           {this._generateMedicineCards(
             Moment(new Date()).format("YYYY-MM-DD"),
