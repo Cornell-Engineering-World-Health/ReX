@@ -168,9 +168,25 @@ export function setMassNotification(
   endDate,
   name,
   dosage,
-  scheduledTime
+  scheduledTime,
+  granularity,
+  frequency,
 ) {
   databaseMedicineNotification(name, dosage, true);
+
+  var skip = 1;
+  console.log(frequency)
+  if (granularity == "Daily") {
+    skip = 1 * parseInt(frequency)
+  }
+  else if (granularity == "Weekly") {
+    skip = 7 * parseInt(frequency)
+  }
+  else {
+    skip = 30 * parseInt(frequency)
+  }
+
+  var iterSkip = 1;
 
   startDate.setTime(
     startDate.getTime() + startDate.getTimezoneOffset() * 60 * 1000
@@ -188,6 +204,7 @@ export function setMassNotification(
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
   ) {
+    if (iterSkip == 1) {
     for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
       let minutes = parseInt(scheduledTime[x].slice(3, 5));
@@ -201,6 +218,11 @@ export function setMassNotification(
       if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
         setOurNotification(name, dosage, tempDateWithTime)
       }
+    }
+    iterSkip = skip;
+    }
+    else {
+      iterSkip = iterSkip - 1;
     }
     tempDate.setDate(tempDate.getDate() + 1);
   }
