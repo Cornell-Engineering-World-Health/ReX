@@ -261,20 +261,11 @@ export default class SurveyForm extends React.Component {
           <ChecklistInputType
             key={key}
             list_values={this.state.valOptions[this.state.value_labels[key]]}
-            input_style={styles.input_container_green}
+            input_style={styles.input_container_blue}
             title_text_style={styles.title_text}
             title_text={this.state.value_labels[key]}
             val_label={this.state.value_labels[key]}
             value={this.state.values[key]}
-            valueChange={this.valueChange.bind(this)}
-          />
-        );
-      } else if (prop == "MultiChoiceInputType") {
-        return (
-          <MultiChoice
-            key={key}
-            buttonTitles={['a', 'b', 'c']}
-            val_label={this.state.value_labels[key]}
             valueChange={this.valueChange.bind(this)}
           />
         );

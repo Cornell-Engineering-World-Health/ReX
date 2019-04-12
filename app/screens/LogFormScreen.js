@@ -167,8 +167,6 @@ export default class ChooseLogScreen extends React.Component {
           />
         );
       } else if (prop == "NumericalPickerInputType") {
-        console.log(this.state.value_labels[key])
-
         return (
           <Duration
             val_label={this.state.value_labels[key]}
