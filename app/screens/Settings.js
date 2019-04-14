@@ -19,7 +19,8 @@ import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
 import {
   exportSymptomsMailFunc,
-  exportMedicationsMailFunc
+  exportMedicationsMailFunc,
+  exportSurveyMailFunc
 } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
@@ -345,13 +346,27 @@ class Settings extends Component {
           style={styles.editProfileWrapper}
         >
           <View style={styles.modalExperiment}>
-            <Text style={styles.nidaInfo}>NIDA Survey</Text>
-            <Switch
-              value={this.state.toggle}
-              onValueChange={() => {
-                this._handleToggle();
+            <View
+              style={{flexDirection: "row"}}
+            >
+              <Text style={styles.nidaInfo}>NIDA Survey</Text>
+              <Switch
+                value={this.state.toggle}
+                onValueChange={() => {
+                  this._handleToggle();
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.nidaExport}
+              onPress={() => {
+                this.setState({ modalVisible: "" }, () =>
+                  exportSurveyMailFunc(this.state.email, "Questionnaire Data")
+                );
               }}
-            />
+            >
+              <Text>Export Questionnaire Data</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
 
@@ -519,12 +534,19 @@ const styles = StyleSheet.create({
   },
   modalExperiment: {
     flex: 0.1,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
     borderWidth: 1,
-    borderRadius: 10
+    borderRadius: 10,
+    padding: 20
+  },
+  nidaExport: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLOR.PrimaryGray,
+    padding: 10
   }
 });
 const ProfileRoute = {
