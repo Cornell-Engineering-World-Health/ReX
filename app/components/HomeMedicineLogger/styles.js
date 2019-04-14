@@ -27,7 +27,7 @@ export default StyleSheet.create({
   },
   imageStyle: {
     width: circleWidth / 2 * 0.5,
-    height: circleWidth / 2 * 0.7
+    height: circleWidth / 2 * 0.6
   },
   topLeftQuadrant: {
     borderTopLeftRadius: circleWidth,
@@ -73,5 +73,10 @@ export default StyleSheet.create({
     color: COLOR.PrimaryGray,
     fontSize: 22,
     top: -18
+  },
+  timeText: {
+    color: COLOR.PrimaryGray,
+    fontSize: 12,
+    top: 12
   }
 });
