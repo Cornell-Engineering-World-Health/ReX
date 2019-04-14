@@ -294,9 +294,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   title_text: {
-    fontSize: 20,
-    color: "#e5e5e5",
-    paddingBottom: 10
+    fontSize: 40,
+    fontWeight: "100",
+    textAlign: "center"
   },
   title_text_green: {
     fontSize: 20,

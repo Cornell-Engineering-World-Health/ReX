@@ -37,7 +37,7 @@ export default class ChecklistInputType extends React.Component {
 
   render() {
     return (
-      <View style={this.state.input_style}>
+      <View style={styles.wrapper}>
         <Text style={this.state.title_text_style}>{this.state.title_text}</Text>
           <View style={styles.checkbox_area}>
             {this.state.list_values.map((prop, key) => {
@@ -56,5 +56,10 @@ const styles = StyleSheet.create({
   checkbox_area: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  wrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around'
   }
 });
