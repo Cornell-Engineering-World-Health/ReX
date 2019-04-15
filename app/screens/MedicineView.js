@@ -7,7 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  Animated
 } from "react-native";
 import Modal from "react-native-modal";
 import DoseCard from "../components/Card/DoseCard";
@@ -27,10 +28,17 @@ import { shouldBeTaken, shouldBeTakenNow } from "../resources/helpers";
 import { setMassNotification } from "../components/PushController/PushController.js";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 import MedicineCalendar from "../components/Calendar/MedicineCalendar";
+import GestureRecognizer, {
+  swipeDirections
+} from "react-native-swipe-gestures";
 import {
   setOurNotification,
   cancelOurNotification
 } from "../components/PushController/PushController";
+
+const CALENDAR_CLOSED = 50;
+const CALENDAR_OPEN = 375;
+
 class MedicineView extends React.Component {
   static propTypes = {
     onPress: PropTypes.func
@@ -45,6 +53,8 @@ class MedicineView extends React.Component {
       toggle_add: false,
       summaryVisible: false,
       selectedDate: null,
+      calendarHeight: new Animated.Value(CALENDAR_OPEN),
+      calendarOpen: true,
       medicine: {}
     };
   }
@@ -95,10 +105,18 @@ class MedicineView extends React.Component {
         }
         formattedData[tempFormat.date].meds.push(tempFormat); //add medicine to that date
       });
-
       this.setState({ medicine: this.initializeStyles(formattedData) });
     });
   }
+
+  /*
+  returns true if the given date is today, false otherwise
+
+  must give a string in the form 2019-01-01
+  */
+  isToday = dateKey => {
+    return Moment(dateKey).isSame(new Date(), "day");
+  };
 
   /*
   given an object where each key is a date in the form 1999-01-01, this adds a
@@ -129,12 +147,11 @@ class MedicineView extends React.Component {
           }
         });
       });
-      let isToday = Moment(dateKey).isSame(new Date(), "day");
 
       allMedicine[dateKey].customStyles = {
         container: {
           backgroundColor: this.getColor(totalTaken / totalMeds),
-          borderWidth: isToday ? 1 : 0,
+          borderWidth: this.isToday(dateKey) ? 1 : 0,
           borderColor: "#e0e0e0",
           borderRadius: 0
         }
@@ -147,6 +164,7 @@ class MedicineView extends React.Component {
   Given a number between 0 and 1, returns the corresponding color from the
   global colorScale variable
 */
+
   getColor(num) {
     if (num > 1) console.warn("invalid domain.");
 
@@ -316,7 +334,6 @@ class MedicineView extends React.Component {
   };
 
   toggleMedicine(medObj, time, taken) {
-    console.log(medObj);
     /*
     databaseTakeMedicine(
       new Date(),
@@ -354,15 +371,12 @@ class MedicineView extends React.Component {
     allMedicine[medObj["date"]].meds[medIndex]["Taken"][index] = !taken;
     allMedicine[medObj["date"]].meds[medIndex]["Taken Time"][index] = hhmm_time;
 
-    this.setState({ medicine: this.initializeStyles(allMedicine) }, () =>
-      console.log("")
-    );
+    this.setState({ medicine: this.initializeStyles(allMedicine) });
 
     //now update database and notification
 
     if (!taken) {
       //we are taking it now
-      console.log("database take medicine");
 
       databaseTakeMedicine(
         new Date(medObj["Start Date"]),
@@ -375,10 +389,13 @@ class MedicineView extends React.Component {
       cancelOurNotification(
         medObj["Pill Name"],
         medObj["Dosage"],
-        Moment(new Date(Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time)).format()
+        Moment(
+          new Date(
+            Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time
+          )
+        ).format()
       );
     } else {
-      console.log("database remove taken medicine");
       databaseTakeMedicine(
         new Date(medObj["Start Date"]),
         medObj["Pill Name"],
@@ -390,14 +407,55 @@ class MedicineView extends React.Component {
       setOurNotification(
         medObj["Pill Name"],
         medObj["Dosage"],
-        Moment(new Date(Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time)).format()
+        Moment(
+          new Date(
+            Moment(medObj["Start Date"]).format("MMMM DD YYYY") + " " + time
+          )
+        ).format()
       );
     }
   }
+  /*
+Custom sorting algorithm
+*/
+  sort(medData) {
+    medData.meds.sort((med1, med2) => {
+      let priority1 = 0;
+      let priority2 = 0;
+
+      med1.Taken.forEach((d, i) => {
+        let isClose = this.isClose(med1["Start Date"], med1["Time"][i], 15);
+        if (isClose && !d) {
+          //if its close to the time and it hasn't been taken increase the priority
+          console.log(med1["Pill Name"], "isClose");
+          priority1 = 100;
+        }
+      });
+      med2.Taken.forEach((d, i) => {
+        let isClose = this.isClose(med2["Start Date"], med2["Time"][i], 15);
+        if (isClose && !d) {
+          priority2 = 100;
+        }
+      });
+      console.log("med1", med1);
+      if (!med1.Taken.includes(false)) priority1 = -999; //if all items have been taken, push to
+      //bottom of list
+      if (!med2.Taken.includes(false)) priority2 = -999;
+
+      return priority2 - priority1;
+    });
+    return medData;
+  }
 
   _generateMedicineCards(date, filter) {
-    let dayData = this.state.medicine[date];
-    if (!dayData) return null;
+    if (!this.state.medicine[date]) return null;
+
+    let dayData = JSON.parse(JSON.stringify(this.state.medicine[date]));
+
+    if (filter) {
+      dayData = this.sort(dayData);
+    }
+
     let cards = [];
     //iterate through the meds array
     dayData.meds.forEach((d, i) => {
@@ -422,6 +480,27 @@ class MedicineView extends React.Component {
     return cards;
   }
 
+  toggleCalendar() {
+    Animated.timing(this.state.calendarHeight, {
+      toValue: this.state.calendarOpen ? CALENDAR_CLOSED : CALENDAR_OPEN
+    }).start();
+    this.setState({ calendarOpen: !this.state.calendarOpen });
+  }
+
+  openCalendar() {
+    Animated.timing(this.state.calendarHeight, {
+      toValue: CALENDAR_OPEN
+    }).start();
+    this.setState({ calendarOpen: true });
+  }
+
+  closeCalendar() {
+    Animated.timing(this.state.calendarHeight, {
+      toValue: CALENDAR_CLOSED
+    }).start();
+    this.setState({ calendarOpen: false });
+  }
+
   generateDate(startdate, time) {
     let currTime = new Date(startdate);
     currTime.setHours(parseInt(time.slice(0, 2)));
@@ -434,7 +513,7 @@ class MedicineView extends React.Component {
   }
 
   /*
-  Returns true if the given startdate & time is nearby tot he current time
+  Returns true if the given startdate & time is nearby to the current time
 
   interval in minutes
   */
@@ -456,7 +535,7 @@ only show up to 1 medication in the future
     let numInFuture = 0;
     medObj["Time"].forEach((d, i) => {
       let taken = medObj["Taken"][i];
-      let takenText = taken ? "Taken at " : "Missed";
+      let takenText = taken ? "Taken" : "Missed";
 
       if (filter && (taken || numInFuture >= 1)) return;
 
@@ -470,10 +549,8 @@ only show up to 1 medication in the future
         };
       } else if (this.isClose(medObj["Start Date"], d, 15)) {
         cardStyle = {
-          // backgroundColor: "#42f4bf80",
-          // borderColor: "#42f4bf"
-          backgroundColor: "#fffbbf",
-          borderColor: "#fff43d"
+          backgroundColor: "#42f4bf80",
+          borderColor: "#42f4bf"
         };
         takenText = "Take now!";
         numInFuture++;
@@ -501,10 +578,7 @@ only show up to 1 medication in the future
           <Text style={styles.modalCardName}>
             {timeFormatter(medObj["Time"][i])}
           </Text>
-          <Text style={styles.modalCardName}>
-            {takenText}
-            {timeFormatter(medObj["Taken Time"][i])}
-          </Text>
+          <Text style={styles.modalCardName}>{takenText}</Text>
         </TouchableOpacity>
       );
     });
@@ -544,7 +618,13 @@ only show up to 1 medication in the future
     currentDay = currentDate.getDay();
     return (
       <View style={styles.wrapper}>
-        <View style={[styles.darkShadow, styles.calendarContainer]}>
+        <Animated.View
+          style={[
+            styles.calendarContainer,
+            styles.darkShadow,
+            { height: this.state.calendarHeight }
+          ]}
+        >
           <MedicineCalendar
             style={styles.calendar}
             medicine={JSON.parse(JSON.stringify(this.state.medicine))}
@@ -557,7 +637,17 @@ only show up to 1 medication in the future
               }
             }}
           />
-        </View>
+          <GestureRecognizer
+            onSwipeUp={() => {
+              this.closeCalendar();
+            }}
+            onSwipeDown={() => this.openCalendar()}
+          >
+            <View style={styles.gestureViewWrapper}>
+              <View style={styles.gestureView} />
+            </View>
+          </GestureRecognizer>
+        </Animated.View>
         <ScrollView>
           {this._generateMedicineCards(
             Moment(new Date()).format("YYYY-MM-DD"),
@@ -642,8 +732,14 @@ only show up to 1 medication in the future
         >
           <Image
             style={{ height: 50, width: 50 }}
-            source={require("../resources/images/plusSignMinimal.png")}
+            source={IMAGES.plusSignMinimal}
           />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.calendarButton}
+          onPress={() => this.toggleCalendar()}
+        >
+          <Image style={{ height: 50, width: 50 }} source={IMAGES.calendar} />
         </TouchableOpacity>
       </View>
     );
@@ -760,13 +856,35 @@ const styles = StyleSheet.create({
   calendar: {},
   addButton: {
     position: "absolute",
-    top: 30,
+    top: 15,
     right: 15
+  },
+  calendarButton: {
+    position: "absolute",
+    left: 15,
+    top: 15
   },
   calendarContainer: {
     marginTop: 20,
-    borderBottomWidth: 1,
-    borderColor: "#e5e5e5"
+
+    height: 50
+  },
+  gestureView: {
+    position: "absolute",
+    alignSelf: "center",
+    width: 50,
+    height: 5,
+    bottom: 3,
+    borderRadius: 10,
+    backgroundColor: "#00000020"
+  },
+  gestureViewWrapper: {
+    position: "absolute",
+    alignSelf: "center",
+    width: 140,
+    height: 50,
+    bottom: 0,
+    backgroundColor: "transparent"
   }
 });
 

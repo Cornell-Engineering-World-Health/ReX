@@ -56,7 +56,7 @@ class Settings extends Component {
       height_inches: "",
       height: "Height unknown",
       icon: "0",
-      email: "Doctor's email unkown",
+      email: "Doctor's email unknown",
       modalVisible: "",
       toggle: false,
       exportButtonsVisible: false
@@ -184,130 +184,127 @@ class Settings extends Component {
               marginTop: 35,
               marginLeft: 20,
               marginBottom: 10,
-              fontWeight: "bold",
+              fontWeight: "100",
               fontSize: 35
             }}
           >
             Settings
           </Text>
         </View>
-        <View style={styles.container}>
-          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={100}
-                  width={100}
-                  resizeMode="cover"
-                  source={profile_icons[this.state.icon]}
-                />
-              }
-              hasNavArrow={false}
-              title={this.state.name}
-              titleInfo={"Edit" + "\n" + "Profile"}
-              titleStyle={{ fontSize: 20, fontWeight: "bold" }}
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[0] });
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.scale}
-                />
-              }
-              hasNavArrow={false}
-              title="BMI"
-              titleInfo={this.convert_to_BMI()}
-            />
-            <SettingsList.Header headerStyle={{ marginTop: 10 }} />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={50}
-                  resizeMode="contain"
-                  source={IMAGES.view}
-                />
-              }
-              title="View History"
-              hasNavArrow={true}
-              onPress={() => {}}
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => {
-                this.props.navigator.push(TrendsRoute);
-              }}
-            />
+        <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={100}
+                width={100}
+                resizeMode="cover"
+                source={profile_icons[this.state.icon]}
+              />
+            }
+            hasNavArrow={false}
+            title={this.state.name}
+            titleInfo={"Edit" + "\n" + "Profile"}
+            titleStyle={{ fontSize: 20, fontWeight: "300" }}
+            onPress={() => {
+              this.setState({ modalVisible: modal_ids[0] });
+            }}
+          />
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={60}
+                resizeMode="contain"
+                source={IMAGES.scale}
+              />
+            }
+            hasNavArrow={false}
+            title="BMI"
+            titleInfo={this.convert_to_BMI()}
+          />
+          <SettingsList.Header headerStyle={{ marginTop: 10 }} />
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={50}
+                resizeMode="contain"
+                source={IMAGES.view}
+              />
+            }
+            title="View History"
+            hasNavArrow={true}
+            onPress={() => {}}
+            titleInfoStyle={styles.titleInfoStyle}
+            onPress={() => {
+              this.props.navigator.push(TrendsRoute);
+            }}
+          />
 
-            <SettingsList.Item
-              title="Contact"
-              onPress={() => {
-                sendMail(
-                  ["fiih.developers@gmail.com"],
-                  "Comments on Your App",
-                  "Dear Engineering World Health Body, \n",
-                  null,
-                  null
-                );
-              }}
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.addressBook}
-                />
-              }
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.exportcsv}
-                />
-              }
-              title="Export Data"
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[1] });
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.medicine}
-                />
-              }
-              title="Edit Medicine Settings"
-              onPress={() => {
-                this.props.navigator.push(MedicineSettingsPage);
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.chemical}
-                />
-              }
-              title="Experimental Settings"
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[2] });
-              }}
-            />
-          </SettingsList>
-        </View>
+          <SettingsList.Item
+            title="Contact"
+            onPress={() => {
+              sendMail(
+                ["fiih.developers@gmail.com"],
+                "Comments on Your App",
+                "Dear Engineering World Health Body, \n",
+                null,
+                null
+              );
+            }}
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={60}
+                resizeMode="contain"
+                source={IMAGES.addressBook}
+              />
+            }
+          />
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={60}
+                resizeMode="contain"
+                source={IMAGES.exportcsv}
+              />
+            }
+            title="Export Data"
+            onPress={() => {
+              this.setState({ modalVisible: modal_ids[1] });
+            }}
+          />
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={60}
+                resizeMode="contain"
+                source={IMAGES.medicine}
+              />
+            }
+            title="Edit Medicine Settings"
+            onPress={() => {
+              this.props.navigator.push(MedicineSettingsPage);
+            }}
+          />
+          <SettingsList.Item
+            icon={
+              <Image
+                style={styles.imageStyle}
+                height={60}
+                resizeMode="contain"
+                source={IMAGES.chemical}
+              />
+            }
+            title="Experimental Settings"
+            onPress={() => {
+              this.setState({ modalVisible: modal_ids[2] });
+            }}
+          />
+        </SettingsList>
         <Modal
           isVisible={this.state.modalVisible == modal_ids[0]}
           style={styles.editProfileWrapper}
