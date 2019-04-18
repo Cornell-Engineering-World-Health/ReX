@@ -75,7 +75,7 @@ background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8f
 // ];
 
 //const backgroundGradient = ["#4908cf", "#005cff"];
-const backgroundGradient = ["#371f6a", "#5052ff"];
+const backgroundGradient = COLOR.gradient;
 let gradient_ratio = 0.7;
 let height_header = 125;
 let middle_message = 100;
@@ -623,9 +623,9 @@ class Home extends React.Component {
 const HomeButton = props => {
   return (
     <TouchableOpacity style={[styles.addButton, styles.darkShadow]}>
-      <View style={styles.badge}>
+      {/*<View style={styles.badge}>
         <Text style={styles.badgeText}>{props.badgeText}</Text>
-      </View>
+      </View>*/}
       <Image style={styles.addImageStyle} source={props.image} />
     </TouchableOpacity>
   );

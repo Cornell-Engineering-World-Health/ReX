@@ -47,7 +47,8 @@ export default StyleSheet.create({
     backgroundColor: "white",
     position: "absolute",
     left: 25,
-    right: 25
+    right: 25,
+    borderRadius: 5
   },
   middleMessageText: {
     fontSize: 20,
@@ -92,9 +93,11 @@ export default StyleSheet.create({
     alignItems: "center",
     padding: 5,
     borderRadius: 15,
-    height: 75,
-    width: 75,
-    backgroundColor: "white"
+    height: 65,
+    width: 65,
+    backgroundColor: "white",
+    borderWidth: 3,
+    borderColor: "#5052ff80"
   },
   addImageStyle: {
     width: 40,
@@ -109,8 +112,8 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingBottom: 10
   },
   addButtonText: {

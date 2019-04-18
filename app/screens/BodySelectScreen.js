@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image
 } from "react-native";
+import { LinearGradient } from "expo";
 import { BODY_PARTS, COLOR, IMAGES } from "../resources/constants";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -93,6 +94,21 @@ export default class BodySelectScreen extends React.Component {
     return (
       <View style={{ flex: 1, paddingTop: 40, backgroundColor: "white" }}>
         {h_lines}
+        <LinearGradient
+          colors={COLOR.gradient}
+          style={[
+            {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: height * 0.75
+            },
+            styles.darkShadow
+          ]}
+          start={[0, 1]}
+          end={[1, 0]}
+        />
         <View style={styles.header}>
           <Text style={styles.headerText}>
             {"Where do you feel discomfort?"}
@@ -100,7 +116,12 @@ export default class BodySelectScreen extends React.Component {
         </View>
         <ImageBackground
           resizeMode={"stretch"}
-          style={{ marginTop: 5, flex: 1, flexDirection: "row" }}
+          style={{
+            marginTop: 5,
+            flex: 1,
+            flexDirection: "row",
+            tintColor: "red"
+          }}
           source={IMAGES.body}
         >
           <View style={styles.emptyVertical} />
@@ -211,6 +232,22 @@ export default class BodySelectScreen extends React.Component {
                   });
                 }}
               >
+                <LinearGradient
+                  colors={[COLOR.gradient[1], COLOR.gradient[1]]}
+                  style={[
+                    {
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      borderRadius: 100
+                    },
+                    styles.darkShadow
+                  ]}
+                  start={[0, 1]}
+                  end={[1, 0]}
+                />
                 <Image source={IMAGES.search} style={styles.searchImage} />
                 <Text style={styles.searchText}>Search</Text>
               </TouchableOpacity>
@@ -228,7 +265,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   headerText: {
-    fontSize: 22
+    fontSize: 30,
+    color: "white",
+    fontWeight: "100"
   },
   bodyVertical: {
     flex: 1,
@@ -301,12 +340,19 @@ const styles = StyleSheet.create({
   },
   searchImage: {
     width: 25,
-    height: 25
+    height: 25,
+    tintColor: "white"
   },
   searchText: {
     fontSize: 15,
     fontWeight: "100",
     height: 20,
-    textAlign: "center"
+    textAlign: "center",
+    color: "white"
+  },
+  darkShadow: {
+    shadowOffset: { width: 3, height: 3 },
+    shadowColor: "#371f6a",
+    shadowOpacity: 0.3
   }
 });

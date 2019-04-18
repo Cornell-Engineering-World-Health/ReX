@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { LinearGradient } from "expo";
 import { View, Text, Dimensions, FlatList, StyleSheet } from "react-native";
 import { itemWidth } from "../components/Calendar/styles/SliderEntry.style";
 import { SliderEntry } from "../components/Calendar";

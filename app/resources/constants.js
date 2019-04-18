@@ -113,7 +113,8 @@ export const COLOR = {
   medicineCardUnchecked: "#ffc2b3",
   lightGreen: "#9cff6880",
   green: "#9cff68",
-  yellow: "#FFEE93"
+  yellow: "#FFEE93",
+  gradient: ["#371f6a", "#5052ff"]
 };
 
 export const BODY_PARTS = {
