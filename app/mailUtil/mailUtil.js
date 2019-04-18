@@ -5,7 +5,7 @@ import {
   exportAllMedications,
   databaseGetUUID
 } from "../databaseUtil/databaseUtil";
-import { SYMPTOM_FIELDS } from "../resources/constants.js";
+import { SYMPTOM_FIELDS, SURVEY_FILE_DESCRIPT } from "../resources/constants.js";
 
 import Moment from "moment";
 function convertArrayOfObjectsToCSV(args) {
@@ -197,9 +197,9 @@ subject: subject of the email
 */
 export function exportSurveyMailFunc(email, subject, date) {
   databaseGetUUID((id) => {
-    SURVEY_DIR = FileSystem.documentDirectory + "test_survey";
+    SURVEY_DIR = FileSystem.documentDirectory + SURVEY_FILE_DESCRIPT.dir;
     let date_time = Moment().format('YYYY-MM-DDTHH:mm')
-    DATA_FILE_NAME = 'survey.csv';
+    DATA_FILE_NAME = SURVEY_FILE_DESCRIPT.fname;
     NEW_FILE_NAME =  id + "_" + date_time + "_" + "survey.csv";
 
     FileSystem.getInfoAsync(SURVEY_DIR, {})

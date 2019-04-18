@@ -8,6 +8,7 @@ import ChecklistInputType from "../LogInputTypes/ChecklistInputType";
 import DatePicker from "../LogInputTypes/DatePicker";
 import moment from "moment";
 import Form from "../LogInputTypes/Form";
+import { SURVEY_FILE_DESCRIPT } from "../../resources/constants";
 //import survey from "../../survey/questions.json";
 import {
   databaseSetSurveyDate
@@ -33,8 +34,8 @@ const mapTypeToInitVal = {
 };
 
 
-const SURVEY_DIR = FileSystem.documentDirectory + 'test_survey2';
-const FILE_NAME = 'survey.csv';
+const SURVEY_DIR = FileSystem.documentDirectory + SURVEY_FILE_DESCRIPT.dir;
+const FILE_NAME = SURVEY_FILE_DESCRIPT.fname;
 
 export default class SurveyForm extends React.Component {
   constructor(props) {
@@ -161,7 +162,7 @@ export default class SurveyForm extends React.Component {
   state_to_csv() {
     let content = 'Survey Name,' + this.state.surveyId + '\n' +
                   'Date,' + (new Date()).toLocaleDateString() +
-                  ',' + (new Date()).toLocaleTimeString() + '\n';
+                  '|' + (new Date()).toLocaleTimeString() + '\n';
     let keys = Object.keys(this.state.submit_vals);
     keys.forEach(k => {
       if (

@@ -454,3 +454,5 @@ export const durationTitles = [
 ];
 
 export const SYMPTOM_FIELDS = ["Duration", "Intensity", "Other"];
+
+export const SURVEY_FILE_DESCRIPT = {dir: "test_survey", fname: "survey.csv"}
