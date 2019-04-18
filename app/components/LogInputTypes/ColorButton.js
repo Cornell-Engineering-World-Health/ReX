@@ -1,5 +1,6 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import { COLOR } from "../../resources/constants";
 
 export default class ColorButton extends React.Component {
   constructor (props) {
@@ -20,9 +21,9 @@ export default class ColorButton extends React.Component {
   render () {
     return (
       <TouchableOpacity
-        style={[styles.checkbutton, {backgroundColor: this.state.background_color ? 'white' : 'transparent'}]}
+        style={[styles.checkbutton, {backgroundColor: this.state.background_color ? COLOR.surveyTheme : 'white'}]}
         onPress={this.changeCheckbuttonStyle.bind(this)}>
-        <Text style={[styles.checkbox_text, {color: this.state.background_color ? '#2D6D84' : 'white'}]}>
+        <Text style={[styles.checkbox_text, {color: this.state.background_color ? '#2D6D84' : '#2D6D84'}]}>
           {this.state.button_text}
         </Text>
       </TouchableOpacity>
@@ -40,13 +41,13 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: 'white'
+    borderColor: COLOR.surveyTheme
   },
   checkbox: {
     flex: 1,
     padding: 5
   },
   checkbox_text: {
-    fontSize: 20
+    fontSize: 17
   }
 })

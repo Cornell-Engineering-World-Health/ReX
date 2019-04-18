@@ -19,7 +19,8 @@ import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
 import {
   exportSymptomsMailFunc,
-  exportMedicationsMailFunc
+  exportMedicationsMailFunc,
+  exportSurveyMailFunc
 } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
@@ -66,12 +67,12 @@ class Settings extends Component {
   convert_to_BMI = () => {
     var BMI = "";
     var weight_int = parseInt(this.state.weight);
-    var total_inches = parseInt(this.state.height_feet) * 12 + parseInt(this.state.height_inches);
-    console.log(this.state.weight + "Weight!!");
-    console.log(this.state.height_feet + "Height!!");
-    var bmi_num = (weight_int / Math.pow(total_inches,2) ) * 703;
-    bmi_num = Math.round( bmi_num * 10 ) / 10;
-    BMI = "" + bmi_num ;
+    var total_inches =
+      parseInt(this.state.height_feet) * 12 +
+      parseInt(this.state.height_inches);
+    var bmi_num = (weight_int / Math.pow(total_inches, 2)) * 703;
+    bmi_num = Math.round(bmi_num * 10) / 10;
+    BMI = "" + bmi_num;
     return BMI;
   };
 
@@ -205,25 +206,25 @@ class Settings extends Component {
                 />
               }
               hasNavArrow={false}
-              title={this.state.name }
+              title={this.state.name}
               titleInfo={"Edit" + "\n" + "Profile"}
               titleStyle={{ fontSize: 20, fontWeight: "bold" }}
               onPress={() => {
                 this.setState({ modalVisible: modal_ids[0] });
               }}
             />
-             <SettingsList.Item
-                icon={
-                  <Image
-                    style={styles.imageStyle}
-                    height={60}
-                    resizeMode="contain"
-                    source={IMAGES.scale}
-                  />
-                }
-            hasNavArrow={false}
-            title='BMI'
-            titleInfo={this.convert_to_BMI()}
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={60}
+                  resizeMode="contain"
+                  source={IMAGES.scale}
+                />
+              }
+              hasNavArrow={false}
+              title="BMI"
+              titleInfo={this.convert_to_BMI()}
             />
             <SettingsList.Header headerStyle={{ marginTop: 10 }} />
             <SettingsList.Item
@@ -345,13 +346,27 @@ class Settings extends Component {
           style={styles.editProfileWrapper}
         >
           <View style={styles.modalExperiment}>
-            <Text style={styles.nidaInfo}>NIDA Survey</Text>
-            <Switch
-              value={this.state.toggle}
-              onValueChange={() => {
-                this._handleToggle();
+            <View
+              style={{flexDirection: "row"}}
+            >
+              <Text style={styles.nidaInfo}>NIDA Survey</Text>
+              <Switch
+                value={this.state.toggle}
+                onValueChange={() => {
+                  this._handleToggle();
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.nidaExport}
+              onPress={() => {
+                this.setState({ modalVisible: "" }, () =>
+                  exportSurveyMailFunc(this.state.email, "Questionnaire Data")
+                );
               }}
-            />
+            >
+              <Text>Export Questionnaire Data</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
 
@@ -519,12 +534,19 @@ const styles = StyleSheet.create({
   },
   modalExperiment: {
     flex: 0.1,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
     borderWidth: 1,
-    borderRadius: 10
+    borderRadius: 10,
+    padding: 20
+  },
+  nidaExport: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLOR.PrimaryGray,
+    padding: 10
   }
 });
 const ProfileRoute = {

@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
   FlatList,
   Image,
   TextInput
-} from 'react-native';
-import { COLOR, IMAGES } from '../../resources/constants.js';
+} from "react-native";
+import { COLOR, IMAGES } from "../../resources/constants.js";
 
 const ITEM_HEIGHT = 55;
 
@@ -29,8 +29,8 @@ export default class Duration extends React.Component {
     super(props);
 
     this.state = {
-      symptoms: ['LAST_ELEMENT'],
-      addText: '',
+      symptoms: ["LAST_ELEMENT"],
+      addText: "",
       overlayOpenIndex: -1
     };
   }
@@ -69,8 +69,8 @@ export default class Duration extends React.Component {
         text={item}
         style={{
           backgroundColor:
-            index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
-          justifyContent: 'center'
+            index % 2 == 0 ? COLOR.blue + "50" : COLOR.blue + "90",
+          justifyContent: "center"
         }}
       />
     );
@@ -84,12 +84,10 @@ export default class Duration extends React.Component {
 Called when person clicks enter every time they type another entry
 */
   _onSubmit() {
-    if (this.state.addText != '') {
+    if (this.state.addText != "") {
       data = this.state.symptoms;
-      console.log("this the data")
-      console.log(data)
       data.splice(data.length - 1, 0, this.state.addText);
-      this.setState({ data: data, addText: '' });
+      this.setState({ data: data, addText: "" });
 
       let formatSubmit = this._formatSubmit();
       this.props.valueChange(this.props.val_label, formatSubmit);
@@ -101,7 +99,7 @@ Format the state array into a string for storing in the database
 */
   _formatSubmit() {
     data = this.state.symptoms;
-    return data.slice(0, data.length - 1).join(', ');
+    return data.slice(0, data.length - 1).join(", ");
   }
 
   /*
@@ -127,9 +125,9 @@ If index is an invalid number, function does nothing.
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>
-          <Text style={styles.questionText}>{'Any other symptoms?'}</Text>
+          <Text style={styles.questionText}>{"Any other symptoms?"}</Text>
         </View>
-        <View style={{ flex: 0.8, alignItems: 'stretch', padding: 15 }}>
+        <View style={{ flex: 0.8, alignItems: "stretch", padding: 15 }}>
           <FlatList
             ref={flatlist => {
               this._list = flatlist;
@@ -141,7 +139,7 @@ If index is an invalid number, function does nothing.
             })}
             data={this.state.symptoms}
             extraData={this.state}
-            keyExtractor={(item, index) => ""+index}
+            keyExtractor={(item, index) => "" + index}
             renderItem={this._renderItem}
           />
         </View>
@@ -162,13 +160,13 @@ class ListItem extends React.Component {
           onPress={this.props.onDelete}
           style={overlayStyles.buttonWrapper}
         >
-          <Text style={overlayStyles.overlayText}>{'Delete'}</Text>
+          <Text style={overlayStyles.overlayText}>{"Delete"}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={overlayStyles.buttonWrapper}
           onPress={() => this.props.setOverlay(false)}
         >
-          <Text style={overlayStyles.overlayText}>{'Cancel'}</Text>
+          <Text style={overlayStyles.overlayText}>{"Cancel"}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -198,7 +196,7 @@ const AddItem = props => {
           props.onChangeText(text);
         }}
         value={props.value}
-        placeholder={'Add More'}
+        placeholder={"Add More"}
         onSubmitEditing={() => {
           props.onSubmitEditing();
         }}
@@ -218,13 +216,13 @@ const AddItem = props => {
 const styles = StyleSheet.create({
   itemWrapper: {
     margin: 1,
-    alignItems: 'center',
+    alignItems: "center",
     height: ITEM_HEIGHT,
     backgroundColor: COLOR.blue,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     zIndex: 1,
-    position: 'relative',
+    position: "relative",
     flex: 1
   },
   header: {
@@ -232,17 +230,17 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 25,
-    fontWeight: '100',
-    textAlign: 'center'
+    fontWeight: "100",
+    textAlign: "center"
   },
   itemTextStyle: {
-    textAlign: 'center',
-    fontWeight: '100',
+    textAlign: "center",
+    fontWeight: "100",
     fontSize: 18
   },
   wrapper: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: "stretch"
   },
   imageStyle: {
     height: 25,
@@ -250,43 +248,43 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     height: ITEM_HEIGHT,
-    borderColor: 'gray',
+    borderColor: "gray",
     flex: 0.8,
     fontSize: 15,
     paddingLeft: 15,
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor: '#ffffff50'
+    backgroundColor: "#ffffff50"
   },
   imageWrapper: {
     flex: 0.2,
-    alignItems: 'center'
+    alignItems: "center"
   }
 });
 
 const overlayStyles = {
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: '#00000099',
+    backgroundColor: "#00000099",
     zIndex: 2,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center"
   },
   overlayText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 25,
-    fontWeight: '200',
-    color: '#fff'
+    fontWeight: "200",
+    color: "#fff"
   },
   buttonWrapper: {
     flex: 1,
     height: ITEM_HEIGHT,
-    justifyContent: 'center',
-    backgroundColor: '#00000075'
+    justifyContent: "center",
+    backgroundColor: "#00000075"
   }
 };
