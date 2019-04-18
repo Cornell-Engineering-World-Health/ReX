@@ -276,13 +276,20 @@ export default class MedicineAddForm extends React.Component {
         </View>
       );
     modalContent = this.state.modalID == GRAN_ID ? (
-       <View style={{ flex: 1, width: viewportWidth }}>
+       <View style={{ flex: 1, flexDirection: 'row', width: viewportWidth }}>
        <Picker
        selectedValue = {this.state.submit_vals["Granularity"]}
-       onValueChange={(gran) => {this.valueChange("Granularity", gran)}}>
+       onValueChange={(gran) => {this.valueChange("Granularity", gran)}}
+       style = {{flex: 0.5}}>
        <Picker.Item label="Daily" value="Daily" />
        <Picker.Item label="Weekly" value="Weekly" />
        <Picker.Item label="Monthly" value="Monthly" />
+       </Picker>
+       <Picker
+       selectedValue = {this.state.submit_vals["Frequency"]}
+       onValueChange={(freq) => {this.valueChange("Frequency", freq)}}
+       style = {{flex: 0.5}}>
+       {this.freqItems()}
        </Picker>
        </View>) : modalContent;
     modalContent = this.state.modalID == FREQ_ID ? (
@@ -318,18 +325,27 @@ export default class MedicineAddForm extends React.Component {
     } else {
       timeText = "Enter Your Prescription Time";
     }
-    let granText = "Enter Granularity"
-    if (this.state.submit_vals["Granularity"]) {
+    let granText = "Enter Your Prescription Frequency"
+    let freqText = ""
+    if (this.state.submit_vals["Granularity"] && this.state.submit_vals["Frequency"]) {
       granText = this.state.submit_vals["Granularity"]
+      if (granText == "Daily") {
+        granText = "Day"
+      }
+      else if (granText == "Weekly") {
+        granText = "Week"
+      }
+      else {
+        granText = "Month"
+      }
+      let tempFreq = this.state.submit_vals["Frequency"]
+      if (tempFreq > 1) {
+        granText = "Every " + tempFreq.toString() + " " + granText + "s"
+      }
+      else {
+        granText = "Every " + granText
+      }
     }
-    let freqText = "Enter Frequency"
-    if (this.state.submit_vals["Frequency"] == "1") {
-      freqText = "Every"
-    }
-    else if (this.state.submit_vals["Frequency"]) {
-      freqText = "Every " + this.state.submit_vals["Frequency"]
-    }
-
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.outerContainer}>
@@ -386,20 +402,11 @@ export default class MedicineAddForm extends React.Component {
             <Button 
             text={granText}
             rounded={true}
-            width={(viewportWidth - 30) / 2}
+            width={viewportWidth - 30}
             borderColor={COLOR.purple}
             onPress={() => {
               Keyboard.dismiss();
               this.setState({ modalID: GRAN_ID });
-            }}/>
-            <Button 
-            text={freqText}
-            rounded={true}
-            width={(viewportWidth - 30) / 2}
-            borderColor={COLOR.purple}
-            onPress={() => {
-              Keyboard.dismiss();
-              this.setState({ modalID: FREQ_ID });
             }}/>
             </View>
             <Button
