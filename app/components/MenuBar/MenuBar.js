@@ -22,16 +22,17 @@ const DEFAULT_BACKGROUND_COLOR = "#000";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   addButton: {
     height: 60,
-    paddingTop: 5, 
+    paddingTop: 5,
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "#ffffff",
-
-  },
+    borderTopWidth: 1,
+    borderColor: "#ededed"
+  }
 });
 
 class MenuBar extends React.Component {

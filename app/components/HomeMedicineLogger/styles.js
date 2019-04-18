@@ -1,18 +1,20 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { COLOR } from '../../resources/constants';
+import { StyleSheet, Dimensions } from "react-native";
+import { COLOR } from "../../resources/constants";
 
-const width = Dimensions.get('window').width;
-const circleWidth = width * 0.8;
-const height = Dimensions.get('window').height;
+const width = Dimensions.get("window").width;
+const circleWidth = width * 0.78;
+const height = Dimensions.get("window").height;
 const borderW = 3;
 
 export default StyleSheet.create({
   medicineViewContainer: {
     height: circleWidth,
-    width: circleWidth
+    width: circleWidth,
+    backgroundColor: "white",
+    borderRadius: 500
   },
   medicineViewRow: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   medicineButton: {
     width: circleWidth / 2,
@@ -20,14 +22,14 @@ export default StyleSheet.create({
     margin: 0
   },
   buttonContent: {
-    position: 'absolute',
-    alignItems: 'center',
-    width: circleWidth / 2 * 0.5,
-    height: circleWidth / 2 * 0.8
+    position: "absolute",
+    alignItems: "center",
+    width: (circleWidth / 2) * 0.5,
+    height: (circleWidth / 2) * 0.8
   },
   imageStyle: {
-    width: circleWidth / 2 * 0.5,
-    height: circleWidth / 2 * 0.7
+    width: (circleWidth / 2) * 0.5,
+    height: (circleWidth / 2) * 0.7
   },
   topLeftQuadrant: {
     borderTopLeftRadius: circleWidth,
@@ -73,5 +75,15 @@ export default StyleSheet.create({
     color: COLOR.PrimaryGray,
     fontSize: 22,
     top: -18
+  },
+  lightShadow: {
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "#808080",
+    shadowOpacity: 0.2
+  },
+  darkShadow: {
+    shadowOffset: { width: 3, height: 5 },
+    shadowColor: "#371f6a",
+    shadowOpacity: 0.3
   }
 });

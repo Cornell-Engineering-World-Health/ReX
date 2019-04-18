@@ -1,17 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   Text,
   View,
   ImageBackground,
   TouchableHighlight,
+  TouchableOpacity,
   Dimensions
-} from 'react-native';
-import styles from './styles';
-import { COLOR, IMAGES } from '../../resources/constants';
-const opacity = '20';
-const shift = 4 * (Dimensions.get('window').width * 0.4) / (3 * Math.PI);
-const radius = Dimensions.get('window').width * 0.4;
+} from "react-native";
+import styles from "./styles";
+import { COLOR, IMAGES } from "../../resources/constants";
+const opacity = "20";
+const shift = (4 * (Dimensions.get("window").width * 0.4)) / (3 * Math.PI);
+const radius = Dimensions.get("window").width * 0.4;
 
 const HomeMedicineLogger = ({
   done,
@@ -29,14 +30,13 @@ const HomeMedicineLogger = ({
     COLOR.blue + opacity
   ];
   done.map((val, i, done) => {
-    done[i] = val ? colors[i] : '#FFFFFF';
+    done[i] = val ? colors[i] : "#FFFFFF";
   });
 
   return (
-    <View style={styles.medicineViewContainer}>
+    <View style={[styles.medicineViewContainer]}>
       <View style={styles.medicineViewRow}>
-        <TouchableHighlight
-          activeOpacity={0.5}
+        <TouchableOpacity
           underlayColor={colors[0]}
           style={[
             { backgroundColor: done[0] },
@@ -54,8 +54,8 @@ const HomeMedicineLogger = ({
             style={[
               styles.buttonContent,
               {
-                right: shift - radius * 0.5 / 2,
-                bottom: shift - radius * 0.8 / 2
+                right: shift - (radius * 0.5) / 2,
+                bottom: shift - (radius * 0.8) / 2
               }
             ]}
           >
@@ -65,8 +65,8 @@ const HomeMedicineLogger = ({
             />
             <Text style={styles.amountText}>{amtArr[0]}</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           underlayColor={colors[1]}
           style={[
             { backgroundColor: done[1] },
@@ -84,8 +84,8 @@ const HomeMedicineLogger = ({
             style={[
               styles.buttonContent,
               {
-                left: shift - radius * 0.5 / 2,
-                bottom: shift - radius * 0.8 / 2
+                left: shift - (radius * 0.5) / 2,
+                bottom: shift - (radius * 0.8) / 2
               }
             ]}
           >
@@ -95,10 +95,10 @@ const HomeMedicineLogger = ({
             />
             <Text style={styles.amountText}>{amtArr[1]}</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
       <View style={styles.medicineViewRow}>
-        <TouchableHighlight
+        <TouchableOpacity
           underlayColor={colors[2]}
           style={[
             { backgroundColor: done[2] },
@@ -115,7 +115,10 @@ const HomeMedicineLogger = ({
           <View
             style={[
               styles.buttonContent,
-              { right: shift - radius * 0.5 / 2, top: shift - radius * 0.8 / 2 }
+              {
+                right: shift - (radius * 0.5) / 2,
+                top: shift - (radius * 0.8) / 2
+              }
             ]}
           >
             <ImageBackground
@@ -124,8 +127,8 @@ const HomeMedicineLogger = ({
             />
             <Text style={styles.amountText}>{amtArr[2]}</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           underlayColor={colors[3]}
           style={[
             { backgroundColor: done[3] },
@@ -142,7 +145,10 @@ const HomeMedicineLogger = ({
           <View
             style={[
               styles.buttonContent,
-              { left: shift - radius * 0.5 / 2, top: shift - radius * 0.8 / 2 }
+              {
+                left: shift - (radius * 0.5) / 2,
+                top: shift - (radius * 0.8) / 2
+              }
             ]}
           >
             <ImageBackground
@@ -151,7 +157,7 @@ const HomeMedicineLogger = ({
             />
             <Text style={styles.amountText}>{amtArr[3]}</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
