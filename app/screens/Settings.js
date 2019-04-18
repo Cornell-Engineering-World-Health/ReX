@@ -56,7 +56,7 @@ class Settings extends Component {
       height_inches: "",
       height: "Height unknown",
       icon: "0",
-      email: "Doctor's email unknown",
+      email: "Doctor's email unkown",
       modalVisible: "",
       toggle: false,
       exportButtonsVisible: false
@@ -69,6 +69,8 @@ class Settings extends Component {
     var total_inches =
       parseInt(this.state.height_feet) * 12 +
       parseInt(this.state.height_inches);
+    console.log(this.state.weight + "Weight!!");
+    console.log(this.state.height_feet + "Height!!");
     var bmi_num = (weight_int / Math.pow(total_inches, 2)) * 703;
     bmi_num = Math.round(bmi_num * 10) / 10;
     BMI = "" + bmi_num;
@@ -184,15 +186,16 @@ class Settings extends Component {
               marginTop: 35,
               marginLeft: 20,
               marginBottom: 10,
-              fontWeight: "100",
+              fontWeight: "bold",
               fontSize: 35
             }}
           >
             Settings
           </Text>
         </View>
-        <View>
+        <View style={styles.container}>
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               icon={
                 <Image
