@@ -230,7 +230,7 @@ export function exportSurveyMailFunc(email, subject, date) {
         });
       })
       .catch(e => {
-        throwAlert("Cannot export!", "No questionnair data to export.");
+        throwAlert("Cannot export!", "No questionnaire data to export.");
       });
   })
 }
