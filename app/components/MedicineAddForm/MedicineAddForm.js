@@ -50,6 +50,8 @@ export default class MedicineAddForm extends React.Component {
       timeArray: [timeStr],
       timeArrayIdx: 0,
       modalID: "",
+      granularity: "",
+      frequency: 0,
       submit_vals: {} //object for final submit
     };
   }
@@ -201,6 +203,9 @@ export default class MedicineAddForm extends React.Component {
       this.setState({ timeArray: this.state.timeArray.sort() });
       this.valueChange("Time", this.state.timeArray.sort());
       this.valueChange("Time Category", time_category);
+    } else if (this.state.modalID == GRAN_ID) {
+      this.valueChange("Granularity", this.state.granularity)
+      this.valueChange("Frequency", this.state.frequency)
     }
   }
 
@@ -278,25 +283,17 @@ export default class MedicineAddForm extends React.Component {
     modalContent = this.state.modalID == GRAN_ID ? (
        <View style={{ flex: 1, flexDirection: 'row', width: viewportWidth }}>
        <Picker
-       selectedValue = {this.state.submit_vals["Granularity"]}
-       onValueChange={(gran) => {this.valueChange("Granularity", gran)}}
+       selectedValue = {this.state.granularity}
+       onValueChange={(gran) => {this.setState({granularity: gran})}}
        style = {{flex: 0.5}}>
        <Picker.Item label="Daily" value="Daily" />
        <Picker.Item label="Weekly" value="Weekly" />
        <Picker.Item label="Monthly" value="Monthly" />
        </Picker>
        <Picker
-       selectedValue = {this.state.submit_vals["Frequency"]}
-       onValueChange={(freq) => {this.valueChange("Frequency", freq)}}
+       selectedValue = {this.state.frequency}
+       onValueChange={(freq) => {this.setState({frequency: freq})}}
        style = {{flex: 0.5}}>
-       {this.freqItems()}
-       </Picker>
-       </View>) : modalContent;
-    modalContent = this.state.modalID == FREQ_ID ? (
-       <View style={{ flex: 1, width: viewportWidth }}>
-       <Picker
-       selectedValue = {this.state.submit_vals["Frequency"]}
-       onValueChange={(freq) => {this.valueChange("Frequency", freq)}}>
        {this.freqItems()}
        </Picker>
        </View>) : modalContent;
@@ -327,8 +324,8 @@ export default class MedicineAddForm extends React.Component {
     }
     let granText = "Enter Your Prescription Frequency"
     let freqText = ""
-    if (this.state.submit_vals["Granularity"] && this.state.submit_vals["Frequency"]) {
-      granText = this.state.submit_vals["Granularity"]
+    if (this.state.granularity && this.state.frequency) {
+      granText = this.state.granularity
       if (granText == "Daily") {
         granText = "Day"
       }
@@ -338,7 +335,7 @@ export default class MedicineAddForm extends React.Component {
       else {
         granText = "Month"
       }
-      let tempFreq = this.state.submit_vals["Frequency"]
+      let tempFreq = this.state.frequency
       if (tempFreq > 1) {
         granText = "Every " + tempFreq.toString() + " " + granText + "s"
       }
