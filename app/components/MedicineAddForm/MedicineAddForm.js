@@ -204,8 +204,20 @@ export default class MedicineAddForm extends React.Component {
       this.valueChange("Time", this.state.timeArray.sort());
       this.valueChange("Time Category", time_category);
     } else if (this.state.modalID == GRAN_ID) {
-      this.valueChange("Granularity", this.state.granularity)
-      this.valueChange("Frequency", this.state.frequency)
+      gran = this.state.granularity
+      freq = this.state.frequency
+      if (this.state.granularity == "") {
+        gran = "Daily"
+      }
+      if (this.state.frequency == 0) {
+        freq = 1
+      }
+      this.setState({
+        granularity: gran,
+        frequency: freq
+      })
+      this.valueChange("Granularity", gran)
+      this.valueChange("Frequency", freq)
     }
   }
 
@@ -323,7 +335,6 @@ export default class MedicineAddForm extends React.Component {
       timeText = "Enter Your Prescription Time";
     }
     let granText = "Enter Your Prescription Frequency"
-    let freqText = ""
     if (this.state.granularity && this.state.frequency) {
       granText = this.state.granularity
       if (granText == "Daily") {
