@@ -11,7 +11,6 @@ export default StyleSheet.create({
     justifyContent: "space-around"
   },
   separator: {
-    //backgroundColor: '#f2f2f2',
     backgroundColor: "black",
     height: StyleSheet.hairlineWidth,
     marginLeft: 40,
@@ -42,9 +41,10 @@ export default StyleSheet.create({
     fontWeight: "300"
   },
   middleMessage: {
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
+    opacity: 0.99,
     position: "absolute",
     left: 25,
     right: 25,
@@ -52,8 +52,9 @@ export default StyleSheet.create({
   },
   middleMessageText: {
     fontSize: 20,
-    color: COLOR.PrimaryGray,
-    textAlign: "center"
+    color: COLOR.gradient[0],
+    textAlign: "center",
+    fontWeight: "100"
   },
   subHeader: {
     flexDirection: "row",
@@ -92,12 +93,23 @@ export default StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     padding: 5,
-    borderRadius: 15,
+    borderBottomWidth: 3,
     height: 65,
     width: 65,
     backgroundColor: "white",
-    borderWidth: 3,
+    borderTopWidth: 3,
     borderColor: "#5052ff80"
+  },
+
+  faceLeft: {
+    borderLeftWidth: 3,
+    borderBottomLeftRadius: 15,
+    borderTopLeftRadius: 15
+  },
+  faceRight: {
+    borderRightWidth: 3,
+    borderBottomRightRadius: 15,
+    borderTopRightRadius: 15
   },
   addImageStyle: {
     width: 40,
@@ -112,12 +124,10 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    paddingLeft: 10,
-    paddingRight: 10,
     paddingBottom: 10
   },
   addButtonText: {
-    fontSize: 50,
+    fontSize: 20,
     fontWeight: "300"
   },
   badge: {

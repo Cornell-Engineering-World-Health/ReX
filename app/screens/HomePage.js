@@ -78,7 +78,7 @@ background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8f
 const backgroundGradient = COLOR.gradient;
 let gradient_ratio = 0.7;
 let height_header = 125;
-let middle_message = 100;
+let middle_message = 95;
 let halfway_fromtop =
   viewportHeight * (1 - gradient_ratio) - middle_message / 4;
 let profile_fromtop =
@@ -271,8 +271,8 @@ class Home extends React.Component {
             ENCOURAGEMENT_TEXT[
               Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)
             ] +
-            "\n" +
-            "You have not missed any medications in\n" +
+            " " +
+            "You have not missed any medications in " +
             time_diff_str +
             "!"
         });
@@ -558,11 +558,6 @@ class Home extends React.Component {
           ]}
         >
           <Text style={styles.middleMessageText}>{this.state.message}</Text>
-          <Text style={styles.subHeaderText}>
-            {constants.DAY[currentDate.getDay()] + " "}
-            {constants.MONTH[currentDate.getMonth()] + " "}
-            {currentDate.getDate()}
-          </Text>
         </View>
         <View style={{ flex: 0.5 }} />
 
@@ -612,21 +607,36 @@ class Home extends React.Component {
           }}
         />
         <View style={styles.addButtonsContainer}>
-          <HomeButton badgeText="+" image={IMAGES.medicine} />
-          <HomeButton badgeText="+" image={IMAGES.elbowPain} />
+          <HomeButton
+            badgeText="+"
+            image={IMAGES.medicine}
+            style={styles.faceRight}
+          />
+          <HomeButton
+            badgeText="+"
+            image={IMAGES.elbowPain}
+            style={styles.faceLeft}
+          />
         </View>
       </View>
     );
   }
 }
 
-const HomeButton = props => {
+export const HomeButton = props => {
   return (
-    <TouchableOpacity style={[styles.addButton, styles.darkShadow]}>
-      {/*<View style={styles.badge}>
-        <Text style={styles.badgeText}>{props.badgeText}</Text>
-      </View>*/}
-      <Image style={styles.addImageStyle} source={props.image} />
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[styles.addButton, styles.darkShadow, props.style]}
+    >
+      {props.text && (
+        <Text style={[styles.addButtonText, props.textStyle]}>
+          {props.text}
+        </Text>
+      )}
+      {props.image && (
+        <Image style={styles.addImageStyle} source={props.image} />
+      )}
     </TouchableOpacity>
   );
 };

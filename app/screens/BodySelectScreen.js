@@ -9,9 +9,17 @@ import {
   Image
 } from "react-native";
 import { LinearGradient } from "expo";
+import { HomeButton } from "./HomePage";
 import { BODY_PARTS, COLOR, IMAGES } from "../resources/constants";
+import otherStyles from "./styles";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+
+let gradientRatio = 0.75;
+let menubar_height = 60;
+let button_height = 50;
+let buttons_fromtop =
+  (1 - gradientRatio) * height - menubar_height + (button_height * 5) / 2;
 
 export default class BodySelectScreen extends React.Component {
   constructor(props) {
@@ -24,9 +32,9 @@ export default class BodySelectScreen extends React.Component {
   }
 
   componentWillMount() {
-    setTimeout(() => {
-      this.measureAndSet(this, 0, []);
-    });
+    // setTimeout(() => {
+    //   this.measureAndSet(this, 0, []);
+    // });
   }
 
   // calculates the top positioning of lines, param index and incomplete lineTop array
@@ -93,7 +101,7 @@ export default class BodySelectScreen extends React.Component {
     let h_lines = this.renderHorizontalLines();
     return (
       <View style={{ flex: 1, paddingTop: 40, backgroundColor: "white" }}>
-        {h_lines}
+        {/*h_lines*/}
         <LinearGradient
           colors={COLOR.gradient}
           style={[
@@ -102,7 +110,7 @@ export default class BodySelectScreen extends React.Component {
               left: 0,
               right: 0,
               top: 0,
-              bottom: height * 0.75
+              bottom: height * gradientRatio
             },
             styles.darkShadow
           ]}
@@ -177,7 +185,7 @@ export default class BodySelectScreen extends React.Component {
               <View style={[styles.empty_bottom, {}]} />
             </View>
           </View>
-          <View style={styles.labelContainer}>
+          {/* <View style={styles.labelContainer}>
             <View
               style={{
                 width: width * 0.35,
@@ -190,7 +198,7 @@ export default class BodySelectScreen extends React.Component {
                 ref={l => {
                   this.labels[0] = l;
                 }}
-                style={[styles.label, { marginTop: height / 16 }]}
+                style={[styles.label, { marginTop: height / 16 - 8 }]}
               >
                 <Text style={styles.labelText}>Face / Head</Text>
               </View>
@@ -224,36 +232,84 @@ export default class BodySelectScreen extends React.Component {
               >
                 <Text style={styles.labelText}>Legs</Text>
               </View>
-              <TouchableOpacity
-                style={styles.searchButton}
-                onPress={() => {
-                  navigate("Choose", {
-                    bodyLabel: BODY_PARTS.ALL
-                  });
-                }}
-              >
-                <LinearGradient
-                  colors={[COLOR.gradient[1], COLOR.gradient[1]]}
-                  style={[
-                    {
-                      position: "absolute",
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      borderRadius: 100
-                    },
-                    styles.darkShadow
-                  ]}
-                  start={[0, 1]}
-                  end={[1, 0]}
-                />
-                <Image source={IMAGES.search} style={styles.searchImage} />
-                <Text style={styles.searchText}>Search</Text>
-              </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </ImageBackground>
+        <View
+          style={{
+            position: "absolute",
+            top: buttons_fromtop,
+            right: 0,
+            alignItems: "flex-end"
+          }}
+        >
+          <HomeButton
+            text="head"
+            style={[
+              otherStyles.faceLeft,
+              styles.bodyButton,
+              { backgroundColor: COLOR.gradient[1] }
+            ]}
+            textStyle={styles.bodyButtonText}
+            onPress={() => {
+              navigate("Choose", {
+                bodyLabel: BODY_PARTS.HEAD
+              });
+            }}
+          />
+          <HomeButton
+            text="torso"
+            style={[
+              otherStyles.faceLeft,
+              styles.bodyButton,
+              { backgroundColor: COLOR.gradient[0] }
+            ]}
+            textStyle={styles.bodyButtonText}
+            onPress={() => {
+              navigate("Choose", {
+                bodyLabel: BODY_PARTS.TORSO
+              });
+            }}
+          />
+          <HomeButton
+            text="arms"
+            style={[
+              otherStyles.faceLeft,
+              styles.bodyButton,
+              { backgroundColor: COLOR.gradient[1] }
+            ]}
+            textStyle={styles.bodyButtonText}
+            onPress={() => {
+              navigate("Choose", {
+                bodyLabel: BODY_PARTS.ARMS
+              });
+            }}
+          />
+          <HomeButton
+            text="legs"
+            style={[
+              otherStyles.faceLeft,
+              styles.bodyButton,
+              { backgroundColor: COLOR.gradient[0] }
+            ]}
+            textStyle={styles.bodyButtonText}
+            onPress={() => {
+              navigate("Choose", {
+                bodyLabel: BODY_PARTS.LEGS
+              });
+            }}
+          />
+          <HomeButton
+            image={IMAGES.search}
+            style={[otherStyles.faceLeft]}
+            textStyle={styles.bodyButtonText}
+            onPress={() => {
+              navigate("Choose", {
+                bodyLabel: BODY_PARTS.ALL
+              });
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -272,7 +328,7 @@ const styles = StyleSheet.create({
   bodyVertical: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     width: width * 0.65
   },
   labelContainer: {
@@ -324,19 +380,15 @@ const styles = StyleSheet.create({
   empty_top: {
     height: height / 8
   },
-
-  searchButton: {
-    alignItems: "center",
-    backgroundColor: "#42f4aa",
-    alignSelf: "center",
-    borderRadius: 1000,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    position: "absolute",
-    bottom: 0,
-    right: 20
+  bodyButton: {
+    width: 100,
+    height: button_height,
+    marginBottom: 2
+  },
+  bodyButtonText: {
+    fontSize: 20,
+    fontWeight: "200",
+    color: "white"
   },
   searchImage: {
     width: 25,
