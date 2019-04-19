@@ -107,7 +107,6 @@ export default class TextInputType extends React.Component {
                     this.props.valueChange(this.props.val_label, item);
                     this.setState({ isTyping: false, text: item }, () => {
                       this.contract();
-                      console.log(this.state.text);
                     });
                     this.textInput.blur();
                   }}

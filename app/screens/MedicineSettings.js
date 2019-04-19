@@ -85,8 +85,6 @@ export default class MedicineSettings extends React.Component {
         times
       );
     } else {
-      //turned OFF
-      //console.log("OFF!");
       cancelMassNotification(
         new Date(data[index].startDate),
         new Date(data[index].endDate),
@@ -370,8 +368,8 @@ const styles = StyleSheet.create({
     fontWeight: "200"
   },
   cardWrapper: {
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5
   },
@@ -384,12 +382,14 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "200",
     padding: 10
   },
   notificationText: {
-    textAlign: "right"
+    textAlign: "right",
+    paddingRight: 10,
+    paddingBottom: 10
   },
   cardButton: {
     flex: 1,
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
   },
   modalHeaderText: {
     textAlign: "center",
-    fontSize: 40,
+    fontSize: 25,
     fontWeight: "200"
   },
   modalButton: {

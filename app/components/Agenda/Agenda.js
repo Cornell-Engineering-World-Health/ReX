@@ -8,18 +8,22 @@ import {
   Dimensions,
   TouchableOpacity,
   Picker,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
 import Card from "../Card/Card.js";
 import { COLOR, IMAGES, SYMPTOM_IDS } from "../../resources/constants";
 import Modal from "react-native-modal";
-import { asyncDeleteEvent, asyncCreateSymptomLogEvent } from "../../databaseUtil/databaseUtil";
+import {
+  asyncDeleteEvent,
+  asyncCreateSymptomLogEvent
+} from "../../databaseUtil/databaseUtil";
 import ListItem from "../Card/ListItem";
 import AddItem from "../Card/AddItem";
 import { isMoment } from "../../../node_modules/moment";
 import moment from "moment";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  'window'
+  "window"
 );
 
 const numericMetaInfo = [
@@ -51,18 +55,18 @@ class Agenda extends Component {
       editVisible: false,
       durationVisible: false,
       agendaInfo: [],
-      currentCard: {note1: ":  0"},
+      currentCard: { note1: ":  0" },
       currentCardTitle: "",
       selected: 0,
       duration: "N/A",
       hourChoice: 0,
       minuteChoice: 0,
       other: "",
-      otherSymptoms: ['LAST_ELEMENT'],
+      otherSymptoms: ["LAST_ELEMENT"],
       overlayOpenIndex: -1,
       deleteId: -1,
       saveTime: "",
-      logType: -1,
+      logType: -1
     };
   }
 
@@ -108,38 +112,40 @@ class Agenda extends Component {
                     text: "Edit",
                     type: "edit",
                     onPress: () => {
-                      console.log(item)
-                      console.log(item)
-                      let intense = item.note1
-                      let duration = item.note2
-                      let other = item.note3
-                      let currentIntensity = intense.slice(intense.indexOf(":")+2)
-                      let currentDuration = duration.slice(duration.indexOf(":")+2)
-                      let tempOther = other.slice(other.indexOf(":") + 2)
-                      let otherSymptoms = tempOther.split(',')
-                      console.log("other")
-                      console.log(otherSymptoms)
+                      let intense = item.note1;
+                      let duration = item.note2;
+                      let other = item.note3;
+                      let currentIntensity = intense.slice(
+                        intense.indexOf(":") + 2
+                      );
+                      let currentDuration = duration.slice(
+                        duration.indexOf(":") + 2
+                      );
+                      let tempOther = other.slice(other.indexOf(":") + 2);
+                      let otherSymptoms = tempOther.split(",");
                       if (otherSymptoms[0] === "") {
-                        otherSymptoms = ['LAST_ELEMENT']
+                        otherSymptoms = ["LAST_ELEMENT"];
+                      } else if (this.state.otherSymptoms.length == 1) {
+                        otherSymptoms = [
+                          ...otherSymptoms,
+                          ...this.state.otherSymptoms
+                        ];
+                      } else {
+                        otherSymptoms = [...otherSymptoms, "LAST_ELEMENT"];
                       }
-                      else if (this.state.otherSymptoms.length == 1) {
-                        otherSymptoms = [...otherSymptoms, ...this.state.otherSymptoms]
+                      if (currentIntensity !== "N/A") {
+                        this.setState({ selected: parseInt(currentIntensity) });
                       }
-                      else {
-                        otherSymptoms = [...otherSymptoms, 'LAST_ELEMENT']
-                      }
-                      if (currentIntensity !== "N/A"){
-                        this.setState({ selected: parseInt(currentIntensity) })
-                      }
-                      this.setState({ duration: currentDuration })
-                      console.log(otherSymptoms)
-                      this.setState({ otherSymptoms: otherSymptoms })
-                      this.setState({ deleteId: item.id })
-                      this.setState({ saveTime: item.timeStamp})
-                      this.setState({ logType: SYMPTOM_IDS[item.cardData.title] })
-                      this.setState({ currentCardTitle: item.cardData.title})
+                      this.setState({ duration: currentDuration });
+                      this.setState({ otherSymptoms: otherSymptoms });
+                      this.setState({ deleteId: item.id });
+                      this.setState({ saveTime: item.timeStamp });
+                      this.setState({
+                        logType: SYMPTOM_IDS[item.cardData.title]
+                      });
+                      this.setState({ currentCardTitle: item.cardData.title });
                       this.props.refreshCalendar();
-                      this.setState({ editVisible: true })
+                      this.setState({ editVisible: true });
                     }
                   },
                   {
@@ -177,11 +183,11 @@ class Agenda extends Component {
     let hours_arr = [];
     let mins_arr = [];
     for (var x = 0; x < MAX_HOURS; x++) {
-      hours_arr.push(<Picker.Item key={x} label={x + ''} value={x} />);
+      hours_arr.push(<Picker.Item key={x} label={x + ""} value={x} />);
     }
 
     for (var y = 0; y < 60; y += 5) {
-      mins_arr.push(<Picker.Item key={y} label={y + ''} value={y} />);
+      mins_arr.push(<Picker.Item key={y} label={y + ""} value={y} />);
     }
 
     return (
@@ -214,13 +220,13 @@ class Agenda extends Component {
     let hour = this.state.hourChoice;
     let minute = this.state.minuteChoice;
 
-    let hourSuffix = hour == 1 ? ' hour' : ' hours';
-    let minuteSuffix = minute == 1 ? ' minute' : ' minutes';
-    let label = '';
+    let hourSuffix = hour == 1 ? " hour" : " hours";
+    let minuteSuffix = minute == 1 ? " minute" : " minutes";
+    let label = "";
     if (minute == 0) {
       label = hour + hourSuffix;
     } else {
-      label = hour + hourSuffix + ', ' + minute + minuteSuffix;
+      label = hour + hourSuffix + ", " + minute + minuteSuffix;
     }
     this.setState({ duration: label });
   }
@@ -228,128 +234,123 @@ class Agenda extends Component {
   _renderDurationPicker() {
     return (
       <Modal
-      isVisible={this.state.durationVisible}
-      animationInTiming={500}
-      animationOutTiming={500}
-      onBackdropPress={() => {
-        this.setState({ durationVisible: false });
-      }}
-      style={styles.smallModal}
-    >
-      <View
-        style={{
-          flex: 0.35,
-          backgroundColor: '#ffffff'
+        isVisible={this.state.durationVisible}
+        animationInTiming={500}
+        animationOutTiming={500}
+        onBackdropPress={() => {
+          this.setState({ durationVisible: false });
         }}
+        style={styles.smallModal}
       >
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
-            onPress={() => {
-              this.setState({ durationVisible: false });
-              this.handleMoreSpecificChange();
-            }}
-            alignItems="center"
-          >
-            <Text style={styles.text}>Confirm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.modalSubmitButton}
-            onPress={() => {
-              this.setState({ durationVisible: false });
-            }}
-            alignItems="center"
-          >
-            <Text style={styles.text}>Cancel</Text>
-          </TouchableOpacity>
+        <View
+          style={{
+            flex: 0.35,
+            backgroundColor: "#ffffff"
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              style={[styles.modalSubmitButton, { borderRightWidth: 1 }]}
+              onPress={() => {
+                this.setState({ durationVisible: false });
+                this.handleMoreSpecificChange();
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Confirm</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalSubmitButton}
+              onPress={() => {
+                this.setState({ durationVisible: false });
+              }}
+              alignItems="center"
+            >
+              <Text style={styles.text}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          {this._renderTimePicker()}
         </View>
-        {this._renderTimePicker()}
-      </View>
-    </Modal>
-    )
+      </Modal>
+    );
   }
 
   _renderDuration() {
     return (
       <View>
-      <View style = {{alignItems: "center", marginBottom: 10}}>
-      <Text style={[styles.summaryText, {fontSize:20}]}>Duration</Text>
-      </View>
-      <TouchableOpacity
-      onPress = {() => {
-        this.setState({ durationVisible: true });
-      }}
-      style={{alignItems: "stretch"}}
-      >
-          <View
-          style={[
-            styles.intensityLabelContainer,
-            {
-              backgroundColor: "transparent",
-              borderWidth: 5,
-              borderColor: numericMetaInfo[0][0]
-            }
-          ]}
-        >
-          <Text style={styles.intensityLabel}>
-            {this.state.duration}
-          </Text>
+        <View style={{ alignItems: "center", marginBottom: 10 }}>
+          <Text style={[styles.summaryText, { fontSize: 20 }]}>Duration</Text>
         </View>
-      </TouchableOpacity>
-      {this._renderDurationPicker()}
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({ durationVisible: true });
+          }}
+          style={{ alignItems: "stretch" }}
+        >
+          <View
+            style={[
+              styles.intensityLabelContainer,
+              {
+                borderWidth: 1,
+                borderColor: numericMetaInfo[0][0]
+              }
+            ]}
+          >
+            <Text style={styles.durationLabel}>{this.state.duration}</Text>
+          </View>
+        </TouchableOpacity>
+        {this._renderDurationPicker()}
       </View>
-      )
+    );
   }
 
   _renderIntensity() {
     let body = null;
-    body = ([0,1,2,3,4,5,6,7,8,9,10]).map((option, i, arr) => {
-
+    body = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option, i, arr) => {
       return (
-        <View key={i} style={{paddingLeft: 2}}>
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({ selected: i });
-          }}
-          style={[
-            styles.button,
-            {
-              borderRadius: 2,
-              backgroundColor: numericMetaInfo[i],
-              height: 30,
-              width: 30
-            }
-          ]}
-        >
-          <Text style={[styles.buttonText]}>{i}</Text>
-        </TouchableOpacity>
+        <View key={i} style={{ paddingLeft: 0 }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({ selected: i });
+            }}
+            style={[
+              styles.button,
+              {
+                borderRadius: 0,
+                backgroundColor: numericMetaInfo[i],
+                height: 30,
+                width: 30
+              }
+            ]}
+          >
+            <Text style={[styles.buttonText]}>{i}</Text>
+          </TouchableOpacity>
         </View>
       );
     });
 
     return (
-    <View>
-    <View style = {{alignItems: "center", marginBottom: 10}}>
-    <Text style={[styles.summaryText, {fontSize:20}]}>Intensity</Text>
-    </View>
-    <View style={{alignItems: "stretch"}}>
-        <View style={styles.body}>{body}</View>
-        {console.log(this.state.selected)}
-        <View
-        style={[
-          styles.intensityLabelContainer,
-          {
-            backgroundColor: numericMetaInfo[this.state.selected][0]
-          }
-        ]}
-      >
-        <Text style={styles.intensityLabel}>
-          {numericMetaInfo[this.state.selected][1]}
-        </Text>
+      <View>
+        <View style={{ alignItems: "center", marginBottom: 10 }}>
+          <Text style={[styles.summaryText, { fontSize: 20 }]}>Intensity</Text>
+        </View>
+        <View style={{ alignItems: "stretch" }}>
+          <View style={styles.body}>{body}</View>
+          <View
+            style={[
+              styles.intensityLabelContainer,
+              {
+                backgroundColor: numericMetaInfo[this.state.selected][0]
+              }
+            ]}
+          >
+            <Text style={styles.intensityLabel}>
+              {numericMetaInfo[this.state.selected][1]}
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
-    </View>
-    )
+    );
   }
 
   _setOverlayStatus(index) {
@@ -365,50 +366,48 @@ class Agenda extends Component {
     data.splice(index, 1);
 
     this.setState({ otherSymptoms: data, overlayOpenIndex: -1 });
-
   }
 
   addOther(text) {
-    newOther = this.state.otherSymptoms
-    newOther = [...newOther.slice(0, newOther.length - 1), text]
-    newOther.push('LAST_ELEMENT')
+    newOther = this.state.otherSymptoms;
+    newOther = [...newOther.slice(0, newOther.length - 1), text];
+    newOther.push("LAST_ELEMENT");
     this.setState({
       otherSymptoms: newOther
-    })
+    });
   }
 
-  _renderOtherItem = ({item, index}) => {
-      if (index === this.state.otherSymptoms.length - 1) {
-        return (
-          <AddItem valueChange = {(text) => this.addOther(text)}/>
-        )
-      }
-      else {
-        return (
+  _renderOtherItem = ({ item, index }) => {
+    if (index === this.state.otherSymptoms.length - 1) {
+      return <AddItem valueChange={text => this.addOther(text)} />;
+    } else if (item === "N/A") {
+      return null;
+    } else {
+      return (
         <ListItem
-        isOverlayOpen={this.state.overlayOpenIndex == index}
-        setOverlay={isOpen => {
-          this._setOverlayStatus(isOpen ? index : -1);
-        }}
-        onDelete={() => {
-          this._deleteItem(index);
-        }}
-        text={item}
-        style={{
-          backgroundColor:
-            index % 2 == 0 ? COLOR.blue + '50' : COLOR.blue + '90',
-          justifyContent: 'center'
-        }}
-      />
-      )
-      }
-  }
+          isOverlayOpen={this.state.overlayOpenIndex == index}
+          setOverlay={isOpen => {
+            this._setOverlayStatus(isOpen ? index : -1);
+          }}
+          onDelete={() => {
+            this._deleteItem(index);
+          }}
+          text={item}
+          style={{
+            backgroundColor:
+              index % 2 == 0 ? COLOR.blue + "50" : COLOR.blue + "90",
+            justifyContent: "center"
+          }}
+        />
+      );
+    }
+  };
 
   _renderOther() {
     return (
       <View>
-        <View style = {{alignItems: "center", marginBottom: 10}}>
-        <Text style={[styles.summaryText, {fontSize:20}]}>Other</Text>
+        <View style={{ alignItems: "center", marginBottom: 10 }}>
+          <Text style={[styles.summaryText, { fontSize: 20 }]}>Other</Text>
         </View>
         <View style={{ paddingLeft: 15, paddingRight: 15 }}>
           <FlatList
@@ -422,72 +421,87 @@ class Agenda extends Component {
             })}
             data={this.state.otherSymptoms}
             extraData={this.state}
-            keyExtractor={(item, index) => ""+index}
+            keyExtractor={(item, index) => "" + index}
             renderItem={this._renderOtherItem}
           />
+        </View>
       </View>
-      </View>
-    )
+    );
   }
 
   _handleSubmit = () => {
-    console.log("IN HERE")
-    console.log(this.props.date)
-    let submit_vals = {}
-    submit_vals["Duration"] = this.state.duration
-    submit_vals["Intensity"] = this.state.selected
-    submit_vals["Other"] = this.state.otherSymptoms.slice(0, this.state.otherSymptoms.length - 1).join(', ')
-    console.log(submit_vals["Other"])
-    let values = JSON.stringify(submit_vals);
-    
-    let parseTime = this.props.date.split('/')
-    let year = parseTime[2]
-    let month = parseTime[0]
-    let day = parseTime[1]
+    let submit_vals = {};
+    submit_vals["Duration"] = this.state.duration;
+    submit_vals["Intensity"] = this.state.selected;
 
-    let hour = parseInt(this.state.saveTime.slice(0, this.state.saveTime.indexOf(":")))
-    let minute = this.state.saveTime.slice(this.state.saveTime.indexOf(":")+1, this.state.saveTime.length)
-    minute = minute.slice(0, minute.indexOf(" "))
+    /*
+      format other symptoms (remove N/A if there is more than 1 elt, or add N/A)
+      for 0 elts
+    */
+    let startIndex = 0;
+    this.state.otherSymptoms[0] === "N/A" && this.state.otherSymptoms.length > 2
+      ? (startIndex = 1)
+      : (startIndex = 0);
+    submit_vals["Other"] = this.state.otherSymptoms
+      .slice(startIndex, this.state.otherSymptoms.length - 1)
+      .join(", ");
+
+    let values = JSON.stringify(submit_vals);
+
+    let parseTime = this.props.date.split("/");
+    let year = parseTime[2];
+    let month = parseTime[0];
+    let day = parseTime[1];
+
+    let hour = parseInt(
+      this.state.saveTime.slice(0, this.state.saveTime.indexOf(":"))
+    );
+    let minute = this.state.saveTime.slice(
+      this.state.saveTime.indexOf(":") + 1,
+      this.state.saveTime.length
+    );
+    minute = minute.slice(0, minute.indexOf(" "));
     if (this.state.saveTime.includes("P")) {
-      hour = hour + 12
+      hour = hour + 12;
       if (hour == 24) {
-        hour = 0
+        hour = 0;
       }
     }
 
     if (parseInt(month) < 10) {
-      month = "0" + month
+      month = "0" + month;
     }
     if (parseInt(day) < 10) {
-      day = "0" + day
+      day = "0" + day;
     }
 
-    let newMinute = parseInt(minute)
-    let minString = minute.toString()
+    let newMinute = parseInt(minute);
+    let minString = minute.toString();
     if (newMinute < 10 && newMinute > 0) {
-      minString = "0" + minString
+      minString = "0" + minString;
     }
-    let hourString = hour.toString()
+    let hourString = hour.toString();
     if (hour < 10) {
-      hourString = "0" + hourString
+      hourString = "0" + hourString;
     }
-    console.log(hourString)
-    console.log(minString)
-    let timestamp = year + "-" + month + "-" + day + " " + hourString + ":" + minString + ":00";
-
-    console.log(timestamp)
+    let timestamp =
+      year +
+      "-" +
+      month +
+      "-" +
+      day +
+      " " +
+      hourString +
+      ":" +
+      minString +
+      ":00";
     let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
-
-    console.log("new write info")
-    console.log(values)
-    console.log(correctTime)
-    console.log(this.state.logType)
 
     asyncDeleteEvent(this.state.deleteId);
     asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);
     this.setState({ editVisible: false });
     this.props.refreshCalendar();
-  }
+  };
 
   render() {
     let page = this._renderAgenda();
@@ -568,35 +582,30 @@ class Agenda extends Component {
           animationOutTiming={300}
           animationInTiming={300}
         >
-        <View style={{
-              justifyContent: "center",
-              flexDirection: "row",
-              marginBottom: 50
-            }}>
-        <Text style={styles.summaryText}>Edit: {this.state.currentCardTitle}</Text>
-        </View>
-        <View style={{
-          marginBottom: 50,
-          alignItems: "stretch",
-        }}>
-        {this._renderDuration()}
-        </View>
-        <View style={{
-          marginBottom: 50,
-          alignItems: "stretch",
-        }}>
-        {this._renderIntensity()}
-        </View>
-        <View style = {{justifyContent: "center", flexDirection: "column", flex: 0.8}}>
-          {this._renderOther()}
-          </View>
-          <View style={styles.submitWrapper}>
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={this._handleSubmit}
-            >
-              <Text style={styles.text}>Submit</Text>
-            </TouchableOpacity>
+          <View style={{ flex: 1, justifyContent: "space-around" }}>
+            <ScrollView>
+              <View
+                style={{
+                  justifyContent: "center",
+                  flexDirection: "row"
+                }}
+              >
+                <Text style={styles.summaryText}>
+                  Edit: {this.state.currentCardTitle}
+                </Text>
+              </View>
+              <View style={styles.editCard}>{this._renderDuration()}</View>
+              <View style={styles.editCard}>{this._renderIntensity()}</View>
+              <View style={styles.editCard}>{this._renderOther()}</View>
+              <View style={styles.submitWrapper}>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={this._handleSubmit}
+                >
+                  <Text style={styles.text}>Submit</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
         </Modal>
       </View>
@@ -606,7 +615,7 @@ class Agenda extends Component {
 
 const styles = StyleSheet.create({
   smallModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0
   },
   modalStyle: {
@@ -615,9 +624,9 @@ const styles = StyleSheet.create({
   modalSubmitButton: {
     width: viewportWidth / 2,
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#aedfe1'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#aedfe1"
   },
   expandStyle: {
     width: 25,
@@ -651,7 +660,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: "center"
   },
   intensityLabelContainer: {
     padding: 10,
@@ -663,17 +672,22 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     color: "white"
   },
+  durationLabel: {
+    fontSize: 25,
+    fontWeight: "200",
+    color: "black"
+  },
   text: {
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'black',
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "black",
     fontSize: 15
   },
   pickerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1
   },
   pickerStyle: {
@@ -689,36 +703,43 @@ const styles = StyleSheet.create({
   },
   submitWrapper: {
     padding: 20,
-    marginTop: 50,
     alignItems: "center"
   },
   itemTextStyle: {
-    textAlign: 'center',
-    fontWeight: '100',
+    textAlign: "center",
+    fontWeight: "100",
     fontSize: 18
   },
   itemWrapper: {
     margin: 1,
-    alignItems: 'center',
+    alignItems: "center",
     height: 55,
     backgroundColor: COLOR.blue,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    position: 'relative',
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "relative"
   },
   otherHeader: {
     flex: 0.2
   },
   questionText: {
     fontSize: 25,
-    fontWeight: '100',
-    textAlign: 'center',
-    color: 'white'
+    fontWeight: "100",
+    textAlign: "center",
+    color: "white"
   },
   otherWrapper: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: "stretch"
   },
+  editCard: {
+    alignItems: "stretch",
+    backgroundColor: "white",
+    padding: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 5
+  }
 });
 
 export default Agenda;
