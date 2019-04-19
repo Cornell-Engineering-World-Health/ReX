@@ -1,16 +1,22 @@
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Dimensions
+} from "react-native";
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
 import Timeline from "react-native-timeline-listview";
-import { initializeRegistryWithDefinitions } from "react-native-animatable";
-import { shouldBeTaken, shouldBeTakenNow } from '../../resources/helpers';
+import { shouldBeTaken, shouldBeTakenNow } from "../../resources/helpers";
 import {
   setOurNotification,
   cancelOurNotification
-} from '../PushController/PushController';
-import Moment from 'moment'
+} from "../PushController/PushController";
+import Moment from "moment";
 
 var background = ["#ffffff", "#ecfaf7", "#fcf0f2"];
 var border = ["#ffffff", "#7fdecb", "#f8ced5"];
@@ -31,7 +37,7 @@ class Card extends PureComponent {
   constructor(props) {
     super(props);
 
-    var index_color = this.getPassedIndexandColor()
+    var index_color = this.getPassedIndexandColor();
     var index = index_color[0];
     var color = index_color[1];
 
@@ -52,36 +58,35 @@ class Card extends PureComponent {
     this._handleRenderText();
   };
 
-
-     // 0 is gray, 1 is green, 2 is red
+  // 0 is gray, 1 is green, 2 is red
   getPassedIndexandColor = () => {
-      var passed_index = 0;
-      if (this.props.passed) {
-        for (var x = this.props.passed.length - 1; x >= 0; x--) {
-          // hit a taken, next one
-          if (this.props.passed[x]) {
-            passed_index = x + 1;
-            break;
-          }
-          // first red we see (latest red)
-          if (
-            this.props.passed[x] == false &&
-            shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
-            !shouldBeTakenNow(new Date(this.props.time[x]))
-          ) {
-            return [x, 2];
-          }
-          // if no taken or red, means we havent missed any and have taken some
+    var passed_index = 0;
+    if (this.props.passed) {
+      for (var x = this.props.passed.length - 1; x >= 0; x--) {
+        // hit a taken, next one
+        if (this.props.passed[x]) {
+          passed_index = x + 1;
+          break;
         }
-      }else{
-        passed_index = 0;
+        // first red we see (latest red)
+        if (
+          this.props.passed[x] == false &&
+          shouldBeTaken(new Date(this.props.time[x]), new Date()) &&
+          !shouldBeTakenNow(new Date(this.props.time[x]))
+        ) {
+          return [x, 2];
+        }
+        // if no taken or red, means we havent missed any and have taken some
       }
-      if (shouldBeTakenNow(new Date(this.props.time[passed_index]))){
-        return [passed_index, 1]
-      }else{
-        return [passed_index, 0]
-      }
+    } else {
+      passed_index = 0;
     }
+    if (shouldBeTakenNow(new Date(this.props.time[passed_index]))) {
+      return [passed_index, 1];
+    } else {
+      return [passed_index, 0];
+    }
+  };
 
   /**
    * Renders the appropriate text, border color, and background color for the DoseCard component given its status"
@@ -123,7 +128,6 @@ class Card extends PureComponent {
    * Update visual properties and write to database when medication is logged or unlogged from medicine view
    */
   _handleClick = () => {
-    console.log(this.props)
     that = this;
     var thisMed = new Date(this.props.time[this.state.passed_index]);
     var newPassed = this.state.passed;
@@ -133,9 +137,13 @@ class Card extends PureComponent {
     // can click forward, it you are clicking a red time that you need to take, must go forward
     if (shouldBeTaken(thisMed, new Date())) {
       //make notification changes
-      if(this.props.notificationStatus){//notification function on
-        cancelOurNotification(this.props.title, this.props.dosage,
-          Moment(new Date(this.props.time[this.state.passed_index])).format())
+      if (this.props.notificationStatus) {
+        //notification function on
+        cancelOurNotification(
+          this.props.title,
+          this.props.dosage,
+          Moment(new Date(this.props.time[this.state.passed_index])).format()
+        );
       }
 
       newPassed[this.state.passed_index] = true;
@@ -171,11 +179,16 @@ class Card extends PureComponent {
       newPassed.length > 0 &&
       this.state.passed_index > this.state.init_passed
     ) {
-
       //make notification changes
-      if(this.props.notificationStatus){//notification function on
-        setOurNotification(this.props.title, this.props.dosage,
-          Moment(new Date(this.props.time[this.state.passed_index-1])).format())
+      if (this.props.notificationStatus) {
+        //notification function on
+        setOurNotification(
+          this.props.title,
+          this.props.dosage,
+          Moment(
+            new Date(this.props.time[this.state.passed_index - 1])
+          ).format()
+        );
       }
       var taken_string = "Not taken";
       newPassed[this.state.passed_index - 1] = false;
@@ -377,7 +390,7 @@ class Card extends PureComponent {
         shouldBeTaken(new Date(val), new Date())
       ) {
         circol = "#fa8b89";
-        taken_string = shouldBeTakenNow(new Date(val)) ? "Take Now" : "Missed"  ;
+        taken_string = shouldBeTakenNow(new Date(val)) ? "Take Now" : "Missed";
       } else {
         circol = "#cccccc";
         taken_string = "Not taken";
@@ -393,13 +406,13 @@ class Card extends PureComponent {
   };
 
   getBackgroundColor = () => {
-    var index_color = this.getPassedIndexandColor()
-    return index_color[1]
-  }
+    var index_color = this.getPassedIndexandColor();
+    return index_color[1];
+  };
 
   render() {
     return (
-      <View style={styles.wrapper} key = {this.props.title}>
+      <View style={styles.wrapper} key={this.props.title}>
         <TouchableOpacity
           disabled={!this.props.buttonActive}
           onPress={() => this.props.onPress(time)}
@@ -465,7 +478,10 @@ class Card extends PureComponent {
               backgroundColor: "white",
               padding: 20,
               borderRadius: 5,
-              flex: Math.min(this.state.passed.length * 0.11 + .05, Dimensions.get('window').height)
+              flex: Math.min(
+                this.state.passed.length * 0.11 + 0.05,
+                Dimensions.get("window").height
+              )
             }}
           >
             <Text

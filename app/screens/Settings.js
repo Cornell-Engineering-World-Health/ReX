@@ -66,12 +66,14 @@ class Settings extends Component {
   convert_to_BMI = () => {
     var BMI = "";
     var weight_int = parseInt(this.state.weight);
-    var total_inches = parseInt(this.state.height_feet) * 12 + parseInt(this.state.height_inches);
+    var total_inches =
+      parseInt(this.state.height_feet) * 12 +
+      parseInt(this.state.height_inches);
     console.log(this.state.weight + "Weight!!");
     console.log(this.state.height_feet + "Height!!");
-    var bmi_num = (weight_int / Math.pow(total_inches,2) ) * 703;
-    bmi_num = Math.round( bmi_num * 10 ) / 10;
-    BMI = "" + bmi_num ;
+    var bmi_num = (weight_int / Math.pow(total_inches, 2)) * 703;
+    bmi_num = Math.round(bmi_num * 10) / 10;
+    BMI = "" + bmi_num;
     return BMI;
   };
 
@@ -205,25 +207,25 @@ class Settings extends Component {
                 />
               }
               hasNavArrow={false}
-              title={this.state.name }
+              title={this.state.name}
               titleInfo={"Edit" + "\n" + "Profile"}
               titleStyle={{ fontSize: 20, fontWeight: "bold" }}
               onPress={() => {
                 this.setState({ modalVisible: modal_ids[0] });
               }}
             />
-             <SettingsList.Item
-                icon={
-                  <Image
-                    style={styles.imageStyle}
-                    height={60}
-                    resizeMode="contain"
-                    source={IMAGES.scale}
-                  />
-                }
-            hasNavArrow={false}
-            title='BMI'
-            titleInfo={this.convert_to_BMI()}
+            <SettingsList.Item
+              icon={
+                <Image
+                  style={styles.imageStyle}
+                  height={60}
+                  resizeMode="contain"
+                  source={IMAGES.scale}
+                />
+              }
+              hasNavArrow={false}
+              title="BMI"
+              titleInfo={this.convert_to_BMI()}
             />
             <SettingsList.Header headerStyle={{ marginTop: 10 }} />
             <SettingsList.Item

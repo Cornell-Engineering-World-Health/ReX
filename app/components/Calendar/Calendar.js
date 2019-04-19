@@ -298,9 +298,9 @@ class Calendar extends PureComponent {
    * renderWeek(), renderMonth(), renderYear(), and renderDates() render the respective text components onto the calendar
    */
   renderWeek() {
-    const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return days.map(day => {
-      if (day == "SUN") {
+      if (day == "Sun") {
         return (
           <View key={day} style={styles.weekItem}>
             <Text style={styles.weekAlt}>{day}</Text>
@@ -551,7 +551,7 @@ class Calendar extends PureComponent {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={[{ flex: 1, backgroundColor: "white" }, styles.lightShadow]}>
         <View style={styles.head}>
           <TouchableOpacity onPress={this._onTitlePress.bind(this)}>
             <View style={styles.header}>

@@ -23,32 +23,15 @@ const DEFAULT_BACKGROUND_COLOR = "#000";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end"
-  },
-  inputButtonContainer: {
-    height: 200
   },
   addButton: {
-    height: 75,
+    height: 60,
+    paddingTop: 5, 
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "#ffffff",
-    alignItems: "flex-end"
+
   },
-  menuButtons: {
-    height: 150,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#ffffff"
-  },
-  bottomModal: {
-    justifyContent: "flex-end"
-  },
-  menuStyle: {
-    justifyContent: "space-around",
-    height: 100,
-    flexDirection: "row"
-  }
 });
 
 class MenuBar extends React.Component {
@@ -57,9 +40,6 @@ class MenuBar extends React.Component {
     this.state = {
       selectedID: HOME_PAGE
     };
-
-    var startdate = new Date("2018-12-01");
-    var enddate = new Date("2018-12-10");
   }
 
   onLog() {
