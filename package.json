@@ -38,6 +38,7 @@
     "react-native-snap-carousel": "^3.7.4",
     "react-native-svg": "^8.0.8",
     "react-native-svg-charts": "^5.2.0",
+    "react-native-swipe-gestures": "^1.0.3",
     "react-native-swipeout": "^2.3.3",
     "react-native-timeline-listview": "^0.2.3",
     "react-navigation": "^1.2.1"
