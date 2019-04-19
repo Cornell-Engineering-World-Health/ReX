@@ -77,7 +77,7 @@ export default class MedicineAddForm extends React.Component {
   }
 
    checkNoDuplicates() {
-    var enteredName = this.state.submit_vals["Pill Name"] 
+    var enteredName = this.state.submit_vals["Pill Name"]
     for (var i = 0; i < this.props.titles.length; i++) {
         if(this.props.titles[i] == enteredName){
           return false;
@@ -94,7 +94,7 @@ export default class MedicineAddForm extends React.Component {
   submit() {
     if (this.checkIfIncomplete()) {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
-    } 
+    }
     else if(!this.checkNoDuplicates()){
       AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
     }else {
@@ -187,19 +187,23 @@ export default class MedicineAddForm extends React.Component {
         this.state.endDate != "" ? this.state.endDate : this.state.startDate
       );
     } else if (this.state.modalID == TIME_ID) {
-      let ta = this.state.timeArray.sort();
-      let time_category = ta.map(v => {
+
+      sortedTimes = this.state.timeArray.sort()
+      uniqueTimes = []
+      for (var i = 0; i < sortedTimes.length; i++){
+        if(i == sortedTimes.length - 1){
+          uniqueTimes.push(sortedTimes[i])
+        } else if (sortedTimes[i + 1] != sortedTimes[i]) {
+          uniqueTimes.push(sortedTimes[i])
+        }
+      }
+
+      let time_category = uniqueTimes.map(v => {
         return this.timeToTimeCategory(v);
       });
-      sortedTimes = this.state.timeArray.sort()
-      for (var i = 0; i < sortedTimes.length - 1; i++) {
-        if (sortedTimes[i + 1] == sortedTimes[i]) {
-          AlertIOS.alert("Selected times must be unique.")
-          return;
-        } 
-      }
-      this.setState({ timeArray: sortedTimes, modalID: "" });
-      this.valueChange("Time", this.state.timeArray.sort());
+
+      this.setState({ timeArray: uniqueTimes });
+      this.valueChange("Time", uniqueTimes);
       this.valueChange("Time Category", time_category);
     }
   }
@@ -399,6 +403,7 @@ export default class MedicineAddForm extends React.Component {
                     <TouchableOpacity
                       onPress={() => {
                         this.confirmSubmit();
+                        this.setState({ modalID: "" });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Confirm</Text>
