@@ -511,15 +511,15 @@ class Agenda extends Component {
     if (this.state.expandVisible) {
       page = null;
     }
-    if (this.props.agendaInfo) {
-      renderExpandButton = (
-        <TouchableOpacity
-          onPress={() => this.setState({ expandVisible: true })}
-        >
-          <Image source={IMAGES.expand} style={styles.expandStyle} />
-        </TouchableOpacity>
-      );
-    }
+    // if (this.props.agendaInfo) {
+    //   renderExpandButton = (
+    //     <TouchableOpacity
+    //       onPress={() => this.setState({ expandVisible: true })}
+    //     >
+    //       <Image source={IMAGES.expand} style={styles.expandStyle} />
+    //     </TouchableOpacity>
+    //   );
+    // }
     return (
       <View style={{ marginLeft: 5, flex: 1 }}>
         <View
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.cardNotes,
-    marginRight: 3
+    marginRight: 12
   },
   body: {
     flexDirection: "row",
