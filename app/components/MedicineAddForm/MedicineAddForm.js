@@ -120,7 +120,7 @@ export default class MedicineAddForm extends React.Component {
       items.push(i);
     }
     return items.map((val) => {
-      return <Picker.Item label={val.toString()} value={val.toString()} />
+      return <Picker.Item key={val.toString()} label={val.toString()} value={val.toString()} />
     })
   }
 
