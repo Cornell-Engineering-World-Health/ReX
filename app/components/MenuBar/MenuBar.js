@@ -26,11 +26,12 @@ const styles = StyleSheet.create({
   },
   addButton: {
     height: 60,
-    paddingTop: 5, 
+    paddingTop: 5,
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "#ffffff",
-
+    borderTopWidth: 1,
+    borderColor: '#ededed'
   },
 });
 
