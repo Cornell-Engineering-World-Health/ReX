@@ -83,12 +83,12 @@ export default class MedicineAddForm extends React.Component {
     return false;
   }
 
-   checkNoDuplicates() {
-    var enteredName = this.state.submit_vals["Pill Name"] 
+  checkNoDuplicates() {
+    var enteredName = this.state.submit_vals["Pill Name"];
     for (var i = 0; i < this.props.titles.length; i++) {
-        if(this.props.titles[i] == enteredName){
-          return false;
-        }
+      if (this.props.titles[i] == enteredName) {
+        return false;
+      }
     }
     return true;
   }
@@ -101,14 +101,16 @@ export default class MedicineAddForm extends React.Component {
   submit() {
     if (this.checkIfIncomplete()) {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
-    } 
-    else if(!this.checkNoDuplicates()){
-      AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
-    }else {
+    } else if (!this.checkNoDuplicates()) {
+      AlertIOS.alert(
+        "Duplicate Medication",
+        "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings."
+      );
+    } else {
       this.props.successOnSubmit();
-      console.log("VALS")
-      console.log(this.state.submit_vals["Granularity"])
-      console.log(this.state.submit_vals["Frequency"])
+      console.log("VALS");
+      console.log(this.state.submit_vals["Granularity"]);
+      console.log(this.state.submit_vals["Frequency"]);
       this.props.asyncDatabaseUpdate(
         this.state.submit_vals["Pill Name"],
         this.state.submit_vals["Dosage"],
@@ -129,12 +131,18 @@ export default class MedicineAddForm extends React.Component {
 
   freqItems() {
     items = [];
-    for (var i = 1; i <100; i++) {
+    for (var i = 1; i < 100; i++) {
       items.push(i);
     }
-    return items.map((val) => {
-      return <Picker.Item key={val.toString()} label={val.toString()} value={val.toString()} />
-    })
+    return items.map(val => {
+      return (
+        <Picker.Item
+          key={val.toString()}
+          label={val.toString()}
+          value={val.toString()}
+        />
+      );
+    });
   }
 
   /**
@@ -217,20 +225,20 @@ export default class MedicineAddForm extends React.Component {
       this.valueChange("Time", this.state.timeArray.sort());
       this.valueChange("Time Category", time_category);
     } else if (this.state.modalID == GRAN_ID) {
-      gran = this.state.granularity
-      freq = this.state.frequency
+      gran = this.state.granularity;
+      freq = this.state.frequency;
       if (this.state.granularity == "") {
-        gran = "Daily"
+        gran = "Daily";
       }
       if (this.state.frequency == 0) {
-        freq = 1
+        freq = 1;
       }
       this.setState({
         granularity: gran,
         frequency: freq
-      })
-      this.valueChange("Granularity", gran)
-      this.valueChange("Frequency", freq)
+      });
+      this.valueChange("Granularity", gran);
+      this.valueChange("Frequency", freq);
     }
   }
 
@@ -305,33 +313,58 @@ export default class MedicineAddForm extends React.Component {
           />
         </View>
       );
-    modalContent = this.state.modalID == GRAN_ID ? (
-       <View style={{ flex: 1, flexDirection: 'row', width: viewportWidth }}>
-       <Picker style = {{flex: 0.333}}>
-       <Picker.Item label="Every" value="Every" />
-       </Picker>
-       <Picker
-       selectedValue = {this.state.frequency}
-       onValueChange={(freq) => {this.setState({frequency: freq})}}
-       style = {{flex: 0.333}}>
-       {this.freqItems()}
-       </Picker>
-       <Picker
-       selectedValue = {this.state.granularity}
-       onValueChange={(gran) => {this.setState({granularity: gran})}}
-       style = {{flex: 0.333}}>
-       <Picker.Item label="Days" value="Daily" />
-       <Picker.Item label="Weeks" value="Weekly" />
-       <Picker.Item label="Months" value="Monthly" />
-       </Picker>
-
-       </View>) : modalContent;
+    modalContent =
+      this.state.modalID == GRAN_ID ? (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            width: viewportWidth
+          }}
+        >
+          <View
+            style={{
+              flex: 0.3333,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ fontSize: 23, fontWeight: "300" }}>Every</Text>
+          </View>
+          <Picker
+            selectedValue={this.state.frequency}
+            onValueChange={freq => {
+              this.setState({ frequency: freq });
+            }}
+            style={{ flex: 0.333 }}
+          >
+            {this.freqItems()}
+          </Picker>
+          <Picker
+            selectedValue={this.state.granularity}
+            onValueChange={gran => {
+              this.setState({ granularity: gran });
+            }}
+            style={{ flex: 0.333 }}
+          >
+            <Picker.Item label="Days" value="Daily" />
+            <Picker.Item label="Weeks" value="Weekly" />
+            <Picker.Item label="Months" value="Monthly" />
+          </Picker>
+        </View>
+      ) : (
+        modalContent
+      );
     let modalTitle =
       this.state.modalID == CALENDAR_ID
         ? "Select Date Range"
         : "Select Prescription Time";
-    modalTitle = this.state.modalID == GRAN_ID ? "Select Prescription Frequency" : modalTitle;
-    modalTitle = this.state.modalID == FREQ_ID ? "Select Frequency" : modalTitle;
+    modalTitle =
+      this.state.modalID == GRAN_ID
+        ? "Select Prescription Frequency"
+        : modalTitle;
+    modalTitle =
+      this.state.modalID == FREQ_ID ? "Select Frequency" : modalTitle;
     let modalHeight = this.state.modalID == CALENDAR_ID ? 0.65 : 0.6;
     modalHeight = this.state.modalID == GRAN_ID ? 0.4 : modalHeight;
     modalHeight = this.state.modalID == FREQ_ID ? 0.4 : modalHeight;
@@ -351,24 +384,21 @@ export default class MedicineAddForm extends React.Component {
     } else {
       timeText = "Enter Your Prescription Time";
     }
-    let granText = "Enter Your Prescription Frequency"
+    let granText = "Enter Your Prescription Frequency";
     if (this.state.granularity && this.state.frequency) {
-      granText = this.state.granularity
+      granText = this.state.granularity;
       if (granText == "Daily") {
-        granText = "Day"
+        granText = "Day";
+      } else if (granText == "Weekly") {
+        granText = "Week";
+      } else {
+        granText = "Month";
       }
-      else if (granText == "Weekly") {
-        granText = "Week"
-      }
-      else {
-        granText = "Month"
-      }
-      let tempFreq = this.state.frequency
+      let tempFreq = this.state.frequency;
       if (tempFreq > 1) {
-        granText = "Every " + tempFreq.toString() + " " + granText + "s"
-      }
-      else {
-        granText = "Every " + granText
+        granText = "Every " + tempFreq.toString() + " " + granText + "s";
+      } else {
+        granText = "Every " + granText;
       }
     }
     return (
@@ -423,16 +453,17 @@ export default class MedicineAddForm extends React.Component {
               }}
               keyboardType={"number-pad"}
             />
-            <View style = {{flexDirection: 'row'}}>
-            <Button 
-            text={granText}
-            rounded={true}
-            width={viewportWidth - 30}
-            borderColor={COLOR.purple}
-            onPress={() => {
-              Keyboard.dismiss();
-              this.setState({ modalID: GRAN_ID });
-            }}/>
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                text={granText}
+                rounded={true}
+                width={viewportWidth - 30}
+                borderColor={COLOR.purple}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  this.setState({ modalID: GRAN_ID });
+                }}
+              />
             </View>
             <Button
               text={dateText}
