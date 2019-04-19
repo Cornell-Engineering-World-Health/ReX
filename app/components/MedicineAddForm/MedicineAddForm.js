@@ -191,7 +191,14 @@ export default class MedicineAddForm extends React.Component {
       let time_category = ta.map(v => {
         return this.timeToTimeCategory(v);
       });
-      this.setState({ timeArray: this.state.timeArray.sort() });
+      sortedTimes = this.state.timeArray.sort()
+      for (var i = 0; i < sortedTimes.length - 1; i++) {
+        if (sortedTimes[i + 1] == sortedTimes[i]) {
+          AlertIOS.alert("Selected times must be unique.")
+          return;
+        } 
+      }
+      this.setState({ timeArray: sortedTimes, modalID: "" });
       this.valueChange("Time", this.state.timeArray.sort());
       this.valueChange("Time Category", time_category);
     }
@@ -392,7 +399,6 @@ export default class MedicineAddForm extends React.Component {
                     <TouchableOpacity
                       onPress={() => {
                         this.confirmSubmit();
-                        this.setState({ modalID: "" });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Confirm</Text>
