@@ -856,17 +856,16 @@ const styles = StyleSheet.create({
   calendar: {},
   addButton: {
     position: "absolute",
-    top: 15,
+    top: 20,
     right: 15
   },
   calendarButton: {
     position: "absolute",
     left: 15,
-    top: 15
+    top: 20
   },
   calendarContainer: {
     marginTop: 20,
-
     height: 50
   },
   gestureView: {
