@@ -46,6 +46,8 @@ export default class MedicineAddForm extends React.Component {
       selectingStart: true,
       timeArray: [timeStr],
       timeArrayIdx: 0,
+      prevTimeArray: [timeStr],
+      prevTimeArrayIdx: 0,
       modalID: "",
       submit_vals: {} //object for final submit
     };
@@ -188,6 +190,7 @@ export default class MedicineAddForm extends React.Component {
       );
     } else if (this.state.modalID == TIME_ID) {
 
+
       sortedTimes = this.state.timeArray.sort()
       uniqueTimes = []
       for (var i = 0; i < sortedTimes.length; i++){
@@ -202,7 +205,8 @@ export default class MedicineAddForm extends React.Component {
         return this.timeToTimeCategory(v);
       });
 
-      this.setState({ timeArray: uniqueTimes });
+      this.setState({ timeArray: uniqueTimes, timeArrayIdx: uniqueTimes.length - 1,
+        prevtimeArray: uniqueTimes, prevTimeArrayIdx: uniqueTimes.length - 1,});
       this.valueChange("Time", uniqueTimes);
       this.valueChange("Time Category", time_category);
     }
@@ -410,7 +414,8 @@ export default class MedicineAddForm extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        this.setState({ modalID: "" });
+                        this.setState({
+                          modalID: "" });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Cancel</Text>
