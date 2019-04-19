@@ -16,6 +16,7 @@ import Modal from "react-native-modal";
 
 import {
   pullMedicineFromDatabase,
+  pullAllMedicineData,
   asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
@@ -40,13 +41,13 @@ export default class MedicineSettings extends React.Component {
   componentWillMount() {
     let medicineData = [];
     //fill medicine state with those from the database
-    pullMedicineFromDatabase(new Date(), formattedData => {
+    pullAllMedicineData(new Date(), formattedData => {
       Object.keys(formattedData).forEach(function(med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-
+        console.log(medObj);
         medicineData.push({
           name: med,
           time: formattedTimes,
