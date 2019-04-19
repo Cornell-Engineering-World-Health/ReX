@@ -69,8 +69,6 @@ class Settings extends Component {
     var total_inches =
       parseInt(this.state.height_feet) * 12 +
       parseInt(this.state.height_inches);
-    console.log(this.state.weight + "Weight!!");
-    console.log(this.state.height_feet + "Height!!");
     var bmi_num = (weight_int / Math.pow(total_inches, 2)) * 703;
     bmi_num = Math.round(bmi_num * 10) / 10;
     BMI = "" + bmi_num;
