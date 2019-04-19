@@ -49,6 +49,8 @@ export default class MedicineAddForm extends React.Component {
       selectingStart: true,
       timeArray: [timeStr],
       timeArrayIdx: 0,
+      prevTimeArray: [timeStr],
+      prevTimeArrayIdx: 0,
       modalID: "",
       granularity: "",
       frequency: 0,
@@ -83,8 +85,8 @@ export default class MedicineAddForm extends React.Component {
     return false;
   }
 
-  checkNoDuplicates() {
-    var enteredName = this.state.submit_vals["Pill Name"];
+   checkNoDuplicates() {
+    var enteredName = this.state.submit_vals["Pill Name"]
     for (var i = 0; i < this.props.titles.length; i++) {
       if (this.props.titles[i] == enteredName) {
         return false;
@@ -101,12 +103,10 @@ export default class MedicineAddForm extends React.Component {
   submit() {
     if (this.checkIfIncomplete()) {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
-    } else if (!this.checkNoDuplicates()) {
-      AlertIOS.alert(
-        "Duplicate Medication",
-        "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings."
-      );
-    } else {
+    }
+    else if(!this.checkNoDuplicates()){
+      AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
+    }else {
       this.props.successOnSubmit();
       console.log("VALS");
       console.log(this.state.submit_vals["Granularity"]);
@@ -217,12 +217,25 @@ export default class MedicineAddForm extends React.Component {
         this.state.endDate != "" ? this.state.endDate : this.state.startDate
       );
     } else if (this.state.modalID == TIME_ID) {
-      let ta = this.state.timeArray.sort();
-      let time_category = ta.map(v => {
+
+
+      sortedTimes = this.state.timeArray.sort()
+      uniqueTimes = []
+      for (var i = 0; i < sortedTimes.length; i++){
+        if(i == sortedTimes.length - 1){
+          uniqueTimes.push(sortedTimes[i])
+        } else if (sortedTimes[i + 1] != sortedTimes[i]) {
+          uniqueTimes.push(sortedTimes[i])
+        }
+      }
+
+      let time_category = uniqueTimes.map(v => {
         return this.timeToTimeCategory(v);
       });
-      this.setState({ timeArray: this.state.timeArray.sort() });
-      this.valueChange("Time", this.state.timeArray.sort());
+
+      this.setState({ timeArray: uniqueTimes, timeArrayIdx: uniqueTimes.length - 1,
+        prevtimeArray: uniqueTimes, prevTimeArrayIdx: uniqueTimes.length - 1,});
+      this.valueChange("Time", uniqueTimes);
       this.valueChange("Time Category", time_category);
     } else if (this.state.modalID == GRAN_ID) {
       gran = this.state.granularity;
@@ -522,7 +535,8 @@ export default class MedicineAddForm extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        this.setState({ modalID: "" });
+                        this.setState({
+                          modalID: "" });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Cancel</Text>
