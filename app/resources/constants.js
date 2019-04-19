@@ -23,7 +23,7 @@ export const IMAGES = {
   neckPain: require("./images/neckPain.png"),
   fatigue: require("./images/fatigue.png"),
   nausea: require("./images/nausea.png"),
-  diarrhea: require("./images/diarrhea.png"),
+  diarrhea: require("./images/vomiting.png"),
   impaired_taste: require("./images/popsicle.png"),
   vomiting: require("./images/vomiting.png"),
   cognitive: require("./images/cognitive.png"),
@@ -80,7 +80,7 @@ export const IMAGES = {
   fiih: require("./images/fiih_logo.png"),
   intro_background: require("./images/intro_background.png"),
   chemical: require("./images/chemical.png"),
-  tingling: require("./images/tingle.png"),
+  tingling: require("./images/tingle.png")
 };
 export const profile_icons = [
   IMAGES.iconWolf,
@@ -104,6 +104,7 @@ export const COLOR = {
   purple: "#ab87b8",
   cyan: "#7fdecb",
   red: "#E85D75",
+  surveyTheme: "rgb(140, 234, 255)",
   summaryGray: "#b8b8b8",
   cardContainer: "#ffffff",
   cardNotes: "#808080",
@@ -126,8 +127,8 @@ export const BODY_PARTS = {
 };
 
 export const SYMPTOM_IDS = {
-  "Headache": 1,
-  "Dizziness": 2,
+  Headache: 1,
+  Dizziness: 2,
   "Blurred Vision": 3,
   "Knee Pain": 5,
   "Back Pain": 6,
@@ -138,14 +139,14 @@ export const SYMPTOM_IDS = {
   "Foot Pain": 11,
   "Elbow Pain": 12,
   "Hand Pain": 13,
-  "Nausea": 14,
-  "Fatigue": 15,
+  Nausea: 14,
+  Fatigue: 15,
   "Cognitive Slowing": 16,
   "Impaired Taste": 17,
-  "Diarrhea": 18,
-  "Vomiting": 19,
-  "Heart Pain": 20,
-}
+  Diarrhea: 18,
+  Vomiting: 19,
+  "Heart Pain": 20
+};
 
 const SYMPTOM_COLOR = {
   blue: "#79ADDC",
@@ -420,6 +421,29 @@ export function getTranslucentColor(type) {
   }
   return constants.DEFAULT.translucentColor;
 }
+/*
+Given a time in the form AA:BB in 24 hour time into aa:bb AM/PM
+
+must be between 00:00 and 23:59
+
+Returns empty string for invalid inputs
+*/
+export function timeFormatter(time) {
+  if (time == "") return "";
+
+  let hours = parseInt(time.slice(0, 2));
+  let minutes = time.slice(3, 5);
+  let suffix = "AM";
+  if (hours === 12) {
+    suffix = "PM";
+  } else if (hours > 12) {
+    suffix = "PM";
+    hours = hours - 12;
+  } else if (hours === 0) {
+    hours = 12;
+  }
+  return hours + ":" + minutes + " " + suffix;
+}
 
 export const durationTitles = [
   "< 1 Hour",
@@ -430,3 +454,5 @@ export const durationTitles = [
 ];
 
 export const SYMPTOM_FIELDS = ["Duration", "Intensity", "Other"];
+
+export const SURVEY_FILE_DESCRIPT = {dir: "test_survey", fname: "survey.csv"}

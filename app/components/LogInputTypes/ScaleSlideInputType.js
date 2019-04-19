@@ -92,7 +92,7 @@ export default class ScaleSlideInputType extends React.Component {
               borderRadius: this.props.isIntensitySlider ? 0 : 2,
               backgroundColor: this.props.isIntensitySlider
                 ? numericMetaInfo[i]
-                : "rgb(140, 234, 255)",
+                : COLOR.surveyTheme,
               height: width,
               width: width
             }
@@ -151,7 +151,7 @@ export default class ScaleSlideInputType extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.header}>
-          <Text style={styles.questionText}>
+          <Text style={this.props.title_text_style}>
             {this.props.question || TITLE}
           </Text>
         </View>
@@ -179,12 +179,6 @@ const styles = StyleSheet.create({
   bottomHalf: {
     alignItems: "stretch",
 
-  },
-
-  questionText: {
-    fontSize: 40,
-    fontWeight: "100",
-    textAlign: "center"
   },
   imgStyle: {
     resizeMode: "contain"

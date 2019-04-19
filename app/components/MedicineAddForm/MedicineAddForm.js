@@ -83,6 +83,16 @@ export default class MedicineAddForm extends React.Component {
     return false;
   }
 
+   checkNoDuplicates() {
+    var enteredName = this.state.submit_vals["Pill Name"] 
+    for (var i = 0; i < this.props.titles.length; i++) {
+        if(this.props.titles[i] == enteredName){
+          return false;
+        }
+    }
+    return true;
+  }
+
   /**
    * Submit the Add Medicine Form when submit button is pressed
    * If incomplete -> Callback for error dropdown, and force user to fix the form
@@ -91,7 +101,10 @@ export default class MedicineAddForm extends React.Component {
   submit() {
     if (this.checkIfIncomplete()) {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
-    } else {
+    } 
+    else if(!this.checkNoDuplicates()){
+      AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
+    }else {
       this.props.successOnSubmit();
       console.log("VALS")
       console.log(this.state.submit_vals["Granularity"])
@@ -178,7 +191,7 @@ export default class MedicineAddForm extends React.Component {
   }
 
   timeToTimeCategory(time) {
-    let tc = ["11:00", "15:00", "19:00", "23:00"]; //temp boundaries
+    let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries
     if (time < tc[0]) return "Morning";
     if (time < tc[1]) return "Afternoon";
     if (time < tc[2]) return "Evening";
@@ -499,7 +512,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "white",
     paddingTop: 30
   },
   container: {
