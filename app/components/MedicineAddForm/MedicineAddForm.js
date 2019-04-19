@@ -294,26 +294,30 @@ export default class MedicineAddForm extends React.Component {
       );
     modalContent = this.state.modalID == GRAN_ID ? (
        <View style={{ flex: 1, flexDirection: 'row', width: viewportWidth }}>
-       <Picker
-       selectedValue = {this.state.granularity}
-       onValueChange={(gran) => {this.setState({granularity: gran})}}
-       style = {{flex: 0.5}}>
-       <Picker.Item label="Daily" value="Daily" />
-       <Picker.Item label="Weekly" value="Weekly" />
-       <Picker.Item label="Monthly" value="Monthly" />
+       <Picker style = {{flex: 0.333}}>
+       <Picker.Item label="Every" value="Every" />
        </Picker>
        <Picker
        selectedValue = {this.state.frequency}
        onValueChange={(freq) => {this.setState({frequency: freq})}}
-       style = {{flex: 0.5}}>
+       style = {{flex: 0.333}}>
        {this.freqItems()}
        </Picker>
+       <Picker
+       selectedValue = {this.state.granularity}
+       onValueChange={(gran) => {this.setState({granularity: gran})}}
+       style = {{flex: 0.333}}>
+       <Picker.Item label="Days" value="Daily" />
+       <Picker.Item label="Weeks" value="Weekly" />
+       <Picker.Item label="Months" value="Monthly" />
+       </Picker>
+
        </View>) : modalContent;
     let modalTitle =
       this.state.modalID == CALENDAR_ID
         ? "Select Date Range"
         : "Select Prescription Time";
-    modalTitle = this.state.modalID == GRAN_ID ? "Select Time Granularity" : modalTitle;
+    modalTitle = this.state.modalID == GRAN_ID ? "Select Prescription Frequency" : modalTitle;
     modalTitle = this.state.modalID == FREQ_ID ? "Select Frequency" : modalTitle;
     let modalHeight = this.state.modalID == CALENDAR_ID ? 0.65 : 0.6;
     modalHeight = this.state.modalID == GRAN_ID ? 0.4 : modalHeight;
