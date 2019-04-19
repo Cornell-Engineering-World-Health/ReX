@@ -376,11 +376,12 @@ class Home extends React.Component {
     dropDownTitle =
       time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
 
-    if (!this.checkTime(index)) {
-      dropDownMessage =
-        "Your " + time + " medications cannot be taken at this time of day!";
-      canTake = false;
-    } else if (this.state.totalAmount[index] == 0) {
+    // if (!this.checkTime(index)) {
+    //   dropDownMessage =
+    //     "Your " + time + " medications cannot be taken at this time of day!";
+    //   canTake = true;
+    // } else 
+    if (this.state.totalAmount[index] == 0) {
       dropDownMessage = "No " + time + " medications to be taken!";
       canTake = false;
     }
@@ -455,16 +456,16 @@ class Home extends React.Component {
     });
   }
 
-  checkTime(index){
-    var time = Moment().format('HH:MM')
-    let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries TODO: put on setting?
-    switch(index){
-      case 0: return (time < tc[0])
-      case 1: return (time >= tc[0] && time < tc[1])
-      case 2: return (time >= tc[1] && time < tc[2])
-      default: return (time >= tc[2] && time < tc[3])
-    }
-  }
+  // checkTime(index){
+  //   var time = Moment().format('HH:MM')
+  //   let tc = ["11:00", "16:00", "19:00", "24:00"]; //temp boundaries TODO: put on setting?
+  //   switch(index){
+  //     case 0: return (time < tc[0])
+  //     case 1: return (time >= tc[0] && time < tc[1])
+  //     case 2: return (time >= tc[1] && time < tc[2])
+  //     default: return (time >= tc[2] && time < tc[3])
+  //   }
+  // }
 
   revertAll(index) {
     if (this.state.doneAmount[index] == 0) {
