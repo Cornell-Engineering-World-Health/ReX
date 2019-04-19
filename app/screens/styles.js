@@ -76,18 +76,18 @@ export default StyleSheet.create({
     borderRadius: 10
   },
   modalHeader: {
-    flex: 0.2,
+    flex: 0.25,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 15,
-    backgroundColor:COLOR.blue + "20",
+    backgroundColor: COLOR.blue + "20"
   },
   modalHeaderText: {
     fontSize: 20,
     fontWeight: "300"
   },
   modalBody: {
-    flex: 0.8,
+    flex: 0.8
   },
   modalFooter: {
     flex: 0.15,
@@ -97,19 +97,19 @@ export default StyleSheet.create({
   submit: {
     backgroundColor: COLOR.blue,
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: COLOR.blue,
     borderRadius: 10,
     borderWidth: 1,
-    flex:1,
-    margin:10
+    flex: 1,
+    margin: 10
   },
   modalButton: {
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: COLOR.blue,
-    borderBottomRightRadius:10,
-    flex:1,
+    borderBottomRightRadius: 10,
+    flex: 1
   },
   ButtonText: {
     fontSize: 25,
@@ -163,20 +163,23 @@ export default StyleSheet.create({
     shadowOpacity: 0.2
   },
   cardIsConfirm: {
-    backgroundColor: "#d2ffce"
+    backgroundColor: "#ffafaf"
   },
   cardIsUndo: {
-    backgroundColor: "#ffafaf"
+    backgroundColor: "#d2ffce"
   },
   modalTab: {
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: COLOR.blue,
-    margin: 5,
-    flex:1,
+    marginLeft: 5,
+    marginRight: 5,
+    flex: 1,
+    padding: 5,
+    borderRadius: 5
   },
   modalTabText: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: "center"
   }
 });
