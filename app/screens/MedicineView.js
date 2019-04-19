@@ -203,12 +203,14 @@ class MedicineView extends React.Component {
    * end (Moment date object): when to stop logging
    * time (String array): array of times to start-> writes to the database
    * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
+   * granularity (String): {daily, weekly, monthly} how often to log
+   * frequency (String): how often to log (once, twice, etc.)
    */
-  asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
+  asyncDatabaseUpdate = (title, dosage, start, end, time, time_category, granularity, frequency) => {
     let thisRef = this;
 
-    setMassNotification(start, end, title, dosage, time);
-    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
+    setMassNotification(start, end, title, dosage, time, granularity, frequency);
+    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category, granularity, frequency);
     endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
@@ -674,7 +676,9 @@ only show up to 1 medication in the future
               start,
               end,
               time,
-              time_category
+              time_category,
+              granularity,
+              frequency
             ) => {
               this.asyncDatabaseUpdate(
                 title,
@@ -682,7 +686,9 @@ only show up to 1 medication in the future
                 start,
                 end,
                 time,
-                time_category
+                time_category,
+                granularity,
+                frequency
               );
             }}
             errorOnSubmit={() => {
