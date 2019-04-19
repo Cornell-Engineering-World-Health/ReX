@@ -36,6 +36,9 @@ export function createTables() {
         "CREATE TABLE IF NOT EXISTS `survey_tbl` (`surveyIsOn` INTEGER NOT NULL PRIMARY KEY UNIQUE);"
       );
       tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS `survey_last_completed_tbl` (`date` TEXT NOT NULL PRIMARY KEY UNIQUE);"
+      );
+      tx.executeSql(
         "CREATE TABLE IF NOT EXISTS `uuid_tbl` (`uuid` TEXT NOT NULL PRIMARY KEY UNIQUE);"
       );
     },
@@ -759,7 +762,9 @@ export function asyncCreateMedicineEvents(
   startDate,
   endDate,
   timeArray,
-  timeCategories
+  timeCategories,
+  granularity,
+  frequency,
 ) {
   Database.transaction(
     tx => {
@@ -773,7 +778,9 @@ export function asyncCreateMedicineEvents(
             timeArray,
             timeCategories,
             event_id,
-            event_details_id
+            event_details_id,
+            granularity,
+            frequency,
           )
         )
       );
@@ -790,13 +797,33 @@ export function asyncCreateMedicineEventsWrapper(
   timeArray,
   timeCategories,
   event_id,
-  event_details_id
+  event_details_id,
+  granularity,
+  frequency,
 ) {
   Database.transaction(
     tx => {
+      var skip = 1;
+      console.log(frequency)
+      if (granularity == "Daily") {
+        skip = 1 * parseInt(frequency)
+      }
+      else if (granularity == "Weekly") {
+        skip = 7 * parseInt(frequency)
+      }
+      else {
+        skip = 30 * parseInt(frequency)
+      }
+
+      var iterSkip = 1;
+
       for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
         dateString = d.toISOString().substr(0, 10);
-
+        if (iterSkip != 1) {
+          iterSkip = iterSkip - 1;
+          continue;
+        }
+        iterSkip = skip;
         /* inserting event_details record */
         var taken = timeArray.map(t => {
           return false;
@@ -1325,4 +1352,56 @@ export function databaseSetUUID(uuid) {
       );
     }
   });
+}
+
+/**
+ * getter for last completed survey date
+ */
+export function databaseGetSurveyDate(callback) {
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "SELECT * from survey_last_completed_tbl",
+        [],
+        (_, { rows }) => {
+          if (callback) {
+            callback(rows._array.length == 1 ? rows._array[0].date : undefined);
+          }
+        },
+        err => console.log(err, "survey_last_completed_tbl get")
+      );
+    },
+    err => console.log(err, "survey_last_completed_tbl get2")
+  );
+}
+
+/**
+ * setter for last completed survey date
+ */
+export function databaseSetSurveyDate(date) {
+  let date_arg = [date]
+
+  Database.transaction(
+    tx => {
+      tx.executeSql(
+        "DELETE FROM survey_last_completed_tbl",
+        [],
+        () => {
+          Database.transaction(
+            tx => {
+              tx.executeSql(
+                "INSERT OR IGNORE INTO survey_last_completed_tbl (date) VALUES (?)",
+                date_arg,
+                () => {},
+                err => console.log(err, "survey_last_completed_tbl1")
+              );
+            },
+            err => console.log(err, "survey_last_completed_tbl2")
+          );
+        },
+        err => console.log(err, "survey_last_completed_tbl3")
+      );
+    },
+    err => console.log(err, "survey_last_completed_tbl4")
+  );
 }

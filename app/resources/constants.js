@@ -104,6 +104,7 @@ export const COLOR = {
   purple: "#ab87b8",
   cyan: "#7fdecb",
   red: "#E85D75",
+  surveyTheme: "rgb(140, 234, 255)",
   summaryGray: "#b8b8b8",
   cardContainer: "#ffffff",
   cardNotes: "#808080",
@@ -453,3 +454,5 @@ export const durationTitles = [
 ];
 
 export const SYMPTOM_FIELDS = ["Duration", "Intensity", "Other"];
+
+export const SURVEY_FILE_DESCRIPT = {dir: "test_survey", fname: "survey.csv"}
