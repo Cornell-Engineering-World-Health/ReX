@@ -233,8 +233,13 @@ export default class MedicineAddForm extends React.Component {
         return this.timeToTimeCategory(v);
       });
 
-      this.setState({ timeArray: uniqueTimes, timeArrayIdx: uniqueTimes.length - 1,
-        prevtimeArray: uniqueTimes, prevTimeArrayIdx: uniqueTimes.length - 1,});
+      this.setState({
+        timeArray: uniqueTimes,
+        timeArrayIdx: uniqueTimes.length - 1,
+        prevTimeArray: uniqueTimes.slice(),
+        prevTimeArrayIdx: uniqueTimes.length - 1
+      });
+
       this.valueChange("Time", uniqueTimes);
       this.valueChange("Time Category", time_category);
     } else if (this.state.modalID == GRAN_ID) {
@@ -536,7 +541,10 @@ export default class MedicineAddForm extends React.Component {
                     <TouchableOpacity
                       onPress={() => {
                         this.setState({
-                          modalID: "" });
+                          timeArray: this.state.prevTimeArray.slice(),
+                          timeArrayIdx: this.state.prevTimeArrayIdx,
+                          modalID: ""
+                        });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Cancel</Text>
