@@ -657,9 +657,12 @@ export function asyncDeleteMedicine(name) {
         [],
         (tx, { rows }) => {
           let removeIds = [];
+          let today = Moment(new Date()).format('YYYY-MM-DD')
           rows._array.forEach(med => {
             let fields = JSON.parse(med.fields);
-            if (fields["Pill Name"] == name) {
+            console.log("fields")
+            console.log(fields)
+            if (fields["Pill Name"] == name && fields["Start Date"] >= today) {
               removeIds.push(med["event_details_id"]);
             }
           });
