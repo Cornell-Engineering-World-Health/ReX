@@ -95,9 +95,13 @@ export default class MedicineAddForm extends React.Component {
     return true;
   }
    checkNegativeDosage() {
-    return parseInt (this.state.submit_vals["Dosage"])<= 0
+    return parseFloat (this.state.submit_vals["Dosage"])<= 0
    }
-   
+
+   checkType(){
+     return (isNaN(parseFloat(this.state.submit_vals["Dosage"])))
+   }
+
 
   /**
    * Submit the Add Medicine Form when submit button is pressed
@@ -112,8 +116,12 @@ export default class MedicineAddForm extends React.Component {
       AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
     }
     else if (this.checkNegativeDosage()){
-      AlertIOS.alert("Invalid dosage", "Please modify dosage information");
-    }else {
+      AlertIOS.alert("Invalid dosage", "Dosage must be postive quantity");
+    }
+    else if(this.checkType()){
+      AlertIOS.alert("Invalid dosage", "Please enter a valid quantity");
+    }
+    else {
       this.props.successOnSubmit();
       console.log("VALS");
       console.log(this.state.submit_vals["Granularity"]);
