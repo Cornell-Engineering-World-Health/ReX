@@ -16,6 +16,7 @@ import Modal from "react-native-modal";
 
 import {
   pullMedicineFromDatabase,
+  pullAllMedicineData,
   asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
 import { COLOR } from "../resources/constants.js";
@@ -39,24 +40,33 @@ export default class MedicineSettings extends React.Component {
 
   componentWillMount() {
     let medicineData = [];
+    let seen = {};
     //fill medicine state with those from the database
-    pullMedicineFromDatabase(new Date(), formattedData => {
-      Object.keys(formattedData).forEach(function(med) {
-        var medObj = formattedData[med];
-        var formattedTimes = medObj.time.map(
+    pullAllMedicineData(formattedData => {
+      formattedData.forEach(function(med) {
+        var medObj = JSON.parse(med.fields);
+
+        if (seen[medObj["Pill Name"]]) {
+          return;
+        }
+
+        console.log("med obj", medObj);
+
+        var formattedTimes = medObj["Time"].map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
 
         medicineData.push({
-          name: med,
+          name: medObj["Pill Name"],
           time: formattedTimes,
-          timeVal: medObj.time.join(", "),
-          dosage: medObj.dosage,
-          statuses: medObj.taken,
-          status: medObj.notificationStatus,
-          startDate: medObj.startDate,
-          endDate: medObj.endDate
+          timeVal: medObj["Time"].join(", "),
+          dosage: medObj["Dosage"],
+          statuses: medObj["Taken"],
+          status: medObj["Notification On"],
+          startDate: medObj["Start Date"],
+          endDate: medObj["End Date"]
         });
+        seen[medObj["Pill Name"]] = true;
       });
       this.setState({ medicine: medicineData });
     });
