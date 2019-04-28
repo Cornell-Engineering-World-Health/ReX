@@ -1,14 +1,9 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from 'react-native';
-import PropTypes from 'prop-types';
+import React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import PropTypes from "prop-types";
 
 /**
-ListViewer is a horizontal scrollview of items of a list.
+ListViewer is a horizontal scroll view of items of a list.
 */
 const ListViewer = ({ list, backgroundColor }) => {
   let contents = list.map((v, i) => {
@@ -32,9 +27,9 @@ const styles = StyleSheet.create({
   },
   bar: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 5,
-    justifyContent: 'flex-start'
+    justifyContent: "flex-start"
   },
   item: {
     padding: 5,
@@ -44,7 +39,7 @@ const styles = StyleSheet.create({
     marginLeft: 5
   },
   itemText: {
-    color: 'white',
+    color: "white",
     fontSize: 16
   }
 });

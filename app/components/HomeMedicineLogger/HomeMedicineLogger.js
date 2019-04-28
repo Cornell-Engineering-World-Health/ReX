@@ -54,11 +54,12 @@ const HomeMedicineLogger = ({
             style={[
               styles.buttonContent,
               {
-                right: shift - (radius * 0.5) / 2,
-                bottom: shift - (radius * 0.8) / 2
+                right: shift - radius * 0.5 / 2,
+                bottom: shift - radius * 0.9 / 2
               }
             ]}
           >
+            <Text style={styles.timeText}>5am - 12pm</Text>
             <ImageBackground
               style={styles.imageStyle}
               source={IMAGES.morningColor}
@@ -84,11 +85,12 @@ const HomeMedicineLogger = ({
             style={[
               styles.buttonContent,
               {
-                left: shift - (radius * 0.5) / 2,
-                bottom: shift - (radius * 0.8) / 2
+                left: shift - radius * 0.5 / 2,
+                bottom: shift - radius * 0.9 / 2
               }
             ]}
           >
+            <Text style={styles.timeText}>12pm - 5pm</Text>
             <ImageBackground
               style={styles.imageStyle}
               source={IMAGES.afternoonColor}
@@ -121,6 +123,7 @@ const HomeMedicineLogger = ({
               }
             ]}
           >
+            <Text style={styles.timeText}>5pm - 9pm</Text>
             <ImageBackground
               style={styles.imageStyle}
               source={IMAGES.eveningColor}
@@ -151,6 +154,7 @@ const HomeMedicineLogger = ({
               }
             ]}
           >
+            <Text style={styles.timeText}>9pm - 5am</Text>
             <ImageBackground
               style={styles.imageStyle}
               source={IMAGES.nightColor}

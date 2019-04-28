@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 import { COLOR } from "../resources/constants";
 
 const width = Dimensions.get("window").width;
-const circleWidth = width * 0.7;
+const circleWidth = width * 0.8;
 const height = Dimensions.get("window").height;
 
 export default StyleSheet.create({
@@ -144,6 +144,115 @@ export default StyleSheet.create({
   badgeText: {
     color: "white",
     fontSize: 25,
+    textAlign: "center"
+  },
+  modal: {
+    justifyContent: "center",
+    alignItems: "stretch",
+    flex: 1
+  },
+  modalContainer: {
+    justifyContent: "center",
+    alignItems: "stretch",
+    backgroundColor: "white",
+    flex: 0.7,
+    borderRadius: 10
+  },
+  modalHeader: {
+    flex: 0.25,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 15,
+    backgroundColor: COLOR.blue + "20"
+  },
+  modalHeaderText: {
+    fontSize: 20,
+    fontWeight: "300"
+  },
+  modalBody: {
+    flex: 0.8
+  },
+  modalFooter: {
+    flex: 0.15,
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  submit: {
+    backgroundColor: COLOR.blue,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: COLOR.blue,
+    borderRadius: 10,
+    borderWidth: 1,
+    flex: 1,
+    margin: 10
+  },
+  modalButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: COLOR.blue,
+    borderBottomRightRadius: 10,
+    flex: 1
+  },
+  ButtonText: {
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "200"
+  },
+  cardWrapper: {
+    justifyContent: "center",
+    alignItems: "stretch"
+  },
+  cardContainer: {
+    padding: 10,
+    flex: 1,
+    borderRadius: 3,
+    flexDirection: "row"
+  },
+  cardHeader: {
+    flex: 0.8,
+    borderTopRightRadius: 3,
+    borderTopLeftRadius: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5
+  },
+  cardBody: {
+    flex: 0.4,
+    borderBottomRightRadius: 3,
+    borderBottomLeftRadius: 3,
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  cardHeaderText: {
+    fontSize: 22,
+    fontWeight: "200",
+    flexWrap: "wrap",
+    textAlign: "center"
+  },
+  cardBodyText: {
+    fontSize: 15,
+    fontWeight: "100",
+    textAlign: "right"
+  },
+  cardIsConfirm: {
+    backgroundColor: "#ffafaf"
+  },
+  cardIsUndo: {
+    backgroundColor: "#d2ffce"
+  },
+  modalTab: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: COLOR.blue,
+    marginLeft: 5,
+    marginRight: 5,
+    flex: 1,
+    padding: 5,
+    borderRadius: 5
+  },
+  modalTabText: {
+    fontSize: 20,
     textAlign: "center"
   }
 });

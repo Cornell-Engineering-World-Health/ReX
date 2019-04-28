@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     letterSpacing: 1.0,
     color: COLOR.cardNotes,
-    marginRight: 3
+    marginRight: 12
   },
   body: {
     flexDirection: "row",

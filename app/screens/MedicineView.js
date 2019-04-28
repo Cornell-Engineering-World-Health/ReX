@@ -14,17 +14,12 @@ import Modal from "react-native-modal";
 import DoseCard from "../components/Card/DoseCard";
 import {
   pullMedicineFromDatabase,
-  pullAllMedicineData
-} from "../databaseUtil/databaseUtil";
-
-import Moment from "moment";
-import {
+  pullAllMedicineData,
   asyncCreateMedicineEvents,
   databaseTakeMedicine
 } from "../databaseUtil/databaseUtil";
-import DropdownAlert from "react-native-dropdownalert";
+import Moment from "moment";
 import { COLOR, IMAGES, timeFormatter } from "../resources/constants";
-import { shouldBeTaken, shouldBeTakenNow } from "../resources/helpers";
 import { setMassNotification } from "../components/PushController/PushController.js";
 import MedicineAddForm from "../components/MedicineAddForm/MedicineAddForm.js";
 import MedicineCalendar from "../components/Calendar/MedicineCalendar";
@@ -175,131 +170,16 @@ class MedicineView extends React.Component {
     }
   }
 
-  /**
-   * error dropdown if user fails to complete the medicine add form and presses submit
-   */
-  errorOnSubmit() {
-    this.dropdown.close();
-    this.dropdown.alertWithType(
-      "custom",
-      "Form Incomplete",
-      "Please add any missing information"
-    );
-  }
-
-  /**
-   * success dropdown if users succesfully submits the medicine add form
-   */
-  successOnSubmit() {
-    this.dropdown_success.close();
-    this.dropdown_success.alertWithType("custom", "New Medicine Added!", "");
-  }
-
-  /**
-   * asyncDatabaseUpdate takes data for a new medication and writes to the database:
-   * title (String): medicine name
-   * dosage (String): dosage amount in mg
-   * start (Moment date object): when to begin logging
-   * end (Moment date object): when to stop logging
-   * time (String array): array of times to start-> writes to the database
-   * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
-   */
-  asyncDatabaseUpdate = (title, dosage, start, end, time, time_category) => {
-    let thisRef = this;
-
-    setMassNotification(start, end, title, dosage, time);
-    asyncCreateMedicineEvents(title, dosage, start, end, time, time_category);
-    endNew = Moment(end);
-    endNew.date(endNew.date() + 1);
-    if (Moment().isBetween(start, endNew)) {
-      medicineData = thisRef.state.data;
-      for (var i = 0; i < medicineData.length; i++) {
-        if (medicineData[i].title == title) {
-          medicineData.splice(i, 1);
-        }
-      }
-      var formattedTimes = time.map(
-        t => Moment().format("MMMM DD YYYY") + " " + t
-      );
-      var taken = time.map(t => false);
-      var takenTime = time.map(t => "");
-      medicineData.push({
-        title: title,
-        time: formattedTimes,
-        timeVal: time,
-        dosage: dosage,
-        statuses: taken,
-        takenTime: takenTime,
-        notificationStatus: true
-      });
-      thisRef.setState({
-        toggle_add: false,
-        data: medicineData
-      });
-    }
-
-    setTimeout(() => this.updateMedicineState(), 2000);
-  };
-
   componentDidMount = () => {
     this.asyncDatabasePull();
   };
 
-  // 0 is red, 1 is green, 2 is gray
-  // returns tuple of [passed_index, color]
-  getPassedIndex = a => {
-    var passed_index = 0;
-    if (a.statuses) {
-      for (var x = a.statuses.length - 1; x >= 0; x--) {
-        // hit a taken, next one
-        if (a.statuses[x]) {
-          passed_index = x + 1;
-          break;
-        }
-        // first red we see (latest red)
-        if (
-          a.statuses[x] == false &&
-          shouldBeTaken(new Date(a.time[x]), new Date()) &&
-          !shouldBeTakenNow(new Date(a.time[x]))
-        ) {
-          return [x, 0];
-        }
-        // if no taken or red, means we havent missed any and have taken some
-      }
-    } else {
-      passed_index = 0;
+  getTitles = () => {
+    var titles = [""];
+    for (var i = 0; i < this.state.data.length; i++) {
+      titles.push(this.state.data[i].title);
     }
-    if (shouldBeTakenNow(new Date(a.time[passed_index]))) {
-      return [passed_index, 1];
-    } else {
-      return [passed_index, 2];
-    }
-  };
-
-  /**
-   * custom sorting algorithm for medicine cards on the medicine view flatlist:
-   * [Red] Missed Medications
-   * [Green] Take Now Medications
-   * [Grey] Complete/Future Medications
-   * sorted in ascending time order within each category
-   */
-  compareCards = (a, b) => {
-    var passed_a = this.getPassedIndex(a)[0];
-    var color_a = this.getPassedIndex(a)[1];
-    var passed_b = this.getPassedIndex(b)[0];
-    var color_b = this.getPassedIndex(b)[1];
-
-    if (color_a != color_b) {
-      return color_a > color_b;
-    } else {
-      // Done for the Day must be last
-      if (passed_a == a.statuses.length) {
-        return 1;
-        // Compare times if same color
-      } else {
-        return a.time[passed_a] > b.time[passed_b];
-      }
-    }
+    return titles;
   };
 
   /**
@@ -656,6 +536,7 @@ only show up to 1 medication in the future
         </ScrollView>
         <Modal isVisible={this.state.toggle_add} style={styles.addFormWrapper}>
           <MedicineAddForm
+            titles={this.getTitles()}
             exitModal={() => {
               this.setState({ toggle_add: false });
             }}
@@ -665,7 +546,9 @@ only show up to 1 medication in the future
               start,
               end,
               time,
-              time_category
+              time_category,
+              granularity,
+              frequency
             ) => {
               this.asyncDatabaseUpdate(
                 title,
@@ -673,33 +556,19 @@ only show up to 1 medication in the future
                 start,
                 end,
                 time,
-                time_category
+                time_category,
+                granularity,
+                frequency
               );
             }}
-            errorOnSubmit={() => {
-              this.errorOnSubmit();
-            }}
             successOnSubmit={() => {
-              this.successOnSubmit();
+              setTimeout(() => {
+                this.updateMedicineState();
+              }, 2000);
             }}
           />
         </Modal>
-        <DropdownAlert
-          ref={ref => (this.dropdown = ref)}
-          closeInterval={2000}
-          imageSrc={IMAGES.close_white}
-          containerStyle={{
-            backgroundColor: COLOR.red
-          }}
-        />
-        <DropdownAlert
-          ref={ref => (this.dropdown_success = ref)}
-          closeInterval={2000}
-          imageSrc={IMAGES.checkmarkWhite}
-          containerStyle={{
-            backgroundColor: COLOR.cyan
-          }}
-        />
+
         {!this.state.data[0] && (
           <Text style={styles.defaultText}>
             No medicines scheduled for today!
@@ -856,17 +725,16 @@ const styles = StyleSheet.create({
   calendar: {},
   addButton: {
     position: "absolute",
-    top: 15,
+    top: 25,
     right: 15
   },
   calendarButton: {
     position: "absolute",
     left: 15,
-    top: 15
+    top: 25
   },
   calendarContainer: {
     marginTop: 20,
-
     height: 50
   },
   gestureView: {

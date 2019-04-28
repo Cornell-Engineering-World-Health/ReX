@@ -29,7 +29,7 @@ export default StyleSheet.create({
   },
   imageStyle: {
     width: (circleWidth / 2) * 0.5,
-    height: (circleWidth / 2) * 0.7
+    height: (circleWidth / 2) * 0.6
   },
   topLeftQuadrant: {
     borderTopLeftRadius: circleWidth,
@@ -76,14 +76,9 @@ export default StyleSheet.create({
     fontSize: 22,
     top: -18
   },
-  lightShadow: {
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#808080",
-    shadowOpacity: 0.2
-  },
-  darkShadow: {
-    shadowOffset: { width: 3, height: 5 },
-    shadowColor: "#371f6a",
-    shadowOpacity: 0.3
+  timeText: {
+    color: COLOR.PrimaryGray,
+    fontSize: 12,
+    top: 12
   }
 });

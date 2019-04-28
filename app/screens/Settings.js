@@ -19,7 +19,8 @@ import MedicineSettings from "./MedicineSettings";
 import { sendMail } from "../components/Mail/MailController";
 import {
   exportSymptomsMailFunc,
-  exportMedicationsMailFunc
+  exportMedicationsMailFunc,
+  exportSurveyMailFunc
 } from "../mailUtil/mailUtil.js";
 import {
   asyncSettingUpdate,
@@ -56,7 +57,7 @@ class Settings extends Component {
       height_inches: "",
       height: "Height unknown",
       icon: "0",
-      email: "Doctor's email unknown",
+      email: "Doctor's email unkown",
       modalVisible: "",
       toggle: false,
       exportButtonsVisible: false
@@ -184,15 +185,16 @@ class Settings extends Component {
               marginTop: 35,
               marginLeft: 20,
               marginBottom: 10,
-              fontWeight: "100",
+              fontWeight: "bold",
               fontSize: 35
             }}
           >
             Settings
           </Text>
         </View>
-        <View>
+        <View style={styles.container}>
           <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
             <SettingsList.Item
               icon={
                 <Image
@@ -344,13 +346,27 @@ class Settings extends Component {
           style={styles.editProfileWrapper}
         >
           <View style={styles.modalExperiment}>
-            <Text style={styles.nidaInfo}>NIDA Survey</Text>
-            <Switch
-              value={this.state.toggle}
-              onValueChange={() => {
-                this._handleToggle();
+            <View
+              style={{flexDirection: "row"}}
+            >
+              <Text style={styles.nidaInfo}>NIDA Survey</Text>
+              <Switch
+                value={this.state.toggle}
+                onValueChange={() => {
+                  this._handleToggle();
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.nidaExport}
+              onPress={() => {
+                this.setState({ modalVisible: "" }, () =>
+                  exportSurveyMailFunc(this.state.email, "Questionnaire Data")
+                );
               }}
-            />
+            >
+              <Text>Export Questionnaire Data</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
 
@@ -518,12 +534,19 @@ const styles = StyleSheet.create({
   },
   modalExperiment: {
     flex: 0.1,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
     borderWidth: 1,
-    borderRadius: 10
+    borderRadius: 10,
+    padding: 20
+  },
+  nidaExport: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLOR.PrimaryGray,
+    padding: 10
   }
 });
 const ProfileRoute = {

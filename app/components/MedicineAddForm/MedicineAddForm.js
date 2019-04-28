@@ -7,23 +7,34 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
-  AlertIOS
+  AlertIOS,
+  Picker
 } from "react-native";
-import moment from "moment";
+
 import Modal from "react-native-modal";
+import { Calendar } from "react-native-calendars";
+import DropdownAlert from "react-native-dropdownalert";
+
 import TextInputType from "../LogInputTypes/TextInputType";
 import TimePicker from "../LogInputTypes/TimePicker";
 import Button from "../Button/Button";
 import ListViewer from "../HorizontalVariableListViewer/ListViewer";
 import NavigationHeader from "../NavigationHeader/NavigationHeader";
+
+import moment from "moment";
+
+import { COLOR, IMAGES } from "../../resources/constants";
+
+import { setMassNotification } from "../PushController/PushController.js";
+import { asyncCreateMedicineEvents } from "../../databaseUtil/databaseUtil";
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
   "window"
 );
-import { Calendar } from "react-native-calendars";
-import { COLOR } from "../../resources/constants";
 
 const CALENDAR_ID = "CALENDAR";
 const TIME_ID = "TIME";
+const GRAN_ID = "GRANULARITY";
+const FREQ_ID = "FREQUENCY";
 
 export default class MedicineAddForm extends React.Component {
   constructor(props) {
@@ -46,7 +57,11 @@ export default class MedicineAddForm extends React.Component {
       selectingStart: true,
       timeArray: [timeStr],
       timeArrayIdx: 0,
+      prevTimeArray: [timeStr],
+      prevTimeArrayIdx: 0,
       modalID: "",
+      granularity: "",
+      frequency: 0,
       submit_vals: {} //object for final submit
     };
   }
@@ -63,18 +78,74 @@ export default class MedicineAddForm extends React.Component {
    */
   checkIfIncomplete() {
     if (
-      Object.keys(this.state.submit_vals).length < 6 ||
+      Object.keys(this.state.submit_vals).length < 8 ||
       this.state.submit_vals["Pill Name"] == "" ||
       this.state.submit_vals["Dosage"] == "" ||
       this.state.submit_vals["Start Date"] == "" ||
       this.state.submit_vals["End Date"] == "" ||
       this.state.submit_vals["Time"] == [] ||
-      this.state.submit_vals["Time Category"] == []
+      this.state.submit_vals["Time Category"] == [] ||
+      this.state.submit_vals["Granularity"] == "" ||
+      this.state.submit_vals["Frequency"] == ""
     ) {
       return true;
     }
     return false;
   }
+
+  checkNoDuplicates() {
+    var enteredName = this.state.submit_vals["Pill Name"];
+    for (var i = 0; i < this.props.titles.length; i++) {
+      if (this.props.titles[i] == enteredName) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * asyncDatabaseUpdate takes data for a new medication and writes to the database:
+   * title (String): medicine name
+   * dosage (String): dosage amount in mg
+   * start (Moment date object): when to begin logging
+   * end (Moment date object): when to stop logging
+   * time (String array): array of times to start-> writes to the database
+   * time_category (Integer): {1,2,3,4} correspond to morning, afternoon, evening, and night respectively
+   * granularity (String): {daily, weekly, monthly} how often to log
+   * frequency (String): how often to log (once, twice, etc.)
+   */
+  asyncDatabaseUpdate = (
+    title,
+    dosage,
+    start,
+    end,
+    time,
+    time_category,
+    granularity,
+    frequency
+  ) => {
+    let thisRef = this;
+
+    setMassNotification(
+      start,
+      end,
+      title,
+      dosage,
+      time,
+      granularity,
+      frequency
+    );
+    asyncCreateMedicineEvents(
+      title,
+      dosage,
+      start,
+      end,
+      time,
+      time_category,
+      granularity,
+      frequency
+    );
+  };
 
   /**
    * Submit the Add Medicine Form when submit button is pressed
@@ -84,15 +155,27 @@ export default class MedicineAddForm extends React.Component {
   submit() {
     if (this.checkIfIncomplete()) {
       AlertIOS.alert("Form Incomplete", "Please add any missing information");
+    } else if (!this.checkNoDuplicates()) {
+      AlertIOS.alert(
+        "Duplicate Medication",
+        "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings."
+      );
     } else {
       this.props.successOnSubmit();
-      this.props.asyncDatabaseUpdate(
+      this.dropdown_success.close();
+      this.dropdown_success.alertWithType("custom", "New Medicine Added!", "");
+      // console.log("VALS");
+      // console.log(this.state.submit_vals["Granularity"]);
+      // console.log(this.state.submit_vals["Frequency"]);
+      this.asyncDatabaseUpdate(
         this.state.submit_vals["Pill Name"],
         this.state.submit_vals["Dosage"],
         new Date(this.state.submit_vals["Start Date"]),
         new Date(this.state.submit_vals["End Date"]),
         this.state.submit_vals["Time"],
-        this.state.submit_vals["Time Category"]
+        this.state.submit_vals["Time Category"],
+        this.state.submit_vals["Granularity"],
+        this.state.submit_vals["Frequency"]
       );
       this.props.exitModal();
     }
@@ -100,6 +183,22 @@ export default class MedicineAddForm extends React.Component {
 
   nextFocus() {
     this.dosage.textInput.focus();
+  }
+
+  freqItems() {
+    items = [];
+    for (var i = 1; i < 100; i++) {
+      items.push(i);
+    }
+    return items.map(val => {
+      return (
+        <Picker.Item
+          key={val.toString()}
+          label={val.toString()}
+          value={val.toString()}
+        />
+      );
+    });
   }
 
   /**
@@ -174,13 +273,43 @@ export default class MedicineAddForm extends React.Component {
         this.state.endDate != "" ? this.state.endDate : this.state.startDate
       );
     } else if (this.state.modalID == TIME_ID) {
-      let ta = this.state.timeArray.sort();
-      let time_category = ta.map(v => {
+      sortedTimes = this.state.timeArray.sort();
+      uniqueTimes = [];
+      for (var i = 0; i < sortedTimes.length; i++) {
+        if (i == sortedTimes.length - 1) {
+          uniqueTimes.push(sortedTimes[i]);
+        } else if (sortedTimes[i + 1] != sortedTimes[i]) {
+          uniqueTimes.push(sortedTimes[i]);
+        }
+      }
+
+      let time_category = uniqueTimes.map(v => {
         return this.timeToTimeCategory(v);
       });
-      this.setState({ timeArray: this.state.timeArray.sort() });
-      this.valueChange("Time", this.state.timeArray.sort());
+
+      this.setState({
+        timeArray: uniqueTimes,
+        timeArrayIdx: uniqueTimes.length - 1,
+        prevtimeArray: uniqueTimes,
+        prevTimeArrayIdx: uniqueTimes.length - 1
+      });
+      this.valueChange("Time", uniqueTimes);
       this.valueChange("Time Category", time_category);
+    } else if (this.state.modalID == GRAN_ID) {
+      gran = this.state.granularity;
+      freq = this.state.frequency;
+      if (this.state.granularity == "") {
+        gran = "Daily";
+      }
+      if (this.state.frequency == 0) {
+        freq = 1;
+      }
+      this.setState({
+        granularity: gran,
+        frequency: freq
+      });
+      this.valueChange("Granularity", gran);
+      this.valueChange("Frequency", freq);
     }
   }
 
@@ -255,11 +384,61 @@ export default class MedicineAddForm extends React.Component {
           />
         </View>
       );
+    modalContent =
+      this.state.modalID == GRAN_ID ? (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            width: viewportWidth
+          }}
+        >
+          <View
+            style={{
+              flex: 0.3333,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ fontSize: 23, fontWeight: "300" }}>Every</Text>
+          </View>
+          <Picker
+            selectedValue={this.state.frequency}
+            onValueChange={freq => {
+              this.setState({ frequency: freq });
+            }}
+            style={{ flex: 0.333 }}
+          >
+            {this.freqItems()}
+          </Picker>
+          <Picker
+            selectedValue={this.state.granularity}
+            onValueChange={gran => {
+              this.setState({ granularity: gran });
+            }}
+            style={{ flex: 0.333 }}
+          >
+            <Picker.Item label="Days" value="Daily" />
+            <Picker.Item label="Weeks" value="Weekly" />
+            <Picker.Item label="Months" value="Monthly" />
+          </Picker>
+        </View>
+      ) : (
+        modalContent
+      );
     let modalTitle =
       this.state.modalID == CALENDAR_ID
         ? "Select Date Range"
         : "Select Prescription Time";
+    modalTitle =
+      this.state.modalID == GRAN_ID
+        ? "Select Prescription Frequency"
+        : modalTitle;
+    modalTitle =
+      this.state.modalID == FREQ_ID ? "Select Frequency" : modalTitle;
     let modalHeight = this.state.modalID == CALENDAR_ID ? 0.65 : 0.6;
+    modalHeight = this.state.modalID == GRAN_ID ? 0.4 : modalHeight;
+    modalHeight = this.state.modalID == FREQ_ID ? 0.4 : modalHeight;
     let dateText = "";
     if (this.state.submit_vals["Start Date"]) {
       dateText =
@@ -276,7 +455,23 @@ export default class MedicineAddForm extends React.Component {
     } else {
       timeText = "Enter Your Prescription Time";
     }
-
+    let granText = "Enter Your Prescription Frequency";
+    if (this.state.granularity && this.state.frequency) {
+      granText = this.state.granularity;
+      if (granText == "Daily") {
+        granText = "Day";
+      } else if (granText == "Weekly") {
+        granText = "Week";
+      } else {
+        granText = "Month";
+      }
+      let tempFreq = this.state.frequency;
+      if (tempFreq > 1) {
+        granText = "Every " + tempFreq.toString() + " " + granText + "s";
+      } else {
+        granText = "Every " + granText;
+      }
+    }
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.outerContainer}>
@@ -329,6 +524,18 @@ export default class MedicineAddForm extends React.Component {
               }}
               keyboardType={"number-pad"}
             />
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                text={granText}
+                rounded={true}
+                width={viewportWidth - 30}
+                borderColor={COLOR.purple}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  this.setState({ modalID: GRAN_ID });
+                }}
+              />
+            </View>
             <Button
               text={dateText}
               rounded={true}
@@ -386,7 +593,9 @@ export default class MedicineAddForm extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        this.setState({ modalID: "" });
+                        this.setState({
+                          modalID: ""
+                        });
                       }}
                     >
                       <Text style={styles.modalButtonText}>Cancel</Text>
@@ -397,6 +606,22 @@ export default class MedicineAddForm extends React.Component {
               </View>
             </Modal>
           </View>
+          <DropdownAlert
+            ref={ref => (this.dropdown = ref)}
+            closeInterval={2000}
+            imageSrc={IMAGES.close_white}
+            containerStyle={{
+              backgroundColor: COLOR.red
+            }}
+          />
+          <DropdownAlert
+            ref={ref => (this.dropdown_success = ref)}
+            closeInterval={2000}
+            imageSrc={IMAGES.checkmarkWhite}
+            containerStyle={{
+              backgroundColor: COLOR.cyan
+            }}
+          />
         </View>
       </TouchableWithoutFeedback>
     );

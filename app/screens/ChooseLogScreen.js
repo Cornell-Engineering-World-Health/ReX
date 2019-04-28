@@ -6,18 +6,27 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Dimensions
 } from "react-native";
 import Database from "../Database";
 import SearchInput, { createFilter } from "react-native-search-filter";
+import { LinearGradient } from "expo";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import {
   getSource,
   IMAGES,
   BODY_PARTS,
-  getColor
+  getColor,
+  COLOR,
+  MENU_HEIGHT
 } from "../resources/constants";
 const KEYS_TO_FILTERS = ["event_type_name", "event_type_category"];
+
+let height = Dimensions.get("window").height;
+let gradient_ratio = 0.7;
+
+let gradient_frombottom = (height - MENU_HEIGHT) * gradient_ratio;
 
 export default class ChooseLogScreen extends React.Component {
   constructor(props) {
@@ -71,12 +80,31 @@ export default class ChooseLogScreen extends React.Component {
     );
     return (
       <ImageBackground style={styles.container}>
+        <LinearGradient
+          colors={COLOR.gradient}
+          style={[
+            {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: gradient_frombottom
+            },
+            styles.darkShadow
+          ]}
+          start={[0, 1]}
+          end={[1, 0]}
+        />
         <View style={styles.backWrapper}>
           <NavigationHeader
             onPressBack={() => {
               this.props.navigation.goBack();
             }}
             title={"Pick a symptom"}
+            textStyle={{ color: "white" }}
+            imageStyle={{
+              tintColor: "white"
+            }}
           />
         </View>
         <View style={styles.searchWrapper}>
@@ -100,7 +128,7 @@ export default class ChooseLogScreen extends React.Component {
             fuzzy={true}
           />
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 0.7 }}>
           <ScrollView>
             <View style={styles.log_container}>
               {filteredSymptoms.map((prop, key) => {
@@ -154,22 +182,22 @@ const styles = StyleSheet.create({
   },
   scrollView: { flex: 1 },
   log_button: {
-    margin: 10,
-    alignItems: "bottom",
-    width: 150,
-    height: 150,
+    width: 110,
+    height: 110,
+    justifyContent: "space-between",
     alignItems: "center",
-    padding: 15,
-    borderRadius: 10
+    padding: 10,
+    borderRadius: 10,
+    margin: 5
   },
   log_button_text: {
     color: "#161616",
-    fontSize: 15
+    fontSize: 15,
+    textAlign: "center"
   },
   log_button_img: {
-    marginTop: 15,
-    height: 75,
-    width: 75,
+    height: 60,
+    width: 60,
     tintColor: "#161616"
   },
   searchInput: {
@@ -184,7 +212,6 @@ const styles = StyleSheet.create({
     color: "black"
   },
   searchWrapper: {
-    marginTop: 10,
     paddingRight: 25,
     paddingLeft: 25,
     flex: 0.15,
@@ -193,7 +220,7 @@ const styles = StyleSheet.create({
   },
   backWrapper: {
     flex: 0.15,
-    paddingTop: 25
+    justifyContent: "flex-end"
   },
   lightShadow: {
     shadowOffset: { width: 3, height: 3 },

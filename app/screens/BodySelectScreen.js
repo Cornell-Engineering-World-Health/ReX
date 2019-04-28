@@ -100,7 +100,13 @@ export default class BodySelectScreen extends React.Component {
     const { navigate } = this.props.navigation;
     let h_lines = this.renderHorizontalLines();
     return (
-      <View style={{ flex: 1, paddingTop: 40, backgroundColor: "white" }}>
+      <View
+        style={{
+          flex: 1,
+          paddingTop: 40,
+          backgroundColor: "white"
+        }}
+      >
         {/*h_lines*/}
         <LinearGradient
           colors={COLOR.gradient}
@@ -127,8 +133,7 @@ export default class BodySelectScreen extends React.Component {
           style={{
             marginTop: 5,
             flex: 1,
-            flexDirection: "row",
-            tintColor: "red"
+            flexDirection: "row"
           }}
           source={IMAGES.body}
         >

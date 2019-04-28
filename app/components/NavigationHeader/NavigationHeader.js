@@ -13,13 +13,18 @@ import { IMAGES } from "../../resources/constants";
 /**
  * Emulates the StackNavigator header.
  */
-const NavigationHeader = ({ onPressBack, title }) => {
+const NavigationHeader = props => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={onPressBack}>
-        <Image style={styles.img} source={IMAGES.headerBack} />
+      <TouchableOpacity style={styles.backButton} onPress={props.onPressBack}>
+        <Image
+          style={[styles.img, props.imageStyle]}
+          source={IMAGES.headerBack}
+        />
       </TouchableOpacity>
-      {title ? <Text style={styles.title}>{title}</Text> : null}
+      {props.title ? (
+        <Text style={[styles.title, props.textStyle]}>{props.title}</Text>
+      ) : null}
     </View>
   );
 };
