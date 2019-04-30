@@ -65,10 +65,14 @@ export default class ChooseLogScreen extends React.Component {
             json_rows = JSON.parse(rows._array[0].fields);
             keysArray = Object.keys(json_rows);
 
-            var valArray = [];
-            var submit_vals = {};
-            for (let i = 0; i < keysArray.length; i++) {
-              var input_types = [];
+            keysArray.unshift('Date')
+            var today_str = moment().format('YYYY-MM-DD')
+            var valArray = [today_str];
+            var submit_vals = {Date: today_str};
+            var input_types = ['DatePicker'];
+
+
+            for (let i = 1; i < keysArray.length; i++) {
               valArray[i] = "N/A";
               submit_vals[keysArray[i]] = "N/A";
               Database.transaction(
@@ -149,7 +153,6 @@ export default class ChooseLogScreen extends React.Component {
   render() {
     var SCALE_LABELS = ["", "", "", "", "", "", "", "", "", "", ""];
     var MEDICATION_SCALE_LABELS = ["Morning", "Afternoon", "Evening"];
-
     let component_array = this.state.input_type_array.map((prop, key) => {
       if (prop == "ScaleSlideInputType") {
         return (
@@ -188,7 +191,14 @@ export default class ChooseLogScreen extends React.Component {
           />
         );
       } else if (prop == "DatePicker") {
-        return null;
+        return (
+          <DatePicker
+            valueChange={(label, value) => {
+              this._form.valueChange(label, value);
+            }}
+            val_label={this.state.value_labels[key]}
+          />
+        );
       } else if (prop == "DayChooserInputType") {
         return null;
       } else if (prop == "TimeCategoryInputType") {
