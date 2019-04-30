@@ -121,9 +121,12 @@ export default class ChooseLogScreen extends React.Component {
       this.props.navigation.state.params.onLog();
       this.props.navigation.pop();
       let event_type_id = this.state.event_type_id;
-      let values = JSON.stringify(this.state.submit_vals);
 
-      let timestamp = moment().format("YYYY-MM-DD HH:mm:00");
+      let timestamp = moment(this.state.submit_vals['Date']).format("YYYY-MM-DD HH:mm:00");
+      submit_vals = this.state.submit_vals
+      delete submit_vals['Date']
+
+      let values = JSON.stringify(submit_vals);
       event_details_id_count++;
       event_id_count++;
       asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
