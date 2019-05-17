@@ -10,7 +10,7 @@ const Headline = () => {
             <img src={bg} alt='Background Shape' id='bg'/>
             <div className="header-box">
                 <p className="header-text">
-                    <span>Managing your health has</span>
+                    <span>Managing your <span className="color-text">health</span> has</span>
                     <br/>
                     <span>never been so easy</span>
                 </p>

@@ -1,8 +1,8 @@
 #iphone_header {
 	position: absolute;
-	left: 35em;
-	bottom: -3em;
-    width: 60%;
+	left: 38em;
+	bottom: 3em;
+    width: 48%;
     height: auto;
 	animation: float 6s ease-in-out infinite;
 	z-index: -1;
