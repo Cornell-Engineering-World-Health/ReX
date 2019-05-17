@@ -12,3 +12,17 @@ body {
   /* background: -webkit-linear-gradient(to right, #66e2d0, #82EFD7); */
   /* background: linear-gradient(to top right, #34cac1, #82EFD7);  */
 }
+
+@media screen and (max-width: 900px){
+
+  body {
+    background: #7accc8
+  }
+
+}
+
+@media screen and (max-height: 400px) {
+  body {
+    background: #7accc8
+  }
+}

@@ -1,12 +1,16 @@
 #iphone_header {
-    transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    width: 27em;
+	position: absolute;
+	left: 35em;
+	bottom: -3em;
+    width: 60%;
     height: auto;
-    margin: 1em;
-    /* text-align: right; */
-    animation: float 6s ease-in-out infinite;
+	animation: float 6s ease-in-out infinite;
+	z-index: -1;
 }
+
+/* .iphone-box {
+	text-align: center;
+} */
 
 @keyframes float {
 	0% {
