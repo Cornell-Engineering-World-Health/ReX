@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "www.rex.health/static/css/main.1ce83e3d.chunk.css",
-    "main.js": "www.rex.health/static/js/main.aa884534.chunk.js",
-    "main.js.map": "www.rex.health/static/js/main.aa884534.chunk.js.map",
-    "runtime~main.js": "www.rex.health/static/js/runtime~main.0558bbfa.js",
-    "runtime~main.js.map": "www.rex.health/static/js/runtime~main.0558bbfa.js.map",
-    "static/js/2.527bc477.chunk.js": "www.rex.health/static/js/2.527bc477.chunk.js",
-    "static/js/2.527bc477.chunk.js.map": "www.rex.health/static/js/2.527bc477.chunk.js.map",
-    "index.html": "www.rex.health/index.html",
-    "precache-manifest.6a0daa24a8cfeaa61b3c7a4051289b4b.js": "www.rex.health/precache-manifest.6a0daa24a8cfeaa61b3c7a4051289b4b.js",
-    "service-worker.js": "www.rex.health/service-worker.js",
-    "static/css/main.1ce83e3d.chunk.css.map": "www.rex.health/static/css/main.1ce83e3d.chunk.css.map",
-    "static/media/Privacy.pdf": "www.rex.health/static/media/Privacy.2aa9c492.pdf",
-    "static/media/Terms.pdf": "www.rex.health/static/media/Terms.fd374d58.pdf",
-    "static/media/apple.png": "www.rex.health/static/media/apple.f337c20f.png",
-    "static/media/back_shape.png": "www.rex.health/static/media/back_shape.6a90c8da.png",
-    "static/media/iphone_header_crop.png": "www.rex.health/static/media/iphone_header_crop.6db2387a.png"
+    "main.css": "/static/css/main.1ce83e3d.chunk.css",
+    "main.js": "/static/js/main.96a4084b.chunk.js",
+    "main.js.map": "/static/js/main.96a4084b.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/js/2.527bc477.chunk.js": "/static/js/2.527bc477.chunk.js",
+    "static/js/2.527bc477.chunk.js.map": "/static/js/2.527bc477.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dc992148fd573f96b40561bc7a556047.js": "/precache-manifest.dc992148fd573f96b40561bc7a556047.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.1ce83e3d.chunk.css.map": "/static/css/main.1ce83e3d.chunk.css.map",
+    "static/media/Privacy.pdf": "/static/media/Privacy.2aa9c492.pdf",
+    "static/media/Terms.pdf": "/static/media/Terms.fd374d58.pdf",
+    "static/media/apple.png": "/static/media/apple.f337c20f.png",
+    "static/media/back_shape.png": "/static/media/back_shape.6a90c8da.png",
+    "static/media/iphone_header_crop.png": "/static/media/iphone_header_crop.6db2387a.png"
   }
 }
