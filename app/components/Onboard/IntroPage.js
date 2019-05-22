@@ -24,11 +24,13 @@ class IntroPage extends React.Component {
       >
         <View style={styles.inner_container}>
           <Image source={IMAGES.fiih} style={styles.logo} />
-          <Text style={styles.header}>{"FIIH"}</Text>
-          <Text style={styles.subheader}>
-            {"Track and monitor symptoms and medications swimmingly"}
-          </Text>
         </View>
+        <View style={styles.inner}>
+        <Image source={IMAGES.rexx} style={styles.header} />
+          <Text style={styles.subheader}>
+            {"Track and monitor symptoms and medications"}
+          </Text>
+          </View>
         <TouchableOpacity
           style={styles.startButton}
           onPress={() => {
@@ -57,36 +59,43 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center'
   },
+  inner: {
+    alignItems: 'center',
+  },
   logo: {
-    marginBottom: 5,
     width: 100,
     height: 100
   },
   header: {
-    fontSize: 40,
-    fontFamily: 'HelveticaNeue',
-    letterSpacing: 4,
-    color: '#A0A0A0'
+    // fontSize: 40,
+    // fontFamily: 'HelveticaNeue',
+    // letterSpacing: 4,
+    // color: '#A0A0A0'
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    bottom: 20,
+    // bottom: 30,
   },
   subheader: {
-    marginTop: 20,
     fontSize: 20,
     letterSpacing: 2,
     fontFamily: 'HelveticaNeue-Thin',
-    color: '#707070',
+    color: '#ffffff',
     textAlign: 'center'
   },
   startButton: {
     padding: 12,
     borderWidth: 1,
-    borderColor: '#707070',
+    borderColor: '#ffffff',
     borderRadius: 30
   },
   startButtonText: {
     fontSize: 20,
     letterSpacing: 2,
     fontFamily: 'HelveticaNeue',
-    color: '#707070'
+    color: '#ffffff'
   }
 });
 
