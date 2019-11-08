@@ -5,6 +5,7 @@ import ScaleSlideInputType from "../LogInputTypes/ScaleSlideInputType";
 import TextInputType from "../LogInputTypes/TextInputType";
 import NumericalPickerInputType from "../LogInputTypes/NumericalPickerInputType";
 import ChecklistInputType from "../LogInputTypes/ChecklistInputType";
+import ListInputType from "../LogInputTypes/ListInputType";
 import DatePicker from "../LogInputTypes/DatePicker";
 import moment from "moment";
 import Form from "../LogInputTypes/Form";
@@ -106,6 +107,14 @@ export default class SurveyForm extends React.Component {
     //   valOptions: valOptions, //for questions with params, gives bounds
     //   surveyId: survey["SurveyName"] //survey name
     // };
+    console.log("state",{
+        input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+      value_labels: titles, //my type labels - question
+      values: valArray, //current value - 0
+      submit_vals: submit_vals, //pairs of question: value {q: a}
+      valOptions: valOptions, //for questions with params, gives bounds
+      surveyId: survey["SurveyName"] //survey name
+    })
     this.setState({
         input_type_array: inputTypes, //types compoment - NumericalPickerInputType
       value_labels: titles, //my type labels - question
@@ -235,15 +244,9 @@ export default class SurveyForm extends React.Component {
         );
       } else if (prop == "TextInputType") {
         return (
-          <TextInputType
-            key={key}
-            input_style={styles.input_container_green}
-            title_text_style={styles.title_text}
-            text={this.state.values[key]}
-            placeholder_text={"Type here..."}
-            title_text={this.state.value_labels[key]}
-            val_label={this.state.value_labels[key]}
+          <ListInputType
             valueChange={this.valueChange.bind(this)}
+            val_label={this.state.value_labels[key]}
           />
         );
       } else if (prop == "DatePicker") {

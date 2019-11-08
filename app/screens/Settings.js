@@ -249,9 +249,9 @@ class Settings extends Component {
               title="Contact"
               onPress={() => {
                 sendMail(
-                  ["fiih.developers@gmail.com"],
+                  ["ewhcornell@gmail.com"],
                   "Comments on Your App",
-                  "Dear Engineering World Health Body, \n",
+                  "Dear Cornell HealthTech Team, \n",
                   null,
                   null
                 );

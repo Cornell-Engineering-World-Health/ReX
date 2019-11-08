@@ -1,7 +1,7 @@
 # FISH
 <img  align="left" src="https://drive.google.com/uc?export=view&id=1mP6DdkxEtkZFNZ9MQDVDY0oaEx2WcvkG" width="400">
 
-Welcome to FISH™, a symptom tracking and medication reminder application, currently in Beta Testing for the App Store. In this app you can monitor one time or recurring symptoms, see symptom history over time, track medication usage, and recieve notifications as to when to take your next medication. 
+Welcome to FISH™, a symptom tracking and medication reminder application, currently in Beta Testing for the App Store. In this app you can monitor one time or recurring symptoms, see symptom history over time, track medication usage, and recieve notifications as to when to take your next medication.
 
 <space>Features:<br />
 <space> - Track your medication and symptoms over extended periods of time <br />
@@ -20,7 +20,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You must have npm installed on your computer. If you have a Macbook, you can run the app through Expo on the XCode iOS Simulator. Otherwise, you can download the Expo app on your mobile device and register an account. 
+You must have npm installed on your computer. If you have a Macbook, you can run the app through Expo on the XCode iOS Simulator. Otherwise, you can download the Expo app on your mobile device and register an account.
 
 You should also have the Expo Cli. Assuming that you have Node installed, you can use npm to install the Expo CLI command line utility:
 ```
@@ -50,7 +50,7 @@ This should open a browser that loads a QR Code. Assuming you are using a physic
 We are currently in the beta testing stage, so as we update this app, we will update this section.
 
 ## Authors
-This app is maintained by [Cornell Engineering World Health](https://ewh.engineering.cornell.edu/). Individuals below are members of the Computer Science Subteam of this Project Team. 
+This app is maintained by [Cornell Engineering World Health](https://ewh.engineering.cornell.edu/). Individuals below are members of the Computer Science Subteam of this Project Team.
 //TODO add personal websites
 * [**Albert Chung** 2020](https://github.com/PurpleBooth)
 * [**Ben Edwards**     2019]()
@@ -65,4 +65,3 @@ FISH is made available under the terms of the GPLv3.
 See the LICENSE file that accompanies this distribution for the full text of the license.
 
 ## Acknowledgments
-

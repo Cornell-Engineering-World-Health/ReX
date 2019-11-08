@@ -23,7 +23,7 @@ class IntroPage extends React.Component {
         source={IMAGES.intro_background}
       >
         <View style={styles.inner_container}>
-          <Image source={IMAGES.fiih} style={styles.logo} />
+          <Image source={IMAGES.rex} style={styles.logo} />
         </View>
         <View style={styles.inner}>
         <Image source={IMAGES.rexx} style={styles.header} />

@@ -63,7 +63,7 @@ class Home extends React.Component {
       name: "",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: "Welcome to FIIH Health!",
+      message: "Welcome to ReX Health!",
       notTakenMeds: {},
       //fields for modal
       modalVisible: false,
@@ -380,7 +380,7 @@ class Home extends React.Component {
     //   dropDownMessage =
     //     "Your " + time + " medications cannot be taken at this time of day!";
     //   canTake = true;
-    // } else 
+    // } else
     if (this.state.totalAmount[index] == 0) {
       dropDownMessage = "No " + time + " medications to be taken!";
       canTake = false;

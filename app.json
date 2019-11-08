@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Fish",
-    "slug": "fiih-medication-tracker",
+    "name": "ReX",
+    "slug": "rex-medication-tracker",
     "orientation": "portrait",
-    "icon": "./app/resources/images/fiih_logo_background.png",
-    "version": "1.0.7",
-    "sdkVersion": "31.0.0",
+    "icon": "./app/resources/images/rex_logo_background.png",
+    "version": "1.1.0",
+    "sdkVersion": "35.0.0",
     "ios": {
-      "bundleIdentifier": "com.ewhcornell.fiih"
+      "bundleIdentifier": "com.ewhcornell.rex"
     },
     "splash": {
       "image": "./app/resources/images/intro_background.png",

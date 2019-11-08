@@ -103,7 +103,7 @@ class IntroPage extends React.Component {
           <View style={{ paddingTop: 11 }}>
             <Text style={styles.header}>{"Welcome"}</Text>
           </View>
-          <Image source={IMAGES.fiih} style={styles.logo} />
+          <Image source={IMAGES.rex} style={styles.logo} />
         </View>
         <View style={styles.profileWrapper}>
           <Profile

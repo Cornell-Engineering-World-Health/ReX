@@ -122,7 +122,7 @@ export function setPushNotification(t, b, date) {
 
 
 export function setOurNotification(name, dosage, date_time){
-  let t = "Fiih Medication Reminder";
+  let t = "ReX Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
   if(Moment(date_time) > Moment()){
     console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))

@@ -77,7 +77,7 @@ export const IMAGES = {
   smalldot: require("./images/smalldot.png"),
   exportcsv: require("./images/exportcsv.png"),
   search: require("./images/search.png"),
-  fiih: require("./images/priya_rex_trans.png"),
+  rex: require("./images/priya_rex_trans.png"),
   intro_background: require("./images/intro_background_two.png"),
   chemical: require("./images/chemical.png"),
   tingling: require("./images/tingle.png"),
