@@ -10,7 +10,7 @@ import {
   Alert
 } from "react-native";
 import Moment from "moment";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 
@@ -28,6 +28,10 @@ import {
 Allows users to edit medicine
 */
 export default class MedicineSettings extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -213,7 +217,7 @@ export default class MedicineSettings extends React.Component {
         <View style={styles.header}>
           <NavigationHeader
             title={"Medicine Settings"}
-            onPressBack={() => this.props.navigator.pop()}
+            onPressBack={() => this.props.navigation.goBack()}
           />
         </View>
         {this._renderBody()}

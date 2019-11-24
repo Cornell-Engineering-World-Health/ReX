@@ -2,9 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import IntroPage from './IntroPage';
 import InfoPage from './InfoPage';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import DropdownAlert from 'react-native-dropdownalert';
 import { COLOR, IMAGES } from '../../resources/constants';
+import { createAppContainer } from 'react-navigation';
 
 export default class OnboardContent extends React.Component {
   constructor(props) {
@@ -31,23 +32,26 @@ export default class OnboardContent extends React.Component {
 
 
   render() {
-    let OnboardContentSN = StackNavigator({
+    let OnboardContentSN = createStackNavigator({
       Intro: {
         screen: IntroPage,
-        navigationOptions: {
-          header: false,
-        }
+        navigationOptions: () => ({
+          header: false
+        }),
       },
       Info: {
         screen: InfoPage,
-        navigationOptions: {
+        navigationOptions: () => ({
           header: false
-        }
+        }),
       }
     });
+
+    const OnboardContentSNContainer = createAppContainer(OnboardContentSN);
+
     return (
       <View style={{ flex: 1 }}>
-        <OnboardContentSN
+        <OnboardContentSNContainer
           screenProps={{
             errorOnSubmit: this.errorOnSubmit.bind(this),
             emailErrorOnSubmit: this.emailErrorOnSubmit.bind(this),

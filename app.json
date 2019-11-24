@@ -4,7 +4,7 @@
     "slug": "rex-medication-tracker",
     "orientation": "portrait",
     "icon": "./app/resources/images/rex_logo_background.png",
-    "version": "1.1.0",
+    "version": "2.1.1",
     "sdkVersion": "35.0.0",
     "ios": {
       "bundleIdentifier": "com.ewhcornell.rex"
@@ -12,6 +12,10 @@
     "splash": {
       "image": "./app/resources/images/intro_background.png",
       "backgroundColor": "#2e3238"
-    }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }

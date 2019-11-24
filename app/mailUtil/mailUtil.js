@@ -1,4 +1,5 @@
-import { MailComposer, FileSystem } from "expo";
+import * as MailComposer from 'expo-mail-composer';
+import * as FileSystem from 'expo-file-system';
 import { Linking, Alert } from "react-native";
 import {
   exportAllSymptoms,

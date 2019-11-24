@@ -2,12 +2,13 @@ import React from 'react';
 import ChooseLogScreen from './ChooseLogScreen';
 import LogFormScreen from './LogFormScreen';
 import BodySelectScreen from './BodySelectScreen';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import {
   View
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { COLOR, IMAGES} from '../resources/constants';
+import { createAppContainer } from 'react-navigation';
 
 export default class Log extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class Log extends React.Component {
   }
 
   render() {
-    const LogSN = StackNavigator({
+    let LogSN = createStackNavigator({
       Body: {
         screen: BodySelectScreen,
         navigationOptions: {
@@ -45,9 +46,11 @@ export default class Log extends React.Component {
         }
       }
     });
+
+    const LogSNContainer = createAppContainer(LogSN);
     return (
       <View style={{flex: 1}}>
-        <LogSN
+        <LogSNContainer
           screenProps={{
             successOnSubmit: this.successOnSubmit.bind(this)
           }}

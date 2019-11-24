@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { FileSystem } from "expo";
+import * as FileSystem from 'expo-file-system';
 import ScaleSlideInputType from "../LogInputTypes/ScaleSlideInputType";
 import TextInputType from "../LogInputTypes/TextInputType";
 import NumericalPickerInputType from "../LogInputTypes/NumericalPickerInputType";

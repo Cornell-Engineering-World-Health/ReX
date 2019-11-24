@@ -3,7 +3,10 @@
 */
 import React from "react";
 import { Alert, Platform } from "react-native";
-import { Notifications, Constants, Permissions } from "expo";
+import { Notifications } from "expo";
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+
 import {
   asyncCreateNotifications,
   asyncGetNotificationKey,

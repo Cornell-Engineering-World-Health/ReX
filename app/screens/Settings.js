@@ -5,7 +5,6 @@ import {
   View,
   Text,
   Image,
-  NavigatorIOS,
   TouchableOpacity,
   Switch,
   Dimensions,
@@ -29,6 +28,8 @@ import {
   databaseGetSurveyIsOn
 } from "../databaseUtil/databaseUtil";
 import { profile_icons, IMAGES, COLOR } from "../resources/constants";
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 const modal_ids = ["edit", "export", "experiment"];
 const export_ids = [
@@ -241,7 +242,7 @@ class Settings extends Component {
               onPress={() => {}}
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => {
-                this.props.navigator.push(TrendsRoute);
+                this.props.navigation.navigate('Trends')
               }}
             />
 
@@ -290,7 +291,7 @@ class Settings extends Component {
               }
               title="Edit Medicine Settings"
               onPress={() => {
-                this.props.navigator.push(MedicineSettingsPage);
+                this.props.navigation.navigate('MedicineSettings')
               }}
             />
             <SettingsList.Item
@@ -549,27 +550,25 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
-const ProfileRoute = {
-  component: Profile,
-  passProps: { myProp: "foo" }
-};
-const MedicineSettingsPage = {
-  component: MedicineSettings
-};
-const TrendsRoute = {
-  component: Trends
-};
+
+
+const RootStack = createStackNavigator(
+  {
+    Home: Settings,
+    Trends: Trends,
+    MedicineSettings: MedicineSettings
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+const AppContainer = createAppContainer(RootStack);
+
 export default class settingsList extends React.Component {
   render() {
     return (
-      <NavigatorIOS
-        initialRoute={{
-          component: Settings,
-          title: "Settings"
-        }}
-        style={{ flex: 1 }}
-        navigationBarHidden={true}
-      />
+      <AppContainer />
     );
   }
 }

@@ -12,6 +12,9 @@ import {
 import { IMAGES, COLOR } from '../../resources/constants';
 
 class IntroPage extends React.Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
   constructor(props) {
     super(props);
   }

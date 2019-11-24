@@ -75,7 +75,6 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingTop: Dimensions.get("window").length * 0.05
   },
   item: {
     margin: 2,

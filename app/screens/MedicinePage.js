@@ -2,9 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import MedicineView from './MedicineView';
 import MedicineAddForm from '../components/MedicineAddForm/MedicineAddForm';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import DropdownAlert from 'react-native-dropdownalert';
 import { COLOR, IMAGES } from '../resources/constants';
+import { createAppContainer } from 'react-navigation';
 
 export default class MedicinePage extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class MedicinePage extends React.Component {
   }
 
   render() {
-    let MedicinePageSN = StackNavigator({
+    let MedicinePageSN = createStackNavigator({
       MainView: {
         screen: MedicineView,
         navigationOptions: {
@@ -43,9 +44,10 @@ export default class MedicinePage extends React.Component {
         }
       }
     });
+    const MedicinePageSNContainer = createAppContainer(MedicinePageSN);
     return (
       <View style={{ flex: 1 }}>
-        <MedicinePageSN
+        <MedicinePageSNContainer
           screenProps={{
             errorOnSubmit: this.errorOnSubmit.bind(this),
             successOnSubmit: this.successOnSubmit.bind(this)

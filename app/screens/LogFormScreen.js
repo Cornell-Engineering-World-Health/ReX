@@ -160,6 +160,11 @@ export default class ChooseLogScreen extends React.Component {
             value={parseInt(this.state.values[key]) - 1}
             scale_labels={SCALE_LABELS}
             title_text={this.state.value_labels[key]}
+            title_text_style={{
+                fontSize: 25,
+                fontWeight: '200',
+                textAlign: 'center'
+              }}
             val_label={this.state.value_labels[key]}
             valueChange={(label, value) => {
               this._form.valueChange(label, value);

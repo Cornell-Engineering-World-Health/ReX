@@ -16,7 +16,7 @@ import {
   pullYearlySymptomForGraphs,
   pullAllLoggedSymptomsTypes
 } from "../databaseUtil/databaseUtil";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -49,6 +49,10 @@ Used to distinguish month view and year view
 const VIEWS = ["MONTH_VIEW", "YEAR_VIEW"];
 
 export default class Trends extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(props) {
     super(props);
 
@@ -454,7 +458,7 @@ export default class Trends extends React.Component {
           <TouchableOpacity
             style={styles.menuButtonWrapper}
             onPress={() => {
-              this.props.navigator.pop();
+              this.props.navigation.goBack()
             }}
           >
             <Image
@@ -618,7 +622,7 @@ export default class Trends extends React.Component {
           <TouchableOpacity
             style={styles.menuButtonWrapper}
             onPress={() => {
-              this.props.navigator.pop();
+              this.props.navigation.goBack()
             }}
           >
             <Image

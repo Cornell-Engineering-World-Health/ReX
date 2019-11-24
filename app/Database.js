@@ -1,4 +1,4 @@
-import { SQLite } from "expo";
+import * as SQLite from 'expo-sqlite';
 
 let db_id = Math.random()
   .toString(36)
