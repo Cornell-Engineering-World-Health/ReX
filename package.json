@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-native-scripts": "1.11.1",
     "jest-expo": "^31.0.0",
+    "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -22,10 +22,11 @@
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "babel-preset-expo": "^5.0.0",
+    "expo": "^33.0.0",
     "moment": "^2.22.2",
     "prop-types": "^15.6.0",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-animatable": "^1.2.4",
     "react-native-autocomplete-input": "^3.6.0",
     "react-native-calendars": "^1.21.0",
