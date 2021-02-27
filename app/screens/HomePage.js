@@ -96,7 +96,7 @@ class Home extends React.Component {
       };
     };
 
-    pullMedicineFromDatabase(new Date(), function(formattedData) {
+    pullMedicineFromDatabase(new Date(), function (formattedData) {
       let notTakenMeds = {
         morning: [],
         afternoon: [],
@@ -115,9 +115,9 @@ class Home extends React.Component {
         evening: [],
         night: []
       };
-      Object.keys(formattedData).forEach(function(med) {
+      Object.keys(formattedData).forEach(function (med) {
         let i = 0;
-        formattedData[med].timeCategory.forEach(function(time) {
+        formattedData[med].timeCategory.forEach(function (time) {
           switch (time) {
             case "Morning":
               totalAmount[0]++;
@@ -211,7 +211,7 @@ class Home extends React.Component {
         that.setState({
           message:
             ENCOURAGEMENT_TEXT[
-              Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)
+            Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)
             ] +
             "\n" +
             "Your last occurance of " +
@@ -262,7 +262,7 @@ class Home extends React.Component {
         that.setState({
           message:
             ENCOURAGEMENT_TEXT[
-              Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)
+            Math.floor(Math.random() * ENCOURAGEMENT_TEXT.length)
             ] +
             "\n" +
             "You have not missed any medications in\n" +
@@ -343,7 +343,7 @@ class Home extends React.Component {
   * checkValidPress(index) returns {canPress: bool, dropDownTitle: string,
   * dropDownMessage: string, iconDropDown: IMAGE, backgroundColorDropDown: COLOR}
   */
-  checkValidPress(index){
+  checkValidPress(index) {
     let time;
     let iconDropDown;
     let backgroundColorDropDown;
@@ -404,8 +404,8 @@ class Home extends React.Component {
   * Either blocks attempt with a dropdown alert or opens modal to log
   */
   tryOpenModal(index) {
-    canTakeInfo = this.checkValidPress(index)
-    if(canTakeInfo.canPress){
+    let canTakeInfo = this.checkValidPress(index)
+    if (canTakeInfo.canPress) {
       this.setState({
         modalVisible: true,
         selectedPeriod: index_time_map[index],
@@ -413,10 +413,10 @@ class Home extends React.Component {
       });
     }
 
-    iconDropDown = canTakeInfo.iconDropDown
-    backgroundColorDropDown = canTakeInfo.backgroundColorDropDown
+    let iconDropDown = canTakeInfo.iconDropDown
+    let backgroundColorDropDown = canTakeInfo.backgroundColorDropDown
     this.setState({ iconDropDown, backgroundColorDropDown }, () => {
-      if(!canTakeInfo.canPress){
+      if (!canTakeInfo.canPress) {
         this.dropdown.close();
         this.dropdown.alertWithType("custom", canTakeInfo.dropDownTitle, canTakeInfo.dropDownMessage);
       }
@@ -426,7 +426,7 @@ class Home extends React.Component {
   /**
   * Writes to DB
   */
-  logAll(index){
+  logAll(index) {
     if (this.state.doneAmount[index] == this.state.totalAmount[index]) {
       return
     }
@@ -512,18 +512,18 @@ class Home extends React.Component {
     }
     data = {}
 
-    if(this.state.confirming){
-      if(this.state.doneAmount[index] == this.state.totalAmount[index]){//none
+    if (this.state.confirming) {
+      if (this.state.doneAmount[index] == this.state.totalAmount[index]) {//none
         data = emptyData
-      } else if(this.state.doneAmount[index] == 0){ //all
+      } else if (this.state.doneAmount[index] == 0) { //all
         data = this.state.allMeds
       } else {//subset
         data = this.state.notTakenMeds
       }
     } else {
-      if(this.state.doneAmount[index] == this.state.totalAmount[index]){//all
+      if (this.state.doneAmount[index] == this.state.totalAmount[index]) {//all
         data = this.state.allMeds
-      } else if(this.state.doneAmount[index] == 0){ //none
+      } else if (this.state.doneAmount[index] == 0) { //none
         data = emptyData
       } else {//subset
         data = this.state.notTakenMeds
@@ -543,7 +543,7 @@ class Home extends React.Component {
           alignItems: "center",
           flex: 1
         }}>
-          <Text style={{fontSize: 16, color: COLOR.PrimaryGray}}>{msg}</Text>
+          <Text style={{ fontSize: 16, color: COLOR.PrimaryGray }}>{msg}</Text>
         </View>
       )
     }
@@ -622,10 +622,10 @@ class Home extends React.Component {
               onPress={button => {
                 this._onPress(button);
               }}
-              handlerMorning={(isLongPress) => {if(!isLongPress){this.tryOpenModal(0)} else{this.revertAll(0)}}}
-              handlerAfternoon={(isLongPress) => {if(!isLongPress){this.tryOpenModal(1)}else{this.revertAll(1)}}}
-              handlerEvening={(isLongPress) => {if(!isLongPress){this.tryOpenModal(2)}else{this.revertAll(2)}}}
-              handlerNight={(isLongPress) => {if(!isLongPress){this.tryOpenModal(3)}else{this.revertAll(3)}}}
+              handlerMorning={(isLongPress) => { if (!isLongPress) { this.tryOpenModal(0) } else { this.revertAll(0) } }}
+              handlerAfternoon={(isLongPress) => { if (!isLongPress) { this.tryOpenModal(1) } else { this.revertAll(1) } }}
+              handlerEvening={(isLongPress) => { if (!isLongPress) { this.tryOpenModal(2) } else { this.revertAll(2) } }}
+              handlerNight={(isLongPress) => { if (!isLongPress) { this.tryOpenModal(3) } else { this.revertAll(3) } }}
               amtArr={remaining}
             />
           </View>
@@ -652,28 +652,36 @@ class Home extends React.Component {
                   ? "Confirm taking these medications?"
                   : "Undo taking these medications?"}
               </Text>
-              <View style={{flex: 1, flexDirection: 'row', padding: 10}}>
+              <View style={{ flex: 1, flexDirection: 'row', padding: 10 }}>
                 <TouchableOpacity
-                  style={[styles.modalTab, { backgroundColor:
-                    (this.state.confirming ? COLOR.blue : (COLOR.blue + "50")) }]}
+                  style={[styles.modalTab, {
+                    backgroundColor:
+                      (this.state.confirming ? COLOR.blue : (COLOR.blue + "50"))
+                  }]}
                   onPress={() => {
-                    this.setState({confirming: true})
+                    this.setState({ confirming: true })
                   }}
                 >
-                  <Text style={[styles.modalTabText, { fontWeight:
-                    (this.state.confirming ? "300" : "200") }]}>
+                  <Text style={[styles.modalTabText, {
+                    fontWeight:
+                      (this.state.confirming ? "300" : "200")
+                  }]}>
                     Quick Log All
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.modalTab, { backgroundColor:
-                    (this.state.confirming ? (COLOR.blue + "50") : COLOR.blue) }]}
+                  style={[styles.modalTab, {
+                    backgroundColor:
+                      (this.state.confirming ? (COLOR.blue + "50") : COLOR.blue)
+                  }]}
                   onPress={() => {
-                    this.setState({confirming: false})
+                    this.setState({ confirming: false })
                   }}
                 >
-                  <Text style={[styles.modalTabText, { fontWeight:
-                    (this.state.confirming ? "200" : "300")}]}>
+                  <Text style={[styles.modalTabText, {
+                    fontWeight:
+                      (this.state.confirming ? "200" : "300")
+                  }]}>
                     Quick Undo All
                   </Text>
                 </TouchableOpacity>

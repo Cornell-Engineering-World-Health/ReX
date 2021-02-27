@@ -16,8 +16,7 @@ import {
 } from "react-native";
 import { TextField } from "react-native-material-textfield";
 import Modal from "react-native-modal";
-import moment from "moment";
-import { profile_icons, IMAGES, COLOR } from "../resources/constants";
+import { profile_icons, IMAGES } from "../resources/constants";
 
 const AVATAR_ID = "avatarID";
 const HEIGHT_ID = "heightID";
@@ -150,7 +149,7 @@ export default class Profile extends Component {
                 }}
                 baseColor={this.props.baseColor}
                 textColor={this.props.textColor}
-                ref={function(emailRef) {
+                ref={function (emailRef) {
                   this.emailRef = emailRef;
                 }}
               />
@@ -188,11 +187,11 @@ export default class Profile extends Component {
                   label={"Height"}
                   value={
                     this.props.height_feet != "" &&
-                    this.props.height_inches != ""
+                      this.props.height_inches != ""
                       ? this.props.height_feet +
-                        " ft " +
-                        this.props.height_inches +
-                        " in"
+                      " ft " +
+                      this.props.height_inches +
+                      " in"
                       : ""
                   }
                   baseColor={this.props.baseColor}

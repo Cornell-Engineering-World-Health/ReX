@@ -7,9 +7,7 @@ import {
   Image,
   NavigatorIOS,
   TouchableOpacity,
-  Switch,
-  Dimensions,
-  ScrollView
+  Switch
 } from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
@@ -155,6 +153,7 @@ class Settings extends Component {
         break;
       case export_ids[3]:
         temp.setFullYear(1971);
+        break;
       case export_ids[4]:
         temp.setMonth(temp.getMonth() - 1);
         break;
@@ -168,8 +167,6 @@ class Settings extends Component {
   }
 
   render() {
-    var bgColor = "#DCE3F4";
-
     return (
       <View style={styles.container}>
         <View
@@ -238,7 +235,7 @@ class Settings extends Component {
               }
               title="View History"
               hasNavArrow={true}
-              onPress={() => {}}
+              onPress={() => { }}
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => {
                 this.props.navigator.push(TrendsRoute);
@@ -347,7 +344,7 @@ class Settings extends Component {
         >
           <View style={styles.modalExperiment}>
             <View
-              style={{flexDirection: "row"}}
+              style={{ flexDirection: "row" }}
             >
               <Text style={styles.nidaInfo}>NIDA Survey</Text>
               <Switch
@@ -429,7 +426,7 @@ class Settings extends Component {
 }
 
 const ExportButtons = props => {
-  props = props ? props : () => {};
+  props = props ? props : () => { };
   return (
     <View style={{ flexDirection: "row", marginTop: 10 }}>
       <TouchableOpacity

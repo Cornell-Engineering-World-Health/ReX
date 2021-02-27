@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Switch,
   FlatList,
-  TextInput,
   Alert
 } from "react-native";
 import Moment from "moment";
@@ -15,7 +14,6 @@ import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 
 import {
-  pullMedicineFromDatabase,
   pullAllMedicineData,
   asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
@@ -43,7 +41,7 @@ export default class MedicineSettings extends React.Component {
     let seen = {};
     //fill medicine state with those from the database
     pullAllMedicineData(formattedData => {
-      formattedData.forEach(function(med) {
+      formattedData.forEach(function (med) {
         var medObj = JSON.parse(med.fields);
 
         if (seen[medObj["Pill Name"]]) {
@@ -78,7 +76,7 @@ export default class MedicineSettings extends React.Component {
     Handles turning on/off notifications for each medicineData
   */
   _handleToggle(index) {
-    data = this.state.medicine;
+    let data = this.state.medicine;
     data[index].status = !data[index].status;
     let name = data[index].name;
     let dosage = data[index].dosage;
