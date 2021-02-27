@@ -3,7 +3,7 @@
 */
 import React from "react";
 import { Alert, Platform } from "react-native";
-import { Notifications, Constants, Permissions } from "expo";
+import * as Notifications from 'expo-notifications';
 import {
   asyncCreateNotifications,
   asyncGetNotificationKey,
@@ -29,7 +29,7 @@ export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
 
-export function cancelOurNotification(name, dosage, date_time){
+export function cancelOurNotification(name, dosage, date_time) {
   date_time = Moment(date_time).format('YYYY-MM-DDTHH:mm')
 
   asyncGetNotificationKey(name, dosage, date_time, id => {
@@ -66,7 +66,7 @@ export function cancelMassNotification(
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
   ) {
-    for (var x = 0; x < scheduledTime.length; x++) {
+    for (let x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
       let minutes = parseInt(scheduledTime[x].slice(3, 5));
       let tempDateWithTime = new Date(
@@ -95,11 +95,11 @@ export function cancelMassNotification(
 
 */
 export function setPushNotification(t, b, date) {
-  d = {
+  let d = {
     title: t,
     body: b
   };
-  localNotification = {
+  let localNotification = {
     title: t,
     body: b,
     data: d,
@@ -108,7 +108,7 @@ export function setPushNotification(t, b, date) {
     }
   };
   //TODO: CHECK IF DATE IS LOCAL TIME!
-  schedulingOptions = {
+  let schedulingOptions = {
     time: new Date(date)
   };
 
@@ -121,10 +121,10 @@ export function setPushNotification(t, b, date) {
 }
 
 
-export function setOurNotification(name, dosage, date_time){
+export function setOurNotification(name, dosage, date_time) {
   let t = "Fiih Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
-  if(Moment(date_time) > Moment()){
+  if (Moment(date_time) > Moment()) {
     console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
     setPushNotification(t, b, date_time).then(id => {
       asyncCreateNotifications(
@@ -205,21 +205,21 @@ export function setMassNotification(
     Moment(tempDate).isSame(endDate)
   ) {
     if (iterSkip == 1) {
-    for (var x = 0; x < scheduledTime.length; x++) {
-      let hours = parseInt(scheduledTime[x].slice(0, 2));
-      let minutes = parseInt(scheduledTime[x].slice(3, 5));
-      let tempDateWithTime = new Date(
-        tempDate.getFullYear(),
-        tempDate.getMonth(),
-        tempDate.getDate(),
-        hours,
-        minutes
-      );
-      if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        setOurNotification(name, dosage, tempDateWithTime)
+      for (var x = 0; x < scheduledTime.length; x++) {
+        let hours = parseInt(scheduledTime[x].slice(0, 2));
+        let minutes = parseInt(scheduledTime[x].slice(3, 5));
+        let tempDateWithTime = new Date(
+          tempDate.getFullYear(),
+          tempDate.getMonth(),
+          tempDate.getDate(),
+          hours,
+          minutes
+        );
+        if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
+          setOurNotification(name, dosage, tempDateWithTime)
+        }
       }
-    }
-    iterSkip = skip;
+      iterSkip = skip;
     }
     else {
       iterSkip = iterSkip - 1;
@@ -228,13 +228,13 @@ export function setMassNotification(
   }
 }
 
-export function setNotificationList(medName_lst, dosage_lst, date_time_lst){
+export function setNotificationList(medName_lst, dosage_lst, date_time_lst) {
   medName_lst.forEach((med, i) => {
     setOurNotification(med, dosage_lst[i], date_time_lst[i])
   })
 }
 
-export function cancelNotificationList(medName_lst, dosage_lst, date_time_lst){
+export function cancelNotificationList(medName_lst, dosage_lst, date_time_lst) {
   medName_lst.forEach((med, i) => {
     cancelOurNotification(med, dosage_lst[i], date_time_lst[i])
   })
@@ -259,24 +259,33 @@ date: dateObject
 }]
 
 */
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 class PushController extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getiOSNotificationPermission();
     this.listenForNotifications();
   }
   async getiOSNotificationPermission() {
-    const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    if (status !== "granted") {
-      await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    if (existingStatus !== 'granted') {
+      await Notifications.requestPermissionsAsync();
     }
   }
 
   listenForNotifications = () => {
-    Notifications.addListener(notification => {
+    Notifications.addNotificationResponseReceivedListener(notification => {
       if (notification.origin === "received" && Platform.OS === "ios") {
         Alert.alert(notification.data.title, notification.data.body);
       }
