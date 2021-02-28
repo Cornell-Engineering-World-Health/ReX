@@ -2,7 +2,6 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Dimensions
 } from "react-native";
 import ScaleSlideInputType from "../components/LogInputTypes/ScaleSlideInputType";
 import ListInputType from "../components/LogInputTypes/ListInputType";

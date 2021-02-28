@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { databaseTakeMedicine } from "../../databaseUtil/databaseUtil";
-import Timeline from "react-native-timeline-listview";
+import Timeline from "react-native-timeline-flatlist";
 import { shouldBeTaken, shouldBeTakenNow } from "../../resources/helpers";
 import {
   setOurNotification,
@@ -500,7 +500,7 @@ class Card extends PureComponent {
               titleStyle={{ color: "#aaaaaa", fontSize: 12 }}
               detailContainerStyle={{ paddingTop: 0 }}
               onEventPress={this._handleModalPress}
-              // renderDetail = {() => this.rerender_detail}
+            // renderDetail = {() => this.rerender_detail}
             />
           </View>
         </Modal>

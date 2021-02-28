@@ -63,7 +63,7 @@ class Home extends React.Component {
       name: "",
       iconDropDown: IMAGES.afternoonColorW,
       backgroundColorDropDown: COLOR.cyan,
-      message: "Welcome to FIIH Health!",
+      message: "Welcome to Rex Health!",
       notTakenMeds: {},
       //fields for modal
       modalVisible: false,
@@ -184,7 +184,7 @@ class Home extends React.Component {
         if (callback) callback();
         return;
       }
-
+      console.log(logged_symptoms);
       let avoid_log_types_set = {};
       logged_symptoms.forEach(s => {
         if (Moment() - Moment(s["timestamp"]) < POSITIVE_MESSAGE_TIME_DIFF) {
@@ -208,6 +208,7 @@ class Home extends React.Component {
         let keys = Object.keys(most_recent_log_per_type);
         let choice = Math.floor(Math.random() * keys.length);
         let chosen_symptom_time = most_recent_log_per_type[keys[choice]];
+
         that.setState({
           message:
             ENCOURAGEMENT_TEXT[
@@ -283,6 +284,7 @@ class Home extends React.Component {
   }
 
   writeAllInTimeCategory(notTakenMeds, time, takenVal) {
+    console.log(`in write all in time category, ${notTakenMeds}, ${time}, ${takenVal}`)
     notTakenMeds[time].forEach(med => {
       databaseTakeMedicine(
         new Date(),
@@ -428,20 +430,27 @@ class Home extends React.Component {
   */
   logAll(index) {
     if (this.state.doneAmount[index] == this.state.totalAmount[index]) {
-      return
+      return;
     }
 
-    isSubset = !this.didRevertAll[index]
-    doneAmount = this.state.doneAmount;
+    let isSubset = false//!this.didRevertAll[index]
+    let doneAmount = this.state.doneAmount;
     doneAmount[index] = this.state.totalAmount[index];
 
-    time = index_time_map[index]
-    dropDownTitle =
-      time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
-    dropDownMessage = "All remaining " + time + " medications are taken!";
+    let time = index_time_map[index]
 
-    thisRef = this
-    st = this.state
+    console.log("is subset", isSubset);
+    console.log("doneAmount", doneAmount);
+
+    let dropDownTitle =
+      time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
+    let dropDownMessage = "All remaining " + time + " medications are taken!";
+
+    let thisRef = this
+    let st = this.state
+
+    console.log(this.state);
+
     this.setState({ doneAmount }, () => {
       this.dropdown.close();
       this.dropdown.alertWithType("custom", dropDownTitle, dropDownMessage);
@@ -449,6 +458,9 @@ class Home extends React.Component {
       if (!isSubset) {
         databaseTakeMedicines(new Date(), index, true);
         let args = thisRef.getAffectedMedicineInfo(st, index);
+
+        console.log("args", args);
+
         cancelNotificationList(args[0], args[1], args[2]);
       }
       else this.writeAllInTimeCategory(st.notTakenMeds, time, true);
@@ -472,20 +484,20 @@ class Home extends React.Component {
       return
     }
 
-    dropDownMessage = ""
-    doneAmount = this.state.doneAmount
+    let dropDownMessage = ""
+    let doneAmount = this.state.doneAmount
 
 
-    time = index_time_map[index]
-    dropDownTitle =
+    let time = index_time_map[index]
+    let dropDownTitle =
       time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
     dropDownMessage = "ALL " + time + " medications logs have been reverted!";
 
     doneAmount[index] = 0;
     this.didRevertAll[index] = true;
 
-    thisRef = this
-    st = this.state
+    let thisRef = this
+    let st = this.state
     this.setState({ doneAmount }, () => {
       this.dropdown.close();
       this.dropdown.alertWithType("custom", dropDownTitle, dropDownMessage);
@@ -510,7 +522,7 @@ class Home extends React.Component {
       evening: [],
       night: []
     }
-    data = {}
+    let data = {}
 
     if (this.state.confirming) {
       if (this.state.doneAmount[index] == this.state.totalAmount[index]) {//none
@@ -535,7 +547,7 @@ class Home extends React.Component {
       !data[this.state.selectedPeriod] ||
       data[this.state.selectedPeriod].length == 0
     ) {
-      msg = this.state.confirming ? '~ No medications to take ~' : '~ No medications to undo ~'
+      let msg = this.state.confirming ? '~ No medications to take ~' : '~ No medications to undo ~'
 
       return (
         <View style={{
@@ -548,10 +560,10 @@ class Home extends React.Component {
       )
     }
     let cards = [];
-    data[this.state.selectedPeriod].forEach((med, index) => {
+    data[this.state.selectedPeriod].forEach((med) => {
       cards.push(
         <Card
-          key={med + "med" + index}
+          key={med + "med" + index + Math.random()}
           name={med.name}
           dosage={med.dosage}
           time={med.time}
@@ -652,7 +664,7 @@ class Home extends React.Component {
                   ? "Confirm taking these medications?"
                   : "Undo taking these medications?"}
               </Text>
-              <View style={{ flex: 1, flexDirection: 'row', padding: 10 }}>
+              {/* <View style={{ flex: 1, flexDirection: 'row', padding: 10 }}>
                 <TouchableOpacity
                   style={[styles.modalTab, {
                     backgroundColor:
@@ -685,7 +697,7 @@ class Home extends React.Component {
                     Quick Undo All
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
             <View style={styles.modalBody}>
               {this._generateModalCards()}
@@ -726,11 +738,11 @@ class Home extends React.Component {
 
 const Card = props => {
   //props should contain name, dosage, timeString to take
-  timeParts = props.time.split(':')
-  d = new Date()
+  let timeParts = props.time.split(':')
+  let d = new Date()
   d.setHours(timeParts[0])
   d.setMinutes(timeParts[1])
-  timeString = Moment(d).format("h:mm a")
+  let timeString = Moment(d).format("h:mm a")
 
   return (
     <View style={[styles.cardWrapper]}>

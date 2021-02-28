@@ -1,5 +1,7 @@
-import { MailComposer, FileSystem } from "expo";
-import { Linking, Alert } from "react-native";
+import * as MailComposer from 'expo-mail-composer';
+import * as FileSystem from 'expo-file-system';
+
+import { Alert } from "react-native";
 import {
   exportAllSymptoms,
   exportAllMedications,
@@ -26,9 +28,9 @@ function convertArrayOfObjectsToCSV(args) {
   result += keys.join(columnDelimiter);
   result += lineDelimiter;
 
-  data.forEach(function(item) {
+  data.forEach(function (item) {
     ctr = 0;
-    keys.forEach(function(key) {
+    keys.forEach(function (key) {
       if (ctr > 0) result += columnDelimiter;
 
       result += item[key] ? item[key] : DEFAULT_VALUE;
@@ -50,11 +52,11 @@ date: retrieve all information after this date
 */
 export function exportMedicationsMailFunc(email, subject, date) {
   databaseGetUUID((id) => {
-    SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
+    let SURVEY_DIR = FileSystem.documentDirectory + "medicinelog";
     let date_time = Moment().format('YYYY-MM-DDTHH:mm')
-    FILE_NAME =  id + "_" + date_time + "_" + "MEDICINE.csv";
+    let FILE_NAME = id + "_" + date_time + "_" + "MEDICINE.csv";
 
-    SHARED_KEYS = [
+    let SHARED_KEYS = [
       "date",
       "dosage",
       "medicine",
@@ -134,10 +136,10 @@ date: retrieve all information after this date
 */
 export function exportSymptomsMailFunc(email, subject, date) {
   databaseGetUUID((id) => {
-    SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
+    let SURVEY_DIR = FileSystem.documentDirectory + "doctordata";
     let date_time = Moment().format('YYYY-MM-DDTHH:mm')
-    FILE_NAME =  id + "_" + date_time + "_" + "SYMPTOMHYSTORY.csv";
-    SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
+    let FILE_NAME = id + "_" + date_time + "_" + "SYMPTOMHISTORY.csv";
+    let SHARED_KEYS = ["symptom", "timestamp"]; //all symptoms have these keys
     //use database function to get an array of objects representing the data
     exportAllSymptoms(symptoms => {
       let filtered_symptoms = filterByDate(symptoms, "timestamp", date);
@@ -152,11 +154,13 @@ export function exportSymptomsMailFunc(email, subject, date) {
 
       FileSystem.getInfoAsync(SURVEY_DIR, {})
         .then(e => {
+          console.log("in first then");
           if (!e.exists || !e.isDirectory) {
             return FileSystem.makeDirectoryAsync(SURVEY_DIR);
           }
         })
         .then(() => {
+          console.log("in second then");
           content = "";
           content = convertArrayOfObjectsToCSV({
             data: filtered_symptoms,
@@ -168,6 +172,12 @@ export function exportSymptomsMailFunc(email, subject, date) {
           );
         })
         .then(e => {
+          console.log("in third then", {
+            recipients: [email],
+            subject: subject,
+            body: "",
+            attachments: [SURVEY_DIR + "/" + FILE_NAME]
+          });
           MailComposer.composeAsync({
             recipients: [email],
             subject: subject,
@@ -200,7 +210,7 @@ export function exportSurveyMailFunc(email, subject, date) {
     SURVEY_DIR = FileSystem.documentDirectory + SURVEY_FILE_DESCRIPT.dir;
     let date_time = Moment().format('YYYY-MM-DDTHH:mm')
     DATA_FILE_NAME = SURVEY_FILE_DESCRIPT.fname;
-    NEW_FILE_NAME =  id + "_" + date_time + "_" + "survey.csv";
+    NEW_FILE_NAME = id + "_" + date_time + "_" + "survey.csv";
 
     FileSystem.getInfoAsync(SURVEY_DIR, {})
       .then(e => {

@@ -3,7 +3,8 @@
 */
 import React from "react";
 import { Alert, Platform } from "react-native";
-import * as Notifications from 'expo-notifications';
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import {
   asyncCreateNotifications,
   asyncGetNotificationKey,
@@ -18,8 +19,13 @@ Cancel specific push notification given an id
 Precondition: notficationID must be the one given when it was first scheduled
 */
 
-export function cancelNotification(notificationID) {
-  Notifications.cancelScheduledNotificationAsync(notificationID);
+export async function cancelNotification(notificationID) {
+  try {
+    await Notifications.cancelScheduledNotificationAsync(notificationID);
+  }
+  catch (e) {
+    console.log(e);
+  }
 }
 
 /*
@@ -66,7 +72,7 @@ export function cancelMassNotification(
     Moment(tempDate).isBefore(endDate) ||
     Moment(tempDate).isSame(endDate)
   ) {
-    for (let x = 0; x < scheduledTime.length; x++) {
+    for (var x = 0; x < scheduledTime.length; x++) {
       let hours = parseInt(scheduledTime[x].slice(0, 2));
       let minutes = parseInt(scheduledTime[x].slice(3, 5));
       let tempDateWithTime = new Date(
@@ -122,7 +128,7 @@ export function setPushNotification(t, b, date) {
 
 
 export function setOurNotification(name, dosage, date_time) {
-  let t = "Fiih Medication Reminder";
+  let t = "Rex Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
   if (Moment(date_time) > Moment()) {
     console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
@@ -259,33 +265,24 @@ date: dateObject
 }]
 
 */
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
 class PushController extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getiOSNotificationPermission();
     this.listenForNotifications();
   }
   async getiOSNotificationPermission() {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    if (existingStatus !== 'granted') {
-      await Notifications.requestPermissionsAsync();
+    const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    if (status !== "granted") {
+      await Permissions.askAsync(Permissions.NOTIFICATIONS);
     }
   }
 
   listenForNotifications = () => {
-    Notifications.addNotificationResponseReceivedListener(notification => {
+    Notifications.addListener(notification => {
       if (notification.origin === "received" && Platform.OS === "ios") {
         Alert.alert(notification.data.title, notification.data.body);
       }

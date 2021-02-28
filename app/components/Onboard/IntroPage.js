@@ -16,7 +16,7 @@ class IntroPage extends React.Component {
     super(props);
   }
 
-  render(){
+  render() {
     return (
       <ImageBackground
         style={styles.container}
@@ -24,9 +24,9 @@ class IntroPage extends React.Component {
       >
         <View style={styles.inner_container}>
           <Image source={IMAGES.fiih} style={styles.logo} />
-          <Text style={styles.header}>{"FIIH"}</Text>
+          <Text style={styles.header}>{"Rex"}</Text>
           <Text style={styles.subheader}>
-            {"Track and monitor symptoms and medications swimmingly"}
+            {"Track and monitor symptoms and medications!"}
           </Text>
         </View>
         <TouchableOpacity

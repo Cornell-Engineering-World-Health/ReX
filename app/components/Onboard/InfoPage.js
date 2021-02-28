@@ -12,7 +12,6 @@ import { IMAGES } from "../../resources/constants";
 import { asyncSettingUpdate } from "../../databaseUtil/databaseUtil";
 
 const SETTINGS_FIELDS = [
-  "birthday",
   "name",
   "weight",
   "height_feet",
@@ -112,7 +111,7 @@ class IntroPage extends React.Component {
               this.settingsUpdate(setting, value);
               asyncSettingUpdate(setting, value);
             }}
-            containerStyle={{backgroundColor: 'transparent', flex:1}}
+            containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
             birthday={this.state.birthday}
             icon={this.state.icon}
             name={this.state.name}

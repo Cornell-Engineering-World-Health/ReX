@@ -76,7 +76,7 @@ export default StyleSheet.create({
     borderRadius: 10
   },
   modalHeader: {
-    flex: 0.25,
+    flex: 0.15,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 15,

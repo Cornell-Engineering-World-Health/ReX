@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { FileSystem } from "expo";
+import * as FileSystem from 'expo-file-system';
+
 import ScaleSlideInputType from "../LogInputTypes/ScaleSlideInputType";
 import TextInputType from "../LogInputTypes/TextInputType";
 import NumericalPickerInputType from "../LogInputTypes/NumericalPickerInputType";
@@ -40,15 +41,15 @@ const FILE_NAME = SURVEY_FILE_DESCRIPT.fname;
 export default class SurveyForm extends React.Component {
   constructor(props) {
     super(props);
-    fetch (DBoxURL)
-    .then((response)=> {return response.json()})
-    .then((surveyjson) => {
+    fetch(DBoxURL)
+      .then((response) => { return response.json() })
+      .then((surveyjson) => {
         return this.initState(surveyjson)
       })
-     .catch ((error) => {
-        console.log (error)
+      .catch((error) => {
+        console.log(error)
       });
-      this.state = {
+    this.state = {
       input_type_array: [],
       value_labels: [], //my type labels - question
       values: [], //current value - 0
@@ -59,7 +60,7 @@ export default class SurveyForm extends React.Component {
 
   }
 
-  initState(survey){
+  initState(survey) {
     let keysArray = survey['Questions'].map(q => q['QuestionType']);
     let titles = survey['Questions'].map(q => q['Title']);
     let inputTypes = keysArray.map(t => mapTypeToComponent[t]);
@@ -107,7 +108,7 @@ export default class SurveyForm extends React.Component {
     //   surveyId: survey["SurveyName"] //survey name
     // };
     this.setState({
-        input_type_array: inputTypes, //types compoment - NumericalPickerInputType
+      input_type_array: inputTypes, //types compoment - NumericalPickerInputType
       value_labels: titles, //my type labels - question
       values: valArray, //current value - 0
       submit_vals: submit_vals, //pairs of question: value {q: a}
@@ -161,8 +162,8 @@ export default class SurveyForm extends React.Component {
 
   state_to_csv() {
     let content = 'Survey Name,' + this.state.surveyId + '\n' +
-                  'Date,' + (new Date()).toLocaleDateString() +
-                  '|' + (new Date()).toLocaleTimeString() + '\n';
+      'Date,' + (new Date()).toLocaleDateString() +
+      '|' + (new Date()).toLocaleTimeString() + '\n';
     let keys = Object.keys(this.state.submit_vals);
     keys.forEach(k => {
       if (

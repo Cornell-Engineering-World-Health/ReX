@@ -9,7 +9,7 @@ import {
   Alert
 } from "react-native";
 import Moment from "moment";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 
@@ -36,7 +36,7 @@ export default class MedicineSettings extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let medicineData = [];
     let seen = {};
     //fill medicine state with those from the database
@@ -211,7 +211,7 @@ export default class MedicineSettings extends React.Component {
         <View style={styles.header}>
           <NavigationHeader
             title={"Medicine Settings"}
-            onPressBack={() => this.props.navigator.pop()}
+            onPressBack={() => this.props.goBack()}
           />
         </View>
         {this._renderBody()}

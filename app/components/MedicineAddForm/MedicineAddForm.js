@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
-  AlertIOS,
+  Alert,
   Picker
 } from "react-native";
 import moment from "moment";
@@ -85,7 +85,7 @@ export default class MedicineAddForm extends React.Component {
     return false;
   }
 
-   checkNoDuplicates() {
+  checkNoDuplicates() {
     var enteredName = this.state.submit_vals["Pill Name"]
     for (var i = 0; i < this.props.titles.length; i++) {
       if (this.props.titles[i] == enteredName) {
@@ -94,13 +94,13 @@ export default class MedicineAddForm extends React.Component {
     }
     return true;
   }
-   checkNegativeDosage() {
-    return parseFloat (this.state.submit_vals["Dosage"])<= 0
-   }
+  checkNegativeDosage() {
+    return parseFloat(this.state.submit_vals["Dosage"]) <= 0
+  }
 
-   checkType(){
-     return (isNaN(parseFloat(this.state.submit_vals["Dosage"])))
-   }
+  checkType() {
+    return (isNaN(parseFloat(this.state.submit_vals["Dosage"])))
+  }
 
 
   /**
@@ -110,16 +110,16 @@ export default class MedicineAddForm extends React.Component {
    */
   submit() {
     if (this.checkIfIncomplete()) {
-      AlertIOS.alert("Form Incomplete", "Please add any missing information");
+      Alert.alert("Form Incomplete", "Please add any missing information");
     }
-    else if(!this.checkNoDuplicates()){
-      AlertIOS.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
+    else if (!this.checkNoDuplicates()) {
+      Alert.alert("Duplicate Medication", "There already exists an entry for this medication. You can delete the existing entry in Settings > Edit Medicine Settings.");
     }
-    else if (this.checkNegativeDosage()){
-      AlertIOS.alert("Invalid dosage", "Dosage must be postive quantity");
+    else if (this.checkNegativeDosage()) {
+      Alert.alert("Invalid dosage", "Dosage must be postive quantity");
     }
-    else if(this.checkType()){
-      AlertIOS.alert("Invalid dosage", "Please enter a valid quantity");
+    else if (this.checkType()) {
+      Alert.alert("Invalid dosage", "Please enter a valid quantity");
     }
     else {
       this.props.successOnSubmit();
@@ -236,8 +236,8 @@ export default class MedicineAddForm extends React.Component {
 
       sortedTimes = this.state.timeArray.sort()
       uniqueTimes = []
-      for (var i = 0; i < sortedTimes.length; i++){
-        if(i == sortedTimes.length - 1){
+      for (var i = 0; i < sortedTimes.length; i++) {
+        if (i == sortedTimes.length - 1) {
           uniqueTimes.push(sortedTimes[i])
         } else if (sortedTimes[i + 1] != sortedTimes[i]) {
           uniqueTimes.push(sortedTimes[i])
@@ -316,36 +316,36 @@ export default class MedicineAddForm extends React.Component {
           style={{ width: viewportWidth }}
         />
       ) : (
-        <View style={{ flex: 1, width: viewportWidth, paddingTop: 10 }}>
-          {timeViewer}
-          <TimePicker
-            valueChange={(label, value) => {
-              let t = this.state.timeArray;
-              t[this.state.timeArrayIdx] = value;
-              this.setState({ timeArray: t });
-            }}
-            title_text={""}
-            chosen_date={new Date().toTimeString()}
-            addPressed={() => {
-              let arr = this.state.timeArray;
-              arr.push(arr[arr.length - 1]);
-              this.setState({
-                timeArrayIdx: this.state.timeArrayIdx + 1,
-                timeArray: arr
-              });
-            }}
-            deletePressed={() => {
-              if (this.state.timeArrayIdx == 0) return;
-              let arr = this.state.timeArray;
-              arr.pop();
-              this.setState({
-                timeArrayIdx: this.state.timeArrayIdx - 1,
-                timeArray: arr
-              });
-            }}
-          />
-        </View>
-      );
+          <View style={{ flex: 1, width: viewportWidth, paddingTop: 10 }}>
+            {timeViewer}
+            <TimePicker
+              valueChange={(label, value) => {
+                let t = this.state.timeArray;
+                t[this.state.timeArrayIdx] = value;
+                this.setState({ timeArray: t });
+              }}
+              title_text={""}
+              chosen_date={new Date().toTimeString()}
+              addPressed={() => {
+                let arr = this.state.timeArray;
+                arr.push(arr[arr.length - 1]);
+                this.setState({
+                  timeArrayIdx: this.state.timeArrayIdx + 1,
+                  timeArray: arr
+                });
+              }}
+              deletePressed={() => {
+                if (this.state.timeArrayIdx == 0) return;
+                let arr = this.state.timeArray;
+                arr.pop();
+                this.setState({
+                  timeArrayIdx: this.state.timeArrayIdx - 1,
+                  timeArray: arr
+                });
+              }}
+            />
+          </View>
+        );
     modalContent =
       this.state.modalID == GRAN_ID ? (
         <View
@@ -386,8 +386,8 @@ export default class MedicineAddForm extends React.Component {
           </Picker>
         </View>
       ) : (
-        modalContent
-      );
+          modalContent
+        );
     let modalTitle =
       this.state.modalID == CALENDAR_ID
         ? "Select Date Range"

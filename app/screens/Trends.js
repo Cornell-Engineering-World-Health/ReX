@@ -16,7 +16,7 @@ import {
   pullYearlySymptomForGraphs,
   pullAllLoggedSymptomsTypes
 } from "../databaseUtil/databaseUtil";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -453,9 +453,7 @@ export default class Trends extends React.Component {
           <Text style={styles.headerText}>{this.getTitle()}</Text>
           <TouchableOpacity
             style={styles.menuButtonWrapper}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}
+            onPress={() => this.props.goBack()}
           >
             <Image
               source={IMAGES.headerBack}
@@ -617,9 +615,7 @@ export default class Trends extends React.Component {
           <Text style={styles.headerText}>{this.getTitle()}</Text>
           <TouchableOpacity
             style={styles.menuButtonWrapper}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}
+            onPress={() => this.props.goBack()}
           >
             <Image
               source={IMAGES.headerBack}
