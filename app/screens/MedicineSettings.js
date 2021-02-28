@@ -48,12 +48,9 @@ export default class MedicineSettings extends React.Component {
           return;
         }
 
-        console.log("med obj", medObj);
-
         var formattedTimes = medObj["Time"].map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-        console.log(medObj);
         medicineData.push({
           name: medObj["Pill Name"],
           time: formattedTimes,
@@ -82,8 +79,6 @@ export default class MedicineSettings extends React.Component {
     let dosage = data[index].dosage;
     let times = data[index].time.map(t => Moment(new Date(t)).format("HH:mm"));
     if (data[index].status) {
-      //turned ON
-      //console.log("ON!");
 
       setMassNotification(
         new Date(data[index].startDate),

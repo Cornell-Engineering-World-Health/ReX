@@ -934,45 +934,34 @@ function updateMedicineData(data, time, takenVal, callback) {
 }
 
 function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
-  console.log("update single medicine", data);
-  console.log("name", name);
-  console.log("idx", idx)
   data.some(function (med) {
     var fields = JSON.parse(med.fields);
-    //if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {
-    if (idx != -1) {
-      let newTaken = fields["Taken"].slice();
-      newTaken[idx] = takenVal;
-      fields["Taken"] = newTaken;
-      let newTakenTime = fields["Taken Time"].slice();
-      newTakenTime[idx] = takenVal == true ? Moment().format("HH:mm") : "";
-      fields["Taken Time"] = newTakenTime;
-      let newFields = JSON.stringify(fields);
-      let queryArgs = [newFields, med.event_details_id];
-      Database.transaction(
-        tx => {
-          tx.executeSql(
-            "Update event_details_tbl SET fields =? where event_details_id= ? ",
-            queryArgs
-          );
-        },
-        err => console.log(err)
-      );
-      console.log("updated db");
-      return true;
+    if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {
+      if (idx != -1) {
+        let newTaken = fields["Taken"].slice();
+        newTaken[idx] = takenVal;
+        fields["Taken"] = newTaken;
+        let newTakenTime = fields["Taken Time"].slice();
+        newTakenTime[idx] = takenVal == true ? Moment().format("HH:mm") : "";
+        fields["Taken Time"] = newTakenTime;
+        let newFields = JSON.stringify(fields);
+        let queryArgs = [newFields, med.event_details_id];
+        Database.transaction(
+          tx => {
+            tx.executeSql(
+              "Update event_details_tbl SET fields =? where event_details_id= ? ",
+              queryArgs
+            );
+          },
+          err => console.log(err)
+        );
+        return true;
+      }
     }
-    else {
-      console.log("didn't update db 1");
-    }
-    // }
-    // else {
-    //   console.log("didn't update db 2");
-    // }
     return false;
   });
 }
 export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
-  console.log(`calling database take medicines on these arguments: ${date}, ${timeIndex}, ${takenVal}`)
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
   let day = toDateString(date);
@@ -996,7 +985,6 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
-  console.log(`being called on medicine ${date}, ${name}, ${dosage}, ${time}, ${takenVal}`);
   let day = toDateString(date);
   let dayArray = [day];
   Database.transaction(

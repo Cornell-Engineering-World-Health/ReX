@@ -123,9 +123,6 @@ export default class MedicineAddForm extends React.Component {
     }
     else {
       this.props.successOnSubmit();
-      console.log("VALS");
-      console.log(this.state.submit_vals["Granularity"]);
-      console.log(this.state.submit_vals["Frequency"]);
       this.props.asyncDatabaseUpdate(
         this.state.submit_vals["Pill Name"],
         this.state.submit_vals["Dosage"],

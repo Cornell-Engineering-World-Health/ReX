@@ -449,9 +449,6 @@ class Agenda extends Component {
     let month = parseTime[0];
     let day = parseTime[1];
 
-    console.log("parsed time!", parseTime);
-
-
     let hour = parseInt(
       this.state.saveTime.slice(0, this.state.saveTime.indexOf(":"))
     );
@@ -479,10 +476,7 @@ class Agenda extends Component {
     if (hour < 10) {
       hourString = "0" + hourString;
     }
-    console.log("year", year);
-    console.log("month", month)
-    console.log("day", day);
-    console.log("hour", hour);
+
     let timestamp =
       year +
       "-" +
@@ -495,10 +489,7 @@ class Agenda extends Component {
       minute +
       ":00";
     let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
-    console.log(values)
-    //console.log(this.state);
-    console.log(correctTime, "correct time");
-    console.log(timestamp, "timestamp");
+
     asyncDeleteEvent(this.state.deleteId);
     asyncCreateSymptomLogEvent(this.state.logType, values, correctTime);
     this.setState({ editVisible: false });

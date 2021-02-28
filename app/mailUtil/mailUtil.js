@@ -154,13 +154,11 @@ export function exportSymptomsMailFunc(email, subject, date) {
 
       FileSystem.getInfoAsync(SURVEY_DIR, {})
         .then(e => {
-          console.log("in first then");
           if (!e.exists || !e.isDirectory) {
             return FileSystem.makeDirectoryAsync(SURVEY_DIR);
           }
         })
         .then(() => {
-          console.log("in second then");
           content = "";
           content = convertArrayOfObjectsToCSV({
             data: filtered_symptoms,
@@ -172,12 +170,6 @@ export function exportSymptomsMailFunc(email, subject, date) {
           );
         })
         .then(e => {
-          console.log("in third then", {
-            recipients: [email],
-            subject: subject,
-            body: "",
-            attachments: [SURVEY_DIR + "/" + FILE_NAME]
-          });
           MailComposer.composeAsync({
             recipients: [email],
             subject: subject,

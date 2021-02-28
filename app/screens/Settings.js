@@ -85,7 +85,6 @@ class Settings extends Component {
   };
 
   settingsUpdate(setting, value) {
-    console.log(`settings update ${setting}     ${value}`);
     switch (setting) {
       case "name":
         this.setState({ name: value });
@@ -121,7 +120,6 @@ class Settings extends Component {
 
   componentDidMount() {
     pullSettingsFromDatabase(data => {
-      console.log(data);
       this.setState({
         weight: data.weight,
         name: data.name,

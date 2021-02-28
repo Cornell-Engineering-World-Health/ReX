@@ -78,7 +78,7 @@ export default class ScaleSlideInputType extends React.Component {
     let body = null;
     body = this.props.scale_labels.map((option, i, arr) => {
       let width = this.state.viewportWidth / arr.length;
-      console.log(i);
+
       let color = numericMetaInfo[i][0];
       return (
         <View key={i} style={{ paddingLeft: this.props.isIntensitySlider ? 0 : 2 }}>

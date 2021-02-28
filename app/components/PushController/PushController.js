@@ -39,7 +39,7 @@ export function cancelOurNotification(name, dosage, date_time) {
   date_time = Moment(date_time).format('YYYY-MM-DDTHH:mm')
 
   asyncGetNotificationKey(name, dosage, date_time, id => {
-    console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
+    // console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
     cancelNotification(id);
     asyncDeleteNotifications(name, dosage, date_time);
   });
@@ -131,7 +131,7 @@ export function setOurNotification(name, dosage, date_time) {
   let t = "Rex Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
   if (Moment(date_time) > Moment()) {
-    console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
+    // console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
     setPushNotification(t, b, date_time).then(id => {
       asyncCreateNotifications(
         name,
@@ -181,7 +181,6 @@ export function setMassNotification(
   databaseMedicineNotification(name, dosage, true);
 
   var skip = 1;
-  console.log(frequency)
   if (granularity == "Daily") {
     skip = 1 * parseInt(frequency)
   }

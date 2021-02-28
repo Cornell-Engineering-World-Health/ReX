@@ -48,7 +48,7 @@ export default class Profile extends Component {
       this.setState({
         height_string: this.getHeightString(),
         weight: this.props.weight
-      }, () => { console.log("updated height string", this.state.height_string) });
+      });
     }
   }
 

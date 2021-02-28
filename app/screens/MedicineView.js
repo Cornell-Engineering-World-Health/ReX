@@ -435,7 +435,6 @@ Custom sorting algorithm
         let isClose = this.isClose(med1["Start Date"], med1["Time"][i], 15);
         if (isClose && !d) {
           //if its close to the time and it hasn't been taken increase the priority
-          console.log(med1["Pill Name"], "isClose");
           priority1 = 100;
         }
       });
@@ -445,7 +444,7 @@ Custom sorting algorithm
           priority2 = 100;
         }
       });
-      console.log("med1", med1);
+
       if (!med1.Taken.includes(false)) priority1 = -999; //if all items have been taken, push to
       //bottom of list
       if (!med2.Taken.includes(false)) priority2 = -999;

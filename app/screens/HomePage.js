@@ -184,7 +184,6 @@ class Home extends React.Component {
         if (callback) callback();
         return;
       }
-      console.log(logged_symptoms);
       let avoid_log_types_set = {};
       logged_symptoms.forEach(s => {
         if (Moment() - Moment(s["timestamp"]) < POSITIVE_MESSAGE_TIME_DIFF) {
@@ -284,7 +283,6 @@ class Home extends React.Component {
   }
 
   writeAllInTimeCategory(notTakenMeds, time, takenVal) {
-    console.log(`in write all in time category, ${notTakenMeds}, ${time}, ${takenVal}`)
     notTakenMeds[time].forEach(med => {
       databaseTakeMedicine(
         new Date(),
@@ -439,17 +437,12 @@ class Home extends React.Component {
 
     let time = index_time_map[index]
 
-    console.log("is subset", isSubset);
-    console.log("doneAmount", doneAmount);
-
     let dropDownTitle =
       time.charAt(0).toUpperCase() + time.substring(1) + " Medications";
     let dropDownMessage = "All remaining " + time + " medications are taken!";
 
     let thisRef = this
     let st = this.state
-
-    console.log(this.state);
 
     this.setState({ doneAmount }, () => {
       this.dropdown.close();
@@ -458,8 +451,6 @@ class Home extends React.Component {
       if (!isSubset) {
         databaseTakeMedicines(new Date(), index, true);
         let args = thisRef.getAffectedMedicineInfo(st, index);
-
-        console.log("args", args);
 
         cancelNotificationList(args[0], args[1], args[2]);
       }
