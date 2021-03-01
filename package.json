@@ -3,44 +3,52 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-native-scripts": "1.11.1",
-    "jest-expo": "^31.0.0",
+    "jest-expo": "^40.0.0",
     "react-test-renderer": "16.2.0"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "start": "expo start",
+    "eject": "expo eject",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "test": "jest"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
+    "@ubaids/react-native-material-textfield": "^0.16.3",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
-    "babel-preset-expo": "^5.0.0",
-    "expo": "^31.0.4",
+    "babel-preset-expo": "8.3.0",
+    "expo": "^40.0.1",
+    "expo-file-system": "~9.3.0",
+    "expo-linear-gradient": "~8.4.0",
+    "expo-mail-composer": "~9.0.0",
+    "expo-notifications": "~0.8.2",
+    "filesystem": "^1.0.1",
+    "mailcomposer": "^4.0.2",
     "moment": "^2.22.2",
+    "notifications": "^0.2.0",
+    "permissions": "^0.1.0",
     "prop-types": "^15.6.0",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
+    "react": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-animatable": "^1.2.4",
     "react-native-autocomplete-input": "^3.6.0",
     "react-native-calendars": "^1.21.0",
     "react-native-dropdownalert": "^3.4.0",
-    "react-native-material-textfield": "^0.12.0",
     "react-native-modal": "^5.0.1",
     "react-native-search-filter": "^0.1.4",
     "react-native-settings-list": "^1.8.0",
     "react-native-snap-carousel": "^3.7.4",
-    "react-native-svg": "^8.0.8",
+    "react-native-svg": "12.1.0",
     "react-native-svg-charts": "^5.2.0",
     "react-native-swipe-gestures": "^1.0.3",
     "react-native-swipeout": "^2.3.3",
-    "react-native-timeline-listview": "^0.2.3",
-    "react-navigation": "^1.2.1"
+    "react-native-timeline-flatlist": "^0.7.3",
+    "react-navigation": "^1.2.1",
+    "sqlite": "^4.0.19"
   }
 }

@@ -3,7 +3,8 @@
 */
 import React from "react";
 import { Alert, Platform } from "react-native";
-import { Notifications, Constants, Permissions } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import {
   asyncCreateNotifications,
   asyncGetNotificationKey,
@@ -18,8 +19,13 @@ Cancel specific push notification given an id
 Precondition: notficationID must be the one given when it was first scheduled
 */
 
-export function cancelNotification(notificationID) {
-  Notifications.cancelScheduledNotificationAsync(notificationID);
+export async function cancelNotification(notificationID) {
+  try {
+    await Notifications.cancelScheduledNotificationAsync(notificationID);
+  }
+  catch (e) {
+    console.log(e);
+  }
 }
 
 /*
@@ -29,11 +35,11 @@ export function cancelAllNotifications() {
   Notifications.cancelAllScheduledNotificationsAsync();
 }
 
-export function cancelOurNotification(name, dosage, date_time){
+export function cancelOurNotification(name, dosage, date_time) {
   date_time = Moment(date_time).format('YYYY-MM-DDTHH:mm')
 
   asyncGetNotificationKey(name, dosage, date_time, id => {
-    console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
+    // console.log('CANCEL NOTIFICATIONS:', name, dosage, date_time)
     cancelNotification(id);
     asyncDeleteNotifications(name, dosage, date_time);
   });
@@ -95,11 +101,11 @@ export function cancelMassNotification(
 
 */
 export function setPushNotification(t, b, date) {
-  d = {
+  let d = {
     title: t,
     body: b
   };
-  localNotification = {
+  let localNotification = {
     title: t,
     body: b,
     data: d,
@@ -108,7 +114,7 @@ export function setPushNotification(t, b, date) {
     }
   };
   //TODO: CHECK IF DATE IS LOCAL TIME!
-  schedulingOptions = {
+  let schedulingOptions = {
     time: new Date(date)
   };
 
@@ -121,11 +127,11 @@ export function setPushNotification(t, b, date) {
 }
 
 
-export function setOurNotification(name, dosage, date_time){
-  let t = "Fiih Medication Reminder";
+export function setOurNotification(name, dosage, date_time) {
+  let t = "Rex Medication Reminder";
   let b = "It's time to take " + name + "! (" + dosage + ")";
-  if(Moment(date_time) > Moment()){
-    console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
+  if (Moment(date_time) > Moment()) {
+    // console.log('SET NOTIFICATIONS:', name, dosage, Moment(date_time).format('YYYY-MM-DDTHH:mm'))
     setPushNotification(t, b, date_time).then(id => {
       asyncCreateNotifications(
         name,
@@ -175,7 +181,6 @@ export function setMassNotification(
   databaseMedicineNotification(name, dosage, true);
 
   var skip = 1;
-  console.log(frequency)
   if (granularity == "Daily") {
     skip = 1 * parseInt(frequency)
   }
@@ -205,21 +210,21 @@ export function setMassNotification(
     Moment(tempDate).isSame(endDate)
   ) {
     if (iterSkip == 1) {
-    for (var x = 0; x < scheduledTime.length; x++) {
-      let hours = parseInt(scheduledTime[x].slice(0, 2));
-      let minutes = parseInt(scheduledTime[x].slice(3, 5));
-      let tempDateWithTime = new Date(
-        tempDate.getFullYear(),
-        tempDate.getMonth(),
-        tempDate.getDate(),
-        hours,
-        minutes
-      );
-      if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
-        setOurNotification(name, dosage, tempDateWithTime)
+      for (var x = 0; x < scheduledTime.length; x++) {
+        let hours = parseInt(scheduledTime[x].slice(0, 2));
+        let minutes = parseInt(scheduledTime[x].slice(3, 5));
+        let tempDateWithTime = new Date(
+          tempDate.getFullYear(),
+          tempDate.getMonth(),
+          tempDate.getDate(),
+          hours,
+          minutes
+        );
+        if (!Moment(tempDateWithTime).isBefore(new Date().toISOString())) {
+          setOurNotification(name, dosage, tempDateWithTime)
+        }
       }
-    }
-    iterSkip = skip;
+      iterSkip = skip;
     }
     else {
       iterSkip = iterSkip - 1;
@@ -228,13 +233,13 @@ export function setMassNotification(
   }
 }
 
-export function setNotificationList(medName_lst, dosage_lst, date_time_lst){
+export function setNotificationList(medName_lst, dosage_lst, date_time_lst) {
   medName_lst.forEach((med, i) => {
     setOurNotification(med, dosage_lst[i], date_time_lst[i])
   })
 }
 
-export function cancelNotificationList(medName_lst, dosage_lst, date_time_lst){
+export function cancelNotificationList(medName_lst, dosage_lst, date_time_lst) {
   medName_lst.forEach((med, i) => {
     cancelOurNotification(med, dosage_lst[i], date_time_lst[i])
   })

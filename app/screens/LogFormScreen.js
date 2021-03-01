@@ -1,30 +1,19 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  Dimensions
 } from "react-native";
 import ScaleSlideInputType from "../components/LogInputTypes/ScaleSlideInputType";
 import ListInputType from "../components/LogInputTypes/ListInputType";
-import NumericalPickerInputType from "../components/LogInputTypes/NumericalPickerInputType";
 import Duration from "../components/LogInputTypes/Duration";
-import ChecklistInputType from "../components/LogInputTypes/ChecklistInputType";
-import DatePicker from "../components/LogInputTypes/DatePicker";
-import TimePicker from "../components/LogInputTypes/TimePicker";
 import Database from "../Database";
 import {
   asyncCreateMedicineEvents,
   asyncCreateSymptomLogEvent
 } from "../databaseUtil/databaseUtil";
 import moment from "moment";
-import { COLOR } from "../resources/constants.js";
 import Form from "../components/LogInputTypes/Form";
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
 
 event_id_count = 30000;
 event_details_id_count = 30000;
@@ -108,7 +97,7 @@ export default class ChooseLogScreen extends React.Component {
   valueChange(label, value) {
     let submit = this.state.submit_vals;
     submit[label] = value;
-    this.setState({ submit_vals: submit }, () => {});
+    this.setState({ submit_vals: submit }, () => { });
   }
 
   submit() {

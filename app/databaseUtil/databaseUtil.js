@@ -43,12 +43,12 @@ export function createTables() {
       );
     },
     err => console.log(err, "error creating tables"),
-    () => {}
+    () => { }
   );
 }
 
 export function intializeDatabase() {
-  date = new Date();
+  let date = new Date();
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -302,20 +302,20 @@ export function intializeDatabase() {
       tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (1)");
     },
     err => console.log(err, "error in initialization"),
-    () => {}
+    () => { }
   );
 
   Database.transaction(
     tx => {
-      tx.executeSql("Select * from event_type_tbl;", [], (tx, { rows }) => {});
+      tx.executeSql("Select * from event_type_tbl;", [], (tx, { rows }) => { });
     },
     err => console.log(err)
   );
 }
 
 export function formatData(data) {
-  dataTemp = {};
-  data.forEach(function(ev) {
+  let dataTemp = {};
+  data.forEach(function (ev) {
     let d = Moment(ev.timestamp).format("DD");
     let day = d - 1;
     let symptom = ev.event_type_name;
@@ -398,6 +398,9 @@ export function asyncCreateSymptomLogEvent(
   detailsJson,
   timestamp
 ) {
+  console.log("event_type_id", event_type_id);
+  console.log("detailsJson", detailsJson);
+  console.log("timestamp", timestamp);
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -406,9 +409,9 @@ export function asyncCreateSymptomLogEvent(
       );
       tx.executeSql(
         "INSERT INTO event_tbl (event_id, event_type_id, timestamp, event_details_id) " +
-          "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
+        "VALUES ((SELECT max(t.event_id) from event_tbl t) + 1, ?, ?, (SELECT max(t.event_id) from event_tbl t) + 1)",
         [event_type_id, timestamp],
-        (tx, { rows }) => {}
+        (tx, { rows }) => { }
       );
     },
     err => console.log(err)
@@ -417,7 +420,7 @@ export function asyncCreateSymptomLogEvent(
 
 /* pulls data from Database for month and formats it for calendar */
 export function pullFromDataBase(month, day, callback) {
-  formattedMonth = month.toISOString().substr(0, 7);
+  let formattedMonth = month.toISOString().substr(0, 7);
   var arrayFormattedMonth = [formattedMonth];
   Database.transaction(
     tx =>
@@ -435,8 +438,8 @@ export function pullFromDataBase(month, day, callback) {
 }
 
 function formatDataForGraphs(data) {
-  dataTemp = {};
-  data.forEach(function(ev) {
+  let dataTemp = {};
+  data.forEach(function (ev) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 10); // year-month-day
@@ -456,9 +459,9 @@ function formatDataForGraphs(data) {
 
 /* aggregates data for each month in the year */
 function formatYearDataForGraphs(data) {
-  dataTemp = {};
+  let dataTemp = {};
 
-  data.forEach(function(ev) {
+  data.forEach(function (ev) {
     var d = new Date(ev.timestamp.replace(" ", "T"));
     d.setTime(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
     var monthString = d.toISOString().substr(0, 7); // year-month
@@ -479,7 +482,7 @@ function formatYearDataForGraphs(data) {
 
 /*month is a date object where only the month and year are used, symptom is a string */
 export function pullSymptomForGraphs(month, symptom, callback) {
-  formattedMonth = month.toISOString().substr(0, 7);
+  let formattedMonth = month.toISOString().substr(0, 7);
   var params = [symptom, formattedMonth];
   Database.transaction(
     tx =>
@@ -498,7 +501,7 @@ export function pullSymptomForGraphs(month, symptom, callback) {
 
 /*month is a date object where only year is used, symptom is a string */
 export function pullYearlySymptomForGraphs(year, symptom, callback) {
-  formattedYear = year.toISOString().substr(0, 4);
+  let formattedYear = year.toISOString().substr(0, 4);
 
   var params = [symptom, formattedYear];
   Database.transaction(
@@ -524,7 +527,7 @@ export function pullAllSymptoms(callback) {
         "SELECT event_id,event_type_name, timestamp, fields FROM event_tbl \
       INNER JOIN event_details_tbl on event_tbl.event_details_id = event_details_tbl.event_details_id \
       INNER JOIN event_type_tbl on event_tbl.event_type_id = event_type_tbl.event_type_id \
-      WHERE timestamp != '1950-01-01 00:00:00' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
+      WHERE timestamp != '1950-01-01 00:00:00' AND timestamp != 'Invalid date' AND event_type_name != 'Medication Reminder' ORDER BY timestamp",
         [],
         (_, { rows }) => callback(rows._array)
       ),
@@ -573,19 +576,19 @@ function sameDay(d1, d2) {
 }
 
 function formatAgenda(data) {
-  agendaFlatList = [];
-  data.forEach(function(ele) {
-    formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
+  let agendaFlatList = [];
+  data.forEach(function (ele) {
+    let formattedTime = Moment(ele.timestamp, "YYYY-MM-DD HH:mm:ss").format(
       "h:mm A"
     );
-    j = JSON.parse(ele.fields);
-    note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1];
-    note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2];
-    note_value3 = "Other" + ": " + j["Other"];
+    let j = JSON.parse(ele.fields);
+    let note_value1 = ele.card_field_id1 + ": " + j[ele.card_field_id1];
+    let note_value2 = ele.card_field_id2 + ": " + j[ele.card_field_id2];
+    let note_value3 = "Other" + ": " + j["Other"];
     // TODO: should have error checking here incase json is malformatted
     // TODO: should use event_type_name for cardData
 
-    elementRecord = {
+    let elementRecord = {
       id: ele.event_id,
       cardData: getCardData(ele.event_type_name),
       timeStamp: formattedTime,
@@ -629,19 +632,19 @@ export function pullAgendaFromDatabase(callback) {
 }
 
 export function asyncDeleteEvent(id) {
-  inputArray = [id];
+  let inputArray = [id];
   Database.transaction(
     tx => {
       tx.executeSql(
         "DELETE FROM event_tbl WHERE event_details_id = ?",
         inputArray,
-        (tx, { rows }) => {},
+        (tx, { rows }) => { },
         err => console.log(err)
       );
       tx.executeSql(
         "DELETE FROM event_details_tbl WHERE event_details_id = ?",
         inputArray,
-        (tx, { rows }) => {},
+        (tx, { rows }) => { },
         err => console.log(err)
       );
     },
@@ -667,8 +670,8 @@ export function asyncDeleteMedicine(name) {
             }
           });
 
-          deleteEventTblQuery = "DELETE FROM event_tbl WHERE ";
-          deleteEventDetailTblQuery = "DELETE FROM event_details_tbl WHERE ";
+          let deleteEventTblQuery = "DELETE FROM event_tbl WHERE ";
+          let deleteEventDetailTblQuery = "DELETE FROM event_details_tbl WHERE ";
 
           removeIds.forEach((id, idx, arr) => {
             deleteEventTblQuery += "event_details_id = ?";
@@ -706,8 +709,8 @@ export function asyncDeleteMedicine(name) {
 }
 
 function formatMedicineData(data) {
-  dataTemp = {};
-  data.forEach(function(med) {
+  let dataTemp = {};
+  data.forEach(function (med) {
     let earliestTime = new Date(med.timestamp.replace(" ", "T"));
     let fields = JSON.parse(med.fields);
     if (!dataTemp[fields["Pill Name"]]) {
@@ -730,7 +733,7 @@ function formatMedicineData(data) {
 export function pullMedicineFromDatabase(date, callback) {
   // date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   let day = toDateString(date);
-  dayArray = [day];
+  let dayArray = [day];
 
   Database.transaction(tx => {
     tx.executeSql(
@@ -746,8 +749,8 @@ export function pullMedicineFromDatabase(date, callback) {
 }
 
 export function getIds(rows, callback) {
-  event_details_id = -1;
-  event_id = -1;
+  let event_details_id = -1;
+  let event_id = -1;
   for (var i = 0; i < rows._array.length; i++) {
     if (rows._array[i]["id_name"] === "event_id") {
       event_id = rows._array[i]["id_value"];
@@ -820,8 +823,8 @@ export function asyncCreateMedicineEventsWrapper(
 
       var iterSkip = 1;
 
-      for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-        dateString = d.toISOString().substr(0, 10);
+      for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+        let dateString = d.toISOString().substr(0, 10);
         if (iterSkip != 1) {
           iterSkip = iterSkip - 1;
           continue;
@@ -834,7 +837,7 @@ export function asyncCreateMedicineEventsWrapper(
         var takenTimeInit = timeArray.map(t => {
           return "";
         });
-        detailsJson = {
+        let detailsJson = {
           "Pill Name": name,
           Dosage: dosage,
           "Start Date": startDate,
@@ -897,7 +900,7 @@ function getAllIndexes(arr, val) {
 
 /*TODO: clean up updateMedicine functions*/
 function updateMedicineData(data, time, takenVal, callback) {
-  data.forEach(function(med) {
+  data.forEach(function (med) {
     var fields = JSON.parse(med.fields);
     var idx = getAllIndexes(fields["Time Category"], time);
     let newTaken = fields["Taken"].slice();
@@ -931,7 +934,7 @@ function updateMedicineData(data, time, takenVal, callback) {
 }
 
 function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
-  data.some(function(med) {
+  data.some(function (med) {
     var fields = JSON.parse(med.fields);
     if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {
       if (idx != -1) {
@@ -952,7 +955,6 @@ function updateSingleMedicine(data, name, dosage, time, takenVal, idx) {
           },
           err => console.log(err)
         );
-
         return true;
       }
     }
@@ -963,7 +965,7 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
   let timeArray = ["Morning", "Afternoon", "Evening", "Night"];
   let timeString = timeArray[timeIndex];
   let day = toDateString(date);
-  dayArray = [day];
+  let dayArray = [day];
 
   Database.transaction(
     tx => {
@@ -984,7 +986,7 @@ export function databaseTakeMedicines(date, timeIndex, takenVal, callback) {
 //pass in time as 24 hour time string
 export function databaseTakeMedicine(date, name, dosage, time, takenVal, idx) {
   let day = toDateString(date);
-  dayArray = [day];
+  let dayArray = [day];
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1013,7 +1015,7 @@ export function asyncCreateNotifications(name, dosage, time, notifKey) {
       tx.executeSql(
         "INSERT OR IGNORE INTO notifications_tbl (name,dosage,time,notificationKey) VALUES (?,?,?,?)",
         args,
-        () => {},
+        () => { },
         err => console.log(err)
       );
     },
@@ -1054,7 +1056,7 @@ export function asyncDeleteNotifications(name, dosage, time) {
       tx.executeSql(
         "DELETE FROM notifications_tbl WHERE name = ? AND dosage = ? AND time = ?",
         args,
-        (a, b) => {},
+        (a, b) => { },
         err => console.log(err)
       );
     },
@@ -1082,7 +1084,7 @@ export function printAllNotifications() {
 printAllNotifications();
 
 export function asyncSettingUpdate(name, value) {
-  inputArray = [name, value];
+  let inputArray = [name, value];
   Database.transaction(
     tx => {
       tx.executeSql(
@@ -1095,8 +1097,8 @@ export function asyncSettingUpdate(name, value) {
 }
 
 function parseSettings(data) {
-  obj = {};
-  data.forEach(function(ele) {
+  let obj = {};
+  data.forEach(function (ele) {
     obj[ele.setting_name] = ele.setting_value;
   });
   return obj;
@@ -1131,7 +1133,7 @@ export function logIsFirst(callback) {
     tx.executeSql("INSERT OR IGNORE INTO is_first_tbl (is_first) VALUES (0)");
   });
   Database.transaction(tx => {
-    tx.executeSql("SELECT is_first FROM is_first_tbl", [], (_, { rows }) => {});
+    tx.executeSql("SELECT is_first FROM is_first_tbl", [], (_, { rows }) => { });
   });
 }
 
@@ -1142,7 +1144,7 @@ export function updateMedicineNotification(
   newIsOn,
   callback
 ) {
-  data.forEach(function(med) {
+  data.forEach(function (med) {
     var fields = JSON.parse(med.fields);
     if (fields["Pill Name"] === name && fields["Dosage"] === dosage) {
       fields["Notification On"] = newIsOn;
@@ -1254,10 +1256,10 @@ export function exportAllMedications(callBack) {
       tempMedFormatted["time prescribed"] = medInfo["Time"].join("; ");
 
       tempMedFormatted["time taken"] = medInfo["Taken Time"]
-        .map((time, index) => (time != "" ? time : "N/A"))
+        .map((time) => (time != "" ? time : "N/A"))
         .join("; ");
       tempMedFormatted["status"] = medInfo["Taken"]
-        .map((status, index) => (status ? "Taken" : "Not Taken"))
+        .map((status) => (status ? "Taken" : "Not Taken"))
         .join("; ");
       formattedMedicine.push(tempMedFormatted);
     });
@@ -1296,14 +1298,14 @@ export function databaseSetSurveyIsOn(newIsOn) {
         tx.executeSql(
           "INSERT OR IGNORE INTO survey_tbl (surveyIsOn) values (1)",
           [],
-          () => {},
+          () => { },
           err => console.log(err, "surveyIsOn")
         );
       } else {
         tx.executeSql(
           "DELETE FROM survey_tbl",
           [],
-          () => {},
+          () => { },
           err => console.log(err, "surveyIsOn")
         );
       }
@@ -1347,7 +1349,7 @@ export function databaseSetUUID(uuid) {
           tx.executeSql(
             "INSERT OR IGNORE INTO uuid_tbl (uuid) VALUES (?)",
             id_arg,
-            () => {},
+            () => { },
             err => console.log(err, "UUID")
           );
         },
@@ -1395,7 +1397,7 @@ export function databaseSetSurveyDate(date) {
               tx.executeSql(
                 "INSERT OR IGNORE INTO survey_last_completed_tbl (date) VALUES (?)",
                 date_arg,
-                () => {},
+                () => { },
                 err => console.log(err, "survey_last_completed_tbl1")
               );
             },

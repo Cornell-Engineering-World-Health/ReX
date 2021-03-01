@@ -7,8 +7,7 @@ import ButtonWithImage from "../components/Button/ButtonWithImage";
 import Moment from 'moment'
 import {
   databaseGetSurveyIsOn,
-  databaseGetSurveyDate,
-  databaseSetSurveyDate
+  databaseGetSurveyDate
 } from "../databaseUtil/databaseUtil.js";
 
 const styles = StyleSheet.create({
@@ -39,12 +38,12 @@ class SurveyModal extends Component {
     that = this
     databaseGetSurveyDate((date) => {
       let today = new Date(Moment().format('MM/DD/YYYY'))
-      if( date == undefined || today > (new Date(date))){
+      if (date == undefined || today > (new Date(date))) {
         databaseGetSurveyIsOn((isOn) => {
-          that.setState({surveyModalVisible: isOn})
+          that.setState({ surveyModalVisible: isOn })
         })
       } else {
-        that.setState({surveyModalVisible: false})
+        that.setState({ surveyModalVisible: false })
       }
     })
   }
@@ -52,31 +51,31 @@ class SurveyModal extends Component {
   render() {
     return (
       <Modal
-       animationInTiming={500}
-       isVisible={this.state.surveyModalVisible}
-       onBackdropPress={() => {
-         this._toggleSurveyModal();
-       }}
-     >
-       <View style={{ flex: 1 }}>
-         <View style={styles.topSpace} />
-         <SurveyForm
-           close={() => {
-             this._toggleSurveyModal();
-           }}
-         />
-         <ButtonWithImage
-           onPress={() => {
-             this._toggleSurveyModal();
-           }}
-           rounded={true}
-           width={30}
-           height={30}
-           imageSource={IMAGES.close}
-           styles={{ position: 'absolute', right: 0 }}
-         />
-       </View>
-     </Modal>
+        animationInTiming={500}
+        isVisible={this.state.surveyModalVisible}
+        onBackdropPress={() => {
+          this._toggleSurveyModal();
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={styles.topSpace} />
+          <SurveyForm
+            close={() => {
+              this._toggleSurveyModal();
+            }}
+          />
+          <ButtonWithImage
+            onPress={() => {
+              this._toggleSurveyModal();
+            }}
+            rounded={true}
+            width={30}
+            height={30}
+            imageSource={IMAGES.close}
+            styles={{ position: 'absolute', right: 0 }}
+          />
+        </View>
+      </Modal>
     );
   }
 }

@@ -14,10 +14,9 @@ import {
   Dimensions,
   KeyboardAvoidingView
 } from "react-native";
-import { TextField } from "react-native-material-textfield";
+import { TextField } from "@ubaids/react-native-material-textfield";
 import Modal from "react-native-modal";
-import moment from "moment";
-import { profile_icons, IMAGES, COLOR } from "../resources/constants";
+import { profile_icons, IMAGES } from "../resources/constants";
 
 const AVATAR_ID = "avatarID";
 const HEIGHT_ID = "heightID";
@@ -36,8 +35,21 @@ export default class Profile extends Component {
     this.state = {
       choosingAvatar: false,
       modalID: "",
-      tempBirthday: props.birthday ? props.birthday : new Date()
+      tempBirthday: props.birthday ? props.birthday : new Date(),
+      height_string: this.getHeightString(),
+      weight: props.weight || 0,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.height_feet !== prevProps.height_feet ||
+      this.props.height_inches !== prevProps.height_inches ||
+      this.props.weight !== prevProps.weight) {
+      this.setState({
+        height_string: this.getHeightString(),
+        weight: this.props.weight
+      });
+    }
   }
 
   convert_to_BMI = (height, inches, weight) => {
@@ -110,8 +122,20 @@ export default class Profile extends Component {
     }
   }
 
+  getHeightString() {
+    return this.props.height_feet !== "" &&
+      this.props.height_inches !== ""
+      ? this.props.height_feet +
+      " ft " +
+      this.props.height_inches +
+      " in"
+      : "";
+  }
+
   render() {
+    let height_string = this.getHeightString();
     let header = this._renderHeader();
+
     return (
       <View style={[styles.container, this.props.containerStyle]}>
         <View style={styles.headerWrapper}>
@@ -150,70 +174,22 @@ export default class Profile extends Component {
                 }}
                 baseColor={this.props.baseColor}
                 textColor={this.props.textColor}
-                ref={function(emailRef) {
-                  this.emailRef = emailRef;
-                }}
               />
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({ modalID: BIRTHDAY_ID });
-                  if (this.emailRef) {
-                    this.emailRef.blur();
-                  }
-                }}
-              >
-                <TextField
-                  editable={false}
-                  pointerEvents={"none"}
-                  label={"Birthday"}
-                  value={
-                    !this.props.birthday
-                      ? ""
-                      : this.props.birthday.toLocaleDateString()
-                  }
-                  baseColor={this.props.baseColor}
-                  textColor={this.props.textColor}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
                   this.setState({ modalID: HEIGHT_ID });
-                  this.props.settingsUpdate("height_feet", 5);
-                  this.props.settingsUpdate("height_inches", 5);
+                  this.props.settingsUpdate("height_feet", this.props.height_feet || 0);
+                  this.props.settingsUpdate("height_inches", this.props.height_inches || 0);
                 }}
               >
-                <TextField
-                  editable={false}
-                  pointerEvents={"none"}
-                  label={"Height"}
-                  value={
-                    this.props.height_feet != "" &&
-                    this.props.height_inches != ""
-                      ? this.props.height_feet +
-                        " ft " +
-                        this.props.height_inches +
-                        " in"
-                      : ""
-                  }
-                  baseColor={this.props.baseColor}
-                  textColor={this.props.textColor}
-                />
+                <Text style={styles.heightWeightInputs}>Height: {height_string}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ modalID: WEIGHT_ID });
                 }}
               >
-                <TextField
-                  editable={false}
-                  pointerEvents={"none"}
-                  label={"Weight"}
-                  value={
-                    this.props.weight != "" ? this.props.weight + " lbs" : ""
-                  }
-                  baseColor={this.props.baseColor}
-                  textColor={this.props.textColor}
-                />
+                <Text style={styles.heightWeightInputs}>Weight: {this.state.weight != "" ? this.state.weight + " lbs" : ""} </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -492,5 +468,9 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     margin: 8
+  },
+  heightWeightInputs: {
+    fontSize: 17,
+    paddingTop: 30
   }
 });

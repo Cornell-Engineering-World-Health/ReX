@@ -65,7 +65,7 @@ export default class ScaleSlideInputType extends React.Component {
   */
   _setGlobalHeightAndWidth(nativeEvent) {
     this.setState({ viewportHeight: nativeEvent.layout.height });
-    this.setState({ viewportWidth: nativeEvent.layout.width }, () => {});
+    this.setState({ viewportWidth: nativeEvent.layout.width }, () => { });
   }
 
   change(value) {
@@ -79,27 +79,28 @@ export default class ScaleSlideInputType extends React.Component {
     body = this.props.scale_labels.map((option, i, arr) => {
       let width = this.state.viewportWidth / arr.length;
 
+      let color = numericMetaInfo[i][0];
       return (
-        <View key={i} style={{paddingLeft: this.props.isIntensitySlider ? 0 : 2}}>
-        <TouchableOpacity
-          onPress={() => {
-            this.change(i);
-            this.setState({ selected: i });
-          }}
-          style={[
-            styles.button,
-            {
-              borderRadius: this.props.isIntensitySlider ? 0 : 2,
-              backgroundColor: this.props.isIntensitySlider
-                ? numericMetaInfo[i]
-                : COLOR.surveyTheme,
-              height: width,
-              width: width
-            }
-          ]}
-        >
-          <Text style={[styles.buttonText]}>{i}</Text>
-        </TouchableOpacity>
+        <View key={i} style={{ paddingLeft: this.props.isIntensitySlider ? 0 : 2 }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.change(i);
+              this.setState({ selected: i });
+            }}
+            style={[
+              styles.button,
+              {
+                borderRadius: this.props.isIntensitySlider ? 0 : 2,
+                backgroundColor: this.props.isIntensitySlider
+                  ? color
+                  : COLOR.surveyTheme,
+                height: width,
+                width: width
+              }
+            ]}
+          >
+            <Text style={[styles.buttonText]}>{i}</Text>
+          </TouchableOpacity>
         </View>
       );
     });

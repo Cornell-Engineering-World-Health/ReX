@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -64,9 +63,9 @@ class MedicineView extends React.Component {
    */
   asyncDatabasePull = () => {
     let that = this;
-    pullMedicineFromDatabase(new Date(), function(formattedData) {
+    pullMedicineFromDatabase(new Date(), function (formattedData) {
       var medicineData = [];
-      Object.keys(formattedData).forEach(function(med) {
+      Object.keys(formattedData).forEach(function (med) {
         var medObj = formattedData[med];
         var formattedTimes = medObj.time.map(
           t => Moment().format("MMMM DD YYYY") + " " + t
@@ -211,10 +210,10 @@ class MedicineView extends React.Component {
 
     setMassNotification(start, end, title, dosage, time, granularity, frequency);
     asyncCreateMedicineEvents(title, dosage, start, end, time, time_category, granularity, frequency);
-    endNew = Moment(end);
+    let endNew = Moment(end);
     endNew.date(endNew.date() + 1);
     if (Moment().isBetween(start, endNew)) {
-      medicineData = thisRef.state.data;
+      let medicineData = thisRef.state.data;
       for (var i = 0; i < medicineData.length; i++) {
         if (medicineData[i].title == title) {
           medicineData.splice(i, 1);
@@ -268,9 +267,8 @@ class MedicineView extends React.Component {
         }
         // if no taken or red, means we havent missed any and have taken some
       }
-    } else {
-      passed_index = 0;
     }
+
     if (shouldBeTakenNow(new Date(a.time[passed_index]))) {
       return [passed_index, 1];
     } else {
@@ -307,7 +305,7 @@ class MedicineView extends React.Component {
   getTitles = () => {
     var titles = [""];
     for (var i = 0; i < this.state.data.length; i++) {
-        titles.push(this.state.data[i].title);
+      titles.push(this.state.data[i].title);
     }
     return titles
   };
@@ -437,7 +435,6 @@ Custom sorting algorithm
         let isClose = this.isClose(med1["Start Date"], med1["Time"][i], 15);
         if (isClose && !d) {
           //if its close to the time and it hasn't been taken increase the priority
-          console.log(med1["Pill Name"], "isClose");
           priority1 = 100;
         }
       });
@@ -447,7 +444,7 @@ Custom sorting algorithm
           priority2 = 100;
         }
       });
-      console.log("med1", med1);
+
       if (!med1.Taken.includes(false)) priority1 = -999; //if all items have been taken, push to
       //bottom of list
       if (!med2.Taken.includes(false)) priority2 = -999;
@@ -549,7 +546,7 @@ only show up to 1 medication in the future
 
       if (filter && (taken || numInFuture >= 1)) return;
 
-      let currTime = this.generateDate(medObj["Start Date"], d);
+      //let currTime = this.generateDate(medObj["Start Date"], d);
 
       let cardStyle = null;
       if (medObj["Taken"][i]) {
@@ -607,7 +604,6 @@ only show up to 1 medication in the future
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     const monthNames = [
       "January",
       "February",
@@ -622,10 +618,10 @@ only show up to 1 medication in the future
       "November",
       "December"
     ];
-    currentDate = new Date();
-    currentMonths = monthNames[currentDate.getMonth()];
-    currentYear = currentDate.getYear();
-    currentDay = currentDate.getDay();
+    //let currentDate = new Date();
+    // let currentMonths = monthNames[currentDate.getMonth()];
+    // let currentYear = currentDate.getYear();
+    // let currentDay = currentDate.getDay();
     return (
       <View style={styles.wrapper}>
         <Animated.View
@@ -666,7 +662,7 @@ only show up to 1 medication in the future
         </ScrollView>
         <Modal isVisible={this.state.toggle_add} style={styles.addFormWrapper}>
           <MedicineAddForm
-            titles ={this.getTitles()}
+            titles={this.getTitles()}
             exitModal={() => {
               this.setState({ toggle_add: false });
             }}

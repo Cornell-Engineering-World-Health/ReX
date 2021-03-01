@@ -1,4 +1,4 @@
-import { MailComposer } from "expo";
+import * as MailComposer from 'expo-mail-composer';
 import { Linking } from "react-native";
 
 /*

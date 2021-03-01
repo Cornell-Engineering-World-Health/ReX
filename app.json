@@ -5,7 +5,6 @@
     "orientation": "portrait",
     "icon": "./app/resources/images/fiih_logo_background.png",
     "version": "1.0.7",
-    "sdkVersion": "31.0.0",
     "ios": {
       "bundleIdentifier": "com.ewhcornell.fiih"
     },

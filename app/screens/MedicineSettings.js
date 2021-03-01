@@ -6,16 +6,14 @@ import {
   StyleSheet,
   Switch,
   FlatList,
-  TextInput,
   Alert
 } from "react-native";
 import Moment from "moment";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import NavigationHeader from "../components/NavigationHeader/NavigationHeader";
 import Modal from "react-native-modal";
 
 import {
-  pullMedicineFromDatabase,
   pullAllMedicineData,
   asyncDeleteMedicine
 } from "../databaseUtil/databaseUtil";
@@ -38,24 +36,21 @@ export default class MedicineSettings extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let medicineData = [];
     let seen = {};
     //fill medicine state with those from the database
     pullAllMedicineData(formattedData => {
-      formattedData.forEach(function(med) {
+      formattedData.forEach(function (med) {
         var medObj = JSON.parse(med.fields);
 
         if (seen[medObj["Pill Name"]]) {
           return;
         }
 
-        console.log("med obj", medObj);
-
         var formattedTimes = medObj["Time"].map(
           t => Moment().format("MMMM DD YYYY") + " " + t
         );
-        console.log(medObj);
         medicineData.push({
           name: medObj["Pill Name"],
           time: formattedTimes,
@@ -78,14 +73,12 @@ export default class MedicineSettings extends React.Component {
     Handles turning on/off notifications for each medicineData
   */
   _handleToggle(index) {
-    data = this.state.medicine;
+    let data = this.state.medicine;
     data[index].status = !data[index].status;
     let name = data[index].name;
     let dosage = data[index].dosage;
     let times = data[index].time.map(t => Moment(new Date(t)).format("HH:mm"));
     if (data[index].status) {
-      //turned ON
-      //console.log("ON!");
 
       setMassNotification(
         new Date(data[index].startDate),
@@ -213,7 +206,7 @@ export default class MedicineSettings extends React.Component {
         <View style={styles.header}>
           <NavigationHeader
             title={"Medicine Settings"}
-            onPressBack={() => this.props.navigator.pop()}
+            onPressBack={() => this.props.goBack()}
           />
         </View>
         {this._renderBody()}

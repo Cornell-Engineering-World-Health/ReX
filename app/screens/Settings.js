@@ -5,11 +5,8 @@ import {
   View,
   Text,
   Image,
-  NavigatorIOS,
   TouchableOpacity,
-  Switch,
-  Dimensions,
-  ScrollView
+  Switch
 } from "react-native";
 import Modal from "react-native-modal";
 import SettingsList from "react-native-settings-list";
@@ -40,10 +37,10 @@ const export_ids = [
 ];
 const MEDICINE_HISTORY = "medhist";
 const SYMPTOM_HISTORY = "symphist";
+
+const pages = { settings: "settings", history: "history" };
+
 class Settings extends Component {
-  static propTypes = {
-    navigator: PropTypes.object
-  };
 
   constructor(props) {
     super(props);
@@ -60,7 +57,8 @@ class Settings extends Component {
       email: "Doctor's email unkown",
       modalVisible: "",
       toggle: false,
-      exportButtonsVisible: false
+      exportButtonsVisible: false,
+      pageVisible: null
     };
   }
 
@@ -124,7 +122,6 @@ class Settings extends Component {
     pullSettingsFromDatabase(data => {
       this.setState({
         weight: data.weight,
-        birthday: new Date(data.birthday),
         name: data.name,
         height_feet: data.height_feet,
         height_inches: data.height_inches,
@@ -155,273 +152,280 @@ class Settings extends Component {
         break;
       case export_ids[3]:
         temp.setFullYear(1971);
+        break;
       case export_ids[4]:
         temp.setMonth(temp.getMonth() - 1);
         break;
       default:
-        console.log("uh oh something went wrong in request symptom history");
+        console.log("Something went wrong in request symptom history");
     }
 
-    this.setState({ modalVisible: "" }, () =>
-      exportFunction(this.state.email, export_id + " medicine history", temp)
-    );
+    this.setState({ modalVisible: "" });
+    setTimeout(
+      (() => exportFunction(this.state.email, export_id + " Medicine History", temp)),
+      1000
+    )
   }
 
   render() {
-    var bgColor = "#DCE3F4";
-
-    return (
-      <View style={styles.container}>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            backgroundColor: "#f7f7f8",
-            borderColor: "#c8c7cc"
-          }}
-        >
-          <Text
-            style={{
-              alignSelf: "flex-start",
-              marginTop: 35,
-              marginLeft: 20,
-              marginBottom: 10,
-              fontWeight: "bold",
-              fontSize: 35
-            }}
-          >
-            Settings
-          </Text>
-        </View>
-        <View style={styles.container}>
-          <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
-            <SettingsList.Header headerStyle={{ marginTop: 15 }} />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={100}
-                  width={100}
-                  resizeMode="cover"
-                  source={profile_icons[this.state.icon]}
-                />
-              }
-              hasNavArrow={false}
-              title={this.state.name}
-              titleInfo={"Edit" + "\n" + "Profile"}
-              titleStyle={{ fontSize: 20, fontWeight: "bold" }}
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[0] });
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.scale}
-                />
-              }
-              hasNavArrow={false}
-              title="BMI"
-              titleInfo={this.convert_to_BMI()}
-            />
-            <SettingsList.Header headerStyle={{ marginTop: 10 }} />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={50}
-                  resizeMode="contain"
-                  source={IMAGES.view}
-                />
-              }
-              title="View History"
-              hasNavArrow={true}
-              onPress={() => {}}
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => {
-                this.props.navigator.push(TrendsRoute);
-              }}
-            />
-
-            <SettingsList.Item
-              title="Contact"
-              onPress={() => {
-                sendMail(
-                  ["fiih.developers@gmail.com"],
-                  "Comments on Your App",
-                  "Dear Engineering World Health Body, \n",
-                  null,
-                  null
-                );
-              }}
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.addressBook}
-                />
-              }
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.exportcsv}
-                />
-              }
-              title="Export Data"
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[1] });
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.medicine}
-                />
-              }
-              title="Edit Medicine Settings"
-              onPress={() => {
-                this.props.navigator.push(MedicineSettingsPage);
-              }}
-            />
-            <SettingsList.Item
-              icon={
-                <Image
-                  style={styles.imageStyle}
-                  height={60}
-                  resizeMode="contain"
-                  source={IMAGES.chemical}
-                />
-              }
-              title="Experimental Settings"
-              onPress={() => {
-                this.setState({ modalVisible: modal_ids[2] });
-              }}
-            />
-          </SettingsList>
-        </View>
-        <Modal
-          isVisible={this.state.modalVisible == modal_ids[0]}
-          style={styles.editProfileWrapper}
-        >
-          <Profile
-            exitModal={() => {
-              this.setState({ modalVisible: "" });
-            }}
-            settingsUpdate={(setting, value) => {
-              this.settingsUpdate(setting, value);
-            }}
-            icon={this.state.icon}
-            name={this.state.name}
-            email={this.state.email}
-            birthday={this.state.birthday}
-            height_feet={this.state.height_feet}
-            height_inches={this.state.height_inches}
-            height={this.state.height}
-            weight={this.state.weight}
-            isInModal={true}
-            baseColor={COLOR.black}
-          />
-        </Modal>
-        <Modal
-          isVisible={this.state.modalVisible == modal_ids[2]}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ modalVisible: "" });
-          }}
-          onSwipe={() => {
-            this.setState({ modalVisible: "" });
-          }}
-          swipeDirection={"down"}
-          style={styles.editProfileWrapper}
-        >
-          <View style={styles.modalExperiment}>
+    switch (this.state.pageVisible) {
+      case pages.history:
+        return <Trends goBack={() => this.setState({ pageVisible: null })} />;
+      case pages.settings:
+        return <MedicineSettings goBack={() => this.setState({ pageVisible: null })} />;
+      default:
+        return (
+          <View style={styles.container}>
             <View
-              style={{flexDirection: "row"}}
+              style={{
+                borderBottomWidth: 1,
+                backgroundColor: "#f7f7f8",
+                borderColor: "#c8c7cc"
+              }}
             >
-              <Text style={styles.nidaInfo}>NIDA Survey</Text>
-              <Switch
-                value={this.state.toggle}
-                onValueChange={() => {
-                  this._handleToggle();
+              <Text
+                style={{
+                  alignSelf: "flex-start",
+                  marginTop: 35,
+                  marginLeft: 20,
+                  marginBottom: 10,
+                  fontWeight: "bold",
+                  fontSize: 35
                 }}
-              />
+              >
+                Settings
+            </Text>
             </View>
-            <TouchableOpacity
-              style={styles.nidaExport}
-              onPress={() => {
-                this.setState({ modalVisible: "" }, () =>
-                  exportSurveyMailFunc(this.state.email, "Questionnaire Data")
-                );
-              }}
-            >
-              <Text>Export Questionnaire Data</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+            <View style={styles.container}>
+              <SettingsList borderColor="#c8c7cc" defaultItemSize={50}>
+                <SettingsList.Header headerStyle={{ marginTop: 15 }} />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={100}
+                      width={100}
+                      resizeMode="cover"
+                      source={profile_icons[this.state.icon]}
+                    />
+                  }
+                  hasNavArrow={false}
+                  title={this.state.name}
+                  titleInfo={"Edit" + "\n" + "Profile"}
+                  titleStyle={{ fontSize: 20, fontWeight: "bold" }}
+                  onPress={() => {
+                    this.setState({ modalVisible: modal_ids[0] });
+                  }}
+                />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={60}
+                      resizeMode="contain"
+                      source={IMAGES.scale}
+                    />
+                  }
+                  hasNavArrow={false}
+                  title="BMI"
+                  titleInfo={this.convert_to_BMI()}
+                />
+                <SettingsList.Header headerStyle={{ marginTop: 10 }} />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={50}
+                      resizeMode="contain"
+                      source={IMAGES.view}
+                    />
+                  }
+                  title="View History"
+                  hasNavArrow={true}
+                  onPress={() => { }}
+                  titleInfoStyle={styles.titleInfoStyle}
+                  onPress={() => this.setState({ pageVisible: pages.history })}
+                />
 
-        <Modal
-          isVisible={this.state.modalVisible == modal_ids[1]}
-          animationInTiming={500}
-          animationOutTiming={500}
-          onBackdropPress={() => {
-            this.setState({ modalVisible: "" });
-          }}
-          onSwipe={() => {
-            this.setState({ modalVisible: "" });
-          }}
-          swipeDirection={"down"}
-          style={styles.modal}
-        >
-          <View style={[styles.modalWrapper, { flex: 0.3 }]}>
-            <TouchableOpacity
-              style={[styles.modalButton, { backgroundColor: COLOR.purple }]}
-              onPress={() => {
-                this.setState({ exportButtonsVisible: MEDICINE_HISTORY });
+                <SettingsList.Item
+                  title="Contact"
+                  onPress={() => {
+                    sendMail(
+                      ["fiih.developers@gmail.com"],
+                      "Comments on Your App",
+                      "Dear Engineering World Health Body, \n",
+                      null,
+                      null
+                    );
+                  }}
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={60}
+                      resizeMode="contain"
+                      source={IMAGES.addressBook}
+                    />
+                  }
+                />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={60}
+                      resizeMode="contain"
+                      source={IMAGES.exportcsv}
+                    />
+                  }
+                  title="Export Data"
+                  onPress={() => {
+                    this.setState({ modalVisible: modal_ids[1] });
+                  }}
+                />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={60}
+                      resizeMode="contain"
+                      source={IMAGES.medicine}
+                    />
+                  }
+                  title="Edit Medicine Settings"
+                  onPress={() => {
+                    this.setState({ pageVisible: pages.settings });
+                  }}
+                />
+                <SettingsList.Item
+                  icon={
+                    <Image
+                      style={styles.imageStyle}
+                      height={60}
+                      resizeMode="contain"
+                      source={IMAGES.chemical}
+                    />
+                  }
+                  title="Experimental Settings"
+                  onPress={() => {
+                    this.setState({ modalVisible: modal_ids[2] });
+                  }}
+                />
+              </SettingsList>
+            </View>
+            <Modal
+              isVisible={this.state.modalVisible == modal_ids[0]}
+              style={styles.editProfileWrapper}
+            >
+              <Profile
+                exitModal={() => {
+                  this.setState({ modalVisible: "" });
+                }}
+                settingsUpdate={(setting, value) => {
+                  this.settingsUpdate(setting, value);
+                }}
+                icon={this.state.icon}
+                name={this.state.name}
+                email={this.state.email}
+                birthday={this.state.birthday}
+                height_feet={this.state.height_feet}
+                height_inches={this.state.height_inches}
+                height={this.state.height}
+                weight={this.state.weight}
+                isInModal={true}
+                baseColor={COLOR.black}
+              />
+            </Modal>
+            <Modal
+              isVisible={this.state.modalVisible == modal_ids[2]}
+              animationInTiming={500}
+              animationOutTiming={500}
+              onBackdropPress={() => {
+                this.setState({ modalVisible: "" });
               }}
-              disabled={this.state.exportButtonsVisible == MEDICINE_HISTORY}
+              onSwipe={() => {
+                this.setState({ modalVisible: "" });
+              }}
+              swipeDirection={"down"}
+              style={styles.editProfileWrapper}
             >
-              <Text style={styles.modalSubmitText}>Medicine History</Text>
-              {this.state.exportButtonsVisible == MEDICINE_HISTORY && (
-                <ExportButtons
-                  onPress={date => {
-                    this.setState({ exportButtonsVisible: "" });
-                    this._requestHistory(date, exportMedicationsMailFunc);
+              <View style={styles.modalExperiment}>
+                <View
+                  style={{ flexDirection: "row" }}
+                >
+                  <Text style={styles.nidaInfo}>NIDA Survey</Text>
+                  <Switch
+                    value={this.state.toggle}
+                    onValueChange={() => {
+                      this._handleToggle();
+                    }}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={styles.nidaExport}
+                  onPress={() => {
+                    this.setState({ modalVisible: "" }, () =>
+                      exportSurveyMailFunc(this.state.email, "Questionnaire Data")
+                    );
                   }}
-                />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.modalButton, { backgroundColor: COLOR.cyan }]}
-              onPress={() =>
-                this.setState({ exportButtonsVisible: SYMPTOM_HISTORY })
-              }
-              disabled={this.state.exportButtonsVisible == SYMPTOM_HISTORY}
+                >
+                  <Text>Export Questionnaire Data</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+
+            <Modal
+              isVisible={this.state.modalVisible == modal_ids[1]}
+              animationInTiming={500}
+              animationOutTiming={500}
+              onBackdropPress={() => {
+                this.setState({ modalVisible: "" });
+              }}
+              onSwipe={() => {
+                this.setState({ modalVisible: "" });
+              }}
+              swipeDirection={"down"}
+              style={styles.modal}
             >
-              <Text style={styles.modalSubmitText}>Symptom History</Text>
-              {this.state.exportButtonsVisible == SYMPTOM_HISTORY && (
-                <ExportButtons
-                  onPress={date => {
-                    this.setState({ exportButtonsVisible: "" });
-                    this._requestHistory(date, exportSymptomsMailFunc);
+              <View style={[styles.modalWrapper, { flex: 0.3 }]}>
+                <TouchableOpacity
+                  style={[styles.modalButton, { backgroundColor: COLOR.purple }]}
+                  onPress={() => {
+                    this.setState({ exportButtonsVisible: MEDICINE_HISTORY });
                   }}
-                />
-              )}
-            </TouchableOpacity>
+                  disabled={this.state.exportButtonsVisible == MEDICINE_HISTORY}
+                >
+                  <Text style={styles.modalSubmitText}>Medicine History</Text>
+                  {this.state.exportButtonsVisible == MEDICINE_HISTORY && (
+                    <ExportButtons
+                      onPress={date => {
+                        this.setState({ exportButtonsVisible: "" });
+                        this._requestHistory(date, exportMedicationsMailFunc);
+                      }}
+                    />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalButton, { backgroundColor: COLOR.cyan }]}
+                  onPress={() =>
+                    this.setState({ exportButtonsVisible: SYMPTOM_HISTORY })
+                  }
+                  disabled={this.state.exportButtonsVisible == SYMPTOM_HISTORY}
+                >
+                  <Text style={styles.modalSubmitText}>Symptom History</Text>
+                  {this.state.exportButtonsVisible == SYMPTOM_HISTORY && (
+                    <ExportButtons
+                      onPress={date => {
+                        this.setState({ exportButtonsVisible: "" });
+                        this._requestHistory(date, exportSymptomsMailFunc);
+                      }}
+                    />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </Modal>
           </View>
-        </Modal>
-      </View>
-    );
+        );
+    }
+
   }
   onValueChange(value) {
     this.setState({ switchValue: value });
@@ -429,7 +433,7 @@ class Settings extends Component {
 }
 
 const ExportButtons = props => {
-  props = props ? props : () => {};
+  props = props ? props : () => { };
   return (
     <View style={{ flexDirection: "row", marginTop: 10 }}>
       <TouchableOpacity
@@ -559,17 +563,14 @@ const MedicineSettingsPage = {
 const TrendsRoute = {
   component: Trends
 };
-export default class settingsList extends React.Component {
+
+const SettingsRoute = {
+  component: Settings,
+  title: "Settings"
+}
+
+export default class SettingsPage extends React.Component {
   render() {
-    return (
-      <NavigatorIOS
-        initialRoute={{
-          component: Settings,
-          title: "Settings"
-        }}
-        style={{ flex: 1 }}
-        navigationBarHidden={true}
-      />
-    );
+    return <Settings />;
   }
 }

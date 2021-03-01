@@ -22,7 +22,7 @@ export default class BodySelectScreen extends React.Component {
     this.labels = [];
   }
 
-  componentWillMount() {
+  componentDidiMount() {
     setTimeout(() => {
       this.measureAndSet(this, 0, []);
     });

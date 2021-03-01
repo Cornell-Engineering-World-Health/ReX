@@ -79,10 +79,6 @@ class Agenda extends Component {
 
   _keyExtractor = (item, index) => item.id;
 
-  // _onSubmit = () => {
-  //   asyncCreateSymptomLogEvent(event_type_id, values, timestamp);
-  // }
-
   /**
    * renders agenda
    */
@@ -317,7 +313,7 @@ class Agenda extends Component {
               styles.button,
               {
                 borderRadius: 0,
-                backgroundColor: numericMetaInfo[i],
+                backgroundColor: numericMetaInfo[i][0],
                 height: 30,
                 width: 30
               }
@@ -358,7 +354,7 @@ class Agenda extends Component {
   }
 
   _deleteItem(index) {
-    data = this.state.otherSymptoms;
+    let data = this.state.otherSymptoms;
 
     if (index < 0 || index > data.length) {
       return;
@@ -369,7 +365,7 @@ class Agenda extends Component {
   }
 
   addOther(text) {
-    newOther = this.state.otherSymptoms;
+    let newOther = this.state.otherSymptoms;
     newOther = [...newOther.slice(0, newOther.length - 1), text];
     newOther.push("LAST_ELEMENT");
     this.setState({
@@ -475,15 +471,12 @@ class Agenda extends Component {
       day = "0" + day;
     }
 
-    let newMinute = parseInt(minute);
-    let minString = minute.toString();
-    if (newMinute < 10 && newMinute > 0) {
-      minString = "0" + minString;
-    }
     let hourString = hour.toString();
+
     if (hour < 10) {
       hourString = "0" + hourString;
     }
+
     let timestamp =
       year +
       "-" +
@@ -493,7 +486,7 @@ class Agenda extends Component {
       " " +
       hourString +
       ":" +
-      minString +
+      minute +
       ":00";
     let correctTime = moment(timestamp).format("YYYY-MM-DD HH:mm:00");
 

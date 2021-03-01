@@ -164,7 +164,7 @@ assumes date is a valid date object
         data: [...this.state.data, ...newData],
         last: current + num - 1
       },
-      function() {
+      function () {
         if (callback) {
           callback();
         }
@@ -246,20 +246,20 @@ assumes date is a valid date object
   };
 
   _disableScroll() {
-    this.flatListRef.getScrollResponder().setNativeProps({
-      scrollEnabled: false
-    });
+    // this.flatListRef.getScrollResponder().setNativeProps({
+    //   scrollEnabled: false
+    // });
     let thisRef = this;
-    setTimeout(function() {
+    setTimeout(function () {
       thisRef._enableScroll(thisRef.flatListRef);
     }, 200);
   }
 
   _enableScroll(list) {
     if (list) {
-      list.getScrollResponder().setNativeProps({
-        scrollEnabled: true
-      });
+      // list.getScrollResponder().setNativeProps({
+      //   scrollEnabled: true
+      // });
     }
   }
 
@@ -280,7 +280,7 @@ assumes date is a valid date object
     } catch (err) {
       if (err.name == "Invariant Violation") {
         thisRef = this;
-        this._loadMore(newIdx - this.state.last, function() {
+        this._loadMore(newIdx - this.state.last, function () {
           thisRef.flatListRef.scrollToIndex({ animated: false, index: newIdx });
         });
       }

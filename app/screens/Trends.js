@@ -16,7 +16,7 @@ import {
   pullYearlySymptomForGraphs,
   pullAllLoggedSymptomsTypes
 } from "../databaseUtil/databaseUtil";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 //MONTHS allows for indices to map to month values
 const MONTHS = constants.MONTH;
 
@@ -117,14 +117,14 @@ export default class Trends extends React.Component {
       return "";
     }
 
-    let date = "";
-    let month = this.state.selectedMonth;
-    let year = this.state.selectedYear;
-    if (this.state.selectedMonth > -1) {
-      date = "" + month + "/" + (year % 1000);
-    } else {
-      date = "" + year;
-    }
+    // let date = "";
+    // let month = this.state.selectedMonth;
+    // let year = this.state.selectedYear;
+    // if (this.state.selectedMonth > -1) {
+    //   date = "" + month + "/" + (year % 1000);
+    // } else {
+    //   date = "" + year;
+    // }
 
     return this.state.selectedSymptom + " " + this.state.selectedMode;
   }
@@ -198,7 +198,7 @@ export default class Trends extends React.Component {
       ).daysInMonth();
 
       let d = [];
-      for (var x = 0; x < daysInMonth; x++) {
+      for (let x = 0; x < daysInMonth; x++) {
         d.push(Math.random() * 10);
       }
       this.setState({ formattedData: d });
@@ -209,7 +209,7 @@ export default class Trends extends React.Component {
       //get data from database based on selected year
 
       let d = [];
-      for (var x = 0; x < 12; x++) {
+      for (let x = 0; x < 12; x++) {
         d.push(Math.floor(Math.random() * 10));
       }
       this.setState({ formattedData: d });
@@ -453,9 +453,7 @@ export default class Trends extends React.Component {
           <Text style={styles.headerText}>{this.getTitle()}</Text>
           <TouchableOpacity
             style={styles.menuButtonWrapper}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}
+            onPress={() => this.props.goBack()}
           >
             <Image
               source={IMAGES.headerBack}
@@ -617,9 +615,7 @@ export default class Trends extends React.Component {
           <Text style={styles.headerText}>{this.getTitle()}</Text>
           <TouchableOpacity
             style={styles.menuButtonWrapper}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}
+            onPress={() => this.props.goBack()}
           >
             <Image
               source={IMAGES.headerBack}
